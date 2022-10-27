@@ -2,7 +2,6 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 import '../../api/models/api_response.dart';
 import '../../api/models/app_exceptions.dart';
-import 'models/api_response.dart';
 
 class ErrorHandler {
 

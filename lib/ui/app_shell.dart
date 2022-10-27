@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_flavorizr/parser/models/flavors/flavor.dart';
 
 import '../extensions/build_context_extension.dart';
 import '../flavors.dart';
 import '../theme/poke_app_text.dart';
+import 'pokemon_list/pokemon_list_view.dart';
 
 class AppShell extends StatelessWidget {
   static const routeName = '/dashboard';
@@ -17,11 +17,7 @@ class AppShell extends StatelessWidget {
         ),
         titleTextStyle: PokeAppText.subtitle3Style,
       ),
-      body: Container(
-        child: Center(
-          child: Text('DASHBOARD ${F.appFlavor}'),
-        ),
-      ),
+      body: PokemonListView(),
     );
   }
 }

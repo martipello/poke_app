@@ -137,11 +137,6 @@ class BaseThemeColors {
     this.textOnPrimary = const Color(0xFFFFFFFF),
     this.textOnSecondary = const Color(0xFFFFFFFF),
     this.textOnForeground = const Color(0xFF2e2e2e),
-    this.chrome = const Color(0xFFCCCCCC),
-    this.chromeLight = const Color(0xFFE1E1E1),
-    this.chromeLighter = const Color(0xFFF2F2F4),
-    this.chromeLightest = const Color(0xFFF7F7F8),
-    this.chromeDark = const Color(0xFF333333),
     this.link = const Color(0xFF3965FF),
     this.positive = const Color(0xFF26A626),
     this.error = const Color(0xFFBA2F00),
@@ -150,16 +145,6 @@ class BaseThemeColors {
     this.black = const Color(0xFF000000),
     this.white = const Color(0xFFFFFFFF),
     this.background = const Color(0xFFEEEEEE),
-    this.statusCompleted = const Color(0xFFA6CE39),
-    this.statusAllocation = const Color(0xFFffb933),
-    this.statusInProgress = const Color(0xFF419bf9),
-    this.statusRejected = const Color(0xFFf96a58),
-    this.statusConfirmedLinguist = const Color(0xFF53c4cf),
-    this.serviceTelephone = const Color(0xFFA6CE39),
-    this.serviceLive = const Color(0xFFA6CE39),
-    this.serviceVideo = const Color(0xFFA6CE39),
-    this.serviceFace2Face = const Color(0xFFA6CE39),
-    this.serviceTranslation = const Color(0xFFA6CE39),
   });
 
   final Color primary;
@@ -171,11 +156,6 @@ class BaseThemeColors {
   final Color secondaryDark;
   final Color foreground;
 
-  final Color chrome;
-  final Color chromeLight;
-  final Color chromeLighter;
-  final Color chromeLightest;
-  final Color chromeDark;
   final Color text;
   final Color textOnForeground;
   final Color textOnPrimary;
@@ -191,16 +171,4 @@ class BaseThemeColors {
   final Color black;
   final Color white;
   final Color background;
-
-  final Color statusCompleted;
-  final Color statusAllocation;
-  final Color statusInProgress;
-  final Color statusRejected;
-  final Color statusConfirmedLinguist;
-
-  final Color serviceTelephone;
-  final Color serviceLive;
-  final Color serviceVideo;
-  final Color serviceFace2Face;
-  final Color serviceTranslation;
 }

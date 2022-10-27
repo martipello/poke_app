@@ -15,8 +15,8 @@ import 'models/error_response.dart';
 
 typedef RetryFunction = Future<dynamic> Function();
 
-class ApiBaseHelper {
-  ApiBaseHelper(
+class ApiClient {
+  ApiClient(
     this.errorHandler,
   );
 
