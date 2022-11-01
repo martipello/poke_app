@@ -6,7 +6,10 @@ import '../models/error_response.dart';
 import '../models/pokemon/pokemon.dart';
 import '../models/pokemon/pokemon_request.dart';
 import '../models/pokemon/pokemon_response.dart';
-import '../models/pokemon/pokemon_type.dart';
+import '../models/pokemon/sprite.dart';
+import '../models/pokemon/sprite_response.dart';
+import '../models/pokemon/type_data.dart';
+import '../models/pokemon/type_data_holder.dart';
 import 'date_time_serializer.dart';
 
 part 'serializers.g.dart';
@@ -14,9 +17,13 @@ part 'serializers.g.dart';
 @SerializersFor([
   ErrorResponse,
   Pokemon,
-  PokemonType,
+  TypeDataHolder,
   PokemonRequest,
   PokemonResponse,
+  TypeDataHolder,
+  TypeData,
+  Sprite,
+  SpriteResponse,
 ])
 final Serializers serializers = (_$serializers.toBuilder()
       ..add(DateTimeSerializer())

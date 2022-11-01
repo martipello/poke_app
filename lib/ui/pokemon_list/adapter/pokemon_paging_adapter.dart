@@ -59,7 +59,7 @@ class PokemonPagingAdapter {
         );
         if (!newPage.hasException && newPage.data != null) {
           final pokemon = PokemonResponse.fromJson(newPage.data!);
-          log('POKEMON PAGING ADAPTER').d('pokemon $pokemon');
+
           var isLastPage = _getIsLastPage(pokemon);
 
           if (!_hasBeenDisposed) {

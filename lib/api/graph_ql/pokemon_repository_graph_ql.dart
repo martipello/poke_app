@@ -40,6 +40,13 @@ class PokemonRepositoryGraphQl {
                 name
                 pokemon_v2_pokemontypes {
                   type_id
+                  pokemon_v2_type {
+                    id
+                    name
+                  }
+                }
+                pokemon_v2_pokemonsprites {
+                  sprites
                 }
               }
           }

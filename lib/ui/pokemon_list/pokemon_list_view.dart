@@ -87,7 +87,6 @@ class _PokemonListViewState extends State<PokemonListView> {
           padding: EdgeInsets.zero,
           sliver: MultiSliver(
             children: [
-              // _buildNoConnection(context),
               SliverPadding(
                 padding: const EdgeInsets.all(8),
                 sliver: PagedSliverList.separated(
@@ -113,6 +112,16 @@ class _PokemonListViewState extends State<PokemonListView> {
             ],
           ),
         ),
+      ),
+      //TODO make this disappear when scrolling
+      //TODO animate into bottom sheet
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.red,
+        child: const Icon(
+          Icons.sort,
+          color: Colors.white,
+        ),
+        onPressed: () {},
       ),
     );
   }
@@ -188,7 +197,7 @@ class _PokemonListViewState extends State<PokemonListView> {
     );
   }
 
-  ew.ErrorWidget _buildErrorWidget() {
+  Widget _buildErrorWidget() {
     final error = _pokemonViewModel.getPagingController().error as ApiResponse;
     return ew.ErrorWidget(
       showImage: true,

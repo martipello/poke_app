@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../extensions/build_context_extension.dart';
-import '../flavors.dart';
 import '../theme/poke_app_text.dart';
 import 'pokemon_list/pokemon_list_view.dart';
 

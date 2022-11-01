@@ -1,9 +1,11 @@
+// ignore_for_file: non_constant_identifier_names
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
 import '../../serializers/serializers.dart';
-import 'pokemon_type.dart';
+import 'sprite_response.dart';
+import 'type_data_holder.dart';
 
 part 'pokemon.g.dart';
 
@@ -17,7 +19,9 @@ abstract class Pokemon implements Built<Pokemon, PokemonBuilder> {
 
   String get name;
 
-  BuiltList<PokemonType> get pokemon_v2_pokemontypes;
+  BuiltList<SpriteResponse> get pokemon_v2_pokemonsprites;
+
+  BuiltList<TypeDataHolder> get pokemon_v2_pokemontypes;
 
   Map<String, dynamic> toJson() {
     return serializers.serializeWith(Pokemon.serializer, this) as Map<String, dynamic>;

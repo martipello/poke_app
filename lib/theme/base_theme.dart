@@ -145,6 +145,30 @@ class BaseThemeColors {
     this.black = const Color(0xFF000000),
     this.white = const Color(0xFFFFFFFF),
     this.background = const Color(0xFFEEEEEE),
+
+
+    this.normal = const Color(0xFFA8A878),
+    this.water = const Color(0xFF6790F0),
+    this.fire = const Color(0xFFF08030),
+    this.grass = const Color(0xFF78C750),
+    this.electric = const Color(0xFFF9CF30),
+    this.ice = const Color(0xFF98D8D8),
+    this.fighting = const Color(0xFFC13128),
+    this.poison = const Color(0xFFA040A0),
+    this.ground = const Color(0xFFE1C068),
+    this.flying = const Color(0xFFA791F0),
+    this.psychic = const Color(0xFFF85888),
+    this.bug = const Color(0xFFA8B720),
+    this.rock = const Color(0xFFB8A038),
+    this.ghost = const Color(0xFF705898),
+    this.dark = const Color(0xFF6F5848),
+    this.dragon = const Color(0xFF7038),
+    this.steel = const Color(0xFFB8B7D0),
+    this.fairy = const Color(0xFFF0B6BC),
+
+    this.special = const Color(0xFFFF7038),
+    this.physical = const Color(0xFFB8B7D0),
+    this.status = const Color(0xFFF0B6BC),
   });
 
   final Color primary;
@@ -171,4 +195,28 @@ class BaseThemeColors {
   final Color black;
   final Color white;
   final Color background;
+
+  final Color normal;
+  final Color water;
+  final Color fire;
+  final Color grass;
+  final Color electric;
+  final Color ice;
+  final Color fighting;
+  final Color poison;
+  final Color ground;
+  final Color flying;
+  final Color psychic;
+  final Color bug;
+  final Color rock;
+  final Color ghost;
+  final Color dark;
+  final Color dragon;
+  final Color steel;
+  final Color fairy;
+
+  final Color physical;
+  final Color status;
+  final Color special;
+
 }

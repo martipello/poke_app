@@ -43,26 +43,20 @@ class ErrorWidget extends StatelessWidget {
               ),
             Row(
               mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _buildInfoIcon(context),
+                Padding(
+                  padding: const EdgeInsets.only(top: 2.0),
+                  child: _buildInfoIcon(context),
+                ),
+                const SizedBox(
+                  width: 4,
+                ),
                 Flexible(
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          top: 4,
-                          left: 2,
-                          right: 32,
-                        ),
-                        child: Text(
-                          errorMessage ?? 'Oops that\'s an error...',
-                          style: PokeAppText.body2Style,
-                          textAlign: textAlign ?? TextAlign.center,
-                        ),
-                      ),
-                    ],
+                  child: Text(
+                    errorMessage ?? 'Oops that\'s an error...',
+                    style: PokeAppText.body2Style,
+                    textAlign: textAlign ?? TextAlign.center,
                   ),
                 ),
               ],
@@ -92,5 +86,4 @@ class ErrorWidget extends StatelessWidget {
       size: 18,
     );
   }
-
 }
