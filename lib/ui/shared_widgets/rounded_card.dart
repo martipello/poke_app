@@ -4,9 +4,11 @@ class RoundedCard extends StatelessWidget {
   RoundedCard({
     Key? key,
     required this.child,
+    required this.onTap,
   }) : super(key: key);
 
   final Widget child;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +19,17 @@ class RoundedCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(4),
       ),
       clipBehavior: Clip.hardEdge,
-      child: Padding(
-        padding: const EdgeInsets.all(
-          16,
+      child: Material(
+        type: MaterialType.transparency,
+        child: InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(
+              16,
+            ),
+            child: child,
+          ),
         ),
-        child: child,
       ),
     );
   }

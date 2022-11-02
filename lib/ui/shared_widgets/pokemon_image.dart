@@ -11,20 +11,25 @@ class PokemonImage extends StatelessWidget {
     Key? key,
     this.size,
     required this.pokemon,
+    this.clipBehavior = Clip.none,
   });
 
   final Pokemon pokemon;
+  final Clip clipBehavior;
   final Size? size;
 
   @override
   Widget build(BuildContext context) {
-    return _buildProfileImage(context);
+    return Material(
+      type: MaterialType.transparency,
+      child: Hero(
+        tag: '${pokemon.id}',
+        child: _buildProfileImage(context),
+      ),
+    );
   }
 
   String _createImageUrl() {
-    if (pokemon.id == 3) {
-      return '';
-    }
     return 'https://firebasestorage.googleapis.com/v0/b/pokeapp-86eec.appspot.com/o/pokemon_image_${pokemon.id}.png?alt=media';
   }
 
@@ -34,6 +39,7 @@ class PokemonImage extends StatelessWidget {
     final imageUrl = _createImageUrl();
     return Center(
       child: ClipRRect(
+        clipBehavior: clipBehavior,
         borderRadius: BorderRadius.circular(180),
         child: Image.network(
           imageUrl,
@@ -63,6 +69,7 @@ class PokemonImage extends StatelessWidget {
     final sprite = Sprite.fromJson(spriteData);
     return Center(
       child: ClipRRect(
+        clipBehavior: clipBehavior,
         borderRadius: BorderRadius.circular(180),
         child: Image.network(
           sprite.front_default ?? '',
@@ -90,6 +97,7 @@ class PokemonImage extends StatelessWidget {
   ) {
     return Center(
       child: ClipRRect(
+        clipBehavior: clipBehavior,
         borderRadius: BorderRadius.circular(180),
         child: SizedBox(
           height: size?.height ?? 150,

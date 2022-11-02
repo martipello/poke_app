@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'theme/base_theme.dart';
 import 'ui/app_shell.dart';
+import 'ui/pokemon_detail/pokemon_detail_page.dart';
 
 class PokeApp extends StatefulWidget {
   const PokeApp({
@@ -49,6 +50,7 @@ class _PokeAppState extends State<PokeApp> {
       initialRoute: AppShell.routeName,
       routes: {
         AppShell.routeName: (context) => AppShell(),
+        PokemonDetailPage.routeName: (context) => const PokemonDetailPage(),
       },
     );
   }
