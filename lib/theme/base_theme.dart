@@ -66,7 +66,7 @@ class AppTheme {
 class BaseAppBarTheme {
   const BaseAppBarTheme({
     this.appBarTheme = const AppBarTheme(
-      color: Color(0xFF006CC7),
+      color: Color(0xFF000000),
       iconTheme: IconThemeData(
         color: Color(0xFFFFFFFF),
       ),
@@ -85,7 +85,7 @@ class BaseInputDecorationTheme {
   const BaseInputDecorationTheme({
     this.inputDecorationTheme = const InputDecorationTheme(
       focusedBorder: UnderlineInputBorder(
-        borderSide: BorderSide(color: Color(0xFF006CC7)),
+        borderSide: BorderSide(color: Color(0xFFFFFFFF)),
       ),
     ),
   });
@@ -96,7 +96,7 @@ class BaseInputDecorationTheme {
 class BaseIconThemeData {
   const BaseIconThemeData({
     this.iconThemeData = const IconThemeData(
-      color: Color(0xFF2e2e2e),
+      color: Color(0xFFFFFFFF),
     ),
   });
 

@@ -46,6 +46,7 @@ class _PokeAppState extends State<PokeApp> {
         ),
         fontFamily: widget.theme.font,
         appBarTheme: widget.theme.appBarTheme,
+        useMaterial3: true,
       ),
       initialRoute: AppShell.routeName,
       routes: {

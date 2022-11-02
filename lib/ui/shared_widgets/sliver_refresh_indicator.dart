@@ -17,26 +17,13 @@ class SliverRefreshIndicator extends StatelessWidget {
       onRefresh: () => Future.sync(
         onRefresh,
       ),
-      child: SafeArea(
-        top: false,
-        bottom: false,
-        child: Builder(
-          builder: (nestedScrollViewContext) {
-            return CustomScrollView(
-              slivers: [
-                SliverOverlapInjector(
-                  handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
-                    nestedScrollViewContext,
-                  ),
-                ),
-                SliverPadding(
-                  padding: padding ?? const EdgeInsets.all(8),
-                  sliver: sliver,
-                ),
-              ],
-            );
-          },
-        ),
+      child: CustomScrollView(
+        slivers: [
+          SliverPadding(
+            padding: padding ?? const EdgeInsets.all(8),
+            sliver: sliver,
+          ),
+        ],
       ),
     );
   }

@@ -127,44 +127,48 @@ class _PokemonListViewState extends State<PokemonListView> {
   }
 
   Widget _buildHeaderBar(BuildContext context) {
-    return SliverOverlapAbsorber(
-      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-      sliver: SliverAppBar(
-        pinned: true,
-        floating: true,
-        snap: true,
-        leading: const SizedBox(),
-        expandedHeight: kToolbarHeight,
-        flexibleSpace: _buildFlexibleSpace(context),
-        bottom: const PreferredSize(
-          preferredSize: Size.fromHeight(0),
-          child: SizedBox(),
+    return MultiSliver(
+      children: [
+        SliverAppBar(
+          backgroundColor: Colors.black,
+          leading: const SizedBox(),
+          expandedHeight: 120,
+          flexibleSpace: _buildFlexibleSpace(context),
         ),
-      ),
+        SliverAppBar(
+          pinned: false,
+          snap: true,
+          floating: true,
+          backgroundColor: Colors.black,
+          title: _buildSearchView(context),
+        )
+      ],
     );
   }
 
   Widget _buildFlexibleSpace(BuildContext context) {
     return FlexibleSpaceBar(
-      collapseMode: CollapseMode.pin,
-      background: _buildSearchView(context),
+      collapseMode: CollapseMode.parallax,
+      background: Padding(
+        padding: const EdgeInsets.only(top: 32),
+        child: Image.asset(
+          'assets/images/pokemon_hero.png',
+          fit: BoxFit.cover,
+        ),
+      ),
     );
   }
 
   Widget _buildSearchView(BuildContext context) {
-    return SafeArea(
-      left: true,
-      right: true,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: TextField(
-          controller: _textController,
-          maxLines: 1,
-          style: PokeAppText.body4Style.copyWith(
-            color: colors(context).textOnPrimary,
-          ),
-          decoration: _buildSearchInputDecoration(context),
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: TextField(
+        controller: _textController,
+        maxLines: 1,
+        style: PokeAppText.body4Style.copyWith(
+          color: colors(context).textOnPrimary,
         ),
+        decoration: _buildSearchInputDecoration(context),
       ),
     );
   }
@@ -172,7 +176,7 @@ class _PokemonListViewState extends State<PokemonListView> {
   InputDecoration _buildSearchInputDecoration(BuildContext context) {
     return InputDecoration(
       contentPadding: EdgeInsets.zero,
-      labelText: 'Search by ID',
+      labelText: 'Search by name',
       labelStyle: PokeAppText.body4Style.copyWith(
         color: colors(context).textOnPrimary,
       ),

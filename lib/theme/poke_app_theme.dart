@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'base_theme.dart';
 import 'poke_app_text.dart';
 
-const primary = Color(0xFF53c4cf);
-const primaryLight = Color(0xFF5cd7f4);
+const primary = Color(0xFF000000);
+const primaryLight = Color(0xFFb3b3b3);
 const primaryDark = Color(0xFF007691);
-const secondary = Color(0xFFFEAE17);
-const secondaryLight = Color(0xFFffc34c);
-const secondaryDark = Color(0xFFc66300);
+const secondary = Color(0xFFF9CF30);
+const secondaryLight = Color(0xFFfdf1c1);
+const secondaryDark = Color(0xFFf6bd1e);
 const text = Color(0xFF5e5e5e);
 const textOnForeground = Color(0xFF5e5e5e);
 const textOnPrimary = Color(0xFFFFFFFF);
-const textOnSecondary = Color(0xFFFFFFFF);
+const textOnSecondary = Color(0xFF5e5e5e);
 
 final pokeAppTheme = AppTheme(
   baseColors: const BaseThemeColors(
@@ -59,7 +59,7 @@ final pokeAppTheme = AppTheme(
   baseInputDecorationTheme: BaseInputDecorationTheme(
     inputDecorationTheme: InputDecorationTheme(
       labelStyle: PokeAppText.body3Style.copyWith(
-        color: const Color(0xFF5e5e5e),
+        color: textOnForeground,
       ),
       focusedBorder: const UnderlineInputBorder(
         borderSide: BorderSide(
