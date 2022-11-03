@@ -7,7 +7,9 @@ import 'api/graph_ql/pokemon_repository_graph_ql.dart';
 import 'services/launch_service.dart';
 import 'services/shared_preferences_service.dart';
 import 'ui/pokemon_list/adapter/pokemon_paging_adapter.dart';
+import 'ui/pokemon_list/search_app_bar.dart';
 import 'ui/pokemon_list/view_models/pokemon_list_view_model.dart';
+import 'ui/pokemon_list/view_models/search_app_bar_view_model.dart';
 
 final getIt = GetIt.instance;
 
@@ -20,4 +22,5 @@ Future<void> init() async {
   getIt.registerFactory(() => PokemonRepositoryGraphQl(getIt()));
   getIt.registerFactory(() => PokemonPagingAdapter(getIt(), getIt()));
   getIt.registerFactory(() => PokemonListViewModel(getIt()));
+  getIt.registerFactory(SearchAppBarViewModel.new);
 }

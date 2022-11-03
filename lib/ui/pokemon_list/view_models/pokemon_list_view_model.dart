@@ -3,6 +3,7 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../../api/models/pokemon/pokemon.dart';
 import '../../../api/models/pokemon/pokemon_request.dart';
+import '../../../api/models/pokemon/pokemon_type.dart';
 import '../adapter/pokemon_paging_adapter.dart';
 
 class PokemonListViewModel {
@@ -13,6 +14,8 @@ class PokemonListViewModel {
   var _isPagingAdapterInitialized = false;
 
   final searchText = BehaviorSubject<String?>.seeded('');
+  final selectedFilters = BehaviorSubject<List<PokemonType>>();
+  final showFloatingActionButton = BehaviorSubject<bool>.seeded(true);
 
   void _initializePagingAdapter() {
     _pokemonPagingAdapter.pagingController = _pagingController;
