@@ -69,7 +69,7 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
                 ),
               ),
             ),
-      bottom: PreferredSize(
+      bottom: widget.filters.isNotEmpty ? PreferredSize(
         preferredSize: const Size(
           double.infinity,
           48,
@@ -85,7 +85,7 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
               )
               .toList(),
         ),
-      ),
+      ) : null,
     );
   }
 
