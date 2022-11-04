@@ -30,60 +30,85 @@ class PokemonTile extends StatelessWidget {
           ),
         );
       },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            children: [
-              PokemonImage(
-                pokemon: pokemon,
-                clipBehavior: Clip.hardEdge,
-                size: const Size(
-                  80,
-                  80,
-                ),
-              ),
-              const SizedBox(
-                width: 8,
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      pokemon.name.capitalize(),
-                      style: PokeAppText.subtitle1Style,
+      child: _buildPokemonCardBody(),
+    );
+  }
+
+  Widget _buildPokemonCardBody() {
+    final speciesName = pokemon.pokemon_v2_pokemonspecy?.pokemon_v2_pokemonspeciesnames.first.genus ?? '';
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildPokemonImage(),
+            const SizedBox(
+              width: 16,
+            ),
+            Expanded(
+              child: _buildPokemonInfo(speciesName),
+            ),
+            _buildPokemonId(),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            ChipGroup(
+              chips: pokemon.pokemon_v2_pokemontypes
+                  .map(
+                    (type) => PokemonTypeChip(
+                      type: type.pokemon_v2_type?.pokemonType() ?? PokemonType.unknown,
+                      chipType: ChipType.normal,
                     ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    Text(
-                      pokemon.id.toString(),
-                      style: PokeAppText.body4Style,
-                    ),
-                  ],
-                ),
-              ),
-            ],
+                  )
+                  .toList(),
+            )
+          ],
+        )
+      ],
+    );
+  }
+
+  Widget _buildPokemonInfo(String speciesName) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          pokemon.name.capitalize(),
+          style: PokeAppText.subtitle1Style,
+        ),
+        if (speciesName.isNotEmpty)
+          Text(
+            speciesName,
+            style: PokeAppText.body4Style,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              ChipGroup(
-                chips: pokemon.pokemon_v2_pokemontypes
-                    .map(
-                      (type) => PokemonTypeChip(
-                        type: type.pokemon_v2_type?.pokemonType() ?? PokemonType.unknown,
-                        chipType: ChipType.normal,
-                      ),
-                    )
-                    .toList(),
-              )
-            ],
-          )
-        ],
+      ],
+    );
+  }
+
+  Widget _buildPokemonId() {
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: 4,
+      ),
+      child: Text(
+        '#${pokemon.id.toString()}',
+        style: PokeAppText.body6Style,
+      ),
+    );
+  }
+
+  Widget _buildPokemonImage() {
+    return PokemonImage(
+      pokemon: pokemon,
+      clipBehavior: Clip.hardEdge,
+      size: const Size(
+        80,
+        80,
       ),
     );
   }

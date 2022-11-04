@@ -6,6 +6,8 @@ import '../models/error_response.dart';
 import '../models/pokemon/pokemon.dart';
 import '../models/pokemon/pokemon_request.dart';
 import '../models/pokemon/pokemon_response.dart';
+import '../models/pokemon/pokemon_species.dart';
+import '../models/pokemon/pokemon_species_holder.dart';
 import '../models/pokemon/sprite.dart';
 import '../models/pokemon/sprite_response.dart';
 import '../models/pokemon/type_data.dart';
@@ -20,6 +22,8 @@ part 'serializers.g.dart';
   TypeDataHolder,
   PokemonRequest,
   PokemonResponse,
+  PokemonSpeciesHolder,
+  PokemonSpecies,
   TypeDataHolder,
   TypeData,
   Sprite,

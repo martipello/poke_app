@@ -35,19 +35,33 @@ class PokemonRepositoryGraphQl {
               }, 
               limit: ${pokemonRequest.limit ?? 0}, 
               offset: ${pokemonRequest.skip ?? 0},
-              ) {
-                id
-                name
-                pokemon_v2_pokemontypes {
-                  type_id
-                  pokemon_v2_type {
-                    id
-                    name
+            ) {
+              id
+              name
+              pokemon_v2_pokemontypes {
+                type_id
+                pokemon_v2_type {
+                  id
+                  name
+                }
+              }
+              pokemon_v2_pokemonsprites {
+                sprites
+              }
+              pokemon_v2_pokemonspecy {
+                pokemon_v2_pokemonspeciesnames(
+                  where: {
+                    language_id: {
+                      _eq: 9
+                    }
                   }
+                ) {
+                    genus
+                  }
+                  generation_id
                 }
-                pokemon_v2_pokemonsprites {
-                  sprites
-                }
+                height
+                weight
               }
           }
       """,

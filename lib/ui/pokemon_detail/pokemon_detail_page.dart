@@ -32,47 +32,61 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
     return Scaffold(
       body: Stack(
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ClipPath(
-                clipper: IrregularTrapeziumClipper(),
-                child: Container(
-                  width: 150,
-                  height: 150,
-                  color: Colors.red,
-                ),
-              ),
-            ],
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(height: 56,),
-              PokemonImage(
-                pokemon: pokemonDetailArguments.pokemon,
-                size: const Size(
-                  200,
-                  200,
-                ),
-              ),
-            ],
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              AppBar(
-                automaticallyImplyLeading: true,
-                backgroundColor: Colors.transparent,
-                shadowColor: Colors.transparent,
-              ),
-            ],
-          ),
+          _buildAppBarClipPath(),
+          _buildPokemonHeroImage(),
+          _buildAppBar(),
         ],
       ),
+    );
+  }
+
+  Column _buildAppBarClipPath() {
+    return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ClipPath(
+              clipper: IrregularTrapeziumClipper(),
+              child: Container(
+                width: 150,
+                height: 150,
+                color: Colors.red,
+              ),
+            ),
+          ],
+        );
+  }
+
+  Column _buildPokemonHeroImage() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const SizedBox(
+          height: 56,
+        ),
+        PokemonImage(
+          pokemon: pokemonDetailArguments.pokemon,
+          size: const Size(
+            200,
+            200,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Column _buildAppBar() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        AppBar(
+          automaticallyImplyLeading: true,
+          backgroundColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+        ),
+      ],
     );
   }
 }

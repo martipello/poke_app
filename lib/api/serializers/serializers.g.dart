@@ -11,6 +11,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(Pokemon.serializer)
       ..add(PokemonRequest.serializer)
       ..add(PokemonResponse.serializer)
+      ..add(PokemonSpecies.serializer)
+      ..add(PokemonSpeciesHolder.serializer)
       ..add(Sprite.serializer)
       ..add(SpriteResponse.serializer)
       ..add(TypeData.serializer)
@@ -18,6 +20,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Pokemon)]),
           () => new ListBuilder<Pokemon>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(PokemonSpecies)]),
+          () => new ListBuilder<PokemonSpecies>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(SpriteResponse)]),
           () => new ListBuilder<SpriteResponse>())
