@@ -174,12 +174,27 @@ class _PokemonListViewState extends State<PokemonListView> {
 
   Widget _buildFilterFloatingActionButton() {
     return FloatingActionButton(
+      shape: const CircleBorder(),
+      clipBehavior: Clip.hardEdge,
       backgroundColor: Colors.red,
-      child: const Icon(
-        Icons.sort,
-        color: Colors.white,
+      heroTag: 'FilterButton',
+      onPressed: null,
+      child: Stack(
+        children: [
+          Image.asset(
+            'assets/images/pokeball_filter.png',
+          ),
+          Material(
+            type: MaterialType.transparency,
+            child: InkWell(
+              splashColor: Colors.red.withOpacity(
+                0.5,
+              ),
+              onTap: () {},
+            ),
+          ),
+        ],
       ),
-      onPressed: () {},
     );
   }
 

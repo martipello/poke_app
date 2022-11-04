@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 import '../../api/models/pokemon/pokemon.dart';
 import '../../api/models/pokemon/sprite.dart';
-import 'loading_widget.dart';
 
 class PokemonImage extends StatelessWidget {
   const PokemonImage({
@@ -50,7 +49,7 @@ class PokemonImage extends StatelessWidget {
             if (chunk == null) {
               return child;
             }
-            return _buildLoadingImage();
+            return _buildEmptyImage(context);
           },
           errorBuilder: (context, object, stacktrace) {
             return _buildSpriteImage(
@@ -80,7 +79,9 @@ class PokemonImage extends StatelessWidget {
             if (chunk == null) {
               return child;
             }
-            return _buildLoadingImage();
+            return _buildEmptyImage(
+              context,
+            );
           },
           errorBuilder: (context, object, stacktrace) {
             return _buildEmptyImage(
@@ -102,32 +103,10 @@ class PokemonImage extends StatelessWidget {
         child: SizedBox(
           height: size?.height ?? 150,
           width: size?.width ?? 150,
-          child: ColorFiltered(
-            colorFilter: const ColorFilter.mode(
-              Colors.grey,
-              BlendMode.color,
-            ),
-            child: Center(
-              child: Image.asset(
-                'assets/images/pokeball.png',
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLoadingImage() {
-    //TODO make this shimmer loading
-    return Center(
-      child: SizedBox(
-        height: size?.height ?? 150,
-        width: size?.width ?? 150,
-        child: const Padding(
-          padding: EdgeInsets.all(4.0),
           child: Center(
-            child: LoadingWidget(),
+            child: Image.asset(
+              'assets/images/pokeball_outline.png',
+            ),
           ),
         ),
       ),

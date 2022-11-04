@@ -49,7 +49,8 @@ dependencies:
   sliver_tools: ^0.2.5
   palette_generator: ^0.3.3+2
   themed: ^4.0.0
-  appbar_textfield: ^1.0.1+1
+  circular_reveal_animation: ^2.0.1
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

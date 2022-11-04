@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../api/models/pokemon/pokemon.dart';
 import '../../extensions/build_context_extension.dart';
-import '../../theme/base_theme.dart';
 import '../../utils/irregular_trapezium_clipper.dart';
 import '../shared_widgets/pokemon_image.dart';
 

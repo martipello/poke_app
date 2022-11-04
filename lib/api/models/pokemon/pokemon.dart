@@ -2,9 +2,9 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:poke_app/api/models/pokemon/pokemon_species_holder.dart';
 
 import '../../serializers/serializers.dart';
+import 'pokemon_species_holder.dart';
 import 'sprite_response.dart';
 import 'type_data_holder.dart';
 
