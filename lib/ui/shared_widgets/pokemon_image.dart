@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 import '../../api/models/pokemon/pokemon.dart';
 import '../../api/models/pokemon/sprite.dart';
@@ -49,7 +50,10 @@ class PokemonImage extends StatelessWidget {
             if (chunk == null) {
               return child;
             }
-            return _buildEmptyImage(context);
+            return _buildEmptyImageHolder(
+              context,
+              isLoading: true,
+            );
           },
           errorBuilder: (context, object, stacktrace) {
             return _buildSpriteImage(
@@ -79,12 +83,13 @@ class PokemonImage extends StatelessWidget {
             if (chunk == null) {
               return child;
             }
-            return _buildEmptyImage(
+            return _buildEmptyImageHolder(
               context,
+              isLoading: true,
             );
           },
           errorBuilder: (context, object, stacktrace) {
-            return _buildEmptyImage(
+            return _buildEmptyImageHolder(
               context,
             );
           },
@@ -93,9 +98,10 @@ class PokemonImage extends StatelessWidget {
     );
   }
 
-  Widget _buildEmptyImage(
-    BuildContext context,
-  ) {
+  Widget _buildEmptyImageHolder(
+    BuildContext context, {
+    bool isLoading = false,
+  }) {
     return Center(
       child: ClipRRect(
         clipBehavior: clipBehavior,
@@ -104,12 +110,29 @@ class PokemonImage extends StatelessWidget {
           height: size?.height ?? 150,
           width: size?.width ?? 150,
           child: Center(
-            child: Image.asset(
-              'assets/images/pokeball_outline.png',
-            ),
+            child: isLoading ? _buildLoadingImage() : _buildEmptyImage(),
           ),
         ),
       ),
     );
+  }
+
+  Widget _buildEmptyImage() {
+    return Image.asset(
+      'assets/images/pokeball_outline.png',
+    );
+  }
+
+  Widget _buildLoadingImage() {
+    return Image.asset(
+      'assets/images/pokeball_outline.png',
+    )
+        .animate(
+          onPlay: (controller) => controller.repeat(),
+        )
+        .shimmer(
+          duration: 1200.ms,
+          color: const Color(0xFF80DDFF),
+        );
   }
 }

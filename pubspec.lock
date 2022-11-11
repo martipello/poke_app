@@ -321,6 +321,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_animate:
+    dependency: "direct main"
+    description:
+      name: flutter_animate
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.1"
   flutter_flavorizr:
     dependency: "direct main"
     description:
@@ -553,6 +560,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
+  local_hero_with_callback:
+    dependency: "direct main"
+    description:
+      name: local_hero_with_callback
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1"
   logger:
     dependency: "direct main"
     description:
@@ -922,6 +936,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+  tuple:
+    dependency: "direct main"
+    description:
+      name: tuple
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.1"
   typed_data:
     dependency: transitive
     description:
