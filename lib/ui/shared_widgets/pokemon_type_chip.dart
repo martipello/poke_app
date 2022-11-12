@@ -69,17 +69,17 @@ class PokemonTypeChip extends StatelessWidget {
       height: 32,
       child: FilterChip(
         avatar: isSelected
-            ? Image.asset(
+            ? null : Image.asset(
                 type.image,
                 height: 24,
                 width: 24,
-              )
-            : null,
+              ),
         backgroundColor: type.color,
-        side: BorderSide(
+        disabledColor: colors(context).textOnForeground,
+        side: onSelected != null ? BorderSide(
           width: 1,
           color: type.color,
-        ),
+        ) : null,
         label: Text(
           type.name.capitalize(),
           style: PokeAppText.body4Style.copyWith(

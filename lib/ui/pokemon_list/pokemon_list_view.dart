@@ -6,14 +6,14 @@ import 'package:sliver_tools/sliver_tools.dart';
 import '../../api/models/api_response.dart';
 import '../../api/models/pokemon/pokemon.dart';
 import '../../api/models/pokemon/pokemon_request.dart';
-import '../../api/models/pokemon/pokemon_type.dart';
 import '../../dependency_injection_container.dart';
+import '../../extensions/build_context_extension.dart';
+import '../pokemon_filter/filter_view_holder.dart';
 import '../shared_widgets/error_widget.dart' as ew;
 import '../shared_widgets/loading_widget.dart';
 import '../shared_widgets/no_results.dart';
 import '../shared_widgets/rounded_button.dart';
 import '../shared_widgets/sliver_refresh_indicator.dart';
-import 'filter_view.dart';
 import 'pokemon_tile.dart';
 import 'search_app_bar.dart';
 import 'view_models/filter_view_model.dart';
@@ -33,6 +33,7 @@ class _PokemonListViewState extends State<PokemonListView> {
   final _filterViewModel = getIt.get<FilterViewModel>();
 
   final _textController = TextEditingController();
+
   String previousSearch = '';
 
   @override
@@ -40,11 +41,38 @@ class _PokemonListViewState extends State<PokemonListView> {
     super.initState();
     _addTextListener();
     _addSearchListener();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      globalKey.currentState!.innerController.addListener(
-        _filterViewModel.setActionButtonVisibility,
-      );
-    });
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        _addSelectedFilterListener();
+        globalKey.currentState!.innerController.addListener(
+          _filterViewModel.setActionButtonVisibility,
+        );
+      },
+    );
+  }
+
+  void _addSelectedFilterListener() {
+    const duration = Duration(milliseconds: 200);
+    _filterViewModel.selectedFiltersStream.listen(
+      (selectedTypes) {
+        Future.delayed(duration).then(
+          (value) {
+            _pokemonViewModel.updateQuery(
+              PokemonRequest(
+                (b) => b..pokemonTypes.replace(selectedTypes),
+              ),
+            );
+            if (_filterViewModel.scrollController.hasClients) {
+              _filterViewModel.scrollController.animateTo(
+                _filterViewModel.scrollController.position.maxScrollExtent,
+                duration: duration,
+                curve: Curves.fastOutSlowIn,
+              );
+            }
+          },
+        );
+      },
+    );
   }
 
   void _addSearchListener() {
@@ -84,41 +112,39 @@ class _PokemonListViewState extends State<PokemonListView> {
     );
     _textController.dispose();
     _pokemonViewModel.dispose();
+    _filterViewModel.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: NestedScrollView(
-        key: globalKey,
-        headerSliverBuilder: (nestedScrollViewContext, innerBoxScrolled) {
-          return [
-            StreamBuilder<String?>(
-              stream: _pokemonViewModel.searchText,
-              builder: (context, snapshot) {
-                return StreamBuilder<List<PokemonType>>(
-                  stream: _filterViewModel.selectedFilters,
-                  builder: (context, filtersSnapshot) {
-                    final selectedFilters = filtersSnapshot.data ?? [];
-                    return _buildHeaderBar(
-                      nestedScrollViewContext,
-                      selectedFilters,
-                    );
-                  },
-                );
-              },
-            ),
-          ];
-        },
-        body: Stack(
-          children: [
-            _buildPokemonList(),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: _buildFilter(),
-            ),
-          ],
+    return WillPopScope(
+      onWillPop: () async {
+        //TODO if is searching or filters open close search or close filters.
+        return true;
+      },
+      child: Scaffold(
+        body: NestedScrollView(
+          key: globalKey,
+          headerSliverBuilder: (nestedScrollViewContext, innerBoxScrolled) {
+            return [
+              StreamBuilder<String?>(
+                stream: _pokemonViewModel.searchText,
+                builder: (context, snapshot) {
+                  return _buildHeaderBar();
+                },
+              ),
+            ];
+          },
+          body: Stack(
+            children: [
+              _buildPokemonList(),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: _buildFilter(),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -158,19 +184,15 @@ class _PokemonListViewState extends State<PokemonListView> {
   }
 
   Widget _buildFilter() {
-    return FilterView(
+    return FilterViewHolder(
       filterViewModel: _filterViewModel,
     );
   }
 
-  Widget _buildHeaderBar(
-    BuildContext nestedScrollViewContext,
-    List<PokemonType> selectedFilters,
-  ) {
+  Widget _buildHeaderBar() {
     return SearchAppBar(
-      nestedScrollViewContext: nestedScrollViewContext,
       searchTextController: _textController,
-      filters: selectedFilters,
+      filterViewModel: _filterViewModel,
     );
   }
 
@@ -189,9 +211,9 @@ class _PokemonListViewState extends State<PokemonListView> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Text('Error getting new page...'),
+        Text(context.strings.error_getting_page),
         RoundedButton(
-          label: 'Retry',
+          label: context.strings.retry,
           onPressed: onTryAgain,
         ),
       ],
@@ -211,7 +233,9 @@ class _PokemonListViewState extends State<PokemonListView> {
     return const NoResults();
   }
 
-  Widget _buildPokemonTile({required Pokemon pokemon}) {
+  Widget _buildPokemonTile({
+    required Pokemon pokemon,
+  }) {
     return PokemonTile(
       pokemon: pokemon,
     );

@@ -2,6 +2,7 @@ import 'package:graphql/client.dart';
 
 import '../models/pokemon/pokemon_request.dart';
 import '../models/pokemon/pokemon_response.dart';
+import '../models/pokemon/pokemon_type.dart';
 import 'graph_ql_client.dart';
 
 class PokemonRepositoryGraphQl {
@@ -16,14 +17,20 @@ class PokemonRepositoryGraphQl {
   ) async {
     //TODO this should be calling fetch more
     final _graphQlClient = graphQlClient.getClient();
-
+    final typeIds = pokemonRequest.pokemonTypes.isNotEmpty
+        ? pokemonRequest.pokemonTypes.map(
+            (p0) => p0.id,
+          )
+        : PokemonType.values.map(
+            (e) => e.id,
+          );
     final options = QueryOptions(
       document: gql(
         """
           query samplePokeAPIquery {
             pokemon_v2_pokemon(where: {
               pokemon_v2_pokemontypes: {
-                type_id: {_in: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+                type_id: {_in: ${typeIds.toList()}
                 }, 
               pokemon_v2_pokemon: {
                 name: {

@@ -1,7 +1,9 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
 import '../../serializers/serializers.dart';
+import 'pokemon_type.dart';
 
 part 'pokemon_request.g.dart';
 
@@ -18,6 +20,8 @@ abstract class PokemonRequest implements Built<PokemonRequest, PokemonRequestBui
   int? get skip;
 
   String? get search;
+
+  BuiltList<PokemonType> get pokemonTypes;
 
   String? get sort;
 

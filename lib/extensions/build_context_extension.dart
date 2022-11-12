@@ -11,7 +11,7 @@ extension BuildContextExt on BuildContext {
 
   MaterialLocalizations get materialLocale => MaterialLocalizations.of(this);
 
-  AppLocalizations? get strings => AppLocalizations.of(this);
+  AppLocalizations get strings => AppLocalizations.of(this)!;
 
   dynamic get routeArguments => ModalRoute.of(this)?.settings.arguments;
 

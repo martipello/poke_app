@@ -3,23 +3,23 @@ import 'package:sliver_tools/sliver_tools.dart';
 
 import '../../api/models/pokemon/pokemon_type.dart';
 import '../../dependency_injection_container.dart';
+import '../../extensions/build_context_extension.dart';
 import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import '../shared_widgets/chip_group.dart';
 import '../shared_widgets/pokemon_type_chip.dart';
+import 'view_models/filter_view_model.dart';
 import 'view_models/search_app_bar_view_model.dart';
 
 class SearchAppBar extends StatefulWidget {
   const SearchAppBar({
     Key? key,
     required this.searchTextController,
-    required this.nestedScrollViewContext,
-    required this.filters,
+    required this.filterViewModel,
   }) : super(key: key);
 
   final TextEditingController searchTextController;
-  final BuildContext nestedScrollViewContext;
-  final List<PokemonType> filters;
+  final FilterViewModel filterViewModel;
 
   @override
   State<SearchAppBar> createState() => _SearchAppBarState();
@@ -49,43 +49,79 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
   Widget _buildSearchAppBar(
     bool isSearching,
   ) {
-    return SliverAppBar(
-      pinned: false,
-      snap: true,
-      floating: true,
-      backgroundColor: Colors.black,
-      leading: isSearching ? _buildBackButton() : null,
-      actions: [
-        if (!isSearching) _buildSearchAction(),
-      ],
-      title: isSearching
-          ? _buildSearchView()
-          : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                'PokéApp',
-                style: PokeAppText.subtitle2Style.copyWith(
-                  height: 1,
+    return StreamBuilder<List<PokemonType>>(
+      initialData: [],
+      stream: widget.filterViewModel.selectedFiltersStream,
+      builder: (context, snapshot) {
+        final selectedFilters = snapshot.data ?? [];
+        return SliverAppBar(
+          pinned: false,
+          snap: true,
+          floating: true,
+          backgroundColor: Colors.black,
+          leading: isSearching ? _buildBackButton() : null,
+          actions: [
+            if (!isSearching) _buildSearchAction(),
+          ],
+          title: isSearching
+              ? _buildSearchView()
+              : Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    context.strings.app_name,
+                    style: PokeAppText.subtitle2Style.copyWith(
+                      height: 1,
+                    ),
+                  ),
                 ),
-              ),
+          bottom: _buildSelectedFiltersHolder(
+            selectedFilters,
+          ),
+        );
+      },
+    );
+  }
+
+  PreferredSize? _buildSelectedFiltersHolder(
+    List<PokemonType> selectedFilters,
+  ) {
+    return selectedFilters.isNotEmpty
+        ? PreferredSize(
+            preferredSize: const Size(
+              double.infinity,
+              48,
             ),
-      bottom: widget.filters.isNotEmpty ? PreferredSize(
-        preferredSize: const Size(
-          double.infinity,
-          48,
-        ),
-        child: ChipGroup(
-          scrollDirection: Axis.horizontal,
-          chips: widget.filters
-              .map(
-                (e) => PokemonTypeChip(
-                  chipType: ChipType.normal,
-                  type: e,
+            child: Row(
+              children: [
+                Expanded(
+                  child: _buildSelectedFilters(
+                    selectedFilters,
+                  ),
                 ),
-              )
-              .toList(),
-        ),
-      ) : null,
+              ],
+            ),
+          )
+        : null;
+  }
+
+  Widget _buildSelectedFilters(
+    List<PokemonType> selectedFilters,
+  ) {
+    return ChipGroup(
+      scrollDirection: Axis.horizontal,
+      scrollController: widget.filterViewModel.scrollController,
+      chips: selectedFilters
+          .map(
+            (type) => PokemonTypeChip(
+              chipType: ChipType.normal,
+              type: type,
+              isSelected: true,
+              onDelete: () {
+                widget.filterViewModel.selectFilter(type);
+              },
+            ),
+          )
+          .toList(),
     );
   }
 
@@ -104,7 +140,7 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
     );
   }
 
-  IconButton _buildSearchAction() {
+  Widget _buildSearchAction() {
     return IconButton(
       onPressed: () {
         searchAppBarViewModel.isSearching.add(

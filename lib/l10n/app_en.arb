@@ -1,3 +1,6 @@
 {
-    "app_name" : "PokéApp"
+    "app_name" : "PokéApp",
+    "filters" : "Filters",
+    "retry" : "Retry",
+    "error_getting_page" : "Error getting new page..."
 }

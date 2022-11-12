@@ -19,7 +19,12 @@ class _$PokemonRequestSerializer
   @override
   Iterable<Object?> serialize(Serializers serializers, PokemonRequest object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object?>[];
+    final result = <Object?>[
+      'pokemonTypes',
+      serializers.serialize(object.pokemonTypes,
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(PokemonType)])),
+    ];
     Object? value;
     value = object.pagination;
     if (value != null) {
@@ -85,6 +90,12 @@ class _$PokemonRequestSerializer
           result.search = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
+        case 'pokemonTypes':
+          result.pokemonTypes.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(PokemonType)]))!
+              as BuiltList<Object?>);
+          break;
         case 'sort':
           result.sort = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
@@ -106,14 +117,24 @@ class _$PokemonRequest extends PokemonRequest {
   @override
   final String? search;
   @override
+  final BuiltList<PokemonType> pokemonTypes;
+  @override
   final String? sort;
 
   factory _$PokemonRequest([void Function(PokemonRequestBuilder)? updates]) =>
       (new PokemonRequestBuilder()..update(updates))._build();
 
   _$PokemonRequest._(
-      {this.pagination, this.limit, this.skip, this.search, this.sort})
-      : super._();
+      {this.pagination,
+      this.limit,
+      this.skip,
+      this.search,
+      required this.pokemonTypes,
+      this.sort})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(
+        pokemonTypes, r'PokemonRequest', 'pokemonTypes');
+  }
 
   @override
   PokemonRequest rebuild(void Function(PokemonRequestBuilder) updates) =>
@@ -131,6 +152,7 @@ class _$PokemonRequest extends PokemonRequest {
         limit == other.limit &&
         skip == other.skip &&
         search == other.search &&
+        pokemonTypes == other.pokemonTypes &&
         sort == other.sort;
   }
 
@@ -138,9 +160,11 @@ class _$PokemonRequest extends PokemonRequest {
   int get hashCode {
     return $jf($jc(
         $jc(
-            $jc($jc($jc(0, pagination.hashCode), limit.hashCode),
-                skip.hashCode),
-            search.hashCode),
+            $jc(
+                $jc($jc($jc(0, pagination.hashCode), limit.hashCode),
+                    skip.hashCode),
+                search.hashCode),
+            pokemonTypes.hashCode),
         sort.hashCode));
   }
 
@@ -151,6 +175,7 @@ class _$PokemonRequest extends PokemonRequest {
           ..add('limit', limit)
           ..add('skip', skip)
           ..add('search', search)
+          ..add('pokemonTypes', pokemonTypes)
           ..add('sort', sort))
         .toString();
   }
@@ -176,6 +201,12 @@ class PokemonRequestBuilder
   String? get search => _$this._search;
   set search(String? search) => _$this._search = search;
 
+  ListBuilder<PokemonType>? _pokemonTypes;
+  ListBuilder<PokemonType> get pokemonTypes =>
+      _$this._pokemonTypes ??= new ListBuilder<PokemonType>();
+  set pokemonTypes(ListBuilder<PokemonType>? pokemonTypes) =>
+      _$this._pokemonTypes = pokemonTypes;
+
   String? _sort;
   String? get sort => _$this._sort;
   set sort(String? sort) => _$this._sort = sort;
@@ -189,6 +220,7 @@ class PokemonRequestBuilder
       _limit = $v.limit;
       _skip = $v.skip;
       _search = $v.search;
+      _pokemonTypes = $v.pokemonTypes.toBuilder();
       _sort = $v.sort;
       _$v = null;
     }
@@ -210,13 +242,27 @@ class PokemonRequestBuilder
   PokemonRequest build() => _build();
 
   _$PokemonRequest _build() {
-    final _$result = _$v ??
-        new _$PokemonRequest._(
-            pagination: pagination,
-            limit: limit,
-            skip: skip,
-            search: search,
-            sort: sort);
+    _$PokemonRequest _$result;
+    try {
+      _$result = _$v ??
+          new _$PokemonRequest._(
+              pagination: pagination,
+              limit: limit,
+              skip: skip,
+              search: search,
+              pokemonTypes: pokemonTypes.build(),
+              sort: sort);
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'pokemonTypes';
+        pokemonTypes.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'PokemonRequest', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

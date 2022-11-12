@@ -29,13 +29,13 @@ class PokemonPagingAdapter {
   int get offset => 40;
 
   void setPokemonRequest(PokemonRequest pokemonRequest) {
-    log('POKEMON PAGING ADAPTER').d('setPokemonRequest $_pokemonRequest');
     if (_pokemonRequest == null) {
       _pokemonRequest = pokemonRequest;
     } else {
       _pokemonRequest = _pokemonRequest?.rebuild(
         (b) => b
           ..search = pokemonRequest.search
+          ..pokemonTypes.replace(pokemonRequest.pokemonTypes)
           ..sort = pokemonRequest.sort,
       );
     }

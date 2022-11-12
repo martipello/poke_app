@@ -5,7 +5,8 @@ class FilterButton extends StatefulWidget {
   FilterButton({
     required this.isFloatingActionButtonShown,
     required this.isFilterBottomSheetShown,
-    required this.onTap, required this.onAnimationEnd,
+    required this.onTap,
+    required this.onAnimationEnd,
   });
 
   final bool isFloatingActionButtonShown;
