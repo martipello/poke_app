@@ -12,6 +12,7 @@ import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import '../../utils/irregular_trapezium_clipper.dart';
 import '../shared_widgets/chip_group.dart';
+import '../shared_widgets/pokeball_loading_widget.dart';
 import '../shared_widgets/pokemon_image.dart';
 import '../shared_widgets/pokemon_type_chip.dart';
 
@@ -47,69 +48,88 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
-            SliverAppBar(
-              pinned: false,
-              expandedHeight: 437,
-              backgroundColor: colors(context).cardBackground,
-              titleSpacing: 0,
-              title: Stack(
-                children: [
-                  _buildAppBarClip(),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.arrow_back,
-                        color: colors(context).cardBackground,
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              leadingWidth: 0,
-              automaticallyImplyLeading: false,
-              centerTitle: false,
-              systemOverlayStyle: const SystemUiOverlayStyle(
-                // Status bar color
-                statusBarColor: Colors.red,
-              ),
-              flexibleSpace: FlexibleSpaceBar(
-                collapseMode: CollapseMode.pin,
-                background: _buildPokemonDetailHeader(),
-              ),
-            ),
+            _buildSliverAppBar(),
           ];
         },
-        body: Column(
-          children: [
-            SizedBox(
-              height: MediaQuery.of(context).viewPadding.top,
+        body: _buildPokemonDetailBody(),
+      ),
+    );
+  }
+
+  Widget _buildPokemonDetailBody() {
+    return Column(
+        children: [
+          SizedBox(
+            height: MediaQuery.of(context).viewPadding.top,
+          ),
+          _buildTabBar(context),
+          Expanded(
+            child: TabBarView(
+              controller: _tabBarController,
+              children: [
+                CustomScrollView(
+                  controller: _scrollController,
+                  slivers: [
+                    const SliverFillRemaining(
+                      child: PokeballLoadingWidget(),
+                    )
+                  ],
+                ),
+                CustomScrollView(
+                  controller: _scrollController,
+                  slivers: [],
+                ),
+                CustomScrollView(
+                  controller: _scrollController,
+                  slivers: [],
+                ),
+              ],
             ),
-            _buildTabBar(context),
-            Expanded(
-              child: TabBarView(
-                controller: _tabBarController,
-                children: [
-                  CustomScrollView(
-                    controller: _scrollController,
-                    slivers: [],
-                  ),
-                  CustomScrollView(
-                    controller: _scrollController,
-                    slivers: [],
-                  ),
-                  CustomScrollView(
-                    controller: _scrollController,
-                    slivers: [],
-                  ),
-                ],
-              ),
-            ),
-          ],
+          ),
+        ],
+      );
+  }
+
+  Widget _buildSliverAppBar() {
+    return SliverAppBar(
+      pinned: false,
+      expandedHeight: 437,
+      backgroundColor: colors(context).cardBackground,
+      titleSpacing: 0,
+      title: _buildEmbeddedAppBar(),
+      leadingWidth: 0,
+      automaticallyImplyLeading: false,
+      centerTitle: false,
+      systemOverlayStyle: const SystemUiOverlayStyle(
+        statusBarColor: Colors.red,
+      ),
+      flexibleSpace: FlexibleSpaceBar(
+        collapseMode: CollapseMode.pin,
+        background: _buildPokemonDetailHeader(),
+      ),
+    );
+  }
+
+  Widget _buildEmbeddedAppBar() {
+    return Stack(
+      children: [
+        _buildAppBarClip(),
+        _buildAppBarBackButton(),
+      ],
+    );
+  }
+
+  Widget _buildAppBarBackButton() {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: IconButton(
+        icon: Icon(
+          Icons.arrow_back,
+          color: colors(context).cardBackground,
         ),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
       ),
     );
   }
@@ -189,13 +209,13 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
     );
   }
 
-  SizedBox _buildExtraLargeMargin() {
+  Widget _buildExtraLargeMargin() {
     return const SizedBox(
       height: 72,
     );
   }
 
-  PokemonImage _buildPokemonImage() {
+  Widget _buildPokemonImage() {
     return PokemonImage(
       pokemon: pokemonDetailArguments.pokemon,
       size: const Size(
@@ -332,13 +352,13 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
       ), //Change background color from here
       tabs: [
         Tab(
-          text: context.strings.info,
+          text: context.strings.info.toUpperCase(),
         ),
         Tab(
-          text: context.strings.stats,
+          text: context.strings.stats.toUpperCase(),
         ),
         Tab(
-          text: context.strings.moves,
+          text: context.strings.moves.toUpperCase(),
         )
       ],
     );

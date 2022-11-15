@@ -27,12 +27,16 @@ class _ChipGroupState extends State<ChipGroup> {
   }
 
   Widget _buildVerticalChipList() {
-    return Wrap(
-      alignment: widget.wrapAlignment ?? WrapAlignment.start,
-      crossAxisAlignment: widget.wrapCrossAlignment ?? WrapCrossAlignment.start,
-      spacing: 8,
-      runSpacing: 8,
-      children: widget.chips.toList(),
+    return Flexible(
+      child: SingleChildScrollView(
+        child: Wrap(
+          alignment: widget.wrapAlignment ?? WrapAlignment.start,
+          crossAxisAlignment: widget.wrapCrossAlignment ?? WrapCrossAlignment.start,
+          spacing: 8,
+          runSpacing: 8,
+          children: widget.chips.toList(),
+        ),
+      ),
     );
   }
 

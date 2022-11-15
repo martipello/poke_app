@@ -12,6 +12,7 @@ import '../pokemon_filter/filter_view_holder.dart';
 import '../shared_widgets/error_widget.dart' as ew;
 import '../shared_widgets/loading_widget.dart';
 import '../shared_widgets/no_results.dart';
+import '../shared_widgets/pokeball_loading_widget.dart';
 import '../shared_widgets/rounded_button.dart';
 import '../shared_widgets/sliver_refresh_indicator.dart';
 import 'pokemon_tile.dart';
@@ -169,7 +170,9 @@ class _PokemonListViewState extends State<PokemonListView> {
                 newPageErrorIndicatorBuilder: (context) =>
                     _errorListItemWidget(onTryAgain: _pokemonViewModel.retryLastRequest),
                 firstPageProgressIndicatorBuilder: (context) => const Center(
-                  child: LoadingWidget(),
+                  child: PokeballLoadingWidget(
+                    size: Size(80, 80),
+                  ),
                 ),
                 newPageProgressIndicatorBuilder: (context) => _loadingListItemWidget(),
               ),

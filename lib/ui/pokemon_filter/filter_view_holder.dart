@@ -56,7 +56,7 @@ class _FilterViewHolderState extends State<FilterViewHolder> with SingleTickerPr
           final _isFloatingActionButtonShown = snapshot.data?.item1 == true;
           final _isFilterBottomSheetShown = snapshot.data?.item2 == true;
           return SizedBox(
-            height: widget.filterViewModel.filterHeight,
+            height: _isFilterBottomSheetShown ? widget.filterViewModel.filterHeight : 100,
             width: double.infinity,
             child: Stack(
               children: [
