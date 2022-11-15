@@ -2,5 +2,8 @@
     "app_name" : "PokéApp",
     "filters" : "Filters",
     "retry" : "Retry",
+    "stats" : "Stats",
+    "moves" : "Moves",
+    "info" : "Info",
     "error_getting_page" : "Error getting new page..."
 }

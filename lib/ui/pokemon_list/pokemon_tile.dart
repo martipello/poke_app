@@ -67,18 +67,19 @@ class PokemonTile extends StatelessWidget {
                   .toList(),
             )
           ],
-        )
+        ),
       ],
     );
   }
 
   Widget _buildPokemonInfo(String speciesName) {
+    final pokemonName = pokemon.name ?? 'Unknown Pokemon';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          pokemon.name.capitalize(),
+          pokemonName.capitalize(),
           style: PokeAppText.subtitle1Style,
         ),
         if (speciesName.isNotEmpty)
@@ -91,12 +92,13 @@ class PokemonTile extends StatelessWidget {
   }
 
   Widget _buildPokemonId() {
+    final pokemonId = pokemon.id ?? '??';
     return Padding(
       padding: const EdgeInsets.only(
         top: 4,
       ),
       child: Text(
-        '#${pokemon.id.toString()}',
+        '#${pokemonId.toString()}',
         style: PokeAppText.body6Style,
       ),
     );

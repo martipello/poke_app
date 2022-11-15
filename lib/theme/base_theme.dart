@@ -145,6 +145,7 @@ class BaseThemeColors {
     this.black = const Color(0xFF000000),
     this.white = const Color(0xFFFFFFFF),
     this.background = const Color(0xFFEEEEEE),
+    this.cardBackground = const Color(0xFFFFFFFF),
 
 
     this.normal = const Color(0xFFA8A878),
@@ -195,6 +196,7 @@ class BaseThemeColors {
   final Color black;
   final Color white;
   final Color background;
+  final Color cardBackground;
 
   final Color normal;
   final Color water;

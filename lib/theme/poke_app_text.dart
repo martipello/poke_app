@@ -11,6 +11,20 @@ extension TextStyleExtension on TextStyle {
 class PokeAppText {
   PokeAppText._();
 
+  // Title
+
+  static const title1Style =
+  TextStyle(fontSize: 24, fontWeight: FontWeight.bold, height: 1.6);
+
+  static const title2Style =
+  TextStyle(fontSize: 24, fontWeight: FontWeight.normal, height: 1.6);
+
+  static const title3Style =
+  TextStyle(fontSize: 20, fontWeight: FontWeight.bold, height: 1.2);
+
+  static const title4Style =
+  TextStyle(fontSize: 20, fontWeight: FontWeight.normal, height: 1.2);
+
   // Subtitle
 
   static const subtitle1Style =

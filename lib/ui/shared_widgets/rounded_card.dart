@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../theme/base_theme.dart';
+
 class RoundedCard extends StatelessWidget {
   RoundedCard({
     Key? key,
@@ -13,10 +15,9 @@ class RoundedCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: ThemeData(cardColor: Colors.white),
+      data: ThemeData(cardColor: colors(context).cardBackground),
       child: Card(
         elevation: 3,
-        color: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
