@@ -105,7 +105,7 @@ class _FilterViewState extends State<FilterView> {
 
   CardTheme _buildCardTheme() {
     return CardTheme(
-      color: colors(context).white,
+      color: colors(context).cardBackground,
       clipBehavior: Clip.hardEdge,
       elevation: 4,
       margin: EdgeInsets.zero,

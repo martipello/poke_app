@@ -122,6 +122,7 @@ class _PokemonListViewState extends State<PokemonListView> {
     return WillPopScope(
       onWillPop: () async {
         //TODO if is searching or filters open close search or close filters.
+
         return true;
       },
       child: Scaffold(
