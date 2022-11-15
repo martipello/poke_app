@@ -31,7 +31,7 @@ class _PokeballLoadingWidgetState extends State<PokeballLoadingWidget> {
           height: widget.size?.height ?? 100,
           width: widget.size?.width ?? 100,
           child: RiveAnimation.asset(
-            'assets/animations/pokemonloading.riv',
+            _pokeballLoadingViewModel.animationDirectory,
             controllers: [_pokeballLoadingViewModel.controller],
           ),
         ),

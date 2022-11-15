@@ -11,6 +11,7 @@ import 'ui/pokemon_list/view_models/filter_view_model.dart';
 import 'ui/pokemon_list/view_models/pokemon_list_view_model.dart';
 import 'ui/pokemon_list/view_models/search_app_bar_view_model.dart';
 import 'ui/shared_widgets/view_models/pokeball_loading_view_model.dart';
+import 'ui/shared_widgets/view_models/spash_view_model.dart';
 
 final getIt = GetIt.instance;
 
@@ -25,5 +26,6 @@ Future<void> init() async {
   getIt.registerFactory(() => PokemonListViewModel(getIt()));
   getIt.registerFactory(FilterViewModel.new);
   getIt.registerFactory(SearchAppBarViewModel.new);
+  getIt.registerFactory(SplashViewModel.new);
   getIt.registerFactory(PokeballLoadingViewModel.new);
 }
