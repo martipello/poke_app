@@ -49,9 +49,11 @@ class PokemonPagingAdapter {
     log('POKEMON PAGING ADAPTER').d('_fetchPage $pageKey');
     if (_pokemonRequest != null) {
       try {
+        //TODO offer a way to change the language id
         final newPage = await pokemonRepository.getPokemon(
           _pokemonRequest!.rebuild(
             (b) => b
+              ..languageId = 9
               ..limit = offset
               ..skip = offset * pageKey
               ..pagination = true,

@@ -4,8 +4,8 @@ import 'package:palette_generator/palette_generator.dart';
 import '../../api/models/pokemon/pokemon.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../theme/base_theme.dart';
-import '../shared_widgets/pokeball_loading_widget.dart';
 import 'pokemon_detail_app_bar.dart';
+import 'pokemon_info/pokemon_info_view.dart';
 
 class PokemonDetailPageArguments {
   PokemonDetailPageArguments({
@@ -82,13 +82,8 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
     return TabBarView(
       controller: _tabBarController,
       children: [
-        CustomScrollView(
-          controller: _scrollController,
-          slivers: [
-            const SliverFillRemaining(
-              child: PokeballLoadingWidget(),
-            )
-          ],
+        PokemonInfoView(
+          pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
         ),
         CustomScrollView(
           controller: _scrollController,

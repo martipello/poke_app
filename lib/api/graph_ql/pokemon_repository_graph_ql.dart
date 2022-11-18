@@ -30,7 +30,8 @@ class PokemonRepositoryGraphQl {
           query samplePokeAPIquery {
             pokemon_v2_pokemon(where: {
               pokemon_v2_pokemontypes: {
-                type_id: {_in: ${typeIds.toList()}
+                type_id: {
+                  _in: ${typeIds.toList()}
                 }, 
               pokemon_v2_pokemon: {
                 name: {
@@ -52,6 +53,9 @@ class PokemonRepositoryGraphQl {
                   name
                 }
               }
+              pokemon_v2_pokemonspecy {
+                evolution_chain_id
+              }
               pokemon_v2_pokemonsprites {
                 sprites
               }
@@ -59,7 +63,7 @@ class PokemonRepositoryGraphQl {
                 pokemon_v2_pokemonspeciesnames(
                   where: {
                     language_id: {
-                      _eq: 9
+                      _eq: ${pokemonRequest.languageId}
                     }
                   }
                 ) {
@@ -72,6 +76,101 @@ class PokemonRepositoryGraphQl {
               }
           }
       """,
+      ),
+    );
+
+    return _graphQlClient.query(options);
+  }
+
+  Future<QueryResult<dynamic>> getPokemonInfo(
+    PokemonRequest pokemonRequest,
+  ) async {
+    final _graphQlClient = graphQlClient.getClient();
+    final options = QueryOptions(
+      document: gql(
+        '''
+        query MyQuery {
+           pokemon_v2_pokemon(where: {id: {_eq: ${pokemonRequest.pokemonId}}}) {
+             id
+             pokemon_species_id
+             name
+             height
+             base_experience
+             pokemon_v2_pokemonspecy {
+               base_happiness
+               capture_rate
+               evolution_chain_id
+               is_baby
+               is_legendary
+               is_mythical
+               pokemon_v2_pokemonspeciesnames(where: {language_id: {_eq: ${pokemonRequest.languageId}}}) {
+                 id
+                 genus
+                 name
+                 pokemon_species_id
+               }
+               pokemon_v2_pokemonspeciesflavortexts(where: {language_id: {_eq: ${pokemonRequest.languageId}}}) {
+                 flavor_text
+                 version_id
+                 pokemon_v2_version {
+                    name,
+                    pokemon_v2_versiongroup {
+                      name
+                    }
+                  }
+               }
+               forms_switchable
+               hatch_counter
+               pokemon_v2_pokemonshape {
+                 name
+               }
+               pokemon_v2_pokemonhabitat {
+                 name
+               }
+               gender_rate
+               pokemon_v2_pokemonegggroups {
+                 pokemon_v2_egggroup {
+                   name
+                 }
+               }
+               pokemon_v2_pokemoncolor {
+                 name
+               }
+               evolves_from_species_id
+             }
+             weight
+             pokemon_v2_pokemonforms {
+               name
+               is_mega
+               is_default
+               is_battle_only
+               form_name
+               pokemon_id
+             }
+             pokemon_v2_pokemonabilities {
+               is_hidden
+               pokemon_v2_ability {
+                 generation_id
+                 is_main_series
+                 name
+                 pokemon_v2_abilityflavortexts(where: {language_id: {_eq: ${pokemonRequest.languageId}}}) {
+                    flavor_text
+                    pokemon_v2_versiongroup {
+                      name
+                    }
+                 }
+                 pokemon_v2_abilityeffecttexts(where: {language_id: {_eq: ${pokemonRequest.languageId}}}) {
+                  id
+                  short_effect
+                  pokemon_v2_ability {
+                    generation_id
+                  }
+                }
+               }
+             }
+           }
+         }
+      ''',
       ),
     );
 

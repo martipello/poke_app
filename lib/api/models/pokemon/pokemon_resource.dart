@@ -1,0 +1,45 @@
+// ignore_for_file: non_constant_identifier_names
+
+import 'package:built_value/built_value.dart';
+import 'package:built_value/serializer.dart';
+
+import '../../serializers/serializers.dart';
+import 'pokemon_ability.dart';
+
+part 'pokemon_resource.g.dart';
+
+abstract class PokemonResource implements Built<PokemonResource, PokemonResourceBuilder> {
+
+  factory PokemonResource([void Function(PokemonResourceBuilder) updates]) = _$PokemonResource;
+  PokemonResource._();
+
+  String? get name;
+
+  int? get id;
+
+  String? get flavor_text;
+
+  int? get version_id;
+
+  int? get pokemon_species_id;
+
+  String? get short_effect;
+
+  PokemonResource? get pokemon_v2_version;
+
+  PokemonResource? get pokemon_v2_versiongroup;
+
+  PokemonResource? get pokemon_v2_egggroup;
+
+  PokemonAbility? get pokemon_v2_ability;
+
+  Map<String, dynamic> toJson() {
+    return serializers.serializeWith(PokemonResource.serializer, this) as Map<String, dynamic>;
+  }
+
+  static PokemonResource fromJson(Map<String, dynamic> json) {
+    return serializers.deserializeWith(PokemonResource.serializer, json)!;
+  }
+
+  static Serializer<PokemonResource> get serializer => _$pokemonResourceSerializer;
+}

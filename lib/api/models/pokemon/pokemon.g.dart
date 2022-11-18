@@ -26,6 +26,14 @@ class _$PokemonSerializer implements StructuredSerializer<Pokemon> {
       serializers.serialize(object.pokemon_v2_pokemontypes,
           specifiedType: const FullType(
               BuiltList, const [const FullType(TypeDataHolder)])),
+      'pokemon_v2_pokemonabilities',
+      serializers.serialize(object.pokemon_v2_pokemonabilities,
+          specifiedType: const FullType(
+              BuiltList, const [const FullType(PokemonAbilityHolder)])),
+      'pokemon_v2_pokemonforms',
+      serializers.serialize(object.pokemon_v2_pokemonforms,
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(PokemonForm)])),
     ];
     Object? value;
     value = object.id;
@@ -52,6 +60,20 @@ class _$PokemonSerializer implements StructuredSerializer<Pokemon> {
     if (value != null) {
       result
         ..add('weight')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(double)));
+    }
+    value = object.pokemon_species_id;
+    if (value != null) {
+      result
+        ..add('pokemon_species_id')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(double)));
+    }
+    value = object.base_experience;
+    if (value != null) {
+      result
+        ..add('base_experience')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(double)));
     }
@@ -92,6 +114,14 @@ class _$PokemonSerializer implements StructuredSerializer<Pokemon> {
           result.weight = serializers.deserialize(value,
               specifiedType: const FullType(double)) as double?;
           break;
+        case 'pokemon_species_id':
+          result.pokemon_species_id = serializers.deserialize(value,
+              specifiedType: const FullType(double)) as double?;
+          break;
+        case 'base_experience':
+          result.base_experience = serializers.deserialize(value,
+              specifiedType: const FullType(double)) as double?;
+          break;
         case 'pokemon_v2_pokemonsprites':
           result.pokemon_v2_pokemonsprites.replace(serializers.deserialize(
                   value,
@@ -105,10 +135,23 @@ class _$PokemonSerializer implements StructuredSerializer<Pokemon> {
                       BuiltList, const [const FullType(TypeDataHolder)]))!
               as BuiltList<Object?>);
           break;
+        case 'pokemon_v2_pokemonabilities':
+          result.pokemon_v2_pokemonabilities.replace(serializers.deserialize(
+                  value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(PokemonAbilityHolder)]))!
+              as BuiltList<Object?>);
+          break;
         case 'pokemon_v2_pokemonspecy':
           result.pokemon_v2_pokemonspecy.replace(serializers.deserialize(value,
                   specifiedType: const FullType(PokemonSpeciesHolder))!
               as PokemonSpeciesHolder);
+          break;
+        case 'pokemon_v2_pokemonforms':
+          result.pokemon_v2_pokemonforms.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(PokemonForm)]))!
+              as BuiltList<Object?>);
           break;
       }
     }
@@ -127,11 +170,19 @@ class _$Pokemon extends Pokemon {
   @override
   final double? weight;
   @override
+  final double? pokemon_species_id;
+  @override
+  final double? base_experience;
+  @override
   final BuiltList<SpriteResponse> pokemon_v2_pokemonsprites;
   @override
   final BuiltList<TypeDataHolder> pokemon_v2_pokemontypes;
   @override
+  final BuiltList<PokemonAbilityHolder> pokemon_v2_pokemonabilities;
+  @override
   final PokemonSpeciesHolder? pokemon_v2_pokemonspecy;
+  @override
+  final BuiltList<PokemonForm> pokemon_v2_pokemonforms;
 
   factory _$Pokemon([void Function(PokemonBuilder)? updates]) =>
       (new PokemonBuilder()..update(updates))._build();
@@ -141,14 +192,22 @@ class _$Pokemon extends Pokemon {
       this.name,
       this.height,
       this.weight,
+      this.pokemon_species_id,
+      this.base_experience,
       required this.pokemon_v2_pokemonsprites,
       required this.pokemon_v2_pokemontypes,
-      this.pokemon_v2_pokemonspecy})
+      required this.pokemon_v2_pokemonabilities,
+      this.pokemon_v2_pokemonspecy,
+      required this.pokemon_v2_pokemonforms})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         pokemon_v2_pokemonsprites, r'Pokemon', 'pokemon_v2_pokemonsprites');
     BuiltValueNullFieldError.checkNotNull(
         pokemon_v2_pokemontypes, r'Pokemon', 'pokemon_v2_pokemontypes');
+    BuiltValueNullFieldError.checkNotNull(
+        pokemon_v2_pokemonabilities, r'Pokemon', 'pokemon_v2_pokemonabilities');
+    BuiltValueNullFieldError.checkNotNull(
+        pokemon_v2_pokemonforms, r'Pokemon', 'pokemon_v2_pokemonforms');
   }
 
   @override
@@ -166,9 +225,13 @@ class _$Pokemon extends Pokemon {
         name == other.name &&
         height == other.height &&
         weight == other.weight &&
+        pokemon_species_id == other.pokemon_species_id &&
+        base_experience == other.base_experience &&
         pokemon_v2_pokemonsprites == other.pokemon_v2_pokemonsprites &&
         pokemon_v2_pokemontypes == other.pokemon_v2_pokemontypes &&
-        pokemon_v2_pokemonspecy == other.pokemon_v2_pokemonspecy;
+        pokemon_v2_pokemonabilities == other.pokemon_v2_pokemonabilities &&
+        pokemon_v2_pokemonspecy == other.pokemon_v2_pokemonspecy &&
+        pokemon_v2_pokemonforms == other.pokemon_v2_pokemonforms;
   }
 
   @override
@@ -177,12 +240,20 @@ class _$Pokemon extends Pokemon {
         $jc(
             $jc(
                 $jc(
-                    $jc($jc($jc(0, id.hashCode), name.hashCode),
-                        height.hashCode),
-                    weight.hashCode),
-                pokemon_v2_pokemonsprites.hashCode),
-            pokemon_v2_pokemontypes.hashCode),
-        pokemon_v2_pokemonspecy.hashCode));
+                    $jc(
+                        $jc(
+                            $jc(
+                                $jc(
+                                    $jc($jc($jc(0, id.hashCode), name.hashCode),
+                                        height.hashCode),
+                                    weight.hashCode),
+                                pokemon_species_id.hashCode),
+                            base_experience.hashCode),
+                        pokemon_v2_pokemonsprites.hashCode),
+                    pokemon_v2_pokemontypes.hashCode),
+                pokemon_v2_pokemonabilities.hashCode),
+            pokemon_v2_pokemonspecy.hashCode),
+        pokemon_v2_pokemonforms.hashCode));
   }
 
   @override
@@ -192,9 +263,13 @@ class _$Pokemon extends Pokemon {
           ..add('name', name)
           ..add('height', height)
           ..add('weight', weight)
+          ..add('pokemon_species_id', pokemon_species_id)
+          ..add('base_experience', base_experience)
           ..add('pokemon_v2_pokemonsprites', pokemon_v2_pokemonsprites)
           ..add('pokemon_v2_pokemontypes', pokemon_v2_pokemontypes)
-          ..add('pokemon_v2_pokemonspecy', pokemon_v2_pokemonspecy))
+          ..add('pokemon_v2_pokemonabilities', pokemon_v2_pokemonabilities)
+          ..add('pokemon_v2_pokemonspecy', pokemon_v2_pokemonspecy)
+          ..add('pokemon_v2_pokemonforms', pokemon_v2_pokemonforms))
         .toString();
   }
 }
@@ -218,6 +293,16 @@ class PokemonBuilder implements Builder<Pokemon, PokemonBuilder> {
   double? get weight => _$this._weight;
   set weight(double? weight) => _$this._weight = weight;
 
+  double? _pokemon_species_id;
+  double? get pokemon_species_id => _$this._pokemon_species_id;
+  set pokemon_species_id(double? pokemon_species_id) =>
+      _$this._pokemon_species_id = pokemon_species_id;
+
+  double? _base_experience;
+  double? get base_experience => _$this._base_experience;
+  set base_experience(double? base_experience) =>
+      _$this._base_experience = base_experience;
+
   ListBuilder<SpriteResponse>? _pokemon_v2_pokemonsprites;
   ListBuilder<SpriteResponse> get pokemon_v2_pokemonsprites =>
       _$this._pokemon_v2_pokemonsprites ??= new ListBuilder<SpriteResponse>();
@@ -232,12 +317,27 @@ class PokemonBuilder implements Builder<Pokemon, PokemonBuilder> {
           ListBuilder<TypeDataHolder>? pokemon_v2_pokemontypes) =>
       _$this._pokemon_v2_pokemontypes = pokemon_v2_pokemontypes;
 
+  ListBuilder<PokemonAbilityHolder>? _pokemon_v2_pokemonabilities;
+  ListBuilder<PokemonAbilityHolder> get pokemon_v2_pokemonabilities =>
+      _$this._pokemon_v2_pokemonabilities ??=
+          new ListBuilder<PokemonAbilityHolder>();
+  set pokemon_v2_pokemonabilities(
+          ListBuilder<PokemonAbilityHolder>? pokemon_v2_pokemonabilities) =>
+      _$this._pokemon_v2_pokemonabilities = pokemon_v2_pokemonabilities;
+
   PokemonSpeciesHolderBuilder? _pokemon_v2_pokemonspecy;
   PokemonSpeciesHolderBuilder get pokemon_v2_pokemonspecy =>
       _$this._pokemon_v2_pokemonspecy ??= new PokemonSpeciesHolderBuilder();
   set pokemon_v2_pokemonspecy(
           PokemonSpeciesHolderBuilder? pokemon_v2_pokemonspecy) =>
       _$this._pokemon_v2_pokemonspecy = pokemon_v2_pokemonspecy;
+
+  ListBuilder<PokemonForm>? _pokemon_v2_pokemonforms;
+  ListBuilder<PokemonForm> get pokemon_v2_pokemonforms =>
+      _$this._pokemon_v2_pokemonforms ??= new ListBuilder<PokemonForm>();
+  set pokemon_v2_pokemonforms(
+          ListBuilder<PokemonForm>? pokemon_v2_pokemonforms) =>
+      _$this._pokemon_v2_pokemonforms = pokemon_v2_pokemonforms;
 
   PokemonBuilder();
 
@@ -248,9 +348,13 @@ class PokemonBuilder implements Builder<Pokemon, PokemonBuilder> {
       _name = $v.name;
       _height = $v.height;
       _weight = $v.weight;
+      _pokemon_species_id = $v.pokemon_species_id;
+      _base_experience = $v.base_experience;
       _pokemon_v2_pokemonsprites = $v.pokemon_v2_pokemonsprites.toBuilder();
       _pokemon_v2_pokemontypes = $v.pokemon_v2_pokemontypes.toBuilder();
+      _pokemon_v2_pokemonabilities = $v.pokemon_v2_pokemonabilities.toBuilder();
       _pokemon_v2_pokemonspecy = $v.pokemon_v2_pokemonspecy?.toBuilder();
+      _pokemon_v2_pokemonforms = $v.pokemon_v2_pokemonforms.toBuilder();
       _$v = null;
     }
     return this;
@@ -279,9 +383,13 @@ class PokemonBuilder implements Builder<Pokemon, PokemonBuilder> {
               name: name,
               height: height,
               weight: weight,
+              pokemon_species_id: pokemon_species_id,
+              base_experience: base_experience,
               pokemon_v2_pokemonsprites: pokemon_v2_pokemonsprites.build(),
               pokemon_v2_pokemontypes: pokemon_v2_pokemontypes.build(),
-              pokemon_v2_pokemonspecy: _pokemon_v2_pokemonspecy?.build());
+              pokemon_v2_pokemonabilities: pokemon_v2_pokemonabilities.build(),
+              pokemon_v2_pokemonspecy: _pokemon_v2_pokemonspecy?.build(),
+              pokemon_v2_pokemonforms: pokemon_v2_pokemonforms.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -289,8 +397,12 @@ class PokemonBuilder implements Builder<Pokemon, PokemonBuilder> {
         pokemon_v2_pokemonsprites.build();
         _$failedField = 'pokemon_v2_pokemontypes';
         pokemon_v2_pokemontypes.build();
+        _$failedField = 'pokemon_v2_pokemonabilities';
+        pokemon_v2_pokemonabilities.build();
         _$failedField = 'pokemon_v2_pokemonspecy';
         _pokemon_v2_pokemonspecy?.build();
+        _$failedField = 'pokemon_v2_pokemonforms';
+        pokemon_v2_pokemonforms.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'Pokemon', _$failedField, e.toString());

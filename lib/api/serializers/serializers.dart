@@ -4,7 +4,11 @@ import 'package:built_value/standard_json_plugin.dart';
 
 import '../models/error_response.dart';
 import '../models/pokemon/pokemon.dart';
+import '../models/pokemon/pokemon_ability.dart';
+import '../models/pokemon/pokemon_ability_holder.dart';
+import '../models/pokemon/pokemon_form.dart';
 import '../models/pokemon/pokemon_request.dart';
+import '../models/pokemon/pokemon_resource.dart';
 import '../models/pokemon/pokemon_response.dart';
 import '../models/pokemon/pokemon_species.dart';
 import '../models/pokemon/pokemon_species_holder.dart';
@@ -20,8 +24,11 @@ part 'serializers.g.dart';
 @SerializersFor([
   ErrorResponse,
   Pokemon,
-  TypeDataHolder,
+  PokemonAbility,
+  PokemonAbilityHolder,
+  PokemonForm,
   PokemonRequest,
+  PokemonResource,
   PokemonResponse,
   PokemonSpeciesHolder,
   PokemonSpecies,

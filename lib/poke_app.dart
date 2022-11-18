@@ -5,7 +5,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'theme/base_theme.dart';
 import 'ui/app_shell.dart';
 import 'ui/pokemon_detail/pokemon_detail_page.dart';
-import 'ui/shared_widgets/splash_view.dart';
 import 'ui/splash_page.dart';
 
 class PokeApp extends StatefulWidget {

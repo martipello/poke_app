@@ -9,7 +9,6 @@ part 'pokemon_request.g.dart';
 
 abstract class PokemonRequest implements Built<PokemonRequest, PokemonRequestBuilder> {
 
-
   factory PokemonRequest([void Function(PokemonRequestBuilder) updates]) = _$PokemonRequest;
   PokemonRequest._();
 
@@ -20,6 +19,10 @@ abstract class PokemonRequest implements Built<PokemonRequest, PokemonRequestBui
   int? get skip;
 
   String? get search;
+
+  int? get pokemonId;
+
+  int? get languageId;
 
   BuiltList<PokemonType> get pokemonTypes;
 

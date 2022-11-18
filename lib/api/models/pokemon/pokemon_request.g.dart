@@ -52,6 +52,18 @@ class _$PokemonRequestSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
+    value = object.pokemonId;
+    if (value != null) {
+      result
+        ..add('pokemonId')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.languageId;
+    if (value != null) {
+      result
+        ..add('languageId')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
     value = object.sort;
     if (value != null) {
       result
@@ -90,6 +102,14 @@ class _$PokemonRequestSerializer
           result.search = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
+        case 'pokemonId':
+          result.pokemonId = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
+        case 'languageId':
+          result.languageId = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
         case 'pokemonTypes':
           result.pokemonTypes.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
@@ -117,6 +137,10 @@ class _$PokemonRequest extends PokemonRequest {
   @override
   final String? search;
   @override
+  final int? pokemonId;
+  @override
+  final int? languageId;
+  @override
   final BuiltList<PokemonType> pokemonTypes;
   @override
   final String? sort;
@@ -129,6 +153,8 @@ class _$PokemonRequest extends PokemonRequest {
       this.limit,
       this.skip,
       this.search,
+      this.pokemonId,
+      this.languageId,
       required this.pokemonTypes,
       this.sort})
       : super._() {
@@ -152,6 +178,8 @@ class _$PokemonRequest extends PokemonRequest {
         limit == other.limit &&
         skip == other.skip &&
         search == other.search &&
+        pokemonId == other.pokemonId &&
+        languageId == other.languageId &&
         pokemonTypes == other.pokemonTypes &&
         sort == other.sort;
   }
@@ -161,9 +189,13 @@ class _$PokemonRequest extends PokemonRequest {
     return $jf($jc(
         $jc(
             $jc(
-                $jc($jc($jc(0, pagination.hashCode), limit.hashCode),
-                    skip.hashCode),
-                search.hashCode),
+                $jc(
+                    $jc(
+                        $jc($jc($jc(0, pagination.hashCode), limit.hashCode),
+                            skip.hashCode),
+                        search.hashCode),
+                    pokemonId.hashCode),
+                languageId.hashCode),
             pokemonTypes.hashCode),
         sort.hashCode));
   }
@@ -175,6 +207,8 @@ class _$PokemonRequest extends PokemonRequest {
           ..add('limit', limit)
           ..add('skip', skip)
           ..add('search', search)
+          ..add('pokemonId', pokemonId)
+          ..add('languageId', languageId)
           ..add('pokemonTypes', pokemonTypes)
           ..add('sort', sort))
         .toString();
@@ -201,6 +235,14 @@ class PokemonRequestBuilder
   String? get search => _$this._search;
   set search(String? search) => _$this._search = search;
 
+  int? _pokemonId;
+  int? get pokemonId => _$this._pokemonId;
+  set pokemonId(int? pokemonId) => _$this._pokemonId = pokemonId;
+
+  int? _languageId;
+  int? get languageId => _$this._languageId;
+  set languageId(int? languageId) => _$this._languageId = languageId;
+
   ListBuilder<PokemonType>? _pokemonTypes;
   ListBuilder<PokemonType> get pokemonTypes =>
       _$this._pokemonTypes ??= new ListBuilder<PokemonType>();
@@ -220,6 +262,8 @@ class PokemonRequestBuilder
       _limit = $v.limit;
       _skip = $v.skip;
       _search = $v.search;
+      _pokemonId = $v.pokemonId;
+      _languageId = $v.languageId;
       _pokemonTypes = $v.pokemonTypes.toBuilder();
       _sort = $v.sort;
       _$v = null;
@@ -250,6 +294,8 @@ class PokemonRequestBuilder
               limit: limit,
               skip: skip,
               search: search,
+              pokemonId: pokemonId,
+              languageId: languageId,
               pokemonTypes: pokemonTypes.build(),
               sort: sort);
     } catch (_) {
