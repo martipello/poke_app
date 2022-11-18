@@ -96,29 +96,32 @@ class PokemonAbilityWidget extends StatelessWidget {
     final shortEffect = abilityHolder.shortEffect();
     final mainSeries = abilityHolder.mainSeries();
     return [
-      PokemonTable(
-        wordskiiTableRowInfoList: [
-          if (shortEffect.isNotEmpty)
-            PokemonTableRowInfo(
-              context.strings.effect,
-              value: shortEffect,
-            ),
-          if (generation.isNotEmpty)
-            PokemonTableRowInfo(
-              context.strings.generation,
-              value: '$generation',
-            ),
-          if (versionDisplayName.isNotEmpty)
-            PokemonTableRowInfo(
-              context.strings.version,
-              value: versionDisplayName,
-            ),
-          if (mainSeries.isNotEmpty)
-            PokemonTableRowInfo(
-              context.strings.mainSeries,
-              value: mainSeries,
-            ),
-        ],
+      Padding(
+        padding: const EdgeInsets.only(top: 8),
+        child: PokemonTable(
+          wordskiiTableRowInfoList: [
+            if (shortEffect.isNotEmpty)
+              PokemonTableRowInfo(
+                context.strings.effect,
+                value: shortEffect,
+              ),
+            if (generation.isNotEmpty)
+              PokemonTableRowInfo(
+                context.strings.generation,
+                value: '$generation',
+              ),
+            if (versionDisplayName.isNotEmpty)
+              PokemonTableRowInfo(
+                context.strings.version,
+                value: versionDisplayName,
+              ),
+            if (mainSeries.isNotEmpty)
+              PokemonTableRowInfo(
+                context.strings.mainSeries,
+                value: mainSeries,
+              ),
+          ],
+        ),
       ),
     ];
   }

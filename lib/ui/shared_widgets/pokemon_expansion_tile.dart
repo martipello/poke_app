@@ -28,7 +28,10 @@ class PokemonExpansionTile extends StatelessWidget {
           horizontal: 8,
         ),
         trailing: canExpand ? null : const SizedBox(),
-        title: title,
+        title: Padding(
+          padding: const EdgeInsets.only(bottom: 4),
+          child: title,
+        ),
         subtitle: subtitle,
         children: children,
       ),

@@ -108,7 +108,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
           borderRadius: BorderRadius.circular(90), // Creates border
           color: primaryColor,
         ),
-        //Change background color from here
+        unselectedLabelColor: colors(context).textOnForeground,
         tabs: [
           Tab(
             text: context.strings.info.toUpperCase(),

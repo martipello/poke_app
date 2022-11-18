@@ -13,7 +13,7 @@ class PokemonTableRowInfo {
     this.child,
     this.borderColor,
     this.isConstrained = false,
-  }) : assert (value != null || child != null);
+  }) : assert(value != null || child != null);
 
   final String key;
   final String? value;
@@ -61,7 +61,11 @@ class PokemonTable extends StatelessWidget {
                   2: const FlexColumnWidth(1),
                 },
                 children: [
-                  ...wordskiiTableRowInfoList.where((element) => element.value?.isNotEmpty == true || element.child != null).map(
+                  ...wordskiiTableRowInfoList
+                      .where(
+                    (element) => element.value?.isNotEmpty == true || element.child != null,
+                  )
+                      .map(
                     (e) {
                       return _buildTableRow(
                         context,
@@ -72,6 +76,12 @@ class PokemonTable extends StatelessWidget {
                         borderColor: e.borderColor,
                         labelTextAlign: e.labelTextAlign,
                         isConstrained: e.isConstrained,
+                        isFirst: e ==
+                            wordskiiTableRowInfoList
+                                .where(
+                                  (element) => element.value?.isNotEmpty == true || element.child != null,
+                                )
+                                .first,
                       );
                     },
                   ),
@@ -92,11 +102,12 @@ class PokemonTable extends StatelessWidget {
     Color? borderColor,
     TextAlign? labelTextAlign,
     bool isConstrained = false,
+    bool isFirst = false,
   }) {
     return TableRow(
       children: [
         _buildTableRowIcon(icon, context),
-        _buildTableRowText(key),
+        _buildTableRowText(key, isFirst),
         if (!isConstrained)
           _buildTableRowContent(
             onPressed,
@@ -104,6 +115,7 @@ class PokemonTable extends StatelessWidget {
             child,
             value,
             labelTextAlign,
+            isFirst,
           ),
         if (isConstrained)
           _buildConstrainedTableRowContent(
@@ -113,6 +125,7 @@ class PokemonTable extends StatelessWidget {
             child,
             value,
             labelTextAlign,
+            isFirst,
           ),
       ],
     );
@@ -125,6 +138,7 @@ class PokemonTable extends StatelessWidget {
     Widget? child,
     String? value,
     TextAlign? labelTextAlign,
+    bool isFirst,
   ) {
     final screenMeasure = (context.screenWidth / 5) * 3;
     return Align(
@@ -137,6 +151,7 @@ class PokemonTable extends StatelessWidget {
           child,
           value,
           labelTextAlign,
+          isFirst,
         ),
       ),
     );
@@ -148,6 +163,7 @@ class PokemonTable extends StatelessWidget {
     Widget? child,
     String? value,
     TextAlign? labelTextAlign,
+    bool isFirst,
   ) {
     return GestureDetector(
       onTap: onPressed,
@@ -155,7 +171,7 @@ class PokemonTable extends StatelessWidget {
         children: [
           Expanded(
             child: Padding(
-              padding: borderColor != null ? const EdgeInsets.only(bottom: 16) : const EdgeInsets.all(0),
+              padding: borderColor != null ? const EdgeInsets.only(bottom: 16) : EdgeInsets.zero,
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4),
@@ -164,7 +180,12 @@ class PokemonTable extends StatelessWidget {
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.only(
+                    left: 8,
+                    right: 8,
+                    bottom: 8,
+                    top: isFirst ? 0 : 8,
+                  ),
                   child: child ??
                       Text(
                         value ?? '',
@@ -180,10 +201,10 @@ class PokemonTable extends StatelessWidget {
     );
   }
 
-  Widget _buildTableRowText(String? key) {
+  Widget _buildTableRowText(String? key, bool isFirst) {
     return Padding(
-      padding: const EdgeInsets.only(
-        top: 8.0,
+      padding: EdgeInsets.only(
+        top: isFirst ? 0 : 8.0,
         right: 8,
       ),
       child: Row(

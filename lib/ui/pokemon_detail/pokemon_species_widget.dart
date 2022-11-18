@@ -69,19 +69,42 @@ class PokemonSpeciesWidget extends StatelessWidget {
   ) {
     final shape = speciesHolder.shape();
     final habitat = speciesHolder.habitat();
-    return PokemonTable(
-      wordskiiTableRowInfoList: [
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
         if (shape.isNotEmpty)
-          PokemonTableRowInfo(
+          _buildSpeciesTitle(
             context.strings.shape,
-            value: shape,
+            shape,
           ),
         if (habitat.isNotEmpty)
-          PokemonTableRowInfo(
+          _buildSpeciesTitle(
             context.strings.habitat,
-            value: habitat,
+            habitat,
           ),
       ],
+    );
+  }
+
+  Widget _buildSpeciesTitle(
+    String label,
+    String value,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: [
+          Text(
+            label,
+            style: PokeAppText.body3Style,
+          ),
+          const SizedBox(width: 8,),
+          Text(
+            value,
+            style: PokeAppText.body4Style,
+          ),
+        ],
+      ),
     );
   }
 
