@@ -58,21 +58,29 @@ class _PokemonDetailAppBarState extends State<PokemonDetailAppBar> with TickerPr
   }
 
   Widget _buildSliverAppBar() {
-    return SliverAppBar(
-      pinned: false,
-      expandedHeight: 437,
-      backgroundColor: colors(context).cardBackground,
-      titleSpacing: 0,
-      title: _buildEmbeddedAppBar(),
-      leadingWidth: 0,
-      automaticallyImplyLeading: false,
-      centerTitle: false,
-      systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: widget.primaryColor,
-      ),
-      flexibleSpace: FlexibleSpaceBar(
-        collapseMode: CollapseMode.pin,
-        background: _buildPokemonDetailHeader(),
+    return WillPopScope(
+      onWillPop: () async {
+        await _circleRevealAnimationController.reverse().then(
+              (value) => Navigator.of(context).pop(),
+        );
+        return true;
+      },
+      child: SliverAppBar(
+        pinned: false,
+        expandedHeight: 437,
+        backgroundColor: colors(context).cardBackground,
+        titleSpacing: 0,
+        title: _buildEmbeddedAppBar(),
+        leadingWidth: 0,
+        automaticallyImplyLeading: false,
+        centerTitle: false,
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: widget.primaryColor,
+        ),
+        flexibleSpace: FlexibleSpaceBar(
+          collapseMode: CollapseMode.pin,
+          background: _buildPokemonDetailHeader(),
+        ),
       ),
     );
   }
@@ -107,7 +115,9 @@ class _PokemonDetailAppBarState extends State<PokemonDetailAppBar> with TickerPr
           color: colors(context).cardBackground,
         ),
         onPressed: () {
-          Navigator.of(context).pop();
+          _circleRevealAnimationController.reverse().then(
+                (value) => Navigator.of(context).pop(),
+              );
         },
       ),
     );
