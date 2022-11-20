@@ -1,9 +1,10 @@
+// ignore_for_file: non_constant_identifier_names
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:poke_app/api/models/pokemon/type_efficacies.dart';
 
 import '../../serializers/serializers.dart';
+import 'type_efficacies.dart';
 
 part 'type_data.g.dart';
 
