@@ -16,6 +16,9 @@ import 'pokemon_forms_widget.dart';
 import 'pokemon_species_widget.dart';
 import 'view_models/pokemon_info_view_model.dart';
 
+//TODO this handles many widgets but needs to know if all are empty,
+//TODO add a callback for each child to call if there layout is empty.
+//TODO if all callbacks have been called show empty layout
 class PokemonInfoView extends StatefulWidget {
   PokemonInfoView({
     Key? key,

@@ -99,7 +99,7 @@ class PokemonAbilityWidget extends StatelessWidget {
       Padding(
         padding: const EdgeInsets.only(top: 8),
         child: PokemonTable(
-          wordskiiTableRowInfoList: [
+          pokemonTableRowInfoList: [
             if (shortEffect.isNotEmpty)
               PokemonTableRowInfo(
                 context.strings.effect,

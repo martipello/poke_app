@@ -26,18 +26,18 @@ class PokemonTableRowInfo {
 
 class PokemonTable extends StatelessWidget {
   const PokemonTable({
-    required this.wordskiiTableRowInfoList,
+    required this.pokemonTableRowInfoList,
     this.tableTitle,
     this.tableTitleTextStyle,
   });
 
   final String? tableTitle;
   final TextStyle? tableTitleTextStyle;
-  final List<PokemonTableRowInfo> wordskiiTableRowInfoList;
+  final List<PokemonTableRowInfo> pokemonTableRowInfoList;
 
   @override
   Widget build(BuildContext context) {
-    return wordskiiTableRowInfoList.any((element) => element.value?.isNotEmpty == true || element.child != null)
+    return pokemonTableRowInfoList.any((element) => element.value?.isNotEmpty == true || element.child != null)
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -61,7 +61,7 @@ class PokemonTable extends StatelessWidget {
                   2: const FlexColumnWidth(1),
                 },
                 children: [
-                  ...wordskiiTableRowInfoList
+                  ...pokemonTableRowInfoList
                       .where(
                     (element) => element.value?.isNotEmpty == true || element.child != null,
                   )
@@ -77,7 +77,7 @@ class PokemonTable extends StatelessWidget {
                         labelTextAlign: e.labelTextAlign,
                         isConstrained: e.isConstrained,
                         isFirst: e ==
-                            wordskiiTableRowInfoList
+                            pokemonTableRowInfoList
                                 .where(
                                   (element) => element.value?.isNotEmpty == true || element.child != null,
                                 )

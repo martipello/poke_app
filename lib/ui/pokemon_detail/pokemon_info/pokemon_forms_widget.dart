@@ -101,7 +101,7 @@ class PokemonFormsWidget extends StatelessWidget {
     final isBattleOnly = form.isBattleOnly();
     return [
       PokemonTable(
-        wordskiiTableRowInfoList: [
+        pokemonTableRowInfoList: [
           if (isMega.isNotEmpty)
             PokemonTableRowInfo(
               'Mega',

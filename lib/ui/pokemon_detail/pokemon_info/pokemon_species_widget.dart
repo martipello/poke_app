@@ -122,7 +122,7 @@ class PokemonSpeciesWidget extends StatelessWidget {
     final isBaby = speciesHolder.isBaby();
     final eggGroups = speciesHolder.pokemon_v2_pokemonegggroups.toList();
     return PokemonTable(
-      wordskiiTableRowInfoList: [
+      pokemonTableRowInfoList: [
         if (color.isNotEmpty)
           PokemonTableRowInfo(
             context.strings.color,

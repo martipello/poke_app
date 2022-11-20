@@ -99,8 +99,12 @@ class _PokemonStatsViewState extends State<PokemonStatsView> {
   Widget _buildPokemonInfo(Pokemon _pokemon) {
     return MultiSliver(
       children: [
-        _buildPokedexStats(_pokemon),
-        _buildPokemonWeaknessResistance(_pokemon),
+        _buildPokedexStats(
+          _pokemon,
+        ),
+        _buildPokemonWeaknessResistance(
+          _pokemon,
+        ),
       ],
     );
   }
@@ -114,8 +118,10 @@ class _PokemonStatsViewState extends State<PokemonStatsView> {
   }
 
   Widget _buildPokemonWeaknessResistance(Pokemon _pokemon) {
-    return PokemonWeaknessResistanceWidget(
-      pokemon: _pokemon,
+    return SliverToBoxAdapter(
+      child: PokemonWeaknessResistanceWidget(
+        pokemon: _pokemon,
+      ),
     );
   }
 }
