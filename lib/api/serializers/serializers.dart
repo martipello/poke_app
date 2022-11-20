@@ -12,11 +12,14 @@ import '../models/pokemon/pokemon_resource.dart';
 import '../models/pokemon/pokemon_response.dart';
 import '../models/pokemon/pokemon_species.dart';
 import '../models/pokemon/pokemon_species_holder.dart';
+import '../models/pokemon/pokemon_stat.dart';
 import '../models/pokemon/pokemon_type.dart';
 import '../models/pokemon/sprite.dart';
 import '../models/pokemon/sprite_response.dart';
+import '../models/pokemon/stat.dart';
 import '../models/pokemon/type_data.dart';
 import '../models/pokemon/type_data_holder.dart';
+import '../models/pokemon/type_efficacies.dart';
 import 'date_time_serializer.dart';
 
 part 'serializers.g.dart';
@@ -32,11 +35,14 @@ part 'serializers.g.dart';
   PokemonResponse,
   PokemonSpeciesHolder,
   PokemonSpecies,
+  PokemonStat,
   PokemonType,
-  TypeDataHolder,
-  TypeData,
   Sprite,
   SpriteResponse,
+  Stat,
+  TypeDataHolder,
+  TypeData,
+  TypeEfficacies,
 ])
 final Serializers serializers = (_$serializers.toBuilder()
       ..add(DateTimeSerializer())

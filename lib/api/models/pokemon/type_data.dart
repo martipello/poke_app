@@ -1,5 +1,7 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:poke_app/api/models/pokemon/type_efficacies.dart';
 
 import '../../serializers/serializers.dart';
 
@@ -13,6 +15,8 @@ abstract class TypeData implements Built<TypeData, TypeDataBuilder> {
   int? get id;
 
   String? get name;
+
+  BuiltList<TypeEfficacies> get pokemon_v2_typeefficacies;
 
   Map<String, dynamic> toJson() {
     return serializers.serializeWith(TypeData.serializer, this) as Map<String, dynamic>;

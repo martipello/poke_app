@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
-import '../../api/models/pokemon/pokemon.dart';
-import '../../api/models/pokemon/pokemon_form.dart';
-import '../../extensions/build_context_extension.dart';
-import '../../extensions/pokemon_form_extension.dart';
-import '../../theme/poke_app_text.dart';
-import '../shared_widgets/poke_divider.dart';
-import '../shared_widgets/pokemon_expansion_tile.dart';
-import '../shared_widgets/pokemon_table.dart';
+import '../../../api/models/pokemon/pokemon.dart';
+import '../../../api/models/pokemon/pokemon_form.dart';
+import '../../../extensions/build_context_extension.dart';
+import '../../../extensions/pokemon_form_extension.dart';
+import '../../../theme/poke_app_text.dart';
+import '../../shared_widgets/poke_divider.dart';
+import '../../shared_widgets/pokemon_expansion_tile.dart';
+import '../../shared_widgets/pokemon_table.dart';
 
 class PokemonFormsWidget extends StatelessWidget {
   const PokemonFormsWidget({

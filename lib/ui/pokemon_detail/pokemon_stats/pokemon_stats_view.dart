@@ -10,14 +10,12 @@ import '../../../extensions/iterable_extension.dart';
 import '../../shared_widgets/error_widget.dart' as ew;
 import '../../shared_widgets/pokeball_loading_widget.dart';
 import '../../shared_widgets/sliver_refresh_indicator.dart';
-import 'pokedex_info_widget.dart';
-import 'pokemon_ability_widget.dart';
-import 'pokemon_forms_widget.dart';
-import 'pokemon_species_widget.dart';
-import 'view_models/pokemon_info_view_model.dart';
+import 'pokemon_stats_widget.dart';
+import 'pokemon_weakness_resistance_widget.dart';
+import 'view_models/pokemon_stats_weakness_resistance_view_model.dart';
 
-class PokemonInfoView extends StatefulWidget {
-  PokemonInfoView({
+class PokemonStatsView extends StatefulWidget {
+  PokemonStatsView({
     Key? key,
     required this.pokemonId,
   }) : super(key: key);
@@ -25,18 +23,16 @@ class PokemonInfoView extends StatefulWidget {
   final int pokemonId;
 
   @override
-  State<PokemonInfoView> createState() => _PokemonInfoViewState();
+  State<PokemonStatsView> createState() => _PokemonStatsViewState();
 }
 
-class _PokemonInfoViewState extends State<PokemonInfoView> {
-  final _pokemonInfoViewModel = getIt.get<PokemonInfoViewModel>();
-
-  final _scrollController = ScrollController();
+class _PokemonStatsViewState extends State<PokemonStatsView> {
+  final _pokemonInfoViewModel = getIt.get<PokemonStatsWeaknessResistanceViewModel>();
 
   @override
   void initState() {
     super.initState();
-    _pokemonInfoViewModel.getPokemonInfo(
+    _pokemonInfoViewModel.getPokemonStats(
       widget.pokemonId,
     );
   }
@@ -50,11 +46,11 @@ class _PokemonInfoViewState extends State<PokemonInfoView> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<ApiResponse<PokemonResponse>>(
-      stream: _pokemonInfoViewModel.pokemonInfoStream,
+      stream: _pokemonInfoViewModel.pokemonStatsWeaknessAndResistanceStream,
       builder: (context, snapshot) {
         return SliverRefreshIndicator(
           onRefresh: () {
-            _pokemonInfoViewModel.getPokemonInfo(widget.pokemonId);
+            _pokemonInfoViewModel.getPokemonStats(widget.pokemonId);
           },
           sliver: _buildLayoutForState(snapshot),
         );
@@ -93,48 +89,32 @@ class _PokemonInfoViewState extends State<PokemonInfoView> {
           error?.message ?? '',
           error: error,
         ),
-        onTryAgain: () => _pokemonInfoViewModel.getPokemonInfo(
+        onTryAgain: () => _pokemonInfoViewModel.getPokemonStats(
           widget.pokemonId,
         ),
       ),
     );
   }
 
-  Widget _buildPokemonInfo(Pokemon _pokemonInfo) {
+  Widget _buildPokemonInfo(Pokemon _pokemon) {
     return MultiSliver(
       children: [
-        _buildPokedexInfo(_pokemonInfo),
-        _buildPokemonSpecies(_pokemonInfo),
-        _buildPokemonAbilities(_pokemonInfo),
-        _buildPokemonForms(_pokemonInfo),
+        _buildPokedexStats(_pokemon),
+        _buildPokemonWeaknessResistance(_pokemon),
       ],
     );
   }
 
-  Widget _buildPokedexInfo(Pokemon _pokemon) {
+  Widget _buildPokedexStats(Pokemon _pokemon) {
     return SliverToBoxAdapter(
-      child: PokedexInfoWidget(
+      child: PokemonStatsWidget(
         pokemon: _pokemon,
       ),
     );
   }
 
-  Widget _buildPokemonSpecies(Pokemon _pokemon) {
-    return SliverToBoxAdapter(
-      child: PokemonSpeciesWidget(
-        pokemon: _pokemon,
-      ),
-    );
-  }
-
-  Widget _buildPokemonAbilities(Pokemon _pokemon) {
-    return PokemonAbilityWidget(
-      pokemon: _pokemon,
-    );
-  }
-
-  Widget _buildPokemonForms(Pokemon _pokemon) {
-    return PokemonFormsWidget(
+  Widget _buildPokemonWeaknessResistance(Pokemon _pokemon) {
+    return PokemonWeaknessResistanceWidget(
       pokemon: _pokemon,
     );
   }
