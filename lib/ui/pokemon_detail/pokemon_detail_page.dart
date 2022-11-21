@@ -108,8 +108,14 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
       child: TabBar(
         controller: _tabBarController,
         isScrollable: true,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        labelPadding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16,
+        ),
+        labelPadding: const EdgeInsets.only(
+          left: 16,
+          right: 16,
+          top: 2,
+        ),
         indicator: BoxDecoration(
           borderRadius: BorderRadius.circular(90), // Creates border
           color: primaryColor,
