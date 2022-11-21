@@ -16,6 +16,7 @@ class PokemonTypeChip extends StatelessWidget {
     this.onDelete,
     required this.chipType,
     required this.type,
+    this.labelSuffix = '',
   });
 
   final ChipType chipType;
@@ -23,6 +24,7 @@ class PokemonTypeChip extends StatelessWidget {
   final bool isSelected;
   final OnSelected? onSelected;
   final VoidCallback? onDelete;
+  final String labelSuffix;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +45,7 @@ class PokemonTypeChip extends StatelessWidget {
           width: 24,
         ),
         label: Text(
-          type.name.capitalize(),
+          '${type.name.capitalize()}$labelSuffix',
         ),
         side: BorderSide(
           width: 1,
@@ -69,19 +71,22 @@ class PokemonTypeChip extends StatelessWidget {
       height: 32,
       child: FilterChip(
         avatar: isSelected
-            ? null : Image.asset(
+            ? null
+            : Image.asset(
                 type.image,
                 height: 24,
                 width: 24,
               ),
         backgroundColor: type.color,
         disabledColor: colors(context).textOnForeground,
-        side: onSelected != null ? BorderSide(
-          width: 1,
-          color: type.color,
-        ) : null,
+        side: onSelected != null
+            ? BorderSide(
+                width: 1,
+                color: type.color,
+              )
+            : null,
         label: Text(
-          type.name.capitalize(),
+          '${type.name.capitalize()}$labelSuffix',
           style: PokeAppText.body4Style.copyWith(
             color: colors(context).textOnPrimary,
           ),

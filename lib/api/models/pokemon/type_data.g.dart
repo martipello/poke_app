@@ -18,8 +18,8 @@ class _$TypeDataSerializer implements StructuredSerializer<TypeData> {
   Iterable<Object?> serialize(Serializers serializers, TypeData object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[
-      'pokemon_v2_typeefficacies',
-      serializers.serialize(object.pokemon_v2_typeefficacies,
+      'pokemonV2TypeefficaciesByTargetTypeId',
+      serializers.serialize(object.pokemonV2TypeefficaciesByTargetTypeId,
           specifiedType: const FullType(
               BuiltList, const [const FullType(TypeEfficacies)])),
     ];
@@ -59,12 +59,12 @@ class _$TypeDataSerializer implements StructuredSerializer<TypeData> {
           result.name = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
-        case 'pokemon_v2_typeefficacies':
-          result.pokemon_v2_typeefficacies.replace(serializers.deserialize(
-                  value,
-                  specifiedType: const FullType(
-                      BuiltList, const [const FullType(TypeEfficacies)]))!
-              as BuiltList<Object?>);
+        case 'pokemonV2TypeefficaciesByTargetTypeId':
+          result.pokemonV2TypeefficaciesByTargetTypeId.replace(
+              serializers.deserialize(value,
+                      specifiedType: const FullType(
+                          BuiltList, const [const FullType(TypeEfficacies)]))!
+                  as BuiltList<Object?>);
           break;
       }
     }
@@ -79,15 +79,16 @@ class _$TypeData extends TypeData {
   @override
   final String? name;
   @override
-  final BuiltList<TypeEfficacies> pokemon_v2_typeefficacies;
+  final BuiltList<TypeEfficacies> pokemonV2TypeefficaciesByTargetTypeId;
 
   factory _$TypeData([void Function(TypeDataBuilder)? updates]) =>
       (new TypeDataBuilder()..update(updates))._build();
 
-  _$TypeData._({this.id, this.name, required this.pokemon_v2_typeefficacies})
+  _$TypeData._(
+      {this.id, this.name, required this.pokemonV2TypeefficaciesByTargetTypeId})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        pokemon_v2_typeefficacies, r'TypeData', 'pokemon_v2_typeefficacies');
+    BuiltValueNullFieldError.checkNotNull(pokemonV2TypeefficaciesByTargetTypeId,
+        r'TypeData', 'pokemonV2TypeefficaciesByTargetTypeId');
   }
 
   @override
@@ -103,13 +104,14 @@ class _$TypeData extends TypeData {
     return other is TypeData &&
         id == other.id &&
         name == other.name &&
-        pokemon_v2_typeefficacies == other.pokemon_v2_typeefficacies;
+        pokemonV2TypeefficaciesByTargetTypeId ==
+            other.pokemonV2TypeefficaciesByTargetTypeId;
   }
 
   @override
   int get hashCode {
     return $jf($jc($jc($jc(0, id.hashCode), name.hashCode),
-        pokemon_v2_typeefficacies.hashCode));
+        pokemonV2TypeefficaciesByTargetTypeId.hashCode));
   }
 
   @override
@@ -117,7 +119,8 @@ class _$TypeData extends TypeData {
     return (newBuiltValueToStringHelper(r'TypeData')
           ..add('id', id)
           ..add('name', name)
-          ..add('pokemon_v2_typeefficacies', pokemon_v2_typeefficacies))
+          ..add('pokemonV2TypeefficaciesByTargetTypeId',
+              pokemonV2TypeefficaciesByTargetTypeId))
         .toString();
   }
 }
@@ -133,12 +136,14 @@ class TypeDataBuilder implements Builder<TypeData, TypeDataBuilder> {
   String? get name => _$this._name;
   set name(String? name) => _$this._name = name;
 
-  ListBuilder<TypeEfficacies>? _pokemon_v2_typeefficacies;
-  ListBuilder<TypeEfficacies> get pokemon_v2_typeefficacies =>
-      _$this._pokemon_v2_typeefficacies ??= new ListBuilder<TypeEfficacies>();
-  set pokemon_v2_typeefficacies(
-          ListBuilder<TypeEfficacies>? pokemon_v2_typeefficacies) =>
-      _$this._pokemon_v2_typeefficacies = pokemon_v2_typeefficacies;
+  ListBuilder<TypeEfficacies>? _pokemonV2TypeefficaciesByTargetTypeId;
+  ListBuilder<TypeEfficacies> get pokemonV2TypeefficaciesByTargetTypeId =>
+      _$this._pokemonV2TypeefficaciesByTargetTypeId ??=
+          new ListBuilder<TypeEfficacies>();
+  set pokemonV2TypeefficaciesByTargetTypeId(
+          ListBuilder<TypeEfficacies>? pokemonV2TypeefficaciesByTargetTypeId) =>
+      _$this._pokemonV2TypeefficaciesByTargetTypeId =
+          pokemonV2TypeefficaciesByTargetTypeId;
 
   TypeDataBuilder();
 
@@ -147,7 +152,8 @@ class TypeDataBuilder implements Builder<TypeData, TypeDataBuilder> {
     if ($v != null) {
       _id = $v.id;
       _name = $v.name;
-      _pokemon_v2_typeefficacies = $v.pokemon_v2_typeefficacies.toBuilder();
+      _pokemonV2TypeefficaciesByTargetTypeId =
+          $v.pokemonV2TypeefficaciesByTargetTypeId.toBuilder();
       _$v = null;
     }
     return this;
@@ -174,12 +180,13 @@ class TypeDataBuilder implements Builder<TypeData, TypeDataBuilder> {
           new _$TypeData._(
               id: id,
               name: name,
-              pokemon_v2_typeefficacies: pokemon_v2_typeefficacies.build());
+              pokemonV2TypeefficaciesByTargetTypeId:
+                  pokemonV2TypeefficaciesByTargetTypeId.build());
     } catch (_) {
       late String _$failedField;
       try {
-        _$failedField = 'pokemon_v2_typeefficacies';
-        pokemon_v2_typeefficacies.build();
+        _$failedField = 'pokemonV2TypeefficaciesByTargetTypeId';
+        pokemonV2TypeefficaciesByTargetTypeId.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'TypeData', _$failedField, e.toString());

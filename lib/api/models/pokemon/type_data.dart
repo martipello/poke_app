@@ -17,7 +17,7 @@ abstract class TypeData implements Built<TypeData, TypeDataBuilder> {
 
   String? get name;
 
-  BuiltList<TypeEfficacies> get pokemon_v2_typeefficacies;
+  BuiltList<TypeEfficacies> get pokemonV2TypeefficaciesByTargetTypeId;
 
   Map<String, dynamic> toJson() {
     return serializers.serializeWith(TypeData.serializer, this) as Map<String, dynamic>;

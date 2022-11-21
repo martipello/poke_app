@@ -12,13 +12,15 @@ abstract class TypeEfficacies implements Built<TypeEfficacies, TypeEfficaciesBui
   factory TypeEfficacies([void Function(TypeEfficaciesBuilder) updates]) = _$TypeEfficacies;
   TypeEfficacies._();
 
-  int? get damage_factor;
+  double? get damage_factor;
 
   int? get damage_type_id;
 
   int? get target_type_id;
 
   PokemonResource? get pokemonV2TypeByTargetTypeId;
+
+  PokemonResource? get pokemon_v2_type;
 
   Map<String, dynamic> toJson() {
     return serializers.serializeWith(TypeEfficacies.serializer, this) as Map<String, dynamic>;

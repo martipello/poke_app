@@ -1,10 +1,11 @@
-import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 
 import '../../../api/models/pokemon/pokemon.dart';
 import '../../../api/models/pokemon/pokemon_type.dart';
 import '../../../api/models/pokemon/type_efficacies.dart';
 import '../../../extensions/build_context_extension.dart';
+import '../../../extensions/type_efficacy_extension.dart';
+import '../../../extensions/type_list_extension.dart';
 import '../../../theme/poke_app_text.dart';
 import '../../shared_widgets/chip_group.dart';
 import '../../shared_widgets/poke_divider.dart';
@@ -20,10 +21,8 @@ class PokemonWeaknessResistanceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final typeEfficacies = _createNotNullTypeEfficacies();
-    final weaknesses = _createWeaknessList(typeEfficacies).toList();
-    final resistances = _createResistanceList(typeEfficacies).toList();
-    if (weaknesses.isEmpty && resistances.isEmpty) {
+    final weaknesses = pokemon.pokemon_v2_pokemontypes.calculateTypeEfficacies();
+    if (weaknesses.isEmpty) {
       return const SizedBox.shrink();
     }
     return Padding(
@@ -33,14 +32,9 @@ class PokemonWeaknessResistanceWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           if (weaknesses.isNotEmpty)
-            ..._buildWeaknessSection(
+            ..._buildTypeEffectivenessSection(
               context,
               weaknesses,
-            ),
-          if (resistances.isNotEmpty)
-            ..._buildResistanceSection(
-              context,
-              resistances,
             ),
           PokeDivider(),
         ],
@@ -48,29 +42,14 @@ class PokemonWeaknessResistanceWidget extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildWeaknessSection(
+  List<Widget> _buildTypeEffectivenessSection(
     BuildContext context,
     List<TypeEfficacies> typeEfficacies,
   ) {
     return [
       _buildMediumMargin(),
       Text(
-        context.strings.weakness,
-        style: PokeAppText.subtitle3Style,
-      ),
-      _buildMediumMargin(),
-      _buildPokemonStatTable(typeEfficacies),
-      _buildMediumMargin(),
-    ];
-  }
-
-  List<Widget> _buildResistanceSection(
-    BuildContext context,
-    List<TypeEfficacies> typeEfficacies,
-  ) {
-    return [
-      Text(
-        context.strings.resistance,
+        context.strings.typeEffectiveness,
         style: PokeAppText.subtitle3Style,
       ),
       _buildMediumMargin(),
@@ -83,38 +62,21 @@ class PokemonWeaknessResistanceWidget extends StatelessWidget {
     List<TypeEfficacies> typeEfficacies,
   ) {
     return ChipGroup(
-      chips: typeEfficacies
-          .map(
-            (te) => PokemonTypeChip(
-              chipType: ChipType.normal,
-              type: PokemonType.getTypeForId(
-                te.target_type_id ?? 0,
-              ),
+      chips: typeEfficacies.map(
+        (te) {
+          final damageFactor = te.calculateDamageFactor();
+          return PokemonTypeChip(
+            chipType: ChipType.normal,
+            type: PokemonType.getTypeForId(
+              te.damage_type_id ?? 0,
             ),
-          )
-          .toList(),
+            labelSuffix: ' x$damageFactor',
+          );
+        },
+      ).toList(),
     );
   }
 
   Widget _buildMediumMargin() => const SizedBox(height: 16);
 
-  Iterable<TypeEfficacies> _createWeaknessList(
-    Iterable<TypeEfficacies> typeEfficacies,
-  ) =>
-      typeEfficacies.where((te) => (te.damage_factor ?? 0) > 100);
-
-  Iterable<TypeEfficacies> _createResistanceList(
-    Iterable<TypeEfficacies> typeEfficacies,
-  ) =>
-      typeEfficacies.where((te) => (te.damage_factor ?? 0) < 100);
-
-  Iterable<TypeEfficacies> _createNotNullTypeEfficacies() {
-    return pokemon.pokemon_v2_pokemontypes
-        .map(
-          (te) => te.pokemon_v2_type?.pokemon_v2_typeefficacies,
-        )
-        .whereType<BuiltList<TypeEfficacies>>()
-        .expand((element) => element)
-        .whereType<TypeEfficacies>();
-  }
 }
