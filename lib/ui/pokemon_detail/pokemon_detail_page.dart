@@ -32,7 +32,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
   PokemonDetailPageArguments get pokemonDetailArguments => context.routeArguments as PokemonDetailPageArguments;
 
   final _scrollController = ScrollController();
-  late final _tabBarController = TabController(length: 3, vsync: this);
+  late final _tabBarController = TabController(length: 4, vsync: this);
 
   Color get primaryColor => Colors.red;
 
@@ -89,6 +89,10 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
         PokemonStatsView(
           pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
         ),
+        //TODO add evolutions
+        PokemonStatsView(
+          pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
+        ),
         CustomScrollView(
           controller: _scrollController,
           slivers: [],
@@ -100,10 +104,12 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
   Widget _buildTabBar(BuildContext context) {
     return SizedBox(
       height: 36,
+      width: double.infinity,
       child: TabBar(
         controller: _tabBarController,
+        isScrollable: true,
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        labelPadding: EdgeInsets.zero,
+        labelPadding: const EdgeInsets.symmetric(horizontal: 16),
         indicator: BoxDecoration(
           borderRadius: BorderRadius.circular(90), // Creates border
           color: primaryColor,
@@ -115,6 +121,9 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
           ),
           Tab(
             text: context.strings.stats.toUpperCase(),
+          ),
+          Tab(
+            text: context.strings.evolutions.toUpperCase(),
           ),
           Tab(
             text: context.strings.moves.toUpperCase(),
