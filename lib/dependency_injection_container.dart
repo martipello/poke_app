@@ -7,6 +7,7 @@ import 'api/graph_ql/pokemon_repository_graph_ql.dart';
 import 'services/launch_service.dart';
 import 'services/shared_preferences_service.dart';
 import 'ui/pokemon_detail/pokemon_info/view_models/pokemon_info_view_model.dart';
+import 'ui/pokemon_detail/pokemon_moves/view_models/pokemon_moves_view_model.dart';
 import 'ui/pokemon_detail/pokemon_stats/view_models/pokemon_stats_weakness_resistance_view_model.dart';
 import 'ui/pokemon_list/adapter/pokemon_paging_adapter.dart';
 import 'ui/pokemon_list/view_models/filter_view_model.dart';
@@ -27,6 +28,7 @@ Future<void> init() async {
   getIt.registerFactory(() => PokemonPagingAdapter(getIt(), getIt()));
   getIt.registerFactory(() => PokemonListViewModel(getIt()));
   getIt.registerFactory(() => PokemonInfoViewModel(getIt(), getIt()));
+  getIt.registerFactory(() => PokemonMovesViewModel(getIt(), getIt()));
   getIt.registerFactory(() => PokemonStatsWeaknessResistanceViewModel(getIt(), getIt()));
   getIt.registerFactory(FilterViewModel.new);
   getIt.registerFactory(SearchAppBarViewModel.new);

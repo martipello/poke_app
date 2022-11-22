@@ -8,10 +8,14 @@ part of 'serializers.dart';
 
 Serializers _$serializers = (new Serializers().toBuilder()
       ..add(ErrorResponse.serializer)
+      ..add(MoveDamageClass.serializer)
+      ..add(MoveLearnMethod.serializer)
       ..add(Pokemon.serializer)
       ..add(PokemonAbility.serializer)
       ..add(PokemonAbilityHolder.serializer)
       ..add(PokemonForm.serializer)
+      ..add(PokemonMove.serializer)
+      ..add(PokemonMoveHolder.serializer)
       ..add(PokemonRequest.serializer)
       ..add(PokemonResource.serializer)
       ..add(PokemonResponse.serializer)
@@ -27,6 +31,15 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Pokemon)]),
           () => new ListBuilder<Pokemon>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(PokemonResource)]),
+          () => new ListBuilder<PokemonResource>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(PokemonResource)]),
+          () => new ListBuilder<PokemonResource>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(PokemonResource)]),
+          () => new ListBuilder<PokemonResource>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(PokemonResource)]),
           () => new ListBuilder<PokemonResource>())
@@ -61,6 +74,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(PokemonStat)]),
           () => new ListBuilder<PokemonStat>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(PokemonMoveHolder)]),
+          () => new ListBuilder<PokemonMoveHolder>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(TypeEfficacies)]),
           () => new ListBuilder<TypeEfficacies>()))

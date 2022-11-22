@@ -3,10 +3,14 @@ import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
 
 import '../models/error_response.dart';
+import '../models/pokemon/move_damage_class.dart';
+import '../models/pokemon/move_learn_method.dart';
 import '../models/pokemon/pokemon.dart';
 import '../models/pokemon/pokemon_ability.dart';
 import '../models/pokemon/pokemon_ability_holder.dart';
 import '../models/pokemon/pokemon_form.dart';
+import '../models/pokemon/pokemon_move.dart';
+import '../models/pokemon/pokemon_move_holder.dart';
 import '../models/pokemon/pokemon_request.dart';
 import '../models/pokemon/pokemon_resource.dart';
 import '../models/pokemon/pokemon_response.dart';
@@ -26,10 +30,14 @@ part 'serializers.g.dart';
 
 @SerializersFor([
   ErrorResponse,
+  MoveDamageClass,
+  MoveLearnMethod,
   Pokemon,
   PokemonAbility,
   PokemonAbilityHolder,
   PokemonForm,
+  PokemonMove,
+  PokemonMoveHolder,
   PokemonRequest,
   PokemonResource,
   PokemonResponse,

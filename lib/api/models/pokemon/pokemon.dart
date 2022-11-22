@@ -6,6 +6,7 @@ import 'package:built_value/serializer.dart';
 import '../../serializers/serializers.dart';
 import 'pokemon_ability_holder.dart';
 import 'pokemon_form.dart';
+import 'pokemon_move_holder.dart';
 import 'pokemon_species_holder.dart';
 import 'pokemon_stat.dart';
 import 'sprite_response.dart';
@@ -41,6 +42,8 @@ abstract class Pokemon implements Built<Pokemon, PokemonBuilder> {
   BuiltList<PokemonForm> get pokemon_v2_pokemonforms;
 
   BuiltList<PokemonStat> get pokemon_v2_pokemonstats;
+
+  BuiltList<PokemonMoveHolder> get pokemon_v2_pokemonmoves;
 
   Map<String, dynamic> toJson() {
     return serializers.serializeWith(Pokemon.serializer, this) as Map<String, dynamic>;

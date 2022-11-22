@@ -4,6 +4,7 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
 import '../../serializers/serializers.dart';
+import 'move_damage_class.dart';
 import 'type_efficacies.dart';
 
 part 'type_data.g.dart';
@@ -16,6 +17,8 @@ abstract class TypeData implements Built<TypeData, TypeDataBuilder> {
   int? get id;
 
   String? get name;
+
+  MoveDamageClass? get pokemon_v2_movedamageclass;
 
   BuiltList<TypeEfficacies> get pokemonV2TypeefficaciesByTargetTypeId;
 

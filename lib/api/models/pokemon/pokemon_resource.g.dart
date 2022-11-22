@@ -28,6 +28,13 @@ class _$PokemonResourceSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
+    value = object.description;
+    if (value != null) {
+      result
+        ..add('description')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     value = object.id;
     if (value != null) {
       result
@@ -81,6 +88,20 @@ class _$PokemonResourceSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(PokemonResource)));
     }
+    value = object.pokemon_v2_movedamageclass;
+    if (value != null) {
+      result
+        ..add('pokemon_v2_movedamageclass')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(PokemonResource)));
+    }
+    value = object.pokemon_v2_movelearnmethod;
+    if (value != null) {
+      result
+        ..add('pokemon_v2_movelearnmethod')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(PokemonResource)));
+    }
     value = object.pokemon_v2_ability;
     if (value != null) {
       result
@@ -105,6 +126,10 @@ class _$PokemonResourceSerializer
       switch (key) {
         case 'name':
           result.name = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'description':
+          result.description = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
         case 'id':
@@ -142,6 +167,18 @@ class _$PokemonResourceSerializer
                   specifiedType: const FullType(PokemonResource))!
               as PokemonResource);
           break;
+        case 'pokemon_v2_movedamageclass':
+          result.pokemon_v2_movedamageclass.replace(serializers.deserialize(
+                  value,
+                  specifiedType: const FullType(PokemonResource))!
+              as PokemonResource);
+          break;
+        case 'pokemon_v2_movelearnmethod':
+          result.pokemon_v2_movelearnmethod.replace(serializers.deserialize(
+                  value,
+                  specifiedType: const FullType(PokemonResource))!
+              as PokemonResource);
+          break;
         case 'pokemon_v2_ability':
           result.pokemon_v2_ability.replace(serializers.deserialize(value,
                   specifiedType: const FullType(PokemonAbility))!
@@ -157,6 +194,8 @@ class _$PokemonResourceSerializer
 class _$PokemonResource extends PokemonResource {
   @override
   final String? name;
+  @override
+  final String? description;
   @override
   final int? id;
   @override
@@ -174,6 +213,10 @@ class _$PokemonResource extends PokemonResource {
   @override
   final PokemonResource? pokemon_v2_egggroup;
   @override
+  final PokemonResource? pokemon_v2_movedamageclass;
+  @override
+  final PokemonResource? pokemon_v2_movelearnmethod;
+  @override
   final PokemonAbility? pokemon_v2_ability;
 
   factory _$PokemonResource([void Function(PokemonResourceBuilder)? updates]) =>
@@ -181,6 +224,7 @@ class _$PokemonResource extends PokemonResource {
 
   _$PokemonResource._(
       {this.name,
+      this.description,
       this.id,
       this.flavor_text,
       this.version_id,
@@ -189,6 +233,8 @@ class _$PokemonResource extends PokemonResource {
       this.pokemon_v2_version,
       this.pokemon_v2_versiongroup,
       this.pokemon_v2_egggroup,
+      this.pokemon_v2_movedamageclass,
+      this.pokemon_v2_movelearnmethod,
       this.pokemon_v2_ability})
       : super._();
 
@@ -205,6 +251,7 @@ class _$PokemonResource extends PokemonResource {
     if (identical(other, this)) return true;
     return other is PokemonResource &&
         name == other.name &&
+        description == other.description &&
         id == other.id &&
         flavor_text == other.flavor_text &&
         version_id == other.version_id &&
@@ -213,6 +260,8 @@ class _$PokemonResource extends PokemonResource {
         pokemon_v2_version == other.pokemon_v2_version &&
         pokemon_v2_versiongroup == other.pokemon_v2_versiongroup &&
         pokemon_v2_egggroup == other.pokemon_v2_egggroup &&
+        pokemon_v2_movedamageclass == other.pokemon_v2_movedamageclass &&
+        pokemon_v2_movelearnmethod == other.pokemon_v2_movelearnmethod &&
         pokemon_v2_ability == other.pokemon_v2_ability;
   }
 
@@ -225,14 +274,22 @@ class _$PokemonResource extends PokemonResource {
                     $jc(
                         $jc(
                             $jc(
-                                $jc($jc($jc(0, name.hashCode), id.hashCode),
-                                    flavor_text.hashCode),
-                                version_id.hashCode),
-                            pokemon_species_id.hashCode),
-                        short_effect.hashCode),
-                    pokemon_v2_version.hashCode),
-                pokemon_v2_versiongroup.hashCode),
-            pokemon_v2_egggroup.hashCode),
+                                $jc(
+                                    $jc(
+                                        $jc(
+                                            $jc(
+                                                $jc($jc(0, name.hashCode),
+                                                    description.hashCode),
+                                                id.hashCode),
+                                            flavor_text.hashCode),
+                                        version_id.hashCode),
+                                    pokemon_species_id.hashCode),
+                                short_effect.hashCode),
+                            pokemon_v2_version.hashCode),
+                        pokemon_v2_versiongroup.hashCode),
+                    pokemon_v2_egggroup.hashCode),
+                pokemon_v2_movedamageclass.hashCode),
+            pokemon_v2_movelearnmethod.hashCode),
         pokemon_v2_ability.hashCode));
   }
 
@@ -240,6 +297,7 @@ class _$PokemonResource extends PokemonResource {
   String toString() {
     return (newBuiltValueToStringHelper(r'PokemonResource')
           ..add('name', name)
+          ..add('description', description)
           ..add('id', id)
           ..add('flavor_text', flavor_text)
           ..add('version_id', version_id)
@@ -248,6 +306,8 @@ class _$PokemonResource extends PokemonResource {
           ..add('pokemon_v2_version', pokemon_v2_version)
           ..add('pokemon_v2_versiongroup', pokemon_v2_versiongroup)
           ..add('pokemon_v2_egggroup', pokemon_v2_egggroup)
+          ..add('pokemon_v2_movedamageclass', pokemon_v2_movedamageclass)
+          ..add('pokemon_v2_movelearnmethod', pokemon_v2_movelearnmethod)
           ..add('pokemon_v2_ability', pokemon_v2_ability))
         .toString();
   }
@@ -260,6 +320,10 @@ class PokemonResourceBuilder
   String? _name;
   String? get name => _$this._name;
   set name(String? name) => _$this._name = name;
+
+  String? _description;
+  String? get description => _$this._description;
+  set description(String? description) => _$this._description = description;
 
   int? _id;
   int? get id => _$this._id;
@@ -301,6 +365,20 @@ class PokemonResourceBuilder
   set pokemon_v2_egggroup(PokemonResourceBuilder? pokemon_v2_egggroup) =>
       _$this._pokemon_v2_egggroup = pokemon_v2_egggroup;
 
+  PokemonResourceBuilder? _pokemon_v2_movedamageclass;
+  PokemonResourceBuilder get pokemon_v2_movedamageclass =>
+      _$this._pokemon_v2_movedamageclass ??= new PokemonResourceBuilder();
+  set pokemon_v2_movedamageclass(
+          PokemonResourceBuilder? pokemon_v2_movedamageclass) =>
+      _$this._pokemon_v2_movedamageclass = pokemon_v2_movedamageclass;
+
+  PokemonResourceBuilder? _pokemon_v2_movelearnmethod;
+  PokemonResourceBuilder get pokemon_v2_movelearnmethod =>
+      _$this._pokemon_v2_movelearnmethod ??= new PokemonResourceBuilder();
+  set pokemon_v2_movelearnmethod(
+          PokemonResourceBuilder? pokemon_v2_movelearnmethod) =>
+      _$this._pokemon_v2_movelearnmethod = pokemon_v2_movelearnmethod;
+
   PokemonAbilityBuilder? _pokemon_v2_ability;
   PokemonAbilityBuilder get pokemon_v2_ability =>
       _$this._pokemon_v2_ability ??= new PokemonAbilityBuilder();
@@ -313,6 +391,7 @@ class PokemonResourceBuilder
     final $v = _$v;
     if ($v != null) {
       _name = $v.name;
+      _description = $v.description;
       _id = $v.id;
       _flavor_text = $v.flavor_text;
       _version_id = $v.version_id;
@@ -321,6 +400,8 @@ class PokemonResourceBuilder
       _pokemon_v2_version = $v.pokemon_v2_version?.toBuilder();
       _pokemon_v2_versiongroup = $v.pokemon_v2_versiongroup?.toBuilder();
       _pokemon_v2_egggroup = $v.pokemon_v2_egggroup?.toBuilder();
+      _pokemon_v2_movedamageclass = $v.pokemon_v2_movedamageclass?.toBuilder();
+      _pokemon_v2_movelearnmethod = $v.pokemon_v2_movelearnmethod?.toBuilder();
       _pokemon_v2_ability = $v.pokemon_v2_ability?.toBuilder();
       _$v = null;
     }
@@ -347,6 +428,7 @@ class PokemonResourceBuilder
       _$result = _$v ??
           new _$PokemonResource._(
               name: name,
+              description: description,
               id: id,
               flavor_text: flavor_text,
               version_id: version_id,
@@ -355,6 +437,8 @@ class PokemonResourceBuilder
               pokemon_v2_version: _pokemon_v2_version?.build(),
               pokemon_v2_versiongroup: _pokemon_v2_versiongroup?.build(),
               pokemon_v2_egggroup: _pokemon_v2_egggroup?.build(),
+              pokemon_v2_movedamageclass: _pokemon_v2_movedamageclass?.build(),
+              pokemon_v2_movelearnmethod: _pokemon_v2_movelearnmethod?.build(),
               pokemon_v2_ability: _pokemon_v2_ability?.build());
     } catch (_) {
       late String _$failedField;
@@ -365,6 +449,10 @@ class PokemonResourceBuilder
         _pokemon_v2_versiongroup?.build();
         _$failedField = 'pokemon_v2_egggroup';
         _pokemon_v2_egggroup?.build();
+        _$failedField = 'pokemon_v2_movedamageclass';
+        _pokemon_v2_movedamageclass?.build();
+        _$failedField = 'pokemon_v2_movelearnmethod';
+        _pokemon_v2_movelearnmethod?.build();
         _$failedField = 'pokemon_v2_ability';
         _pokemon_v2_ability?.build();
       } catch (e) {

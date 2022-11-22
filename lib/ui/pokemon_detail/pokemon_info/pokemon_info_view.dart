@@ -34,8 +34,6 @@ class PokemonInfoView extends StatefulWidget {
 class _PokemonInfoViewState extends State<PokemonInfoView> {
   final _pokemonInfoViewModel = getIt.get<PokemonInfoViewModel>();
 
-  final _scrollController = ScrollController();
-
   @override
   void initState() {
     super.initState();

@@ -27,7 +27,7 @@ class PokemonRepositoryGraphQl {
     final options = QueryOptions(
       document: gql(
         """
-          query samplePokeAPIquery {
+          query pokemonQuery {
             pokemon_v2_pokemon(where: {
               pokemon_v2_pokemontypes: {
                 type_id: {
@@ -89,7 +89,7 @@ class PokemonRepositoryGraphQl {
     final options = QueryOptions(
       document: gql(
         '''
-        query MyQuery {
+        query pokemonInfoQuery {
            pokemon_v2_pokemon(where: {id: {_eq: ${pokemonRequest.pokemonId}}}) {
              id
              pokemon_species_id
@@ -184,7 +184,7 @@ class PokemonRepositoryGraphQl {
     final options = QueryOptions(
       document: gql(
         '''
-          query samplePokeAPIquery {
+          query statsWeaknessResistanceQuery {
             pokemon_v2_pokemon(where: {id: {_eq: 1}}) {
               pokemon_v2_pokemonstats {
                 base_stat
@@ -208,6 +208,68 @@ class PokemonRepositoryGraphQl {
                       name
                     }
                     target_type_id
+                  }
+                }
+              }
+            }
+          }
+      ''',
+      ),
+    );
+
+    return _graphQlClient.query(options);
+  }
+
+  Future<QueryResult<dynamic>> getPokemonMoves(
+    PokemonRequest pokemonRequest,
+  ) async {
+    final _graphQlClient = graphQlClient.getClient();
+    final options = QueryOptions(
+      document: gql(
+        '''
+           query moveQuery {
+            pokemon_v2_pokemon(where: {id: {_eq: 1}}) {
+              id
+              pokemon_v2_pokemonmoves {
+                id
+                level
+                pokemon_v2_move {
+                  accuracy
+                  move_effect_chance
+                  name
+                  priority
+                  pp
+                  power
+                  super_contest_effect_id
+                  type_id
+                  pokemon_v2_generation {
+                    name
+                  }
+                  pokemon_v2_moveflavortexts(where: {language_id: {_eq: 9}}) {
+                    flavor_text
+                  }
+                  pokemon_v2_type {
+                    name
+                    pokemon_v2_movedamageclass {
+                      pokemon_v2_movedamageclassdescriptions(where: {language_id: {_eq: 9}}) {
+                        pokemon_v2_movedamageclass {
+                          name
+                          id
+                        }
+                      }
+                    }
+                  }
+                }
+                pokemon_v2_versiongroup {
+                  name
+                }
+                pokemon_v2_movelearnmethod {
+                  name
+                  pokemon_v2_movelearnmethoddescriptions(where: {language_id: {_eq: 9}}) {
+                    description
+                    pokemon_v2_movelearnmethod {
+                      name
+                    }
                   }
                 }
               }

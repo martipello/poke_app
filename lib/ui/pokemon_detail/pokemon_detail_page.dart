@@ -6,6 +6,7 @@ import '../../extensions/build_context_extension.dart';
 import '../../theme/base_theme.dart';
 import 'pokemon_detail_app_bar.dart';
 import 'pokemon_info/pokemon_info_view.dart';
+import 'pokemon_moves/pokemon_moves_view.dart';
 import 'pokemon_stats/pokemon_stats_view.dart';
 
 class PokemonDetailPageArguments {
@@ -31,7 +32,6 @@ class PokemonDetailPage extends StatefulWidget {
 class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProviderStateMixin {
   PokemonDetailPageArguments get pokemonDetailArguments => context.routeArguments as PokemonDetailPageArguments;
 
-  final _scrollController = ScrollController();
   late final _tabBarController = TabController(length: 4, vsync: this);
 
   Color get primaryColor => Colors.red;
@@ -93,9 +93,8 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
         PokemonStatsView(
           pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
         ),
-        CustomScrollView(
-          controller: _scrollController,
-          slivers: [],
+        PokemonMovesView(
+          pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
         ),
       ],
     );

@@ -15,6 +15,8 @@ abstract class PokemonResource implements Built<PokemonResource, PokemonResource
 
   String? get name;
 
+  String? get description;
+
   int? get id;
 
   String? get flavor_text;
@@ -30,6 +32,10 @@ abstract class PokemonResource implements Built<PokemonResource, PokemonResource
   PokemonResource? get pokemon_v2_versiongroup;
 
   PokemonResource? get pokemon_v2_egggroup;
+
+  PokemonResource? get pokemon_v2_movedamageclass;
+
+  PokemonResource? get pokemon_v2_movelearnmethod;
 
   PokemonAbility? get pokemon_v2_ability;
 

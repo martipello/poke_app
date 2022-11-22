@@ -61,6 +61,7 @@ class _PokemonStatsViewState extends State<PokemonStatsView> {
   Widget _buildLayoutForState(
     AsyncSnapshot<ApiResponse<PokemonResponse>> snapshot,
   ) {
+    //TODO this could inadvertently show error state
     final _pokemonInfo = snapshot.data?.data?.pokemon_v2_pokemon.firstOrNull();
     final _hasError = snapshot.data?.status == Status.ERROR || _pokemonInfo == null;
     final _isLoading = snapshot.data?.status == Status.LOADING;

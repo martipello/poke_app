@@ -19,28 +19,11 @@ class FilterButton extends StatefulWidget {
 }
 
 class _FilterButtonState extends State<FilterButton> with SingleTickerProviderStateMixin {
-  final _duration = const Duration(milliseconds: 300);
 
   final filterButtonTag = 'filterButtonTag';
 
-  // late final AnimationController _controller = AnimationController(
-  //   duration: const Duration(seconds: 2),
-  //   vsync: this,
-  // );
-
-  // late final Animation<Offset> _offsetAnimation = Tween<Offset>(
-  //   begin: Offset.zero,
-  //   end: const Offset(0, 3),
-  // ).animate(
-  //   CurvedAnimation(
-  //     parent: _controller,
-  //     curve: Curves.fastOutSlowIn,
-  //   ),
-  // );
-
   @override
   void dispose() {
-    // _controller.dispose();
     super.dispose();
   }
 

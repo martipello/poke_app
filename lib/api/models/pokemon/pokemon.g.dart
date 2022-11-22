@@ -38,6 +38,10 @@ class _$PokemonSerializer implements StructuredSerializer<Pokemon> {
       serializers.serialize(object.pokemon_v2_pokemonstats,
           specifiedType:
               const FullType(BuiltList, const [const FullType(PokemonStat)])),
+      'pokemon_v2_pokemonmoves',
+      serializers.serialize(object.pokemon_v2_pokemonmoves,
+          specifiedType: const FullType(
+              BuiltList, const [const FullType(PokemonMoveHolder)])),
     ];
     Object? value;
     value = object.id;
@@ -163,6 +167,12 @@ class _$PokemonSerializer implements StructuredSerializer<Pokemon> {
                       BuiltList, const [const FullType(PokemonStat)]))!
               as BuiltList<Object?>);
           break;
+        case 'pokemon_v2_pokemonmoves':
+          result.pokemon_v2_pokemonmoves.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(PokemonMoveHolder)]))!
+              as BuiltList<Object?>);
+          break;
       }
     }
 
@@ -195,6 +205,8 @@ class _$Pokemon extends Pokemon {
   final BuiltList<PokemonForm> pokemon_v2_pokemonforms;
   @override
   final BuiltList<PokemonStat> pokemon_v2_pokemonstats;
+  @override
+  final BuiltList<PokemonMoveHolder> pokemon_v2_pokemonmoves;
 
   factory _$Pokemon([void Function(PokemonBuilder)? updates]) =>
       (new PokemonBuilder()..update(updates))._build();
@@ -211,7 +223,8 @@ class _$Pokemon extends Pokemon {
       required this.pokemon_v2_pokemonabilities,
       this.pokemon_v2_pokemonspecy,
       required this.pokemon_v2_pokemonforms,
-      required this.pokemon_v2_pokemonstats})
+      required this.pokemon_v2_pokemonstats,
+      required this.pokemon_v2_pokemonmoves})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         pokemon_v2_pokemonsprites, r'Pokemon', 'pokemon_v2_pokemonsprites');
@@ -223,6 +236,8 @@ class _$Pokemon extends Pokemon {
         pokemon_v2_pokemonforms, r'Pokemon', 'pokemon_v2_pokemonforms');
     BuiltValueNullFieldError.checkNotNull(
         pokemon_v2_pokemonstats, r'Pokemon', 'pokemon_v2_pokemonstats');
+    BuiltValueNullFieldError.checkNotNull(
+        pokemon_v2_pokemonmoves, r'Pokemon', 'pokemon_v2_pokemonmoves');
   }
 
   @override
@@ -247,7 +262,8 @@ class _$Pokemon extends Pokemon {
         pokemon_v2_pokemonabilities == other.pokemon_v2_pokemonabilities &&
         pokemon_v2_pokemonspecy == other.pokemon_v2_pokemonspecy &&
         pokemon_v2_pokemonforms == other.pokemon_v2_pokemonforms &&
-        pokemon_v2_pokemonstats == other.pokemon_v2_pokemonstats;
+        pokemon_v2_pokemonstats == other.pokemon_v2_pokemonstats &&
+        pokemon_v2_pokemonmoves == other.pokemon_v2_pokemonmoves;
   }
 
   @override
@@ -262,18 +278,20 @@ class _$Pokemon extends Pokemon {
                                 $jc(
                                     $jc(
                                         $jc(
-                                            $jc($jc(0, id.hashCode),
-                                                name.hashCode),
-                                            height.hashCode),
-                                        weight.hashCode),
-                                    pokemon_species_id.hashCode),
-                                base_experience.hashCode),
-                            pokemon_v2_pokemonsprites.hashCode),
-                        pokemon_v2_pokemontypes.hashCode),
-                    pokemon_v2_pokemonabilities.hashCode),
-                pokemon_v2_pokemonspecy.hashCode),
-            pokemon_v2_pokemonforms.hashCode),
-        pokemon_v2_pokemonstats.hashCode));
+                                            $jc(
+                                                $jc($jc(0, id.hashCode),
+                                                    name.hashCode),
+                                                height.hashCode),
+                                            weight.hashCode),
+                                        pokemon_species_id.hashCode),
+                                    base_experience.hashCode),
+                                pokemon_v2_pokemonsprites.hashCode),
+                            pokemon_v2_pokemontypes.hashCode),
+                        pokemon_v2_pokemonabilities.hashCode),
+                    pokemon_v2_pokemonspecy.hashCode),
+                pokemon_v2_pokemonforms.hashCode),
+            pokemon_v2_pokemonstats.hashCode),
+        pokemon_v2_pokemonmoves.hashCode));
   }
 
   @override
@@ -290,7 +308,8 @@ class _$Pokemon extends Pokemon {
           ..add('pokemon_v2_pokemonabilities', pokemon_v2_pokemonabilities)
           ..add('pokemon_v2_pokemonspecy', pokemon_v2_pokemonspecy)
           ..add('pokemon_v2_pokemonforms', pokemon_v2_pokemonforms)
-          ..add('pokemon_v2_pokemonstats', pokemon_v2_pokemonstats))
+          ..add('pokemon_v2_pokemonstats', pokemon_v2_pokemonstats)
+          ..add('pokemon_v2_pokemonmoves', pokemon_v2_pokemonmoves))
         .toString();
   }
 }
@@ -367,6 +386,13 @@ class PokemonBuilder implements Builder<Pokemon, PokemonBuilder> {
           ListBuilder<PokemonStat>? pokemon_v2_pokemonstats) =>
       _$this._pokemon_v2_pokemonstats = pokemon_v2_pokemonstats;
 
+  ListBuilder<PokemonMoveHolder>? _pokemon_v2_pokemonmoves;
+  ListBuilder<PokemonMoveHolder> get pokemon_v2_pokemonmoves =>
+      _$this._pokemon_v2_pokemonmoves ??= new ListBuilder<PokemonMoveHolder>();
+  set pokemon_v2_pokemonmoves(
+          ListBuilder<PokemonMoveHolder>? pokemon_v2_pokemonmoves) =>
+      _$this._pokemon_v2_pokemonmoves = pokemon_v2_pokemonmoves;
+
   PokemonBuilder();
 
   PokemonBuilder get _$this {
@@ -384,6 +410,7 @@ class PokemonBuilder implements Builder<Pokemon, PokemonBuilder> {
       _pokemon_v2_pokemonspecy = $v.pokemon_v2_pokemonspecy?.toBuilder();
       _pokemon_v2_pokemonforms = $v.pokemon_v2_pokemonforms.toBuilder();
       _pokemon_v2_pokemonstats = $v.pokemon_v2_pokemonstats.toBuilder();
+      _pokemon_v2_pokemonmoves = $v.pokemon_v2_pokemonmoves.toBuilder();
       _$v = null;
     }
     return this;
@@ -419,7 +446,8 @@ class PokemonBuilder implements Builder<Pokemon, PokemonBuilder> {
               pokemon_v2_pokemonabilities: pokemon_v2_pokemonabilities.build(),
               pokemon_v2_pokemonspecy: _pokemon_v2_pokemonspecy?.build(),
               pokemon_v2_pokemonforms: pokemon_v2_pokemonforms.build(),
-              pokemon_v2_pokemonstats: pokemon_v2_pokemonstats.build());
+              pokemon_v2_pokemonstats: pokemon_v2_pokemonstats.build(),
+              pokemon_v2_pokemonmoves: pokemon_v2_pokemonmoves.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -435,6 +463,8 @@ class PokemonBuilder implements Builder<Pokemon, PokemonBuilder> {
         pokemon_v2_pokemonforms.build();
         _$failedField = 'pokemon_v2_pokemonstats';
         pokemon_v2_pokemonstats.build();
+        _$failedField = 'pokemon_v2_pokemonmoves';
+        pokemon_v2_pokemonmoves.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'Pokemon', _$failedField, e.toString());
