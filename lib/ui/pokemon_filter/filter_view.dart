@@ -6,7 +6,7 @@ import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import '../pokemon_list/view_models/filter_view_model.dart';
 import '../shared_widgets/chip_group.dart';
-import '../shared_widgets/pokemon_type_chip.dart';
+import '../shared_widgets/type_chip.dart';
 
 class FilterView extends StatefulWidget {
   const FilterView({
@@ -56,9 +56,9 @@ class _FilterViewState extends State<FilterView> {
         return ChipGroup(
           chips: PokemonType.values
               .map(
-                (type) => PokemonTypeChip(
+                (type) => TypeChip(
                   chipType: ChipType.filter,
-                  type: type,
+                  pokemonType: type,
                   isSelected: snapshot.data?.any(
                         (selectedType) => selectedType == type,
                       ) ==

@@ -28,8 +28,11 @@ class PokemonMovesView extends StatefulWidget {
   State<PokemonMovesView> createState() => _PokemonMovesViewState();
 }
 
-class _PokemonMovesViewState extends State<PokemonMovesView> {
+class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepAliveClientMixin<PokemonMovesView> {
   final _pokemonMovesViewModel = getIt.get<PokemonMovesViewModel>();
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -47,6 +50,7 @@ class _PokemonMovesViewState extends State<PokemonMovesView> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return StreamBuilder<ApiResponse<PokemonResponse>>(
       stream: _pokemonMovesViewModel.pokemonMovesStream,
       builder: (context, snapshot) {

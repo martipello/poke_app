@@ -7,7 +7,7 @@ import '../../extensions/build_context_extension.dart';
 import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import '../shared_widgets/chip_group.dart';
-import '../shared_widgets/pokemon_type_chip.dart';
+import '../shared_widgets/type_chip.dart';
 import 'view_models/filter_view_model.dart';
 import 'view_models/search_app_bar_view_model.dart';
 
@@ -112,9 +112,9 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
       scrollController: widget.filterViewModel.scrollController,
       chips: selectedFilters
           .map(
-            (type) => PokemonTypeChip(
+            (type) => TypeChip(
               chipType: ChipType.normal,
-              type: type,
+              pokemonType: type,
               isSelected: true,
               onDelete: () {
                 widget.filterViewModel.selectFilter(type);

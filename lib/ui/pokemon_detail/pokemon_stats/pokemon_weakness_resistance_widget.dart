@@ -9,7 +9,7 @@ import '../../../extensions/type_list_extension.dart';
 import '../../../theme/poke_app_text.dart';
 import '../../shared_widgets/chip_group.dart';
 import '../../shared_widgets/poke_divider.dart';
-import '../../shared_widgets/pokemon_type_chip.dart';
+import '../../shared_widgets/type_chip.dart';
 
 class PokemonWeaknessResistanceWidget extends StatelessWidget {
   const PokemonWeaknessResistanceWidget({
@@ -65,9 +65,9 @@ class PokemonWeaknessResistanceWidget extends StatelessWidget {
       chips: typeEfficacies.map(
         (te) {
           final damageFactor = te.calculateDamageFactor();
-          return PokemonTypeChip(
+          return TypeChip(
             chipType: ChipType.normal,
-            type: PokemonType.getTypeForId(
+            pokemonType: PokemonType.getTypeForId(
               te.damage_type_id ?? 0,
             ),
             labelSuffix: ' x$damageFactor',

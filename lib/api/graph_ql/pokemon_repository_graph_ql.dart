@@ -220,6 +220,49 @@ class PokemonRepositoryGraphQl {
     return _graphQlClient.query(options);
   }
 
+  Future<QueryResult<dynamic>> getPokemonEvolutions(
+      PokemonRequest pokemonRequest,
+      ) async {
+    final _graphQlClient = graphQlClient.getClient();
+    final options = QueryOptions(
+      document: gql(
+        '''
+          query statsWeaknessResistanceQuery {
+            pokemon_v2_pokemon(where: {id: {_eq: 1}}) {
+              pokemon_v2_pokemonstats {
+                base_stat
+                effort
+                stat_id
+                pokemon_v2_stat {
+                  name
+                  move_damage_class_id
+                  is_battle_only
+                  game_index
+                }
+              }
+              pokemon_v2_pokemontypes {
+                id
+                pokemon_v2_type {
+                  name
+                  pokemonV2TypeefficaciesByTargetTypeId {
+                    damage_factor
+                    damage_type_id
+                    pokemon_v2_type {
+                      name
+                    }
+                    target_type_id
+                  }
+                }
+              }
+            }
+          }
+      ''',
+      ),
+    );
+
+    return _graphQlClient.query(options);
+  }
+
   Future<QueryResult<dynamic>> getPokemonMoves(
     PokemonRequest pokemonRequest,
   ) async {

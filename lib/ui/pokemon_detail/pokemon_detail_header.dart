@@ -8,7 +8,7 @@ import '../../extensions/type_data_extension.dart';
 import '../../theme/poke_app_text.dart';
 import '../shared_widgets/chip_group.dart';
 import '../shared_widgets/pokemon_image.dart';
-import '../shared_widgets/pokemon_type_chip.dart';
+import '../shared_widgets/type_chip.dart';
 
 class PokemonDetailHeader extends StatelessWidget {
   const PokemonDetailHeader({
@@ -118,8 +118,8 @@ class PokemonDetailHeader extends StatelessWidget {
         ChipGroup(
           chips: pokemon.pokemon_v2_pokemontypes
               .map(
-                (type) => PokemonTypeChip(
-                  type: type.pokemon_v2_type?.pokemonType() ?? PokemonType.unknown,
+                (type) => TypeChip(
+                  pokemonType: type.pokemon_v2_type?.pokemonType() ?? PokemonType.unknown,
                   chipType: ChipType.normal,
                 ),
               )

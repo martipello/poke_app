@@ -26,8 +26,11 @@ class PokemonStatsView extends StatefulWidget {
   State<PokemonStatsView> createState() => _PokemonStatsViewState();
 }
 
-class _PokemonStatsViewState extends State<PokemonStatsView> {
+class _PokemonStatsViewState extends State<PokemonStatsView> with AutomaticKeepAliveClientMixin<PokemonStatsView> {
   final _pokemonInfoViewModel = getIt.get<PokemonStatsWeaknessResistanceViewModel>();
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -45,6 +48,7 @@ class _PokemonStatsViewState extends State<PokemonStatsView> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return StreamBuilder<ApiResponse<PokemonResponse>>(
       stream: _pokemonInfoViewModel.pokemonStatsWeaknessAndResistanceStream,
       builder: (context, snapshot) {
