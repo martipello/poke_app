@@ -6,6 +6,7 @@ import 'api/graph_ql/graph_ql_client.dart';
 import 'api/graph_ql/pokemon_repository_graph_ql.dart';
 import 'services/launch_service.dart';
 import 'services/shared_preferences_service.dart';
+import 'ui/pokemon_detail/pokemon_evolutions/view_models/pokemon_evolution_view_model.dart';
 import 'ui/pokemon_detail/pokemon_info/view_models/pokemon_info_view_model.dart';
 import 'ui/pokemon_detail/pokemon_moves/view_models/pokemon_moves_view_model.dart';
 import 'ui/pokemon_detail/pokemon_stats/view_models/pokemon_stats_weakness_resistance_view_model.dart';
@@ -14,6 +15,7 @@ import 'ui/pokemon_list/view_models/filter_view_model.dart';
 import 'ui/pokemon_list/view_models/pokemon_list_view_model.dart';
 import 'ui/pokemon_list/view_models/search_app_bar_view_model.dart';
 import 'ui/shared_widgets/view_models/expansion_card_state_view_model.dart';
+import 'ui/shared_widgets/view_models/image_color_view_model.dart';
 import 'ui/shared_widgets/view_models/pokeball_loading_view_model.dart';
 import 'ui/shared_widgets/view_models/spash_view_model.dart';
 
@@ -30,10 +32,12 @@ Future<void> init() async {
   getIt.registerFactory(() => PokemonListViewModel(getIt()));
   getIt.registerFactory(() => PokemonInfoViewModel(getIt(), getIt()));
   getIt.registerFactory(() => PokemonMovesViewModel(getIt(), getIt()));
+  getIt.registerFactory(() => PokemonEvolutionViewModel(getIt(), getIt()));
   getIt.registerFactory(() => PokemonStatsWeaknessResistanceViewModel(getIt(), getIt()));
   getIt.registerFactory(FilterViewModel.new);
   getIt.registerFactory(SearchAppBarViewModel.new);
   getIt.registerFactory(SplashViewModel.new);
   getIt.registerFactory(ExpansionCardStateViewModel.new);
   getIt.registerFactory(PokeballLoadingViewModel.new);
+  getIt.registerFactory(ImageColorViewModel.new);
 }

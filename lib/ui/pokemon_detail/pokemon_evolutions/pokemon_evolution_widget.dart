@@ -7,6 +7,7 @@ import '../../../extensions/build_context_extension.dart';
 import '../../../extensions/pokemon_ability_holder_extension.dart';
 import '../../../extensions/pokemon_extension.dart';
 import '../../../theme/poke_app_text.dart';
+import '../../pokemon_list/pokemon_tile.dart';
 import '../../shared_widgets/poke_divider.dart';
 import '../../shared_widgets/pokemon_expansion_tile.dart';
 import '../../shared_widgets/pokemon_table.dart';
@@ -21,8 +22,8 @@ class PokemonEvolutionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final abilities = pokemon.abilities();
-    if (abilities.isEmpty) {
+    final evolutions = [];//pokemon.evolution();
+    if (evolutions.isEmpty) {
       return const SliverToBoxAdapter(
         child: SizedBox(),
       );
@@ -34,9 +35,9 @@ class PokemonEvolutionWidget extends StatelessWidget {
         ),
         SliverList(
           delegate: SliverChildBuilderDelegate(
-            childCount: abilities.length,
+            childCount: evolutions.length,
             (context, index) {
-              final ability = abilities[index];
+              final pokemon = evolutions[index];
               return Column(
                 children: [
                   if (index != 0)
@@ -46,20 +47,8 @@ class PokemonEvolutionWidget extends StatelessWidget {
                       ),
                       child: _buildDivider(),
                     ),
-                  PokemonExpansionTile(
-                    canExpand: true,
-                    title: _buildExpansionTileTitle(
-                      context,
-                      ability.title(),
-                      ability.is_hidden == true,
-                    ),
-                    subtitle: _buildExpansionTileSubtitle(
-                      ability,
-                    ),
-                    children: _buildPokemonAbilityDetail(
-                      context,
-                      ability,
-                    ),
+                  PokemonTile(
+                    pokemon: pokemon,
                   ),
                 ],
               );
@@ -81,49 +70,10 @@ class PokemonEvolutionWidget extends StatelessWidget {
         horizontal: 8.0,
       ),
       child: Text(
-        context.strings.abilities,
+        context.strings.evolutions,
         style: PokeAppText.subtitle3Style,
       ),
     );
-  }
-
-  List<Widget> _buildPokemonAbilityDetail(
-      BuildContext context,
-    PokemonAbilityHolder abilityHolder,
-  ) {
-    final generation = abilityHolder.pokemon_v2_ability?.generation_id?.toString() ?? '';
-    final versionDisplayName = abilityHolder.versionDisplayName();
-    final shortEffect = abilityHolder.shortEffect();
-    final mainSeries = abilityHolder.mainSeries();
-    return [
-      Padding(
-        padding: const EdgeInsets.only(top: 8),
-        child: PokemonTable(
-          pokemonTableRowInfoList: [
-            if (shortEffect.isNotEmpty)
-              PokemonTableRowInfo(
-                context.strings.effect,
-                value: shortEffect,
-              ),
-            if (generation.isNotEmpty)
-              PokemonTableRowInfo(
-                context.strings.generation,
-                value: '$generation',
-              ),
-            if (versionDisplayName.isNotEmpty)
-              PokemonTableRowInfo(
-                context.strings.version,
-                value: versionDisplayName,
-              ),
-            if (mainSeries.isNotEmpty)
-              PokemonTableRowInfo(
-                context.strings.mainSeries,
-                value: mainSeries,
-              ),
-          ],
-        ),
-      ),
-    ];
   }
 
   Widget _buildDivider() {
@@ -136,43 +86,4 @@ class PokemonEvolutionWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildExpansionTileTitle(
-    BuildContext context,
-    String title,
-    bool isHidden,
-  ) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: 4,
-        bottom: 4,
-      ),
-      child: Row(
-        children: [
-          Text(
-            title,
-            style: PokeAppText.body3Style,
-          ),
-          if (isHidden)
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 8,
-              ),
-              child: Text(
-                context.strings.hidden,
-                style: PokeAppText.body3Style,
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildExpansionTileSubtitle(
-    PokemonAbilityHolder pokemonAbilityHolder,
-  ) {
-    return Text(
-      pokemonAbilityHolder.description(),
-      style: PokeAppText.body4Style,
-    );
-  }
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:palette_generator/palette_generator.dart';
 
 import '../../api/models/pokemon/pokemon.dart';
 import '../../api/models/pokemon/pokemon_type.dart';
+import '../../dependency_injection_container.dart';
 import '../../extensions/string_extension.dart';
 import '../../extensions/type_data_extension.dart';
 import '../../theme/poke_app_text.dart';
@@ -10,9 +12,10 @@ import '../shared_widgets/chip_group.dart';
 import '../shared_widgets/pokemon_image.dart';
 import '../shared_widgets/rounded_card.dart';
 import '../shared_widgets/type_chip.dart';
+import '../shared_widgets/view_models/image_color_view_model.dart';
 
-class PokemonTile extends StatelessWidget {
-  const PokemonTile({
+class PokemonTile extends StatefulWidget {
+  PokemonTile({
     Key? key,
     required this.pokemon,
   }) : super(key: key);
@@ -20,22 +23,51 @@ class PokemonTile extends StatelessWidget {
   final Pokemon pokemon;
 
   @override
+  State<PokemonTile> createState() => _PokemonTileState();
+}
+
+class _PokemonTileState extends State<PokemonTile> {
+  final mainImageColorViewModel = getIt.get<ImageColorViewModel>();
+  final spriteImageColorViewModel = getIt.get<ImageColorViewModel>();
+
+  @override
+  void dispose() {
+    mainImageColorViewModel.dispose();
+    spriteImageColorViewModel.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return RoundedCard(
-      onTap: () {
-        Navigator.of(context).pushNamed(
-          PokemonDetailPage.routeName,
-          arguments: PokemonDetailPageArguments(
-            pokemon: pokemon,
-          ),
+    return StreamBuilder<PaletteGenerator>(
+      stream: mainImageColorViewModel.paletteGeneratorStream,
+      builder: (context, mainImagePaletteGeneratorSnapshot) {
+        return StreamBuilder<PaletteGenerator>(
+          stream: spriteImageColorViewModel.paletteGeneratorStream,
+          builder: (context, spriteImagePaletteGeneratorSnapshot) {
+            final spriteImagePaletteGenerator = spriteImagePaletteGeneratorSnapshot.data;
+            final mainImagePaletteGenerator = mainImagePaletteGeneratorSnapshot.data;
+            return RoundedCard(
+              onTap: () {
+                Navigator.of(context).pushNamed(
+                  PokemonDetailPage.routeName,
+                  arguments: PokemonDetailPageArguments(
+                    pokemon: widget.pokemon,
+                    spriteImagePaletteGenerator: spriteImagePaletteGenerator,
+                    mainImagePaletteGenerator: mainImagePaletteGenerator,
+                  ),
+                );
+              },
+              child: _buildPokemonCardBody(),
+            );
+          }
         );
-      },
-      child: _buildPokemonCardBody(),
+      }
     );
   }
 
   Widget _buildPokemonCardBody() {
-    final speciesName = pokemon.pokemon_v2_pokemonspecy?.pokemon_v2_pokemonspeciesnames.first.genus ?? '';
+    final speciesName = widget.pokemon.pokemon_v2_pokemonspecy?.pokemon_v2_pokemonspeciesnames.first.genus ?? '';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
@@ -57,7 +89,7 @@ class PokemonTile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             ChipGroup(
-              chips: pokemon.pokemon_v2_pokemontypes
+              chips: widget.pokemon.pokemon_v2_pokemontypes
                   .map(
                     (type) => TypeChip(
                       pokemonType: type.pokemon_v2_type?.pokemonType() ?? PokemonType.unknown,
@@ -73,7 +105,7 @@ class PokemonTile extends StatelessWidget {
   }
 
   Widget _buildPokemonInfo(String speciesName) {
-    final pokemonName = pokemon.name ?? 'Unknown Pokemon';
+    final pokemonName = widget.pokemon.name ?? 'Unknown Pokemon';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
@@ -92,7 +124,7 @@ class PokemonTile extends StatelessWidget {
   }
 
   Widget _buildPokemonId() {
-    final pokemonId = pokemon.id ?? '??';
+    final pokemonId = widget.pokemon.id ?? '??';
     return Padding(
       padding: const EdgeInsets.only(
         top: 4,
@@ -106,12 +138,14 @@ class PokemonTile extends StatelessWidget {
 
   Widget _buildPokemonImage() {
     return PokemonImage(
-      pokemon: pokemon,
+      pokemon: widget.pokemon,
       clipBehavior: Clip.hardEdge,
       size: const Size(
         80,
         80,
       ),
+      imageColorCallback: mainImageColorViewModel.paletteGeneratorStream.add,
+      spriteImageColorCallback: spriteImageColorViewModel.paletteGeneratorStream.add,
     );
   }
 }

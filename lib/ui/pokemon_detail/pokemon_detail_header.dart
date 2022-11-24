@@ -74,6 +74,7 @@ class PokemonDetailHeader extends StatelessWidget {
         200,
         200,
       ),
+      color: Colors.transparent,
     );
   }
 

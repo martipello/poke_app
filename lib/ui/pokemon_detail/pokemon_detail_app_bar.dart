@@ -67,7 +67,7 @@ class _PokemonDetailAppBarState extends State<PokemonDetailAppBar> with TickerPr
       },
       child: SliverAppBar(
         pinned: false,
-        expandedHeight: 437,
+        expandedHeight: 440,
         backgroundColor: colors(context).cardBackground,
         titleSpacing: 0,
         title: _buildEmbeddedAppBar(),

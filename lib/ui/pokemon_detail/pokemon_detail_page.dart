@@ -13,11 +13,13 @@ import 'pokemon_stats/pokemon_stats_view.dart';
 class PokemonDetailPageArguments {
   PokemonDetailPageArguments({
     required this.pokemon,
-    this.paletteGenerator,
+    this.mainImagePaletteGenerator,
+    this.spriteImagePaletteGenerator,
   });
 
   final Pokemon pokemon;
-  final PaletteGenerator? paletteGenerator;
+  final PaletteGenerator? mainImagePaletteGenerator;
+  final PaletteGenerator? spriteImagePaletteGenerator;
 }
 
 class PokemonDetailPage extends StatefulWidget {
@@ -35,9 +37,8 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
 
   late final _tabBarController = TabController(length: 4, vsync: this);
 
-  Color get primaryColor => Colors.red;
-
-  Color get secondaryColor => Colors.green;
+  Color get primaryColor => pokemonDetailArguments.mainImagePaletteGenerator?.dominantColor?.color ?? pokemonDetailArguments.spriteImagePaletteGenerator?.dominantColor?.color ?? Colors.red;
+  Color get secondaryColor => pokemonDetailArguments.mainImagePaletteGenerator?.lightVibrantColor?.color ?? pokemonDetailArguments.spriteImagePaletteGenerator?.lightVibrantColor?.color ?? Colors.green;
 
   @override
   Widget build(BuildContext context) {

@@ -221,38 +221,68 @@ class PokemonRepositoryGraphQl {
   }
 
   Future<QueryResult<dynamic>> getPokemonEvolutions(
-      PokemonRequest pokemonRequest,
-      ) async {
+    PokemonRequest pokemonRequest,
+  ) async {
     final _graphQlClient = graphQlClient.getClient();
     final options = QueryOptions(
       document: gql(
         '''
-          query statsWeaknessResistanceQuery {
+query MyQuery {
+  pokemon_v2_pokemonevolution {
+    needs_overworld_rain
+    min_level
+    min_happiness
+    min_beauty
+    min_affection
+    pokemon_v2_evolutiontrigger {
+      name
+      pokemon_v2_pokemonevolutions {
+        id
+        needs_overworld_rain
+        min_level
+        min_happiness
+        min_beauty
+        min_affection
+        relative_physical_stats
+        time_of_day
+        turn_upside_down
+        pokemon_v2_evolutiontrigger {
+          name
+        }
+      }
+    }
+    turn_upside_down
+    time_of_day
+    relative_physical_stats
+  }
+}
+      ''',
+      ),
+    );
+
+    return _graphQlClient.query(options);
+  }
+
+  Future<QueryResult<dynamic>> getPokemonForms(
+    PokemonRequest pokemonRequest,
+  ) async {
+    final _graphQlClient = graphQlClient.getClient();
+    final options = QueryOptions(
+      document: gql(
+        '''
+          query MyQuery {
             pokemon_v2_pokemon(where: {id: {_eq: 1}}) {
-              pokemon_v2_pokemonstats {
-                base_stat
-                effort
-                stat_id
-                pokemon_v2_stat {
-                  name
-                  move_damage_class_id
-                  is_battle_only
-                  game_index
-                }
-              }
-              pokemon_v2_pokemontypes {
-                id
-                pokemon_v2_type {
-                  name
-                  pokemonV2TypeefficaciesByTargetTypeId {
-                    damage_factor
-                    damage_type_id
-                    pokemon_v2_type {
-                      name
-                    }
-                    target_type_id
-                  }
-                }
+              id
+              pokemon_v2_pokemonforms {
+                form_name
+                is_mega
+                is_default
+                is_battle_only
+                form_order
+                pokemon_id
+                order
+                name
+                version_group_id
               }
             }
           }
