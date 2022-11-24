@@ -4,6 +4,8 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
 import '../../serializers/serializers.dart';
+import 'machine.dart';
+import 'move_metum.dart';
 import 'pokemon_resource.dart';
 import 'type_data.dart';
 
@@ -13,6 +15,8 @@ abstract class PokemonMove implements Built<PokemonMove, PokemonMoveBuilder> {
   factory PokemonMove([void Function(PokemonMoveBuilder) updates]) = _$PokemonMove;
 
   PokemonMove._();
+
+  int? get id;
 
   int? get accuracy;
 
@@ -35,6 +39,10 @@ abstract class PokemonMove implements Built<PokemonMove, PokemonMoveBuilder> {
   BuiltList<PokemonResource> get pokemon_v2_moveflavortexts;
 
   TypeData? get pokemon_v2_type;
+
+  BuiltList<Machine> get machines;
+
+  MoveMetum? get pokemon_v2_movemetum;
 
   Map<String, dynamic> toJson() {
     return serializers.serializeWith(PokemonMove.serializer, this) as Map<String, dynamic>;

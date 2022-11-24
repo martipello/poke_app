@@ -8,7 +8,7 @@ import '../../theme/poke_app_text.dart';
 
 typedef OnSelected = void Function(bool selected);
 
-enum ChipType { filter, normal }
+enum ChipType { filter, normal, expansion }
 
 class TypeChip extends StatelessWidget {
   const TypeChip({
@@ -19,22 +19,27 @@ class TypeChip extends StatelessWidget {
     this.pokemonType,
     this.damageType,
     this.labelSuffix = '',
-  }) : assert (pokemonType != null || damageType != null);
+    this.isExpanded,
+  }) : assert(pokemonType != null || damageType != null || (chipType == ChipType.expansion && isExpanded != null));
 
   final ChipType chipType;
   final PokemonType? pokemonType;
   final DamageType? damageType;
   final bool isSelected;
+  final bool? isExpanded;
   final OnSelected? onSelected;
   final VoidCallback? onDelete;
   final String labelSuffix;
 
   @override
   Widget build(BuildContext context) {
-    if (chipType == ChipType.filter) {
-      return _buildFilterChip(context);
-    } else {
-      return _buildChip(context);
+    switch (chipType) {
+      case ChipType.filter:
+        return _buildFilterChip(context);
+      case ChipType.normal:
+        return _buildChip(context);
+      case ChipType.expansion:
+        return _buildExpansionChip(context);
     }
   }
 
@@ -50,15 +55,20 @@ class TypeChip extends StatelessWidget {
           height: 24,
           width: 24,
         ),
-        label: Text(
-          '${label.capitalize()}$labelSuffix',
+        label: Padding(
+          padding: const EdgeInsets.only(bottom: 3),
+          child: Text(
+            '${label.capitalize()}$labelSuffix',
+          ),
         ),
         side: BorderSide(
           width: 1,
           color: color!,
         ),
         backgroundColor: color,
-        padding: const EdgeInsets.only(bottom: 2),
+        padding: const EdgeInsets.only(
+          right: 8,
+        ),
         labelStyle: PokeAppText.body4Style.copyWith(
           color: colors(context).textOnPrimary,
         ),
@@ -94,13 +104,18 @@ class TypeChip extends StatelessWidget {
                 color: color!,
               )
             : null,
-        label: Text(
-          '${label.capitalize()}$labelSuffix',
-          style: PokeAppText.body4Style.copyWith(
-            color: colors(context).textOnPrimary,
+        label: Padding(
+          padding: const EdgeInsets.only(bottom: 3),
+          child: Text(
+            '${label.capitalize()}$labelSuffix',
+            style: PokeAppText.body4Style.copyWith(
+              color: colors(context).textOnPrimary,
+            ),
           ),
         ),
-        padding: const EdgeInsets.only(bottom: 2),
+        padding: const EdgeInsets.only(
+          right: 8,
+        ),
         labelStyle: PokeAppText.body4Style.copyWith(
           color: colors(context).textOnPrimary,
         ),
@@ -109,6 +124,51 @@ class TypeChip extends StatelessWidget {
         showCheckmark: isSelected,
         selectedColor: colors(context).textOnForeground,
         checkmarkColor: colors(context).white,
+      ),
+    );
+  }
+
+  Widget _buildExpansionChip(BuildContext context) {
+    final label = damageType?.name ?? pokemonType?.name;
+    final color = damageType?.color ?? pokemonType?.color;
+    final image = damageType?.image ?? pokemonType?.image;
+    return Container(
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: const BorderRadius.all(
+          Radius.circular(
+            90,
+          ),
+        ),
+      ),
+      padding: const EdgeInsets.all(4),
+      child: AnimatedSize(
+        duration: const Duration(
+          milliseconds: 200,
+        ),
+        child: Row(
+          children: [
+            Image.asset(
+              image!,
+              height: 24,
+              width: 24,
+            ),
+            if (isExpanded == true)
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 8,
+                  right: 8,
+                  bottom: 2,
+                ),
+                child: Text(
+                  label!.capitalize(),
+                  style: PokeAppText.body3Style.copyWith(
+                    color: colors(context).textOnPrimary,
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

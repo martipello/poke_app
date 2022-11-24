@@ -8,6 +8,7 @@ import '../../../api/models/pokemon/pokemon_response.dart';
 import '../../../dependency_injection_container.dart';
 import '../../../extensions/build_context_extension.dart';
 import '../../../extensions/iterable_extension.dart';
+import '../../../extensions/pokemon_extension.dart';
 import '../../../theme/poke_app_text.dart';
 import '../../shared_widgets/error_widget.dart' as ew;
 import '../../shared_widgets/poke_divider.dart';
@@ -67,7 +68,7 @@ class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepA
   Widget _buildLayoutForState(
     AsyncSnapshot<ApiResponse<PokemonResponse>> snapshot,
   ) {
-    final _pokemonMoves = snapshot.data?.data?.pokemon_v2_pokemon.firstOrNull()?.pokemon_v2_pokemonmoves.toList() ?? [];
+    final _pokemonMoves = snapshot.data?.data?.pokemon_v2_pokemon.firstOrNull()?.pokemonMoves() ?? [];
     final _hasError = snapshot.data?.status == Status.ERROR;
     final _isLoading = snapshot.data?.status == Status.LOADING;
     if (_isLoading) return _buildLoadingWidget();
@@ -146,8 +147,12 @@ class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepA
     );
   }
 
-  Widget _buildMoveTile(PokemonMoveHolder move) {
-    return PokemonMoveTile(move: move);
+  Widget _buildMoveTile(
+    PokemonMoveHolder move,
+  ) {
+    return PokemonMoveTile(
+      pokemonMove: move,
+    );
   }
 
   Widget _buildDivider() {

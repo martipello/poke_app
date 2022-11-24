@@ -26,6 +26,27 @@
     "mainSeries" : "Main Series",
     "hidden" : "(Hidden)",
     "baseStats" : "Base stats",
+
+    "generation" : "Generation :",
+    "power" : "Power :",
+    "accuracy" : "Accuracy :",
+    "pp" : "PP :",
+    "noDescription" : "No description.",
+    "moveDetails" : "Move Details",
+    "learningMethods" : "Learning Methods",
+
+
+    "ailment" : "Ailment Name :",
+    "criticalRate" : "Critical :",
+    "ailmentChance" : "Ailment :",
+    "flinchChance" : "Flinch :",
+    "statChance" : "Stat Change :",
+    "drain" : "Drain :",
+    "minHits" : "Min Hits :",
+    "maxHits" : "Max Hits :",
+    "minTurns" : "Min Turns :",
+    "maxTurns" : "Min Turns :",
+
     "total" : "Total",
     "typeEffectiveness" : "Type Effectiveness",
     "info" : "Info",

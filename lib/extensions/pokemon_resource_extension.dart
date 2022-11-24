@@ -7,6 +7,15 @@ extension PokemonExtension on PokemonResource? {
     return _versionGroupName.split(RegExp('-')).join(' ').capitalize();
   }
 
+  String generationName() {
+    final _versionGroupName = this?.name ?? '';
+    final splitString = _versionGroupName.split(RegExp('-'));
+    if(splitString.isNotEmpty){
+      splitString[1] = splitString[1].toUpperCase();
+    }
+    return splitString.join(' ').capitalize();
+  }
+
   String flavorText() {
     return this?.flavor_text?.replaceAll(RegExp('\n'), ' ') ?? '';
   }

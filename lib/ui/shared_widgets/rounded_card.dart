@@ -15,7 +15,9 @@ class RoundedCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: ThemeData(cardColor: colors(context).cardBackground),
+      data: ThemeData(
+        cardColor: colors(context).cardBackground,
+      ),
       child: Card(
         elevation: 3,
         shape: RoundedRectangleBorder(

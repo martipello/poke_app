@@ -29,15 +29,19 @@ class PokemonTable extends StatelessWidget {
     required this.pokemonTableRowInfoList,
     this.tableTitle,
     this.tableTitleTextStyle,
+    this.padding,
   });
 
   final String? tableTitle;
   final TextStyle? tableTitleTextStyle;
+  final EdgeInsets? padding;
   final List<PokemonTableRowInfo> pokemonTableRowInfoList;
 
   @override
   Widget build(BuildContext context) {
-    return pokemonTableRowInfoList.any((element) => element.value?.isNotEmpty == true || element.child != null)
+    return pokemonTableRowInfoList.any(
+      (element) => element.value?.isNotEmpty == true || element.child != null,
+    )
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -46,8 +50,8 @@ class PokemonTable extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     _buildBookingSubTitle(
-                      tableTitle,
                       context,
+                      tableTitle,
                     ),
                     const SizedBox(
                       height: 8,
@@ -82,6 +86,12 @@ class PokemonTable extends StatelessWidget {
                                   (element) => element.value?.isNotEmpty == true || element.child != null,
                                 )
                                 .first,
+                        isLast: e ==
+                            pokemonTableRowInfoList
+                                .where(
+                                  (element) => element.value?.isNotEmpty == true || element.child != null,
+                                )
+                                .last,
                       );
                     },
                   ),
@@ -103,11 +113,16 @@ class PokemonTable extends StatelessWidget {
     TextAlign? labelTextAlign,
     bool isConstrained = false,
     bool isFirst = false,
+    bool isLast = false,
   }) {
     return TableRow(
       children: [
         _buildTableRowIcon(icon, context),
-        _buildTableRowText(key, isFirst),
+        _buildTableRowText(
+          key,
+          isFirst,
+          isLast,
+        ),
         if (!isConstrained)
           _buildTableRowContent(
             onPressed,
@@ -116,6 +131,7 @@ class PokemonTable extends StatelessWidget {
             value,
             labelTextAlign,
             isFirst,
+            isLast,
           ),
         if (isConstrained)
           _buildConstrainedTableRowContent(
@@ -126,6 +142,7 @@ class PokemonTable extends StatelessWidget {
             value,
             labelTextAlign,
             isFirst,
+            isLast,
           ),
       ],
     );
@@ -139,6 +156,7 @@ class PokemonTable extends StatelessWidget {
     String? value,
     TextAlign? labelTextAlign,
     bool isFirst,
+    bool isLast,
   ) {
     final screenMeasure = (context.screenWidth / 5) * 3;
     return Align(
@@ -152,6 +170,7 @@ class PokemonTable extends StatelessWidget {
           value,
           labelTextAlign,
           isFirst,
+          isLast,
         ),
       ),
     );
@@ -164,14 +183,21 @@ class PokemonTable extends StatelessWidget {
     String? value,
     TextAlign? labelTextAlign,
     bool isFirst,
+    bool isLast,
   ) {
+    final topPadding = (isFirst ? 0 : padding?.top ?? 8).toDouble();
+    final bottomPadding = (isLast ? 0 : padding?.bottom ?? 8).toDouble();
     return GestureDetector(
       onTap: onPressed,
       child: Row(
         children: [
           Expanded(
             child: Padding(
-              padding: borderColor != null ? const EdgeInsets.only(bottom: 16) : EdgeInsets.zero,
+              padding: borderColor != null
+                  ? const EdgeInsets.only(
+                      bottom: 16,
+                    )
+                  : EdgeInsets.zero,
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4),
@@ -181,10 +207,10 @@ class PokemonTable extends StatelessWidget {
                 ),
                 child: Padding(
                   padding: EdgeInsets.only(
-                    left: 8,
-                    right: 8,
-                    bottom: 8,
-                    top: isFirst ? 0 : 8,
+                    left: padding?.left ?? 8,
+                    right: padding?.right ?? 8,
+                    bottom: bottomPadding,
+                    top: topPadding,
                   ),
                   child: child ??
                       Text(
@@ -201,12 +227,15 @@ class PokemonTable extends StatelessWidget {
     );
   }
 
-  Widget _buildTableRowText(String? key, bool isFirst) {
+  Widget _buildTableRowText(
+    String? key,
+    bool isFirst,
+    bool isLast,
+  ) {
+    final topPadding = (isFirst ? 0 : padding?.top ?? 8).toDouble();
+    final bottomPadding = (isLast ? 0 : padding?.bottom ?? 8).toDouble();
     return Padding(
-      padding: EdgeInsets.only(
-        top: isFirst ? 0 : 8.0,
-        right: 8,
-      ),
+      padding: EdgeInsets.only(top: topPadding, right: 8, bottom: bottomPadding),
       child: Row(
         children: [
           Flexible(
@@ -245,13 +274,13 @@ class PokemonTable extends StatelessWidget {
     );
   }
 
-  Widget _buildBookingSubTitle(String? value, BuildContext context) {
+  Widget _buildBookingSubTitle(
+    BuildContext context,
+    String? value,
+  ) {
     return Text(
       value ?? '',
-      style: tableTitleTextStyle ??
-          PokeAppText.body1Style.copyWith(
-            color: colors(context).textOnForeground,
-          ),
+      style: tableTitleTextStyle ?? PokeAppText.subtitle4Style,
     );
   }
 }

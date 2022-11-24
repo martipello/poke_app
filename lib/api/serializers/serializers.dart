@@ -3,8 +3,10 @@ import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
 
 import '../models/error_response.dart';
+import '../models/pokemon/machine.dart';
 import '../models/pokemon/move_damage_class.dart';
 import '../models/pokemon/move_learn_method.dart';
+import '../models/pokemon/move_metum.dart';
 import '../models/pokemon/pokemon.dart';
 import '../models/pokemon/pokemon_ability.dart';
 import '../models/pokemon/pokemon_ability_holder.dart';
@@ -30,8 +32,10 @@ part 'serializers.g.dart';
 
 @SerializersFor([
   ErrorResponse,
+  Machine,
   MoveDamageClass,
   MoveLearnMethod,
+  MoveMetum,
   Pokemon,
   PokemonAbility,
   PokemonAbilityHolder,

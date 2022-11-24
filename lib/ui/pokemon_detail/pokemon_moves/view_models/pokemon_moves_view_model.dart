@@ -5,6 +5,7 @@ import '../../../../api/graph_ql/pokemon_repository_graph_ql.dart';
 import '../../../../api/models/api_response.dart';
 import '../../../../api/models/pokemon/pokemon_request.dart';
 import '../../../../api/models/pokemon/pokemon_response.dart';
+import '../../../../utils/console_output.dart';
 
 class PokemonMovesViewModel {
   PokemonMovesViewModel(
@@ -23,7 +24,6 @@ class PokemonMovesViewModel {
       final pokemonInfoResponse = await pokemonRepository.getPokemonMoves(
         _buildPokemonRequest(pokemonId),
       );
-
       final pokemon = PokemonResponse.fromJson(pokemonInfoResponse.data!);
 
       pokemonMovesStream.add(

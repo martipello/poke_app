@@ -8,8 +8,10 @@ part of 'serializers.dart';
 
 Serializers _$serializers = (new Serializers().toBuilder()
       ..add(ErrorResponse.serializer)
+      ..add(Machine.serializer)
       ..add(MoveDamageClass.serializer)
       ..add(MoveLearnMethod.serializer)
+      ..add(MoveMetum.serializer)
       ..add(Pokemon.serializer)
       ..add(PokemonAbility.serializer)
       ..add(PokemonAbilityHolder.serializer)
@@ -40,6 +42,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(PokemonResource)]),
           () => new ListBuilder<PokemonResource>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(Machine)]),
+          () => new ListBuilder<Machine>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(PokemonResource)]),
           () => new ListBuilder<PokemonResource>())
