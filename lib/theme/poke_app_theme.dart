@@ -92,3 +92,83 @@ final pokeAppTheme = AppTheme(
     ),
   ),
 );
+
+final pokeAppDarkTheme = AppTheme(
+  baseColors: const BaseThemeColors(
+    primary: primary,
+    primaryLight: primaryLight,
+    primaryDark: primaryDark,
+    secondary: secondary,
+    onSecondary: secondary,
+    secondaryLight: secondaryLight,
+    secondaryDark: secondaryDark,
+    text: text,
+    textOnForeground: textOnPrimary,
+    textOnPrimary: textOnPrimary,
+    textOnSecondary: textOnPrimary,
+    positive: Color(0xFF8AB341),
+    error: Color(0xFFFF654B),
+    warning: Color(0xFFFFAA3D),
+    guide: Color(0xFF007CF2),
+    black: Color(0xFF000000),
+    white: Color(0xFFFFFFFF),
+    foreground: Color(0xFFFAFAFA),
+    background: Color(0xFFEEEEEE),
+    cardBackground: Color(0xFF272727),
+  ),
+  colorScheme: const BaseColorScheme(
+    colorScheme: ColorScheme(
+      primary: primary,
+      secondary: secondary,
+      surface: Color(0xFFEEEEEE),
+      background: Color(0xFFEEEEEE),
+      error: Color(0xFFFF654B),
+      onPrimary: textOnPrimary,
+      onSecondary: textOnForeground,
+      onSurface: Color(0xFF5c5c5d),
+      onBackground: Color(0xFF5c5c5d),
+      onError: Color(0xFFFF654B),
+      brightness: Brightness.dark,
+    ),
+  ),
+  logo: Image.asset(
+    'assets/images/pokeball.png',
+    height: 200,
+    width: 200,
+  ),
+  baseInputDecorationTheme: BaseInputDecorationTheme(
+    inputDecorationTheme: InputDecorationTheme(
+      labelStyle: PokeAppText.body3Style.copyWith(
+        color: textOnForeground,
+      ),
+      focusedBorder: const UnderlineInputBorder(
+        borderSide: BorderSide(
+          color: secondary,
+        ),
+      ),
+      enabledBorder: const UnderlineInputBorder(
+        borderSide: BorderSide(
+          color: secondary,
+        ),
+      ),
+    ),
+  ),
+  baseIconThemeData: const BaseIconThemeData(
+    iconThemeData: IconThemeData(
+      color: textOnPrimary,
+    ),
+  ),
+  baseAppBarTheme: BaseAppBarTheme(
+    appBarTheme: AppBarTheme(
+      color: primary,
+      titleTextStyle: PokeAppText.subtitle1Style.copyWith(color: textOnPrimary),
+      toolbarTextStyle: PokeAppText.subtitle1Style.copyWith(color: textOnPrimary),
+      iconTheme: const IconThemeData(
+        color: textOnPrimary,
+      ),
+      actionsIconTheme: const IconThemeData(
+        color: textOnPrimary,
+      ),
+    ),
+  ),
+);

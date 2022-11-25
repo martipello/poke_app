@@ -81,6 +81,8 @@ class RoundedButton extends StatelessWidget {
     var textStyle = _getTextStyle(context);
     return Row(
       mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         if (leadingIcon != null)
           Padding(
@@ -92,9 +94,14 @@ class RoundedButton extends StatelessWidget {
             ),
           ),
         Flexible(
-          child: Text(
-            label,
-            style: textStyle,
+          child: Padding(
+            padding: const EdgeInsets.only(
+              bottom: 2,
+            ),
+            child: Text(
+              label,
+              style: textStyle,
+            ),
           ),
         ),
         if (trailingIcon != null)

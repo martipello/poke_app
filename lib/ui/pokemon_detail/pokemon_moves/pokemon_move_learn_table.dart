@@ -52,16 +52,14 @@ class PokemonMoveLearnTable extends StatelessWidget {
           },
           children: [
             ...pokemonMoveLearnTableRows.map(
-                  (e) {
+              (e) {
                 return _buildTableRow(
                   context,
                   generation: e.generation,
                   level: e.level,
                   learnMethod: e.learnMethod,
-                  isFirst: e ==
-                      pokemonMoveLearnTableRows.first,
-                  isLast: e ==
-                      pokemonMoveLearnTableRows.last,
+                  isFirst: e == pokemonMoveLearnTableRows.first,
+                  isLast: e == pokemonMoveLearnTableRows.last,
                 );
               },
             ),
@@ -71,7 +69,8 @@ class PokemonMoveLearnTable extends StatelessWidget {
     );
   }
 
-  TableRow _buildTableRow(BuildContext context, {
+  TableRow _buildTableRow(
+    BuildContext context, {
     required String generation,
     required String level,
     required String learnMethod,
@@ -81,16 +80,19 @@ class PokemonMoveLearnTable extends StatelessWidget {
     return TableRow(
       children: [
         _buildTableRowText(
+          context,
           generation,
           isFirst,
           isLast,
         ),
         _buildTableRowText(
+          context,
           level,
           isFirst,
           isLast,
         ),
         _buildTableRowText(
+          context,
           learnMethod,
           isFirst,
           isLast,
@@ -99,19 +101,28 @@ class PokemonMoveLearnTable extends StatelessWidget {
     );
   }
 
-  Widget _buildTableRowText(String? key,
-      bool isFirst,
-      bool isLast,) {
+  Widget _buildTableRowText(
+    BuildContext context,
+    String? key,
+    bool isFirst,
+    bool isLast,
+  ) {
     final topPadding = (isFirst ? 0 : padding?.top ?? 8).toDouble();
     final bottomPadding = (isLast ? 0 : padding?.bottom ?? 8).toDouble();
     return Padding(
-      padding: EdgeInsets.only(top: topPadding, right: 8, bottom: bottomPadding),
+      padding: EdgeInsets.only(
+        top: topPadding,
+        right: 8,
+        bottom: bottomPadding,
+      ),
       child: Row(
         children: [
           Flexible(
             child: Text(
               key?.trim() ?? '',
-              style: PokeAppText.body3Style,
+              style: PokeAppText.body3Style.copyWith(
+                color: colors(context).textOnForeground,
+              ),
             ),
           ),
         ],
@@ -119,11 +130,15 @@ class PokemonMoveLearnTable extends StatelessWidget {
     );
   }
 
-  Widget _buildBookingSubTitle(BuildContext context,
-      String? value,) {
+  Widget _buildBookingSubTitle(
+    BuildContext context,
+    String? value,
+  ) {
     return Text(
       value ?? '',
-      style: PokeAppText.subtitle4Style,
+      style: PokeAppText.subtitle4Style.copyWith(
+        color: colors(context).textOnForeground,
+      ),
     );
   }
 }

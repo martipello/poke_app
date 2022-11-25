@@ -104,6 +104,7 @@ class BaseIconThemeData {
 }
 
 class BaseColorScheme {
+
   const BaseColorScheme({
     this.colorScheme = const ColorScheme(
       primary: Color(0xFF006CC7),
@@ -121,6 +122,8 @@ class BaseColorScheme {
   });
 
   final ColorScheme colorScheme;
+
+  Brightness get brightness => colorScheme.brightness;
 }
 
 class BaseThemeColors {

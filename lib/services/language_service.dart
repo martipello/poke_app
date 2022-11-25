@@ -42,7 +42,7 @@ class LanguageService extends PokemonService {
   final languageStream = BehaviorSubject<SupportedLanguage>.seeded(SupportedLanguage.english);
 
   @override
-  void init() async {
+  Future<void> init() async {
     final _languageId = await sharedPreferencesService.getLanguageId();
     languageStream.add(SupportedLanguage.getSupportedLanguageById(_languageId));
   }

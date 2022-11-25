@@ -6,6 +6,7 @@ import '../../api/models/pokemon/pokemon_type.dart';
 import '../../dependency_injection_container.dart';
 import '../../extensions/string_extension.dart';
 import '../../extensions/type_data_extension.dart';
+import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import '../pokemon_detail/pokemon_detail_page.dart';
 import '../shared_widgets/chip_group.dart';
@@ -40,30 +41,28 @@ class _PokemonTileState extends State<PokemonTile> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<PaletteGenerator>(
-      stream: mainImageColorViewModel.paletteGeneratorStream,
-      builder: (context, mainImagePaletteGeneratorSnapshot) {
-        return StreamBuilder<PaletteGenerator>(
-          stream: spriteImageColorViewModel.paletteGeneratorStream,
-          builder: (context, spriteImagePaletteGeneratorSnapshot) {
-            final spriteImagePaletteGenerator = spriteImagePaletteGeneratorSnapshot.data;
-            final mainImagePaletteGenerator = mainImagePaletteGeneratorSnapshot.data;
-            return RoundedCard(
-              onTap: () {
-                Navigator.of(context).pushNamed(
-                  PokemonDetailPage.routeName,
-                  arguments: PokemonDetailPageArguments(
-                    pokemon: widget.pokemon,
-                    spriteImagePaletteGenerator: spriteImagePaletteGenerator,
-                    mainImagePaletteGenerator: mainImagePaletteGenerator,
-                  ),
+        stream: mainImageColorViewModel.paletteGeneratorStream,
+        builder: (context, mainImagePaletteGeneratorSnapshot) {
+          return StreamBuilder<PaletteGenerator>(
+              stream: spriteImageColorViewModel.paletteGeneratorStream,
+              builder: (context, spriteImagePaletteGeneratorSnapshot) {
+                final spriteImagePaletteGenerator = spriteImagePaletteGeneratorSnapshot.data;
+                final mainImagePaletteGenerator = mainImagePaletteGeneratorSnapshot.data;
+                return RoundedCard(
+                  onTap: () {
+                    Navigator.of(context).pushNamed(
+                      PokemonDetailPage.routeName,
+                      arguments: PokemonDetailPageArguments(
+                        pokemon: widget.pokemon,
+                        spriteImagePaletteGenerator: spriteImagePaletteGenerator,
+                        mainImagePaletteGenerator: mainImagePaletteGenerator,
+                      ),
+                    );
+                  },
+                  child: _buildPokemonCardBody(),
                 );
-              },
-              child: _buildPokemonCardBody(),
-            );
-          }
-        );
-      }
-    );
+              });
+        });
   }
 
   Widget _buildPokemonCardBody() {
@@ -112,12 +111,16 @@ class _PokemonTileState extends State<PokemonTile> {
       children: [
         Text(
           pokemonName.capitalize(),
-          style: PokeAppText.subtitle1Style,
+          style: PokeAppText.subtitle1Style.copyWith(
+            color: colors(context).textOnForeground,
+          ),
         ),
         if (speciesName.isNotEmpty)
           Text(
             speciesName,
-            style: PokeAppText.body4Style,
+            style: PokeAppText.body4Style.copyWith(
+              color: colors(context).textOnForeground,
+            ),
           ),
       ],
     );
@@ -131,7 +134,9 @@ class _PokemonTileState extends State<PokemonTile> {
       ),
       child: Text(
         '#${pokemonId.toString()}',
-        style: PokeAppText.body6Style,
+        style: PokeAppText.body6Style.copyWith(
+          color: colors(context).textOnForeground,
+        ),
       ),
     );
   }

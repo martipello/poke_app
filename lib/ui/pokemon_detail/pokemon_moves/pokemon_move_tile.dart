@@ -11,6 +11,7 @@ import '../../../extensions/move_extension.dart';
 import '../../../extensions/move_learn_method_extension.dart';
 import '../../../extensions/pokemon_resource_extension.dart';
 import '../../../extensions/string_extension.dart';
+import '../../../theme/base_theme.dart';
 import '../../../theme/poke_app_text.dart';
 import '../../shared_widgets/expansion_card.dart';
 import '../../shared_widgets/pokemon_table.dart';
@@ -44,7 +45,10 @@ class PokemonMoveTile extends StatelessWidget {
     final description = pokemonMove.pokemon_v2_move?.flavorText() ?? context.strings.noDescription;
     return [
       _buildMediumMargin(),
-      _buildMoveDescription(description),
+      _buildMoveDescription(
+        context,
+        description,
+      ),
       _buildMediumMargin(),
       _buildMediumMargin(),
       _buildLearnMethodTable(context),
@@ -99,15 +103,16 @@ class PokemonMoveTile extends StatelessWidget {
   Widget _buildLearnMethodTable(
     BuildContext context,
   ) {
-
-    final pokemonMoveLearnTableRows =
-        pokemonMove.pokemon_v2_movelearnmethod?.pokemon_v2_movelearnmethoddescriptions.map(
-      (moveLearnMethod) => PokemonMoveLearnTableRow(
-        generation: moveLearnMethod.pokemon_v2_versiongroup?.name ?? '',
-        level: 'level',
-        learnMethod: moveLearnMethod.pokemon_v2_movelearnmethod?.name ?? '',
-      ),
-    ).toList() ?? [];
+    final pokemonMoveLearnTableRows = pokemonMove.pokemon_v2_movelearnmethod?.pokemon_v2_movelearnmethoddescriptions
+            .map(
+              (moveLearnMethod) => PokemonMoveLearnTableRow(
+                generation: moveLearnMethod.pokemon_v2_versiongroup?.name ?? '',
+                level: 'level',
+                learnMethod: moveLearnMethod.pokemon_v2_movelearnmethod?.name ?? '',
+              ),
+            )
+            .toList() ??
+        [];
     return PokemonMoveLearnTable(
       tableTitle: context.strings.learningMethods,
       padding: const EdgeInsets.only(bottom: 8),
@@ -219,16 +224,21 @@ class PokemonMoveTile extends StatelessWidget {
   ) {
     return Text(
       context.strings.moveDetails,
-      style: PokeAppText.subtitle4Style,
+      style: PokeAppText.subtitle4Style.copyWith(
+        color: colors(context).textOnForeground,
+      ),
     );
   }
 
   Widget _buildMoveDescription(
+    BuildContext context,
     String description,
   ) {
     return Text(
       description,
-      style: PokeAppText.body4Style,
+      style: PokeAppText.body4Style.copyWith(
+        color: colors(context).textOnForeground,
+      ),
     );
   }
 

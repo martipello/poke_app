@@ -6,6 +6,7 @@ import '../../extensions/build_context_extension.dart';
 import '../../extensions/pokemon_extension.dart';
 import '../../extensions/string_extension.dart';
 import '../../extensions/type_data_extension.dart';
+import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import '../shared_widgets/chip_group.dart';
 import '../shared_widgets/pokemon_image.dart';
@@ -44,11 +45,11 @@ class PokemonDetailHeader extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _buildTitle(context),
-              _buildPokemonId(),
+              _buildPokemonId(context),
             ],
           ),
           _buildSmallMargin(),
-          _buildSpeciesName(),
+          _buildSpeciesName(context),
           _buildSmallMargin(),
           _buildPokemonTypes(),
           _buildSmallMargin(),
@@ -98,24 +99,30 @@ class PokemonDetailHeader extends StatelessWidget {
     final pokemonName = pokemon.name ?? context.strings.unknownPokemon;
     return Text(
       pokemonName.capitalize(),
-      style: PokeAppText.title1Style,
+      style: PokeAppText.title1Style.copyWith(
+        color: colors(context).textOnForeground,
+      ),
     );
   }
 
-  Widget _buildPokemonId() {
+  Widget _buildPokemonId(BuildContext context,) {
     final pokemonId = pokemon.id ?? '??';
     return Text(
       '#${pokemonId.toString()}',
-      style: PokeAppText.subtitle4Style,
+      style: PokeAppText.subtitle4Style.copyWith(
+        color: colors(context).textOnForeground,
+      ),
     );
   }
 
-  Widget _buildSpeciesName() {
+  Widget _buildSpeciesName(BuildContext context,) {
     final speciesName =
         pokemon.pokemon_v2_pokemonspecy?.pokemon_v2_pokemonspeciesnames.first.genus ?? 'Unknown Species';
     return Text(
       speciesName.capitalize(),
-      style: PokeAppText.title4Style,
+      style: PokeAppText.title4Style.copyWith(
+        color: colors(context).textOnForeground,
+      ),
     );
   }
 
@@ -145,11 +152,15 @@ class PokemonDetailHeader extends StatelessWidget {
       children: [
         Text(
           context.strings.generationLabel,
-          style: PokeAppText.body3Style,
+          style: PokeAppText.body3Style.copyWith(
+            color: colors(context).textOnForeground,
+          ),
         ),
         Text(
           pokemonGenerationId,
-          style: PokeAppText.body4Style,
+          style: PokeAppText.body4Style.copyWith(
+            color: colors(context).textOnForeground,
+          ),
         ),
       ],
     );
@@ -163,11 +174,15 @@ class PokemonDetailHeader extends StatelessWidget {
       children: [
         Text(
           context.strings.heightLabel,
-          style: PokeAppText.body3Style,
+          style: PokeAppText.body3Style.copyWith(
+            color: colors(context).textOnForeground,
+          ),
         ),
         Text(
           pokemonHeight,
-          style: PokeAppText.body4Style,
+          style: PokeAppText.body4Style.copyWith(
+            color: colors(context).textOnForeground,
+          ),
         ),
       ],
     );
@@ -181,11 +196,15 @@ class PokemonDetailHeader extends StatelessWidget {
       children: [
         Text(
           context.strings.weightLabel,
-          style: PokeAppText.body3Style,
+          style: PokeAppText.body3Style.copyWith(
+            color: colors(context).textOnForeground,
+          ),
         ),
         Text(
           pokemonWeight,
-          style: PokeAppText.body4Style,
+          style: PokeAppText.body4Style.copyWith(
+            color: colors(context).textOnForeground,
+          ),
         ),
       ],
     );

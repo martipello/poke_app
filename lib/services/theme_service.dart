@@ -1,5 +1,6 @@
 import 'package:rxdart/rxdart.dart';
 
+import '../utils/console_output.dart';
 import 'pokemon_service.dart';
 import 'shared_preferences_service.dart';
 
@@ -8,7 +9,7 @@ class ThemeService extends PokemonService {
 
   final SharedPreferencesService sharedPreferencesService;
 
-  late final isDarkModeStream = BehaviorSubject<bool?>();
+  final isDarkModeStream = BehaviorSubject<bool?>();
 
   @override
   void init() async {

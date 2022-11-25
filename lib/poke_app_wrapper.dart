@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:poke_app/services/theme_service.dart';
 
 import 'dependency_injection_container.dart' as di;
 import 'dependency_injection_container.dart';
@@ -30,16 +31,23 @@ class PokeAppWrapper {
         await di.init();
         final appDocumentDir = await getApplicationDocumentsDirectory();
         Hive.init(appDocumentDir.path);
+        final themeService = getIt.get<ThemeService>();
         runApp(
-          BaseTheme(
-            appTheme: pokeAppTheme,
-            child: Builder(
-              builder: (context) {
-                return PokeApp(
-                  theme: BaseTheme.of(context),
-                );
-              },
-            ),
+          StreamBuilder<bool?>(
+            stream: themeService.isDarkModeStream,
+            builder: (context, snapshot) {
+              final isDarkMode = snapshot.data == true;
+              return BaseTheme(
+                appTheme: isDarkMode ? pokeAppDarkTheme : pokeAppTheme,
+                child: Builder(
+                  builder: (context) {
+                    return PokeApp(
+                      theme: BaseTheme.of(context),
+                    );
+                  },
+                ),
+              );
+            }
           ),
         );
       },

@@ -3,14 +3,10 @@ import 'package:local_hero_with_callback/local_hero_with_callback.dart';
 
 class FilterButton extends StatefulWidget {
   FilterButton({
-    required this.isFloatingActionButtonShown,
-    required this.isFilterBottomSheetShown,
     required this.onTap,
     required this.onAnimationEnd,
   });
 
-  final bool isFloatingActionButtonShown;
-  final bool isFilterBottomSheetShown;
   final VoidCallback onTap;
   final VoidCallback onAnimationEnd;
 
@@ -33,7 +29,6 @@ class _FilterButtonState extends State<FilterButton> with SingleTickerProviderSt
   }
 
   Widget _buildFloatingActionButtonHolder() {
-    // final _hideFloatingActionButton = !widget.isFilterBottomSheetShown && !widget.isFloatingActionButtonShown;
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: LocalHeroWithCallback(

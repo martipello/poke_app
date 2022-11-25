@@ -119,12 +119,14 @@ class PokemonTable extends StatelessWidget {
       children: [
         _buildTableRowIcon(icon, context),
         _buildTableRowText(
+          context,
           key,
           isFirst,
           isLast,
         ),
         if (!isConstrained)
           _buildTableRowContent(
+            context,
             onPressed,
             borderColor,
             child,
@@ -164,6 +166,7 @@ class PokemonTable extends StatelessWidget {
       child: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: screenMeasure),
         child: _buildTableRowContent(
+          context,
           onPressed,
           borderColor,
           child,
@@ -177,6 +180,7 @@ class PokemonTable extends StatelessWidget {
   }
 
   GestureDetector _buildTableRowContent(
+    BuildContext context,
     VoidCallback? onPressed,
     Color? borderColor,
     Widget? child,
@@ -215,7 +219,9 @@ class PokemonTable extends StatelessWidget {
                   child: child ??
                       Text(
                         value ?? '',
-                        style: PokeAppText.body4Style,
+                        style: PokeAppText.body4Style.copyWith(
+                          color: colors(context).textOnForeground,
+                        ),
                         textAlign: labelTextAlign ?? TextAlign.start,
                       ),
                 ),
@@ -228,6 +234,7 @@ class PokemonTable extends StatelessWidget {
   }
 
   Widget _buildTableRowText(
+    BuildContext context,
     String? key,
     bool isFirst,
     bool isLast,
@@ -241,7 +248,9 @@ class PokemonTable extends StatelessWidget {
           Flexible(
             child: Text(
               key?.trim() ?? '',
-              style: PokeAppText.body3Style,
+              style: PokeAppText.body3Style.copyWith(
+                color: colors(context).textOnForeground,
+              ),
             ),
           ),
         ],
@@ -280,7 +289,12 @@ class PokemonTable extends StatelessWidget {
   ) {
     return Text(
       value ?? '',
-      style: tableTitleTextStyle ?? PokeAppText.subtitle4Style,
+      style: tableTitleTextStyle?.copyWith(
+            color: colors(context).textOnForeground,
+          ) ??
+          PokeAppText.subtitle4Style.copyWith(
+            color: colors(context).textOnForeground,
+          ),
     );
   }
 }

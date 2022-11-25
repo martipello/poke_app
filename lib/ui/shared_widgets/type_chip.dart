@@ -55,10 +55,10 @@ class TypeChip extends StatelessWidget {
           height: 24,
           width: 24,
         ),
-        label: Padding(
-          padding: const EdgeInsets.only(bottom: 3),
-          child: Text(
-            '${label.capitalize()}$labelSuffix',
+        label: Text(
+          '${label.capitalize()}$labelSuffix',
+          style: PokeAppText.body4Style.copyWith(
+            color: colors(context).cardBackground,
           ),
         ),
         side: BorderSide(
@@ -70,10 +70,10 @@ class TypeChip extends StatelessWidget {
           right: 8,
         ),
         labelStyle: PokeAppText.body4Style.copyWith(
-          color: colors(context).textOnPrimary,
+          color: colors(context).cardBackground,
         ),
         deleteButtonTooltipMessage: 'Delete',
-        deleteIconColor: colors(context).textOnPrimary,
+        deleteIconColor: colors(context).cardBackground,
         onDeleted: isSelected ? onDelete : null,
         deleteIcon: const Icon(
           Icons.close,
@@ -97,7 +97,7 @@ class TypeChip extends StatelessWidget {
                 width: 24,
               ),
         backgroundColor: color,
-        disabledColor: colors(context).textOnForeground,
+        disabledColor: colors(context).cardBackground,
         side: onSelected != null
             ? BorderSide(
                 width: 1,
@@ -109,7 +109,7 @@ class TypeChip extends StatelessWidget {
           child: Text(
             '${label.capitalize()}$labelSuffix',
             style: PokeAppText.body4Style.copyWith(
-              color: colors(context).textOnPrimary,
+              color:  isSelected ? colors(context).textOnForeground : colors(context).cardBackground,
             ),
           ),
         ),
@@ -117,13 +117,13 @@ class TypeChip extends StatelessWidget {
           right: 8,
         ),
         labelStyle: PokeAppText.body4Style.copyWith(
-          color: colors(context).textOnPrimary,
+          color:  isSelected ? colors(context).textOnForeground : colors(context).cardBackground,
         ),
         onSelected: onSelected,
         selected: isSelected,
         showCheckmark: isSelected,
-        selectedColor: colors(context).textOnForeground,
-        checkmarkColor: colors(context).white,
+        selectedColor: colors(context).cardBackground,
+        checkmarkColor: colors(context).textOnForeground,
       ),
     );
   }
@@ -163,7 +163,7 @@ class TypeChip extends StatelessWidget {
                 child: Text(
                   label!.capitalize(),
                   style: PokeAppText.body3Style.copyWith(
-                    color: colors(context).textOnPrimary,
+                    color: colors(context).cardBackground,
                   ),
                 ),
               ),

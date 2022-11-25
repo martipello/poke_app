@@ -137,7 +137,9 @@ class _ExpansionCardState extends State<ExpansionCard> with TickerProviderStateM
     return Flexible(
       child: Text(
         widget.title,
-        style: PokeAppText.subtitle3Style,
+        style: PokeAppText.subtitle3Style.copyWith(
+          color: colors(context).textOnForeground,
+        ),
       ),
     );
   }
@@ -148,7 +150,9 @@ class _ExpansionCardState extends State<ExpansionCard> with TickerProviderStateM
         padding: const EdgeInsets.only(top: 8.0),
         child: Text(
           widget.subtitle ?? '',
-          style: PokeAppText.body4Style,
+          style: PokeAppText.body4Style.copyWith(
+            color: colors(context).textOnForeground,
+          ),
         ),
       ),
     );

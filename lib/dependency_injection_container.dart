@@ -46,12 +46,14 @@ Future<void> init() async {
   getIt.registerFactory(ExpansionCardStateViewModel.new);
   getIt.registerFactory(PokeballLoadingViewModel.new);
   getIt.registerFactory(ImageColorViewModel.new);
-  _initServices();
+  await _initServices();
 }
 
 Future<void> _initServices() async {
   final _sharedPreferencesServices = getIt.get<SharedPreferencesService>();
   final _languageService = getIt.get<LanguageService>();
+  final _themeService = getIt.get<ThemeService>();
+  _themeService.init();
   _languageService.init();
   _sharedPreferencesServices.init();
 }

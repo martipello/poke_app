@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:local_hero_with_callback/local_hero_with_callback.dart';
 import 'package:tuple/tuple.dart';
 
+import '../../utils/console_output.dart';
 import '../pokemon_list/view_models/filter_view_model.dart';
 import 'filter_button.dart';
 import 'filter_view.dart';
@@ -53,7 +54,6 @@ class _FilterViewHolderState extends State<FilterViewHolder> with SingleTickerPr
         initialData: const Tuple2(true, false),
         stream: widget.filterViewModel.filterUIState,
         builder: (context, snapshot) {
-          final _isFloatingActionButtonShown = snapshot.data?.item1 == true;
           final _isFilterBottomSheetShown = snapshot.data?.item2 == true;
           return SizedBox(
             height: _isFilterBottomSheetShown ? widget.filterViewModel.filterHeight : 100,
@@ -64,14 +64,12 @@ class _FilterViewHolderState extends State<FilterViewHolder> with SingleTickerPr
                   alignment: _isFilterBottomSheetShown ? Alignment.center : Alignment.bottomRight,
                   child: _buildFilterButton(
                     _isFilterBottomSheetShown,
-                    _isFloatingActionButtonShown,
                   ),
                 ),
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: _buildFilterViewHolder(
                     _isFilterBottomSheetShown,
-                    _isFloatingActionButtonShown,
                   ),
                 ),
               ],
@@ -84,11 +82,8 @@ class _FilterViewHolderState extends State<FilterViewHolder> with SingleTickerPr
 
   Widget _buildFilterButton(
     bool _isFilterBottomSheetShown,
-    bool _isFloatingActionButtonShown,
   ) {
     return FilterButton(
-      isFilterBottomSheetShown: _isFilterBottomSheetShown,
-      isFloatingActionButtonShown: _isFloatingActionButtonShown,
       onTap: () {
         widget.filterViewModel.setActionButtonVisibility();
         widget.filterViewModel.setFilterUIState();
@@ -103,7 +98,6 @@ class _FilterViewHolderState extends State<FilterViewHolder> with SingleTickerPr
 
   Widget _buildFilterViewHolder(
     bool _isFilterBottomSheetShown,
-    bool _isFloatingActionButtonShown,
   ) {
     return CircularRevealAnimation(
       animation: _circleRevealAnimation,

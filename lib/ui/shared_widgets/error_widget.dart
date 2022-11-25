@@ -55,7 +55,9 @@ class ErrorWidget extends StatelessWidget {
                 Flexible(
                   child: Text(
                     errorMessage ?? 'Oops that\'s an error...',
-                    style: PokeAppText.body2Style,
+                    style: PokeAppText.body2Style.copyWith(
+                      color: colors(context).textOnForeground,
+                    ),
                     textAlign: textAlign ?? TextAlign.center,
                   ),
                 ),
@@ -67,9 +69,13 @@ class ErrorWidget extends StatelessWidget {
             if (onTryAgain != null)
               RoundedButton(
                 label: retryLabel ?? 'Try Again',
-                isFilled: false,
                 disableShadow: true,
+                fillColor: colors(context).cardBackground,
                 onPressed: onTryAgain,
+                textStyle: PokeAppText.body4Style.copyWith(
+                  color: colors(context).cardBackground,
+                ),
+                outlineColor: colors(context).warning,
               ),
           ],
         ),

@@ -78,7 +78,7 @@ class _SplashViewState extends State<SplashView> with SingleTickerProviderStateM
         centerAlignment: Alignment.bottomCenter,
         child: DecoratedBox(
           decoration: BoxDecoration(
-            color: colors(context).white,
+            color: colors(context).cardBackground,
           ),
         ),
       ),

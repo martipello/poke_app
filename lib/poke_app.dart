@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'dependency_injection_container.dart';
+import 'services/theme_service.dart';
 import 'theme/base_theme.dart';
 import 'ui/app_shell.dart';
 import 'ui/pokemon_detail/pokemon_detail_page.dart';
@@ -41,7 +43,7 @@ class _PokeAppState extends State<PokeApp> {
         iconTheme: widget.theme.iconThemeData,
         colorScheme: widget.theme.colorScheme.colorScheme,
         inputDecorationTheme: widget.theme.inputDecorationTheme,
-        brightness: Brightness.light,
+        brightness: widget.theme.colorScheme.brightness,
         textSelectionTheme: TextSelectionThemeData(
           cursorColor: colors(context).secondary,
           selectionColor: colors(context).secondary,

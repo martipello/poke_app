@@ -145,7 +145,7 @@ class _PokemonDetailAppBarState extends State<PokemonDetailAppBar> with TickerPr
 
   CardTheme _buildCardTheme() {
     return CardTheme(
-      color: colors(context).white,
+      color: colors(context).cardBackground,
       clipBehavior: Clip.hardEdge,
       elevation: 4,
       margin: EdgeInsets.zero,

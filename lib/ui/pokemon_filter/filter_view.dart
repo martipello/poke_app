@@ -88,7 +88,9 @@ class _FilterViewState extends State<FilterView> {
   Text buildTitle() {
     return Text(
       context.strings.filters,
-      style: PokeAppText.subtitle1Style,
+      style: PokeAppText.subtitle1Style.copyWith(
+        color: colors(context).textOnForeground,
+      ),
     );
   }
 

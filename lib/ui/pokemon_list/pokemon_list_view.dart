@@ -28,7 +28,6 @@ class PokemonListView extends StatefulWidget {
 }
 
 class _PokemonListViewState extends State<PokemonListView> {
-  final globalKey = GlobalKey<NestedScrollViewState>();
 
   final _pokemonViewModel = getIt.get<PokemonListViewModel>();
   final _filterViewModel = getIt.get<FilterViewModel>();
@@ -45,9 +44,6 @@ class _PokemonListViewState extends State<PokemonListView> {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
         _addSelectedFilterListener();
-        globalKey.currentState!.innerController.addListener(
-          _filterViewModel.setActionButtonVisibility,
-        );
       },
     );
   }
@@ -108,9 +104,6 @@ class _PokemonListViewState extends State<PokemonListView> {
 
   @override
   void dispose() {
-    globalKey.currentState!.innerController.removeListener(
-      _filterViewModel.setActionButtonVisibility,
-    );
     _textController.dispose();
     _pokemonViewModel.dispose();
     _filterViewModel.dispose();
@@ -127,7 +120,6 @@ class _PokemonListViewState extends State<PokemonListView> {
       },
       child: Scaffold(
         body: NestedScrollView(
-          key: globalKey,
           headerSliverBuilder: (nestedScrollViewContext, innerBoxScrolled) {
             return [
               StreamBuilder<String?>(
