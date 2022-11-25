@@ -95,10 +95,23 @@ class _PokemonImageState extends State<PokemonImage> {
       stream: paletteGeneratorStream,
       builder: (context, snapshot) {
         final palette = snapshot.data;
-        return _buildOuterCircle(
-          imageProvider,
-          imageErrorBuilder,
-          palette,
+        return Stack(
+          children: [
+            _buildOuterCircle(
+              imageProvider,
+              imageErrorBuilder,
+              palette,
+            ),
+            Positioned.fill(
+              child: Align(
+                alignment: Alignment.center,
+                child: _buildImage(
+                  imageProvider,
+                  imageErrorBuilder,
+                ),
+              ),
+            ),
+          ],
         );
       },
     );
@@ -142,10 +155,9 @@ class _PokemonImageState extends State<PokemonImage> {
         decoration: BoxDecoration(
           color: widget.color ?? dominantColor,
         ),
-        child: _buildImage(
-          imageProvider,
-          imageErrorBuilder,
-        ),
+        child: SizedBox(
+          height: widget.size?.height ?? 150,
+          width: widget.size?.width ?? 150,),
       ),
     );
   }
