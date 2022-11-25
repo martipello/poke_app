@@ -37,8 +37,8 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
 
   late final _tabBarController = TabController(length: 4, vsync: this);
 
-  Color get primaryColor => pokemonDetailArguments.mainImagePaletteGenerator?.dominantColor?.color ?? pokemonDetailArguments.spriteImagePaletteGenerator?.dominantColor?.color ?? Colors.red;
-  Color get secondaryColor => pokemonDetailArguments.mainImagePaletteGenerator?.lightVibrantColor?.color ?? pokemonDetailArguments.spriteImagePaletteGenerator?.lightVibrantColor?.color ?? Colors.green;
+  Color get primaryColor => pokemonDetailArguments.mainImagePaletteGenerator?.lightVibrantColor?.color ?? pokemonDetailArguments.spriteImagePaletteGenerator?.dominantColor?.color ?? Colors.red;
+  Color get secondaryColor => pokemonDetailArguments.mainImagePaletteGenerator?.dominantColor?.color ?? pokemonDetailArguments.spriteImagePaletteGenerator?.lightVibrantColor?.color ?? Colors.green;
 
   @override
   Widget build(BuildContext context) {
