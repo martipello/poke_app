@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import '../../api/models/pokemon/pokemon.dart';
 import '../../theme/base_theme.dart';
 import '../../utils/irregular_trapezium_clipper.dart';
+import '../settings/settings.dart';
+import '../shared_widgets/clipped_app_bar.dart';
 import 'pokemon_detail_header.dart';
 
 class PokemonDetailAppBar extends StatefulWidget {
@@ -62,7 +64,7 @@ class _PokemonDetailAppBarState extends State<PokemonDetailAppBar> with TickerPr
       onWillPop: () async {
         await _circleRevealAnimationController.reverse().then(
               (value) => Navigator.of(context).pop(),
-        );
+            );
         return true;
       },
       child: SliverAppBar(
@@ -70,7 +72,15 @@ class _PokemonDetailAppBarState extends State<PokemonDetailAppBar> with TickerPr
         expandedHeight: 440,
         backgroundColor: colors(context).cardBackground,
         titleSpacing: 0,
-        title: _buildEmbeddedAppBar(),
+        title: ClippedAppBar(
+          menuButton: _buildMenuButton(),
+          clipColor: widget.primaryColor,
+          onBackTap: () {
+            _circleRevealAnimationController.reverse().then(
+                  (value) => Navigator.of(context).pop(),
+                );
+          },
+        ),
         leadingWidth: 0,
         automaticallyImplyLeading: false,
         centerTitle: false,
@@ -85,41 +95,17 @@ class _PokemonDetailAppBarState extends State<PokemonDetailAppBar> with TickerPr
     );
   }
 
-  Widget _buildEmbeddedAppBar() {
-    return Stack(
-      children: [
-        _buildAppBarClip(),
-        _buildAppBarBackButton(),
-      ],
-    );
-  }
-
-  Widget _buildAppBarClip() {
-    return ClipPath(
-      clipper: IrregularTrapeziumClipper(),
-      child: Container(
-        height: kToolbarHeight,
-        decoration: BoxDecoration(
-          color: widget.primaryColor,
-        ),
+  IconButton _buildMenuButton() {
+    return IconButton(
+      icon: Icon(
+        Icons.more_vert_rounded,
+        color: colors(context).cardBackground,
       ),
-    );
-  }
-
-  Widget _buildAppBarBackButton() {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: IconButton(
-        icon: Icon(
-          Icons.arrow_back,
-          color: colors(context).cardBackground,
-        ),
-        onPressed: () {
-          _circleRevealAnimationController.reverse().then(
-                (value) => Navigator.of(context).pop(),
-              );
-        },
-      ),
+      onPressed: () {
+        Navigator.of(context).pushNamed(
+          Settings.routeName,
+        );
+      },
     );
   }
 

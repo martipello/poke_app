@@ -10,9 +10,14 @@
     "moves" : "Moves",
     "evolutions" : "Evolutions",
     "info" : "Info",
+
     "shape" : "Shape",
     "habitat" : "Habitat",
     "color" : "Color",
+    "heightLabel" : "Height :",
+    "weightLabel" : "Weight :",
+    "generationLabel" : "Generation :",
+
     "baseHappiness" : "Base Happiness",
     "captureRate" : "Capture Rate",
     "genderRate" : "Gender Rate",
@@ -21,6 +26,7 @@
     "mythical" : "Mythical",
     "baby" : "Baby",
     "generation" : "Generation",
+    "unknownPokemon" : "Unknown Pokemon",
     "effect" : "Effect",
     "version" : "Version",
     "mainSeries" : "Main Series",
@@ -50,5 +56,17 @@
     "total" : "Total",
     "typeEffectiveness" : "Type Effectiveness",
     "info" : "Info",
-    "error_getting_page" : "Error getting new page..."
+    "error_getting_page" : "Error getting new page...",
+
+    "about" : "About",
+    "fairUse" : "Fair Use",
+    "licences" : "Licences",
+
+    "settings" : "Settings",
+    "sendFeedback" : "Send feedback",
+    "language" : "Language",
+    "darkMode" : "Dark Mode",
+    "review" : "Review",
+    "share" : "Share",
+    "shareWithFriends" : "Share with friends"
 }

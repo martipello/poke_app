@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../api/models/pokemon/pokemon.dart';
 import '../../api/models/pokemon/pokemon_type.dart';
+import '../../extensions/build_context_extension.dart';
 import '../../extensions/pokemon_extension.dart';
 import '../../extensions/string_extension.dart';
 import '../../extensions/type_data_extension.dart';
@@ -20,10 +21,14 @@ class PokemonDetailHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _buildPokemonDetailHeaderBody();
+    return _buildPokemonDetailHeaderBody(
+      context,
+    );
   }
 
-  Widget _buildPokemonDetailHeaderBody() {
+  Widget _buildPokemonDetailHeaderBody(
+    BuildContext context,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 16,
@@ -38,7 +43,7 @@ class PokemonDetailHeader extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _buildTitle(),
+              _buildTitle(context),
               _buildPokemonId(),
             ],
           ),
@@ -47,13 +52,13 @@ class PokemonDetailHeader extends StatelessWidget {
           _buildSmallMargin(),
           _buildPokemonTypes(),
           _buildSmallMargin(),
-          _buildGeneration(),
+          _buildGeneration(context),
           _buildSmallMargin(),
           Row(
             children: [
-              _buildHeight(),
+              _buildHeight(context),
               _buildMediumMargin(),
-              _buildWeight(),
+              _buildWeight(context),
             ],
           ),
         ],
@@ -87,8 +92,10 @@ class PokemonDetailHeader extends StatelessWidget {
         width: 16,
       );
 
-  Widget _buildTitle() {
-    final pokemonName = pokemon.name ?? 'Unknown Pokemon';
+  Widget _buildTitle(
+    BuildContext context,
+  ) {
+    final pokemonName = pokemon.name ?? context.strings.unknownPokemon;
     return Text(
       pokemonName.capitalize(),
       style: PokeAppText.title1Style,
@@ -130,12 +137,14 @@ class PokemonDetailHeader extends StatelessWidget {
     );
   }
 
-  Widget _buildGeneration() {
+  Widget _buildGeneration(
+    BuildContext context,
+  ) {
     final pokemonGenerationId = pokemon.pokemon_v2_pokemonspecy?.generation_id.toString() ?? 'Unknown';
     return Row(
       children: [
-        const Text(
-          'Generation : ',
+        Text(
+          context.strings.generationLabel,
           style: PokeAppText.body3Style,
         ),
         Text(
@@ -146,12 +155,14 @@ class PokemonDetailHeader extends StatelessWidget {
     );
   }
 
-  Widget _buildHeight() {
+  Widget _buildHeight(
+    BuildContext context,
+  ) {
     final pokemonHeight = pokemon.pokemonHeight();
     return Row(
       children: [
-        const Text(
-          'Height : ',
+        Text(
+          context.strings.heightLabel,
           style: PokeAppText.body3Style,
         ),
         Text(
@@ -162,12 +173,14 @@ class PokemonDetailHeader extends StatelessWidget {
     );
   }
 
-  Widget _buildWeight() {
+  Widget _buildWeight(
+    BuildContext context,
+  ) {
     final pokemonWeight = pokemon.pokemonWeight();
     return Row(
       children: [
-        const Text(
-          'Weight : ',
+        Text(
+          context.strings.weightLabel,
           style: PokeAppText.body3Style,
         ),
         Text(

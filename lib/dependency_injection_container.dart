@@ -1,11 +1,14 @@
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api/api_client.dart';
 import 'api/error_handler.dart';
 import 'api/graph_ql/graph_ql_client.dart';
 import 'api/graph_ql/pokemon_repository_graph_ql.dart';
+import 'services/language_service.dart';
 import 'services/launch_service.dart';
 import 'services/shared_preferences_service.dart';
+import 'services/theme_service.dart';
 import 'ui/pokemon_detail/pokemon_evolutions/view_models/pokemon_evolution_view_model.dart';
 import 'ui/pokemon_detail/pokemon_info/view_models/pokemon_info_view_model.dart';
 import 'ui/pokemon_detail/pokemon_moves/view_models/pokemon_moves_view_model.dart';
@@ -23,7 +26,10 @@ final getIt = GetIt.instance;
 
 Future<void> init() async {
   getIt.registerLazySingleton(() => ApiClient(getIt()));
+  getIt.registerLazySingletonAsync(SharedPreferences.getInstance);
   getIt.registerLazySingleton(SharedPreferencesService.new);
+  getIt.registerLazySingleton(() => LanguageService(getIt()));
+  getIt.registerLazySingleton(() => ThemeService(getIt()));
   getIt.registerFactory(LaunchService.new);
   getIt.registerFactory(GraphQlClient.new);
   getIt.registerFactory(ErrorHandler.new);
@@ -40,4 +46,12 @@ Future<void> init() async {
   getIt.registerFactory(ExpansionCardStateViewModel.new);
   getIt.registerFactory(PokeballLoadingViewModel.new);
   getIt.registerFactory(ImageColorViewModel.new);
+  _initServices();
+}
+
+Future<void> _initServices() async {
+  final _sharedPreferencesServices = getIt.get<SharedPreferencesService>();
+  final _languageService = getIt.get<LanguageService>();
+  _languageService.init();
+  _sharedPreferencesServices.init();
 }
