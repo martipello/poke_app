@@ -5,6 +5,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'theme/base_theme.dart';
 import 'ui/app_shell.dart';
 import 'ui/pokemon_detail/pokemon_detail_page.dart';
+import 'ui/settings/about.dart';
+import 'ui/settings/settings.dart';
 import 'ui/splash_page.dart';
 
 class PokeApp extends StatefulWidget {
@@ -54,6 +56,8 @@ class _PokeAppState extends State<PokeApp> {
         AppShell.routeName: (context) => AppShell(),
         SplashPage.routeName: (context) => const SplashPage(),
         PokemonDetailPage.routeName: (context) => const PokemonDetailPage(),
+        Settings.routeName: (context) => const Settings(),
+        About.routeName: (context) => const About(),
       },
     );
   }

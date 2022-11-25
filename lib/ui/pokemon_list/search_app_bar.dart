@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 import '../../api/models/pokemon/pokemon_type.dart';
@@ -59,6 +60,9 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
           snap: true,
           floating: true,
           backgroundColor: Colors.black,
+          systemOverlayStyle: const SystemUiOverlayStyle(
+            statusBarColor: Colors.black,
+          ),
           leading: isSearching ? _buildBackButton() : null,
           actions: [
             if (!isSearching) _buildSearchAction(),
