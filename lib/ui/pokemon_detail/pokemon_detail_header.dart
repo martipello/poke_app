@@ -84,23 +84,20 @@ class PokemonDetailHeader extends StatelessWidget {
     );
   }
 
-  Widget _buildSmallMargin() => const SizedBox(
-        height: 8,
-      );
-
-  Widget _buildMediumMargin() => const SizedBox(
-        height: 16,
-        width: 16,
-      );
-
   Widget _buildTitle(
     BuildContext context,
   ) {
     final pokemonName = pokemon.name ?? context.strings.unknownPokemon;
-    return Text(
-      pokemonName.capitalize(),
-      style: PokeAppText.title1Style.copyWith(
-        color: colors(context).textOnForeground,
+    return Hero(
+      tag: 'name_for_pokemon_${pokemon.id}',
+      child: Material(
+        type: MaterialType.transparency,
+        child: Text(
+          pokemonName.capitalize(),
+          style: PokeAppText.title1Style.copyWith(
+            color: colors(context).textOnForeground,
+          ),
+        ),
       ),
     );
   }
@@ -118,29 +115,41 @@ class PokemonDetailHeader extends StatelessWidget {
   Widget _buildSpeciesName(BuildContext context,) {
     final speciesName =
         pokemon.pokemon_v2_pokemonspecy?.pokemon_v2_pokemonspeciesnames.first.genus ?? 'Unknown Species';
-    return Text(
-      speciesName.capitalize(),
-      style: PokeAppText.title4Style.copyWith(
-        color: colors(context).textOnForeground,
+    return Hero(
+      tag: 'specie_for_pokemon_${pokemon.id}',
+      child: Material(
+        type: MaterialType.transparency,
+        child: Text(
+          speciesName.capitalize(),
+          style: PokeAppText.title4Style.copyWith(
+            color: colors(context).textOnForeground,
+          ),
+        ),
       ),
     );
   }
 
   Widget _buildPokemonTypes() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        ChipGroup(
-          chips: pokemon.pokemon_v2_pokemontypes
-              .map(
-                (type) => TypeChip(
-                  pokemonType: type.pokemon_v2_type?.pokemonType() ?? PokemonType.unknown,
-                  chipType: ChipType.normal,
-                ),
-              )
-              .toList(),
-        )
-      ],
+    return Hero(
+      tag: 'types_for_pokemon_${pokemon.id}',
+      child: Material(
+        type: MaterialType.transparency,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            ChipGroup(
+              chips: pokemon.pokemon_v2_pokemontypes
+                  .map(
+                    (type) => TypeChip(
+                      pokemonType: type.pokemon_v2_type?.pokemonType() ?? PokemonType.unknown,
+                      chipType: ChipType.normal,
+                    ),
+                  )
+                  .toList(),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -209,4 +218,14 @@ class PokemonDetailHeader extends StatelessWidget {
       ],
     );
   }
+
+  Widget _buildSmallMargin() => const SizedBox(
+    height: 8,
+  );
+
+  Widget _buildMediumMargin() => const SizedBox(
+    height: 16,
+    width: 16,
+  );
+
 }

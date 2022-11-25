@@ -84,20 +84,26 @@ class _PokemonTileState extends State<PokemonTile> {
             _buildPokemonId(),
           ],
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            ChipGroup(
-              chips: widget.pokemon.pokemon_v2_pokemontypes
-                  .map(
-                    (type) => TypeChip(
-                      pokemonType: type.pokemon_v2_type?.pokemonType() ?? PokemonType.unknown,
-                      chipType: ChipType.normal,
-                    ),
-                  )
-                  .toList(),
-            )
-          ],
+        Hero(
+          tag: 'types_for_pokemon_${widget.pokemon.id}',
+          child: Material(
+            type: MaterialType.transparency,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ChipGroup(
+                  chips: widget.pokemon.pokemon_v2_pokemontypes
+                      .map(
+                        (type) => TypeChip(
+                          pokemonType: type.pokemon_v2_type?.pokemonType() ?? PokemonType.unknown,
+                          chipType: ChipType.normal,
+                        ),
+                      )
+                      .toList(),
+                ),
+              ],
+            ),
+          ),
         ),
       ],
     );
@@ -109,17 +115,29 @@ class _PokemonTileState extends State<PokemonTile> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          pokemonName.capitalize(),
-          style: PokeAppText.subtitle1Style.copyWith(
-            color: colors(context).textOnForeground,
+        Hero(
+          tag: 'name_for_pokemon_${widget.pokemon.id}',
+          child: Material(
+            type: MaterialType.transparency,
+            child: Text(
+              pokemonName.capitalize(),
+              style: PokeAppText.subtitle1Style.copyWith(
+                color: colors(context).textOnForeground,
+              ),
+            ),
           ),
         ),
         if (speciesName.isNotEmpty)
-          Text(
-            speciesName,
-            style: PokeAppText.body4Style.copyWith(
-              color: colors(context).textOnForeground,
+          Hero(
+            tag: 'specie_for_pokemon_${widget.pokemon.id}',
+            child: Material(
+              type: MaterialType.transparency,
+              child: Text(
+                speciesName,
+                style: PokeAppText.body4Style.copyWith(
+                  color: colors(context).textOnForeground,
+                ),
+              ),
             ),
           ),
       ],
