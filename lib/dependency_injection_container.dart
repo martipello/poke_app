@@ -34,12 +34,12 @@ Future<void> init() async {
   getIt.registerFactory(GraphQlClient.new);
   getIt.registerFactory(ErrorHandler.new);
   getIt.registerFactory(() => PokemonRepositoryGraphQl(getIt()));
-  getIt.registerFactory(() => PokemonPagingAdapter(getIt(), getIt()));
+  getIt.registerFactory(() => PokemonPagingAdapter(getIt(), getIt(), getIt()));
   getIt.registerFactory(() => PokemonListViewModel(getIt()));
-  getIt.registerFactory(() => PokemonInfoViewModel(getIt(), getIt()));
-  getIt.registerFactory(() => PokemonMovesViewModel(getIt(), getIt()));
-  getIt.registerFactory(() => PokemonEvolutionViewModel(getIt(), getIt()));
-  getIt.registerFactory(() => PokemonStatsWeaknessResistanceViewModel(getIt(), getIt()));
+  getIt.registerFactory(() => PokemonInfoViewModel(getIt(), getIt(), getIt()));
+  getIt.registerFactory(() => PokemonMovesViewModel(getIt(), getIt(), getIt()));
+  getIt.registerFactory(() => PokemonEvolutionViewModel(getIt(), getIt(), getIt()));
+  getIt.registerFactory(() => PokemonStatsWeaknessResistanceViewModel(getIt(), getIt(), getIt()));
   getIt.registerFactory(FilterViewModel.new);
   getIt.registerFactory(SearchAppBarViewModel.new);
   getIt.registerFactory(SplashViewModel.new);

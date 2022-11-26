@@ -6,17 +6,21 @@ import '../../../api/models/api_response.dart';
 import '../../../api/models/pokemon/pokemon.dart';
 import '../../../api/models/pokemon/pokemon_request.dart';
 import '../../../api/models/pokemon/pokemon_response.dart';
+import '../../../services/language_service.dart';
+import '../../../services/theme_service.dart';
 import '../../../utils/console_output.dart';
 
 class PokemonPagingAdapter {
   PokemonPagingAdapter(
     this.pokemonRepository,
     this.errorHandler,
+    this.languageService,
   );
 
   PagingController<int, Pokemon>? pagingController;
 
   final PokemonRepositoryGraphQl pokemonRepository;
+  final LanguageService languageService;
   final ErrorHandler errorHandler;
 
   bool _hasFetchedOnce = false;
@@ -49,11 +53,11 @@ class PokemonPagingAdapter {
     log('POKEMON PAGING ADAPTER').d('_fetchPage $pageKey');
     if (_pokemonRequest != null) {
       try {
-        //TODO offer a way to change the language id
+        final language = await languageService.getLanguage();
         final newPage = await pokemonRepository.getPokemon(
           _pokemonRequest!.rebuild(
             (b) => b
-              ..languageId = 9
+              ..languageId = language.id
               ..limit = offset
               ..skip = offset * pageKey
               ..pagination = true,

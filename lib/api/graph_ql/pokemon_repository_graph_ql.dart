@@ -17,6 +17,7 @@ class PokemonRepositoryGraphQl {
   ) async {
     //TODO this should be calling fetch more
     final _graphQlClient = graphQlClient.getClient();
+
     final typeIds = pokemonRequest.pokemonTypes.isNotEmpty
         ? pokemonRequest.pokemonTypes.map(
             (p0) => p0.id,

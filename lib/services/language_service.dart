@@ -40,6 +40,7 @@ class LanguageService extends PokemonService {
   final SharedPreferencesService sharedPreferencesService;
 
   final languageStream = BehaviorSubject<SupportedLanguage>.seeded(SupportedLanguage.english);
+  final tempSelectedLanguageStream = BehaviorSubject<SupportedLanguage>();
 
   @override
   Future<void> init() async {
@@ -50,6 +51,7 @@ class LanguageService extends PokemonService {
   @override
   void dispose() {
     languageStream.close();
+    tempSelectedLanguageStream.close();
   }
 
 
@@ -57,8 +59,17 @@ class LanguageService extends PokemonService {
     return languageStream.value;
   }
 
-  Future<void> setLanguage(SupportedLanguage language) async {
+  Future<SupportedLanguage> getLanguage() async {
+    final _languageId = await sharedPreferencesService.getLanguageId();
+    return SupportedLanguage.getSupportedLanguageById(_languageId);
+  }
+
+  void setLanguage(SupportedLanguage language) {
     sharedPreferencesService.setLanguageId(language);
     languageStream.add(language);
+  }
+
+  void setTempLanguage(SupportedLanguage language) {
+    tempSelectedLanguageStream.add(language);
   }
 }

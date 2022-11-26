@@ -65,6 +65,7 @@
     "settings" : "Settings",
     "sendFeedback" : "Send feedback",
     "language" : "Language",
+    "selectLanguage" : "Please select a language",
     "darkMode" : "Dark Mode",
     "review" : "Review",
     "share" : "Share",

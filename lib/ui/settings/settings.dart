@@ -5,6 +5,7 @@ import 'package:settings_ui/settings_ui.dart';
 
 import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
+import '../../extensions/string_extension.dart';
 import '../../services/language_service.dart';
 import '../../services/theme_service.dart';
 import '../../theme/base_theme.dart';
@@ -82,7 +83,7 @@ class Settings extends StatelessWidget {
 
   SettingsTile _buildLanguageSettingsTile(
     BuildContext context,
-    SupportedLanguage? _language,
+    SupportedLanguage? _currentlySelectedLanguage,
   ) {
     return SettingsTile.navigation(
       leading: const Icon(
@@ -92,7 +93,155 @@ class Settings extends StatelessWidget {
         context.strings.language,
       ),
       value: Text(
-        _language!.name,
+        _currentlySelectedLanguage!.name.capitalize(),
+      ),
+      onPressed: (_) {
+        _showSelectLanguageDialog(
+          context,
+          _currentlySelectedLanguage,
+        );
+      },
+    );
+  }
+
+  Future<void> _showSelectLanguageDialog(
+    BuildContext context,
+    SupportedLanguage _currentlySelectedLanguage,
+  ) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return StreamBuilder<SupportedLanguage>(
+          initialData: _currentlySelectedLanguage,
+          stream: _languageService.tempSelectedLanguageStream,
+          builder: (context, snapshot) {
+            final _tempSelectedLanguage = snapshot.data ?? _currentlySelectedLanguage;
+            return _buildSelectLanguageAlertDialog(
+              context,
+              _tempSelectedLanguage,
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildSelectLanguageAlertDialog(
+    BuildContext context,
+    SupportedLanguage _tempSelectedLanguage,
+  ) {
+    return AlertDialog(
+      title: _buildSelectLanguageAlertDialogTitle(context),
+      actionsPadding: const EdgeInsets.only(
+        right: 16,
+        bottom: 8,
+      ),
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildSelectLanguageAlertDialogSubtitle(context),
+          ...SupportedLanguage.values.reversed.whereType<SupportedLanguage>().map(
+                (language) => _buildSelectedLanguageAlertDialogRadioTile(
+                  context,
+                  language,
+                  _tempSelectedLanguage,
+                ),
+              ),
+        ],
+      ),
+      actions: [
+        _buildSelectLanguageAlertDialogAction(
+          context,
+          'Cancel',
+          null,
+        ),
+        _buildSelectLanguageAlertDialogAction(
+          context,
+          'Ok',
+          () {
+            _languageService.setLanguage(_tempSelectedLanguage);
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSelectLanguageAlertDialogTitle(
+    BuildContext context,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 4),
+      child: Text(
+        context.strings.language,
+        style: PokeAppText.subtitle1Style.copyWith(
+          color: colors(context).textOnForeground,
+          height: 1,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSelectLanguageAlertDialogSubtitle(
+    BuildContext context,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Text(
+        context.strings.selectLanguage,
+        style: PokeAppText.body4Style.copyWith(
+          color: colors(context).textOnForeground,
+        ),
+      ),
+    );
+  }
+
+  RadioListTile<SupportedLanguage> _buildSelectedLanguageAlertDialogRadioTile(
+    BuildContext context,
+    SupportedLanguage language,
+    SupportedLanguage _tempSelectedLanguage,
+  ) {
+    return RadioListTile(
+      value: language,
+      groupValue: _tempSelectedLanguage,
+      selected: language == _tempSelectedLanguage,
+      title: Text(
+        language.name.capitalize(),
+        style: PokeAppText.body4Style.copyWith(
+          color: colors(context).textOnForeground,
+        ),
+      ),
+      onChanged: (_) {
+        _languageService.tempSelectedLanguageStream.add(
+          language,
+        );
+      },
+      contentPadding: EdgeInsets.zero,
+    );
+  }
+
+  Widget _buildSelectLanguageAlertDialogAction(
+    BuildContext context,
+    String label,
+    VoidCallback? onTap,
+  ) {
+    return TextButton(
+      onPressed: () {
+        onTap?.call();
+        Navigator.of(context).pop();
+      },
+      style: ButtonStyle(
+        padding: MaterialStateProperty.all(
+          const EdgeInsets.symmetric(
+            horizontal: 16,
+          ),
+        ),
+      ),
+      child: Text(
+        label,
+        style: PokeAppText.body4Style.copyWith(
+          color: colors(context).textOnForeground,
+        ),
       ),
     );
   }
