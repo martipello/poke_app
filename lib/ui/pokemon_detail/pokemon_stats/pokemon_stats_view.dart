@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:palette_generator/palette_generator.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 import '../../../api/models/api_response.dart';
@@ -18,9 +19,13 @@ class PokemonStatsView extends StatefulWidget {
   PokemonStatsView({
     Key? key,
     required this.pokemonId,
+    required this.primaryColor,
+    required this.secondaryColor,
   }) : super(key: key);
 
   final int pokemonId;
+  final Color primaryColor;
+  final Color secondaryColor;
 
   @override
   State<PokemonStatsView> createState() => _PokemonStatsViewState();
@@ -118,6 +123,8 @@ class _PokemonStatsViewState extends State<PokemonStatsView> with AutomaticKeepA
     return SliverToBoxAdapter(
       child: PokemonStatsWidget(
         pokemon: _pokemon,
+          primaryColor : widget.primaryColor,
+          secondaryColor : widget.secondaryColor,
       ),
     );
   }

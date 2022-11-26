@@ -92,6 +92,8 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
           ),
           PokemonStatsView(
             pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
+            primaryColor: primaryColor,
+            secondaryColor: secondaryColor,
           ),
           PokemonEvolutionView(
             pokemonId: pokemonDetailArguments.pokemon.id ?? 0,

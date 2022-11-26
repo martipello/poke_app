@@ -41,28 +41,30 @@ class _PokemonTileState extends State<PokemonTile> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<PaletteGenerator>(
-        stream: mainImageColorViewModel.paletteGeneratorStream,
-        builder: (context, mainImagePaletteGeneratorSnapshot) {
-          return StreamBuilder<PaletteGenerator>(
-              stream: spriteImageColorViewModel.paletteGeneratorStream,
-              builder: (context, spriteImagePaletteGeneratorSnapshot) {
-                final spriteImagePaletteGenerator = spriteImagePaletteGeneratorSnapshot.data;
-                final mainImagePaletteGenerator = mainImagePaletteGeneratorSnapshot.data;
-                return RoundedCard(
-                  onTap: () {
-                    Navigator.of(context).pushNamed(
-                      PokemonDetailPage.routeName,
-                      arguments: PokemonDetailPageArguments(
-                        pokemon: widget.pokemon,
-                        spriteImagePaletteGenerator: spriteImagePaletteGenerator,
-                        mainImagePaletteGenerator: mainImagePaletteGenerator,
-                      ),
-                    );
-                  },
-                  child: _buildPokemonCardBody(),
+      stream: mainImageColorViewModel.paletteGeneratorStream,
+      builder: (context, mainImagePaletteGeneratorSnapshot) {
+        return StreamBuilder<PaletteGenerator>(
+          stream: spriteImageColorViewModel.paletteGeneratorStream,
+          builder: (context, spriteImagePaletteGeneratorSnapshot) {
+            final spriteImagePaletteGenerator = spriteImagePaletteGeneratorSnapshot.data;
+            final mainImagePaletteGenerator = mainImagePaletteGeneratorSnapshot.data;
+            return RoundedCard(
+              onTap: () {
+                Navigator.of(context).pushNamed(
+                  PokemonDetailPage.routeName,
+                  arguments: PokemonDetailPageArguments(
+                    pokemon: widget.pokemon,
+                    spriteImagePaletteGenerator: spriteImagePaletteGenerator,
+                    mainImagePaletteGenerator: mainImagePaletteGenerator,
+                  ),
                 );
-              });
-        });
+              },
+              child: _buildPokemonCardBody(),
+            );
+          },
+        );
+      },
+    );
   }
 
   Widget _buildPokemonCardBody() {

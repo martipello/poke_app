@@ -16,9 +16,13 @@ class PokemonStatsWidget extends StatelessWidget {
   const PokemonStatsWidget({
     Key? key,
     required this.pokemon,
+    required this.primaryColor,
+    required this.secondaryColor,
   }) : super(key: key);
 
   final Pokemon pokemon;
+  final Color primaryColor;
+  final Color secondaryColor;
 
   @override
   Widget build(BuildContext context) {
@@ -106,11 +110,11 @@ class PokemonStatsWidget extends StatelessWidget {
       ),
       currentValue: value.toDouble(),
       size: 22,
-      backgroundColor: Colors.green,
-      progressGradient: const LinearGradient(
+      backgroundColor: secondaryColor,
+      progressGradient: LinearGradient(
         colors: [
-          Colors.yellow,
-          Colors.red,
+          colors(context).cardBackground.withOpacity(0.8),
+          primaryColor,
         ],
       ),
     );
