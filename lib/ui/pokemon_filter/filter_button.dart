@@ -69,6 +69,7 @@ class _FilterButtonState extends State<FilterButton> with SingleTickerProviderSt
   Widget _buildFilterButtonImage() {
     return Image.asset(
       'assets/images/pokeball_filter.png',
+      gaplessPlayback: true,
     );
   }
 }

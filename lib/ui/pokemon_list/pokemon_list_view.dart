@@ -8,6 +8,8 @@ import '../../api/models/pokemon/pokemon.dart';
 import '../../api/models/pokemon/pokemon_request.dart';
 import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
+import '../../theme/base_theme.dart';
+import '../../theme/poke_app_text.dart';
 import '../pokemon_filter/filter_view_holder.dart';
 import '../shared_widgets/error_widget.dart' as ew;
 import '../shared_widgets/loading_widget.dart';
@@ -28,7 +30,6 @@ class PokemonListView extends StatefulWidget {
 }
 
 class _PokemonListViewState extends State<PokemonListView> {
-
   final _pokemonViewModel = getIt.get<PokemonListViewModel>();
   final _filterViewModel = getIt.get<FilterViewModel>();
 
@@ -204,23 +205,45 @@ class _PokemonListViewState extends State<PokemonListView> {
   Widget _errorListItemWidget({
     required VoidCallback onTryAgain,
   }) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(context.strings.error_getting_page),
-        RoundedButton(
-          label: context.strings.retry,
-          onPressed: onTryAgain,
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            context.strings.error_getting_page,
+            style: PokeAppText.body4Style.copyWith(
+              color: colors(context).textOnForeground,
+            ),
+          ),
+          const SizedBox(
+            height: 4,
+          ),
+          RoundedButton(
+            label: context.strings.retry,
+            textStyle: PokeAppText.body4Style.copyWith(
+              color: colors(context).textOnForeground,
+            ),
+            outlineColor: colors(context).warning,
+            isFilled: true,
+            fillColor: colors(context).cardBackground,
+            onPressed: onTryAgain,
+          ),
+        ],
+      ),
     );
   }
 
   Widget _loadingListItemWidget() {
     return const SizedBox(
-      height: 36,
+      height: 108,
       child: Center(
-        child: LoadingWidget(),
+        child: PokeballLoadingWidget(
+          size: Size(
+            42,
+            42,
+          ),
+        ),
       ),
     );
   }

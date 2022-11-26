@@ -33,15 +33,19 @@ class _FilterViewState extends State<FilterView> {
         child: SizedBox(
           height: widget.filterViewModel.filterHeight,
           width: double.infinity,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _buildFilterHeader(),
-                _buildFilterChipsHolder(),
-              ],
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 16,
+                  right: 16,
+                  top: 16,
+                ),
+                child: _buildFilterHeader(),
+              ),
+              _buildFilterChipsHolder(),
+            ],
           ),
         ),
       ),
@@ -54,6 +58,10 @@ class _FilterViewState extends State<FilterView> {
       stream: widget.filterViewModel.selectedFiltersStream,
       builder: (context, snapshot) {
         return ChipGroup(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 8,
+          ),
           chips: PokemonType.values
               .map(
                 (type) => TypeChip(
