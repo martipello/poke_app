@@ -112,7 +112,7 @@ final pokeAppDarkTheme = AppTheme(
     guide: Color(0xFF007CF2),
     black: Color(0xFF000000),
     white: Color(0xFFFFFFFF),
-    foreground: Color(0xFFFAFAFA),
+    foreground: Color(0xFF303030),
     background: Color(0xFFEEEEEE),
     cardBackground: Color(0xFF272727),
   ),

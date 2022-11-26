@@ -82,22 +82,25 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
   }
 
   Widget _buildTabBarView() {
-    return TabBarView(
-      controller: _tabBarController,
-      children: [
-        PokemonInfoView(
-          pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
-        ),
-        PokemonStatsView(
-          pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
-        ),
-        PokemonEvolutionView(
-          pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
-        ),
-        PokemonMovesView(
-          pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
-        ),
-      ],
+    return DecoratedBox(
+      decoration: BoxDecoration(color: colors(context).foreground),
+      child: TabBarView(
+        controller: _tabBarController,
+        children: [
+          PokemonInfoView(
+            pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
+          ),
+          PokemonStatsView(
+            pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
+          ),
+          PokemonEvolutionView(
+            pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
+          ),
+          PokemonMovesView(
+            pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
+          ),
+        ],
+      ),
     );
   }
 
