@@ -7,6 +7,8 @@ import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
+import '../settings/about.dart';
+import '../settings/settings.dart';
 import '../shared_widgets/chip_group.dart';
 import '../shared_widgets/type_chip.dart';
 import 'view_models/filter_view_model.dart';
@@ -66,6 +68,7 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
           leading: isSearching ? _buildBackButton() : null,
           actions: [
             if (!isSearching) _buildSearchAction(),
+            _buildMenuAction(),
           ],
           title: isSearching
               ? _buildSearchView()
@@ -139,6 +142,18 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
       icon: Icon(
         Icons.arrow_back,
         size: 18,
+        color: colors(context).textOnPrimary,
+      ),
+    );
+  }
+
+  Widget _buildMenuAction() {
+    return IconButton(
+      onPressed: () {
+        Navigator.of(context).pushNamed(Settings.routeName);
+      },
+      icon: Icon(
+        Icons.more_vert_rounded,
         color: colors(context).textOnPrimary,
       ),
     );
