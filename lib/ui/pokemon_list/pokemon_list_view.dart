@@ -120,26 +120,26 @@ class _PokemonListViewState extends State<PokemonListView> {
         return true;
       },
       child: Scaffold(
-        body: NestedScrollView(
-          headerSliverBuilder: (nestedScrollViewContext, innerBoxScrolled) {
-            return [
-              StreamBuilder<String?>(
-                stream: _pokemonViewModel.searchText,
-                builder: (context, snapshot) {
-                  return _buildHeaderBar();
-                },
-              ),
-            ];
-          },
-          body: Stack(
-            children: [
-              _buildPokemonList(),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: _buildFilter(),
-              ),
-            ],
-          ),
+        body: Stack(
+          children: [
+            NestedScrollView(
+              headerSliverBuilder: (nestedScrollViewContext, innerBoxScrolled) {
+                return [
+                  StreamBuilder<String?>(
+                    stream: _pokemonViewModel.searchText,
+                    builder: (context, snapshot) {
+                      return _buildHeaderBar();
+                    },
+                  ),
+                ];
+              },
+              body: _buildPokemonList(),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: _buildFilter(),
+            ),
+          ],
         ),
       ),
     );

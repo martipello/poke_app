@@ -19,11 +19,6 @@ class _FilterButtonState extends State<FilterButton> with SingleTickerProviderSt
   final filterButtonTag = 'filterButtonTag';
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return _buildFloatingActionButtonHolder();
   }

@@ -1,9 +1,7 @@
 import 'package:circular_reveal_animation/circular_reveal_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:local_hero_with_callback/local_hero_with_callback.dart';
-import 'package:tuple/tuple.dart';
 
-import '../../utils/console_output.dart';
 import '../pokemon_list/view_models/filter_view_model.dart';
 import 'filter_button.dart';
 import 'filter_view.dart';
@@ -34,12 +32,6 @@ class _FilterViewHolderState extends State<FilterViewHolder> with SingleTickerPr
   final _duration = const Duration(milliseconds: 300);
 
   @override
-  void initState() {
-    super.initState();
-    widget.filterViewModel.init();
-  }
-
-  @override
   void dispose() {
     widget.filterViewModel.dispose();
     _circleRevealAnimationController.dispose();
@@ -50,22 +42,22 @@ class _FilterViewHolderState extends State<FilterViewHolder> with SingleTickerPr
   Widget build(BuildContext context) {
     return LocalHeroWithCallbackScope(
       curve: Curves.fastOutSlowIn,
-      child: StreamBuilder<Tuple2<bool, bool>>(
-        initialData: const Tuple2(true, false),
-        stream: widget.filterViewModel.filterUIState,
+      child: StreamBuilder<bool?>(
+        initialData: true,
+        stream: widget.filterViewModel.isFilterBottomSheetShownStream,
         builder: (context, snapshot) {
-          final _isFilterBottomSheetShown = snapshot.data?.item2 == true;
+          final _isFilterBottomSheetShown = snapshot.data == true;
           return SizedBox(
-            height: _isFilterBottomSheetShown ? widget.filterViewModel.filterHeight : 100,
+            height: widget.filterViewModel.filterHeight,
             width: double.infinity,
             child: Stack(
               children: [
-                Align(
-                  alignment: _isFilterBottomSheetShown ? Alignment.center : Alignment.bottomRight,
-                  child: _buildFilterButton(
-                    _isFilterBottomSheetShown,
+                  Align(
+                    alignment: _isFilterBottomSheetShown ? Alignment.center : Alignment.bottomRight,
+                    child: _buildFilterButton(
+                      _isFilterBottomSheetShown,
+                    ),
                   ),
-                ),
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: _buildFilterViewHolder(
@@ -85,7 +77,6 @@ class _FilterViewHolderState extends State<FilterViewHolder> with SingleTickerPr
   ) {
     return FilterButton(
       onTap: () {
-        widget.filterViewModel.setActionButtonVisibility();
         widget.filterViewModel.setFilterUIState();
       },
       onAnimationEnd: () {
@@ -105,7 +96,7 @@ class _FilterViewHolderState extends State<FilterViewHolder> with SingleTickerPr
         filterViewModel: widget.filterViewModel,
         onClose: () {
           _circleRevealAnimationController.reverse().then(
-                (value) {
+            (value) {
               widget.filterViewModel.setFilterUIState();
             },
           );
