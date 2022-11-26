@@ -1,4 +1,4 @@
-extension intExtension on int? {
+extension IntExtension on int? {
   String toPercentageDisplayName() {
     final number = this;
     if (number != null) {

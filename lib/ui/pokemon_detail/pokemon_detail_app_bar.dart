@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 
 import '../../api/models/pokemon/pokemon.dart';
 import '../../theme/base_theme.dart';
-import '../../utils/irregular_trapezium_clipper.dart';
 import '../settings/settings.dart';
 import '../shared_widgets/clipped_app_bar.dart';
 import 'pokemon_detail_header.dart';

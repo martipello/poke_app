@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:palette_generator/palette_generator.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 import '../../../api/models/api_response.dart';

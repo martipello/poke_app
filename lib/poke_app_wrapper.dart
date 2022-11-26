@@ -6,12 +6,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:poke_app/services/theme_service.dart';
 
 import 'dependency_injection_container.dart' as di;
 import 'dependency_injection_container.dart';
 import 'poke_app.dart';
-import 'services/shared_preferences_service.dart';
+import 'services/theme_service.dart';
 import 'theme/base_theme.dart';
 import 'theme/poke_app_theme.dart';
 

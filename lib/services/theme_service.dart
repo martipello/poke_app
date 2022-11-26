@@ -1,6 +1,5 @@
 import 'package:rxdart/rxdart.dart';
 
-import '../utils/console_output.dart';
 import 'pokemon_service.dart';
 import 'shared_preferences_service.dart';
 

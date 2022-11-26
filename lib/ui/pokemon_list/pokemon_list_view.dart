@@ -12,7 +12,6 @@ import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import '../pokemon_filter/filter_view_holder.dart';
 import '../shared_widgets/error_widget.dart' as ew;
-import '../shared_widgets/loading_widget.dart';
 import '../shared_widgets/no_results.dart';
 import '../shared_widgets/pokeball_loading_widget.dart';
 import '../shared_widgets/rounded_button.dart';

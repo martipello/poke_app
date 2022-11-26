@@ -7,7 +7,6 @@ import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
-import '../settings/about.dart';
 import '../settings/settings.dart';
 import '../shared_widgets/chip_group.dart';
 import '../shared_widgets/type_chip.dart';

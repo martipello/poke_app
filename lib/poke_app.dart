@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'dependency_injection_container.dart';
-import 'services/theme_service.dart';
 import 'theme/base_theme.dart';
 import 'ui/app_shell.dart';
 import 'ui/pokemon_detail/pokemon_detail_page.dart';
