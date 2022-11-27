@@ -59,7 +59,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
   }
 
   Widget _buildPokemonDetailBody() {
-    final tabBarTopPadding = 16 + MediaQuery.of(context).viewPadding.top;
+    final tabBarTopPadding = 16 + context.statusBarHeight;
     return DecoratedBox(
       decoration: BoxDecoration(
         color: colors(context).cardBackground,

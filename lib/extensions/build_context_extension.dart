@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 extension BuildContextExt on BuildContext {
+  double get statusBarHeight => MediaQuery.of(this).viewPadding.top;
   double get screenWidth => MediaQuery.of(this).size.width;
   double get screenHeight => MediaQuery.of(this).size.height;
   double get scaleFactor => MediaQuery.of(this).textScaleFactor;

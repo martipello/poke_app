@@ -57,7 +57,7 @@ class _PokeAppState extends State<PokeApp> {
         SplashPage.routeName: (context) => const SplashPage(),
         PokemonDetailPage.routeName: (context) => const PokemonDetailPage(),
         Settings.routeName: (context) => Settings(),
-        About.routeName: (context) => const About(),
+        About.routeName: (context) => About(),
       },
     );
   }
