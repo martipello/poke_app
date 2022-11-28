@@ -49,16 +49,16 @@ class PokemonPagingAdapter {
   }
 
   Future<void> _fetchPage(int pageKey) async {
-    log('POKEMON PAGING ADAPTER').d('_fetchPage $pageKey');
     if (_pokemonRequest != null) {
       try {
+        log('tag').d('_fetchPage pageKey $pageKey');
         final language = await languageService.getLanguage();
         final newPage = await pokemonRepository.getPokemon(
           _pokemonRequest!.rebuild(
             (b) => b
               ..languageId = language.id
-              ..limit = offset
-              ..skip = offset * pageKey
+              ..limit = pageKey + offset
+              ..skip = pageKey
               ..pagination = true,
           ),
         );
@@ -69,13 +69,16 @@ class PokemonPagingAdapter {
 
           if (!_hasBeenDisposed) {
             if (isLastPage) {
+              log('tag').d('pageKey $pageKey isLastPage $isLastPage');
               pagingController?.appendLastPage(pokemon.pokemon_v2_pokemon.toList());
             } else {
-              final nextPageKey = (pageKey + 1) * offset;
+              final nextPageKey = pageKey + offset;
+              log('tag').d('pageKey $pageKey nextPageKey $nextPageKey isLastPage $isLastPage');
               pagingController?.appendPage(pokemon.pokemon_v2_pokemon.toList(), nextPageKey);
             }
           }
         } else {
+          log('tag').d('newPage $newPage');
           if (!_hasBeenDisposed) {
             _handleError(ApiResponse.error('Unknown error...'));
           }
