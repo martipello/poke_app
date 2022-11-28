@@ -1,15 +1,19 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:settings_ui/settings_ui.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../extensions/string_extension.dart';
 import '../../services/language_service.dart';
+import '../../services/launch_service.dart';
 import '../../services/theme_service.dart';
 import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
+import '../../utils/constants.dart';
 import 'about.dart';
 
 class Settings extends StatelessWidget {
@@ -19,6 +23,7 @@ class Settings extends StatelessWidget {
 
   final _languageService = getIt.get<LanguageService>();
   final _themeService = getIt.get<ThemeService>();
+  final _launchService = getIt.get<LaunchService>();
 
   @override
   Widget build(BuildContext context) {
@@ -153,12 +158,12 @@ class Settings extends StatelessWidget {
       actions: [
         _buildSelectLanguageAlertDialogAction(
           context,
-          'Cancel',
+          context.strings.cancel,
           null,
         ),
         _buildSelectLanguageAlertDialogAction(
           context,
-          'Ok',
+          context.strings.ok,
           () {
             _languageService.setLanguage(_tempSelectedLanguage);
           },
@@ -276,6 +281,20 @@ class Settings extends StatelessWidget {
       title: Text(
         context.strings.review,
       ),
+      onPressed: (_) {
+        final inAppReview = InAppReview.instance;
+        //TODO fix this for iOS
+        inAppReview
+            .openStoreListing(
+              appStoreId: '...',
+            )
+            .onError(
+              (error, stackTrace) => _launchService.launchSnackBar(
+                context,
+                error.toString(),
+              ),
+            );
+      },
     );
   }
 
@@ -292,6 +311,18 @@ class Settings extends StatelessWidget {
       description: Text(
         context.strings.shareWithFriends,
       ),
+      onPressed: (_) {
+        Share.share(
+          context.strings.shareLabel,
+        ).onError(
+          (error, stackTrace) async {
+            _launchService.launchSnackBar(
+              context,
+              error.toString(),
+            );
+          },
+        );
+      },
     );
   }
 
@@ -305,9 +336,22 @@ class Settings extends StatelessWidget {
       title: Text(
         context.strings.sendFeedback,
       ),
-      description: const Text(
-        'Report issues or suggest new features',
+      description: Text(
+        context.strings.feedbackLabel,
       ),
+      onPressed: (_) {
+        _launchService
+            .launchEvent(
+              context,
+              Constants.APP_ERROR,
+            )
+            .onError(
+              (error, stackTrace) => _launchService.launchSnackBar(
+                context,
+                error.toString(),
+              ),
+            );
+      },
     );
   }
 
