@@ -105,7 +105,9 @@ class PokemonDetailHeader extends StatelessWidget {
     );
   }
 
-  Widget _buildPokemonId(BuildContext context,) {
+  Widget _buildPokemonId(
+    BuildContext context,
+  ) {
     final pokemonId = pokemon.id ?? '??';
     return Text(
       '#${pokemonId.toString()}',
@@ -115,7 +117,9 @@ class PokemonDetailHeader extends StatelessWidget {
     );
   }
 
-  Widget _buildSpeciesName(BuildContext context,) {
+  Widget _buildSpeciesName(
+    BuildContext context,
+  ) {
     final speciesName =
         pokemon.pokemon_v2_pokemonspecy?.pokemon_v2_pokemonspeciesnames.first.genus ?? 'Unknown Species';
     return Text(
@@ -156,6 +160,7 @@ class PokemonDetailHeader extends StatelessWidget {
             color: colors(context).textOnForeground,
           ),
         ),
+        _buildSmallMedium,
         Text(
           pokemonGenerationId,
           style: PokeAppText.body4Style.copyWith(
@@ -165,6 +170,8 @@ class PokemonDetailHeader extends StatelessWidget {
       ],
     );
   }
+
+  Widget get _buildSmallMedium => const SizedBox(width: 4,);
 
   Widget _buildHeight(
     BuildContext context,
@@ -178,6 +185,7 @@ class PokemonDetailHeader extends StatelessWidget {
             color: colors(context).textOnForeground,
           ),
         ),
+        _buildSmallMedium,
         Text(
           pokemonHeight,
           style: PokeAppText.body4Style.copyWith(
@@ -200,6 +208,7 @@ class PokemonDetailHeader extends StatelessWidget {
             color: colors(context).textOnForeground,
           ),
         ),
+        _buildSmallMedium,
         Text(
           pokemonWeight,
           style: PokeAppText.body4Style.copyWith(

@@ -8,6 +8,8 @@ import '../../theme/poke_app_text.dart';
 
 typedef OnSelected = void Function(bool selected);
 
+const double kChipHeight = 36;
+
 enum ChipType { filter, normal, expansion }
 
 class TypeChip extends StatelessWidget {
@@ -48,12 +50,12 @@ class TypeChip extends StatelessWidget {
     final color = damageType?.color ?? pokemonType?.color;
     final image = damageType?.image ?? pokemonType?.image;
     return SizedBox(
-      height: 32,
+      height: kChipHeight + 16,
       child: Chip(
         avatar: Image.asset(
           image!,
-          height: 24,
-          width: 24,
+          height: kChipHeight - 6,
+          width: kChipHeight - 6,
         ),
         label: Text(
           '${label.capitalize()}$labelSuffix',
@@ -87,14 +89,14 @@ class TypeChip extends StatelessWidget {
     final color = damageType?.color ?? pokemonType?.color;
     final image = damageType?.image ?? pokemonType?.image;
     return SizedBox(
-      height: 32,
+      height: kChipHeight,
       child: FilterChip(
         avatar: isSelected
             ? null
             : Image.asset(
                 image!,
-                height: 24,
-                width: 24,
+                height: kChipHeight - 6,
+                width: kChipHeight - 6,
               ),
         backgroundColor: color,
         disabledColor: colors(context).cardBackground,
@@ -105,11 +107,13 @@ class TypeChip extends StatelessWidget {
               )
             : null,
         label: Padding(
-          padding: const EdgeInsets.only(bottom: 3),
+          padding: const EdgeInsets.only(
+            bottom: 3,
+          ),
           child: Text(
             '${label.capitalize()}$labelSuffix',
             style: PokeAppText.body4Style.copyWith(
-              color:  isSelected ? colors(context).textOnForeground : colors(context).cardBackground,
+              color: isSelected ? colors(context).textOnForeground : colors(context).cardBackground,
             ),
           ),
         ),
@@ -117,7 +121,7 @@ class TypeChip extends StatelessWidget {
           right: 8,
         ),
         labelStyle: PokeAppText.body4Style.copyWith(
-          color:  isSelected ? colors(context).textOnForeground : colors(context).cardBackground,
+          color: isSelected ? colors(context).textOnForeground : colors(context).cardBackground,
         ),
         onSelected: onSelected,
         selected: isSelected,
@@ -133,6 +137,7 @@ class TypeChip extends StatelessWidget {
     final color = damageType?.color ?? pokemonType?.color;
     final image = damageType?.image ?? pokemonType?.image;
     return Container(
+      height: kChipHeight,
       decoration: BoxDecoration(
         color: color,
         borderRadius: const BorderRadius.all(
@@ -150,8 +155,8 @@ class TypeChip extends StatelessWidget {
           children: [
             Image.asset(
               image!,
-              height: 24,
-              width: 24,
+              height: kChipHeight - 6,
+              width: kChipHeight - 6,
             ),
             if (isExpanded == true)
               Padding(

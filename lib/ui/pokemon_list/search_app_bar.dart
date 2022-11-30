@@ -68,11 +68,17 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
           actions: [
             if (!isSearching) _buildSearchAction(),
             _buildMenuAction(),
+            SizedBox(
+              width: 16,
+            )
           ],
           title: isSearching
               ? _buildSearchView()
               : Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 16,
+                    horizontal: 16,
+                  ),
                   child: Text(
                     context.strings.app_name,
                     style: PokeAppText.subtitle2Style.copyWith(
@@ -91,18 +97,36 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
   PreferredSize? _buildSelectedFiltersHolder(
     List<PokemonType> selectedFilters,
   ) {
+    const chipPadding = 12.0;
+    const clearFilterHeight = 48.0;
+
+    final totalHeight =
+        selectedFilters.length > 1 ? (kChipHeight + chipPadding) + clearFilterHeight : kChipHeight + chipPadding;
+
     return selectedFilters.isNotEmpty
         ? PreferredSize(
-            preferredSize: const Size(
+            preferredSize: Size(
               double.infinity,
-              48,
+              totalHeight,
             ),
-            child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: _buildSelectedFilters(
-                    selectedFilters,
+                Row(
+                  children: [
+                    Expanded(
+                      child: _buildSelectedFilters(
+                        selectedFilters,
+                      ),
+                    ),
+                  ],
+                ),
+                if (selectedFilters.length > 1)
+                  _buildClearAllFiltersButton(
+                    clearFilterHeight,
                   ),
+                const SizedBox(
+                  height: 8,
                 ),
               ],
             ),
@@ -110,10 +134,41 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
         : null;
   }
 
+  Widget _buildClearAllFiltersButton(
+    double clearFilterHeight,
+  ) {
+    return Container(
+      height: clearFilterHeight,
+      padding: const EdgeInsets.symmetric(
+        vertical: 8,
+        horizontal: 16,
+      ),
+      child: Material(
+        type: MaterialType.transparency,
+        child: InkWell(
+          onTap: widget.filterViewModel.clearFilters,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 8,
+              horizontal: 16,
+            ),
+            child: Text(
+              context.strings.clearFilters,
+              style: PokeAppText.body3Style.copyWith(
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildSelectedFilters(
     List<PokemonType> selectedFilters,
   ) {
     return ChipGroup(
+      padding: const EdgeInsets.only(left: 32),
       scrollDirection: Axis.horizontal,
       scrollController: widget.filterViewModel.scrollController,
       chips: selectedFilters
@@ -132,16 +187,19 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
   }
 
   Widget _buildBackButton() {
-    return IconButton(
-      onPressed: () {
-        searchAppBarViewModel.isSearching.add(
-          false,
-        );
-      },
-      icon: Icon(
-        Icons.arrow_back,
-        size: 18,
-        color: colors(context).textOnPrimary,
+    return Padding(
+      padding: const EdgeInsets.only(left: 16.0),
+      child: IconButton(
+        onPressed: () {
+          searchAppBarViewModel.isSearching.add(
+            false,
+          );
+        },
+        icon: Icon(
+          Icons.arrow_back,
+          size: 24,
+          color: colors(context).textOnPrimary,
+        ),
       ),
     );
   }

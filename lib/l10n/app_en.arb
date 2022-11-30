@@ -68,6 +68,7 @@
     "sendFeedback" : "Send feedback",
     "feedbackLabel" : "'Report issues or suggest new features'",
     "language" : "Language",
+    "clearFilters" : "Clear filters",
     "selectLanguage" : "Please select a language",
     "darkMode" : "Dark Mode",
     "review" : "Review",

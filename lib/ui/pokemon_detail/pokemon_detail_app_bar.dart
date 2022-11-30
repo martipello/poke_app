@@ -6,6 +6,7 @@ import '../../api/models/pokemon/pokemon.dart';
 import '../../theme/base_theme.dart';
 import '../settings/settings.dart';
 import '../shared_widgets/clipped_app_bar.dart';
+import '../shared_widgets/type_chip.dart';
 import 'pokemon_detail_header.dart';
 
 class PokemonDetailAppBar extends StatefulWidget {
@@ -26,6 +27,8 @@ class PokemonDetailAppBar extends StatefulWidget {
 
 class _PokemonDetailAppBarState extends State<PokemonDetailAppBar> with TickerProviderStateMixin {
   final _duration = const Duration(milliseconds: 300);
+  static const kDetailAppBarCardBackgroundHeight = 276.0;
+  static const kExpandedHeight = 148.0 + kDetailAppBarCardBackgroundHeight + kChipHeight;
 
   late final _circleRevealAnimationController = AnimationController(
     vsync: this,
@@ -68,7 +71,7 @@ class _PokemonDetailAppBarState extends State<PokemonDetailAppBar> with TickerPr
       },
       child: SliverAppBar(
         pinned: false,
-        expandedHeight: 440,
+        expandedHeight: kExpandedHeight,
         backgroundColor: colors(context).cardBackground,
         titleSpacing: 0,
         title: ClippedAppBar(
@@ -129,7 +132,7 @@ class _PokemonDetailAppBarState extends State<PokemonDetailAppBar> with TickerPr
             ),
             child: const Card(
               child: SizedBox(
-                height: 276,
+                height: kDetailAppBarCardBackgroundHeight,
                 width: double.infinity,
               ),
             ),

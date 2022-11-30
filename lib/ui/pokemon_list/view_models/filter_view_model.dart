@@ -31,6 +31,10 @@ class FilterViewModel {
     selectedFiltersStream.add(_selectedFilters);
   }
 
+  void clearFilters(){
+    selectedFiltersStream.add([]);
+  }
+
   void dispose() {
     isFilterBottomSheetShownStream.close();
     selectedFiltersStream.close();

@@ -1,5 +1,6 @@
 import 'package:flexible_scrollbar/flexible_scrollbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../extensions/build_context_extension.dart';
 import '../../theme/base_theme.dart';
@@ -7,28 +8,40 @@ import '../../theme/poke_app_text.dart';
 import '../shared_widgets/clipped_app_bar.dart';
 import '../shared_widgets/poke_divider.dart';
 
-class About extends StatelessWidget {
+class About extends StatefulWidget {
   About({Key? key}) : super(key: key);
 
   static const String routeName = '/about';
 
+  @override
+  State<About> createState() => _AboutState();
+}
+
+class _AboutState extends State<About> {
   final controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: FlexibleScrollbar(
-        controller: controller,
-        alwaysVisible: true,
-        scrollThumbBuilder: (
-          scrollInfo,
-        ) {
-          return _buildScrollThumbHolder(
-            context,
+    return AnnotatedRegion(
+      value: const SystemUiOverlayStyle(
+        statusBarColor: Colors.red,
+      ),
+      child: Scaffold(
+        body: FlexibleScrollbar(
+          controller: controller,
+          alwaysVisible: true,
+          scrollThumbBuilder: (
             scrollInfo,
-          );
-        },
-        child: _buildScrollWidget(context),
+          ) {
+            return _buildScrollThumbHolder(
+              context,
+              scrollInfo,
+            );
+          },
+          child: _buildScrollWidget(
+            context,
+          ),
+        ),
       ),
     );
   }
@@ -273,9 +286,9 @@ class About extends StatelessWidget {
   }
 
   double _calculateScrollOffset(
-      BuildContext context,
-      ScrollbarInfo scrollInfo,
-      ) {
+    BuildContext context,
+    ScrollbarInfo scrollInfo,
+  ) {
     final thumbMainAxisSize = scrollInfo.thumbMainAxisSize;
     final thumbMainAxisOffset = scrollInfo.thumbMainAxisOffset;
     final screenHeight = context.screenHeight;
@@ -287,11 +300,10 @@ class About extends StatelessWidget {
     );
     final offsetY = (thumbMainAxisSize * percentage)
         .clamp(
-      kToolbarHeight,
-      thumbMainAxisSize,
-    )
+          kToolbarHeight,
+          thumbMainAxisSize,
+        )
         .toDouble();
     return offsetY;
   }
-
 }

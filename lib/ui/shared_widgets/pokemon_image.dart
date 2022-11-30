@@ -157,7 +157,8 @@ class _PokemonImageState extends State<PokemonImage> {
         ),
         child: SizedBox(
           height: widget.size?.height ?? 150,
-          width: widget.size?.width ?? 150,),
+          width: widget.size?.width ?? 150,
+        ),
       ),
     );
   }
@@ -168,6 +169,7 @@ class _PokemonImageState extends State<PokemonImage> {
   ) {
     return Hero(
       tag: '${widget.pokemon.id}',
+      transitionOnUserGestures: true,
       child: Image(
         image: imageProvider,
         fit: BoxFit.cover,
