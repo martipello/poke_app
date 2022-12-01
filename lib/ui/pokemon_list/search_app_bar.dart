@@ -68,7 +68,7 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
           actions: [
             if (!isSearching) _buildSearchAction(),
             _buildMenuAction(),
-            SizedBox(
+            const SizedBox(
               width: 16,
             )
           ],
@@ -125,9 +125,7 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
                   _buildClearAllFiltersButton(
                     clearFilterHeight,
                   ),
-                const SizedBox(
-                  height: 8,
-                ),
+                _buildSmallMargin,
               ],
             ),
           )
@@ -286,4 +284,7 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
           : null,
     );
   }
+
+  SizedBox get _buildSmallMargin => const SizedBox(height: 8);
+
 }

@@ -4,7 +4,8 @@ import '../../../api/models/pokemon/pokemon.dart';
 import '../../../api/models/pokemon/pokemon_type.dart';
 import '../../../api/models/pokemon/type_efficacies.dart';
 import '../../../extensions/build_context_extension.dart';
-import '../../../extensions/type_efficacy_extension.dart';
+import '../../../extensions/double_extension.dart';
+import '../../../extensions/iterable_extension.dart';
 import '../../../extensions/type_list_extension.dart';
 import '../../../theme/poke_app_text.dart';
 import '../../shared_widgets/chip_group.dart';
@@ -31,18 +32,17 @@ class PokemonWeaknessResistanceWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (weaknesses.isNotEmpty)
-            ..._buildTypeEffectivenessSection(
-              context,
-              weaknesses,
-            ),
+          ..._buildTypeEffectiveness(
+            context,
+            weaknesses,
+          ),
           PokeDivider(),
         ],
       ),
     );
   }
 
-  List<Widget> _buildTypeEffectivenessSection(
+  List<Widget> _buildTypeEffectiveness(
     BuildContext context,
     List<TypeEfficacies> typeEfficacies,
   ) {
@@ -53,18 +53,66 @@ class PokemonWeaknessResistanceWidget extends StatelessWidget {
         style: PokeAppText.subtitle3Style,
       ),
       _buildMediumMargin(),
-      _buildPokemonStatTable(typeEfficacies),
-      _buildMediumMargin(),
+      ..._buildTypeEffectivenessSections(
+        context,
+        typeEfficacies,
+      ),
     ];
   }
 
-  Widget _buildPokemonStatTable(
+  List<Widget> _buildTypeEffectivenessSections(
+    BuildContext context,
     List<TypeEfficacies> typeEfficacies,
   ) {
+    final groupTypeEfficacies = typeEfficacies.groupBy((type) => type.damage_factor);
+    return groupTypeEfficacies.entries.map<Widget>(
+      (te) {
+        return _buildTypeEffectivenessSection(
+          context,
+          te,
+          te.key == groupTypeEfficacies.keys.last,
+        );
+      },
+    ).toList();
+  }
+
+  Widget _buildTypeEffectivenessSection(
+    BuildContext context,
+    MapEntry<double?, List<TypeEfficacies>> entry,
+    bool isLast,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _buildTypeEffectivenessSectionTitle(
+          context,
+          entry,
+        ),
+        _buildSmallMargin(),
+        _buildTypeEffectivenessSectionChipGroup(
+          entry,
+        ),
+        if (!isLast) _buildSectionDivider(),
+        if (isLast) _buildSmallMargin(),
+      ],
+    );
+  }
+
+  Widget _buildSectionDivider() {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: PokeDivider(),
+    );
+  }
+
+  Widget _buildTypeEffectivenessSectionChipGroup(
+    MapEntry<double?, List<TypeEfficacies>> entry,
+  ) {
     return ChipGroup(
-      chips: typeEfficacies.map(
+      chips: entry.value.map(
         (te) {
-          final damageFactor = te.calculateDamageFactor();
+          final damageFactor = te.damage_factor?.calculateDamageFactor();
           return TypeChip(
             chipType: ChipType.normal,
             pokemonType: PokemonType.getTypeForId(
@@ -77,6 +125,49 @@ class PokemonWeaknessResistanceWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildMediumMargin() => const SizedBox(height: 16);
+  Widget _buildTypeEffectivenessSectionTitle(
+    BuildContext context,
+    MapEntry<double?, List<TypeEfficacies>> entry,
+  ) {
+    return Row(
+      children: [
+        Text(
+          damageFactorLabel(context, entry.key ?? 0),
+          style: PokeAppText.subtitle4Style,
+        ),
+        const SizedBox(
+          width: 4,
+        ),
+        Text(
+          'x${entry.key.calculateDamageFactor()}',
+          style: PokeAppText.subtitle4Style,
+        ),
+      ],
+    );
+  }
 
+  String damageFactorLabel(
+    BuildContext context,
+    double damageFactor,
+  ) {
+    if (damageFactor == 0) {
+      return context.strings.normalDamageLabel;
+    } else {
+      final _damageFactor = double.parse(
+        damageFactor.calculateDamageFactor(),
+      );
+      if (_damageFactor == 1) {
+        return context.strings.neutralLabel;
+      } else if (_damageFactor > 1) {
+        return context.strings.weaknessLabel;
+      } else if (_damageFactor < 1) {
+        return context.strings.resistantLabel;
+      }
+    }
+    return context.strings.unknownDamageLabel;
+  }
+
+  Widget _buildSmallMargin() => const SizedBox(height: 8);
+
+  Widget _buildMediumMargin() => const SizedBox(height: 16);
 }

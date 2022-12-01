@@ -76,5 +76,12 @@
     "shareWithFriends" : "Share with friends",
     "shareLabel" : "Check out the PokéApp : https://PokéApp.example.playstore.com",
     "ok" : "Ok",
-    "cancel" : "Cancel"
+    "cancel" : "Cancel",
+
+    "weaknessLabel" : "Weakness to :",
+    "resistantLabel" : "Resistant to :",
+    "neutralLabel" : "Neutral to :",
+    "unknownDamageLabel" : "Unknown damage",
+    "normalDamageLabel" : "Normal damage :"
+
 }
