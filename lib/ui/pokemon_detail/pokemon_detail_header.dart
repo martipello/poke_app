@@ -12,6 +12,8 @@ import '../shared_widgets/chip_group.dart';
 import '../shared_widgets/pokemon_image.dart';
 import '../shared_widgets/type_chip.dart';
 
+const kPokemonDetailImageHeight = 200.0;
+
 class PokemonDetailHeader extends StatelessWidget {
   const PokemonDetailHeader({
     Key? key,
@@ -38,9 +40,9 @@ class PokemonDetailHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildExtraLargeMargin(),
+          _buildExtraLargeMargin,
           _buildPokemonImage(),
-          _buildMediumMargin(),
+          _buildMediumMargin,
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -48,17 +50,17 @@ class PokemonDetailHeader extends StatelessWidget {
               _buildPokemonId(context),
             ],
           ),
-          _buildSmallMargin(),
+          _buildSmallMargin,
           _buildSpeciesName(context),
-          _buildSmallMargin(),
+          _buildSmallMargin,
           _buildPokemonTypes(),
-          _buildSmallMargin(),
+          _buildSmallMargin,
           _buildGeneration(context),
-          _buildSmallMargin(),
+          _buildSmallMargin,
           Row(
             children: [
               _buildHeight(context),
-              _buildMediumMargin(),
+              _buildMediumMargin,
               _buildWeight(context),
             ],
           ),
@@ -67,31 +69,16 @@ class PokemonDetailHeader extends StatelessWidget {
     );
   }
 
-  Widget _buildExtraLargeMargin() {
-    return const SizedBox(
-      height: 72,
-    );
-  }
-
   Widget _buildPokemonImage() {
     return PokemonImage(
       pokemon: pokemon,
       size: const Size(
-        200,
-        200,
+        kPokemonDetailImageHeight,
+        kPokemonDetailImageHeight,
       ),
       color: Colors.transparent,
     );
   }
-
-  Widget _buildSmallMargin() => const SizedBox(
-        height: 8,
-      );
-
-  Widget _buildMediumMargin() => const SizedBox(
-        height: 16,
-        width: 16,
-      );
 
   Widget _buildTitle(
     BuildContext context,
@@ -135,6 +122,8 @@ class PokemonDetailHeader extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         ChipGroup(
+          scrollDirection: Axis.horizontal,
+          padding: EdgeInsets.zero,
           chips: pokemon.pokemon_v2_pokemontypes
               .map(
                 (type) => TypeChip(
@@ -160,7 +149,7 @@ class PokemonDetailHeader extends StatelessWidget {
             color: colors(context).textOnForeground,
           ),
         ),
-        _buildSmallMedium,
+        _buildExtraSmallMedium,
         Text(
           pokemonGenerationId,
           style: PokeAppText.body4Style.copyWith(
@@ -170,8 +159,6 @@ class PokemonDetailHeader extends StatelessWidget {
       ],
     );
   }
-
-  Widget get _buildSmallMedium => const SizedBox(width: 4,);
 
   Widget _buildHeight(
     BuildContext context,
@@ -185,7 +172,7 @@ class PokemonDetailHeader extends StatelessWidget {
             color: colors(context).textOnForeground,
           ),
         ),
-        _buildSmallMedium,
+        _buildExtraSmallMedium,
         Text(
           pokemonHeight,
           style: PokeAppText.body4Style.copyWith(
@@ -208,7 +195,7 @@ class PokemonDetailHeader extends StatelessWidget {
             color: colors(context).textOnForeground,
           ),
         ),
-        _buildSmallMedium,
+        _buildExtraSmallMedium,
         Text(
           pokemonWeight,
           style: PokeAppText.body4Style.copyWith(
@@ -218,4 +205,24 @@ class PokemonDetailHeader extends StatelessWidget {
       ],
     );
   }
+
+  Widget get _buildExtraSmallMedium => const SizedBox(
+    width: 4,
+  );
+
+  Widget get _buildSmallMargin => const SizedBox(
+        height: 8,
+      );
+
+  Widget get _buildMediumMargin => const SizedBox(
+        height: 16,
+        width: 16,
+      );
+
+  Widget get _buildExtraLargeMargin {
+    return const SizedBox(
+      height: 72,
+    );
+  }
+
 }

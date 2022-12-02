@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
+import 'type_chip.dart';
+
 class ChipGroup extends StatefulWidget {
   const ChipGroup({
     required this.chips,
@@ -45,22 +47,21 @@ class _ChipGroupState extends State<ChipGroup> {
 
   Widget _buildHorizontalChipList() {
     return SizedBox(
-      height: 48,
+      height: kChipHeight,
       child: ListView.builder(
         controller: widget.scrollController,
         scrollDirection: Axis.horizontal,
         shrinkWrap: true,
         padding: widget.padding ??
             const EdgeInsets.only(
-              bottom: 16,
               left: 16,
               right: 16,
             ),
         itemCount: widget.chips.length,
         itemBuilder: (context, index) {
           return Padding(
-            padding: const EdgeInsets.only(
-              right: 16,
+            padding: EdgeInsets.only(
+              right: index == widget.chips.length - 1 ? 0 : 8,
             ),
             child: widget.chips[index],
           );

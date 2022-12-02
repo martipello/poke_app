@@ -12,6 +12,8 @@ import 'view_models/image_color_view_model.dart';
 typedef ImageErrorBuilder = Widget Function(BuildContext context, Object? object, StackTrace? stacktrace);
 typedef ImageColorCallback = Function(PaletteGenerator palette);
 
+const kDefaultImageHeight = 150.0;
+
 class PokemonImage extends StatefulWidget {
   const PokemonImage({
     Key? key,
@@ -40,6 +42,7 @@ class _PokemonImageState extends State<PokemonImage> {
 
   late final NetworkImage mainImageProvider;
   late final NetworkImage secondaryImageProvider;
+
 
   @override
   void initState() {
@@ -156,8 +159,8 @@ class _PokemonImageState extends State<PokemonImage> {
           color: widget.color ?? dominantColor,
         ),
         child: SizedBox(
-          height: widget.size?.height ?? 150,
-          width: widget.size?.width ?? 150,
+          height: widget.size?.height ?? kDefaultImageHeight,
+          width: widget.size?.width ?? kDefaultImageHeight,
         ),
       ),
     );
@@ -174,8 +177,8 @@ class _PokemonImageState extends State<PokemonImage> {
         image: imageProvider,
         fit: BoxFit.cover,
         gaplessPlayback: true,
-        height: widget.size?.height ?? 150,
-        width: widget.size?.width ?? 150,
+        height: widget.size?.height ?? kDefaultImageHeight,
+        width: widget.size?.width ?? kDefaultImageHeight,
         loadingBuilder: (context, child, chunk) {
           if (chunk == null) {
             return child;
@@ -199,8 +202,8 @@ class _PokemonImageState extends State<PokemonImage> {
         clipBehavior: widget.clipBehavior,
         borderRadius: _buildBorderRadius(),
         child: SizedBox(
-          height: widget.size?.height ?? 150,
-          width: widget.size?.width ?? 150,
+          height: widget.size?.height ?? kDefaultImageHeight,
+          width: widget.size?.width ?? kDefaultImageHeight,
           child: Center(
             child: isLoading ? _buildLoadingImage() : _buildEmptyImage(),
           ),

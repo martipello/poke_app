@@ -15,6 +15,8 @@ import '../shared_widgets/rounded_card.dart';
 import '../shared_widgets/type_chip.dart';
 import '../shared_widgets/view_models/image_color_view_model.dart';
 
+const kPokemonTileImageHeight = 80.0;
+
 class PokemonTile extends StatefulWidget {
   PokemonTile({
     Key? key,
@@ -48,18 +50,22 @@ class _PokemonTileState extends State<PokemonTile> {
           builder: (context, spriteImagePaletteGeneratorSnapshot) {
             final spriteImagePaletteGenerator = spriteImagePaletteGeneratorSnapshot.data;
             final mainImagePaletteGenerator = mainImagePaletteGeneratorSnapshot.data;
-            return RoundedCard(
-              onTap: () {
-                Navigator.of(context).pushNamed(
-                  PokemonDetailPage.routeName,
-                  arguments: PokemonDetailPageArguments(
-                    pokemon: widget.pokemon,
-                    spriteImagePaletteGenerator: spriteImagePaletteGenerator,
-                    mainImagePaletteGenerator: mainImagePaletteGenerator,
-                  ),
-                );
-              },
-              child: _buildPokemonCardBody(),
+            const kCardPadding = 32;
+            return SizedBox(
+              height: kPokemonTileImageHeight + kChipHeight + kCardPadding + 16 + 4,
+              child: RoundedCard(
+                onTap: () {
+                  Navigator.of(context).pushNamed(
+                    PokemonDetailPage.routeName,
+                    arguments: PokemonDetailPageArguments(
+                      pokemon: widget.pokemon,
+                      spriteImagePaletteGenerator: spriteImagePaletteGenerator,
+                      mainImagePaletteGenerator: mainImagePaletteGenerator,
+                    ),
+                  );
+                },
+                child: _buildPokemonCardBody(),
+              ),
             );
           },
         );
@@ -86,21 +92,27 @@ class _PokemonTileState extends State<PokemonTile> {
             _buildPokemonId(),
           ],
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            ChipGroup(
-              chips: widget.pokemon.pokemon_v2_pokemontypes
-                  .map(
-                    (type) => TypeChip(
-                      pokemonType: type.pokemon_v2_type?.pokemonType() ?? PokemonType.unknown,
-                      chipType: ChipType.normal,
-                    ),
-                  )
-                  .toList(),
-            )
-          ],
-        ),
+        _buildPokemonTypesHolder(),
+      ],
+    );
+  }
+
+  Widget _buildPokemonTypesHolder() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        ChipGroup(
+          padding: EdgeInsets.zero,
+          scrollDirection: Axis.horizontal,
+          chips: widget.pokemon.pokemon_v2_pokemontypes
+              .map(
+                (type) => TypeChip(
+                  pokemonType: type.pokemon_v2_type?.pokemonType() ?? PokemonType.unknown,
+                  chipType: ChipType.normal,
+                ),
+              )
+              .toList(),
+        )
       ],
     );
   }
@@ -133,11 +145,14 @@ class _PokemonTileState extends State<PokemonTile> {
     return Padding(
       padding: const EdgeInsets.only(
         top: 4,
+        right: 4,
+        left: 16
       ),
       child: Text(
         '#${pokemonId.toString()}',
         style: PokeAppText.body6Style.copyWith(
           color: colors(context).textOnForeground,
+          height: 1.2,
         ),
       ),
     );
@@ -148,8 +163,8 @@ class _PokemonTileState extends State<PokemonTile> {
       pokemon: widget.pokemon,
       clipBehavior: Clip.hardEdge,
       size: const Size(
-        80,
-        80,
+        kPokemonTileImageHeight,
+        kPokemonTileImageHeight,
       ),
       imageColorCallback: mainImageColorViewModel.paletteGeneratorStream.add,
       spriteImageColorCallback: spriteImageColorViewModel.paletteGeneratorStream.add,

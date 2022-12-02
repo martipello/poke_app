@@ -166,7 +166,7 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
     List<PokemonType> selectedFilters,
   ) {
     return ChipGroup(
-      padding: const EdgeInsets.only(left: 32),
+      padding: const EdgeInsets.symmetric(horizontal: 32),
       scrollDirection: Axis.horizontal,
       scrollController: widget.filterViewModel.scrollController,
       chips: selectedFilters
