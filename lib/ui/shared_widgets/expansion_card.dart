@@ -112,6 +112,10 @@ class _ExpansionCardState extends State<ExpansionCard> with TickerProviderStateM
           ],
         ),
         _buildExpandable(_isExpanded),
+        if (!_isExpanded)
+          const SizedBox(
+            height: 16,
+          ),
         widget.bottomWidgetBuilder(_isExpanded),
       ],
     );
@@ -120,12 +124,7 @@ class _ExpansionCardState extends State<ExpansionCard> with TickerProviderStateM
   Widget _buildExpandable(bool isExpanded) {
     return Expandable(
       controller: _expandableController,
-      collapsed: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const SizedBox(),
-        ],
-      ),
+      collapsed: Row(),
       expanded: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: widget.expandedChildren,
