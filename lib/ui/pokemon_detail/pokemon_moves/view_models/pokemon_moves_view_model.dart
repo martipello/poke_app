@@ -1,57 +1,47 @@
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../../../api/error_handler.dart';
-import '../../../../api/graph_ql/pokemon_repository_graph_ql.dart';
-import '../../../../api/models/api_response.dart';
+import '../../../../api/models/pokemon/pokemon_move_holder.dart';
 import '../../../../api/models/pokemon/pokemon_request.dart';
-import '../../../../api/models/pokemon/pokemon_response.dart';
-import '../../../../services/language_service.dart';
+import '../adapters/moves_paging_adapter.dart';
 
 class PokemonMovesViewModel {
-  PokemonMovesViewModel(
-    this.pokemonRepository,
-    this.errorHandler,
-    this.languageService,
-  );
+  PokemonMovesViewModel(this._movesPagingAdapter);
 
-  final PokemonRepositoryGraphQl pokemonRepository;
-  final LanguageService languageService;
-  final ErrorHandler errorHandler;
+  final MovesPagingAdapter _movesPagingAdapter;
+  final _pagingController = PagingController<int, PokemonMoveHolder>(firstPageKey: 0);
+  var _isPagingAdapterInitialized = false;
 
-  final pokemonMovesStream = BehaviorSubject<ApiResponse<PokemonResponse>>();
+  final searchText = BehaviorSubject<String?>.seeded('');
 
-  void getPokemonMoves(int pokemonId) async {
-    try {
-      pokemonMovesStream.add(ApiResponse.loading(null));
-      final language = await languageService.getLanguage();
-      final pokemonInfoResponse = await pokemonRepository.getPokemonMoves(
-        _buildPokemonRequest(pokemonId, language.id),
-      );
-      final pokemon = PokemonResponse.fromJson(pokemonInfoResponse.data!);
-
-      pokemonMovesStream.add(
-        ApiResponse.completed(pokemon),
-      );
-    } catch (error) {
-      final errorResponse = errorHandler.handleError<PokemonResponse>(
-        error,
-      );
-      pokemonMovesStream.add(errorResponse);
-    }
+  void _initializePagingAdapter() {
+    _movesPagingAdapter.pagingController = _pagingController;
+    _movesPagingAdapter.addPageRequestListener();
   }
 
-  PokemonRequest _buildPokemonRequest(
-    int pokemonId,
-    int languageId,
-  ) {
-    return PokemonRequest(
-      (b) => b
-        ..languageId = languageId
-        ..pokemonId = pokemonId,
-    );
+  void refresh() {
+    _movesPagingAdapter.refresh();
+  }
+
+  void updateQuery(PokemonRequest pokemonRequest) {
+    _movesPagingAdapter.setPokemonRequest(pokemonRequest);
+    refresh();
+  }
+
+  void retryLastRequest() {
+    _movesPagingAdapter.pagingController?.retryLastFailedRequest();
+  }
+
+  PagingController<int, PokemonMoveHolder> getPagingController() {
+    if (_isPagingAdapterInitialized == false) {
+      _isPagingAdapterInitialized = true;
+      _initializePagingAdapter();
+    }
+    return _movesPagingAdapter.pagingController ?? _pagingController;
   }
 
   void dispose() {
-    pokemonMovesStream.close();
+    searchText.close();
+    _movesPagingAdapter.dispose();
   }
 }

@@ -12,7 +12,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(EvolutionChainHolder.serializer)
       ..add(EvolutionHolder.serializer)
       ..add(Machine.serializer)
-      ..add(MoveDamageClass.serializer)
       ..add(MoveLearnMethod.serializer)
       ..add(MoveMetum.serializer)
       ..add(Pokemon.serializer)
@@ -61,14 +60,14 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(PokemonResource)]),
           () => new ListBuilder<PokemonResource>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(PokemonResource)]),
-          () => new ListBuilder<PokemonResource>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(PokemonResource)]),
-          () => new ListBuilder<PokemonResource>())
-      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Machine)]),
           () => new ListBuilder<Machine>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(PokemonResource)]),
+          () => new ListBuilder<PokemonResource>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(PokemonResource)]),
+          () => new ListBuilder<PokemonResource>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(PokemonResource)]),
           () => new ListBuilder<PokemonResource>())

@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 import '../../../api/models/pokemon/evolution_holder.dart';
-import '../../../api/models/pokemon/pokemon.dart';
 import '../../../extensions/build_context_extension.dart';
 import '../../../theme/poke_app_text.dart';
-import '../../pokemon_list/pokemon_tile.dart';
 import '../../shared_widgets/poke_divider.dart';
 import 'evolution_tile.dart';
 

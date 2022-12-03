@@ -112,20 +112,21 @@ class _ExpansionCardState extends State<ExpansionCard> with TickerProviderStateM
                 ],
               ),
             ),
-            if(widget.expandedChildren.isNotEmpty)
-            _buildRotatingIconButton(
-              _isExpanded,
-            ),
+            if (widget.expandedChildren.isNotEmpty)
+              _buildRotatingIconButton(
+                _isExpanded,
+              ),
           ],
         ),
-        if(widget.expandedChildren.isNotEmpty)
-        _buildExpandable(_isExpanded),
+        if (widget.expandedChildren.isNotEmpty) _buildExpandable(_isExpanded),
         widget.bottomWidgetBuilder(_isExpanded),
       ],
     );
   }
 
-  Widget _buildExpandable(bool isExpanded) {
+  Widget _buildExpandable(
+    bool isExpanded,
+  ) {
     return Expandable(
       controller: _expandableController,
       collapsed: Row(),

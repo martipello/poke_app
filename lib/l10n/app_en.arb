@@ -51,7 +51,7 @@
     "minHits" : "Min Hits :",
     "maxHits" : "Max Hits :",
     "minTurns" : "Min Turns :",
-    "maxTurns" : "Min Turns :",
+    "maxTurns" : "Max Turns :",
 
     "total" : "Total",
     "typeEffectiveness" : "Type Effectiveness",

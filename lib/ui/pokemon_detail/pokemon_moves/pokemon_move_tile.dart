@@ -14,6 +14,7 @@ import '../../../extensions/string_extension.dart';
 import '../../../theme/base_theme.dart';
 import '../../../theme/poke_app_text.dart';
 import '../../shared_widgets/expansion_card.dart';
+import '../../shared_widgets/poke_divider.dart';
 import '../../shared_widgets/pokemon_table.dart';
 import '../../shared_widgets/type_chip.dart';
 import 'pokemon_move_learn_table.dart';
@@ -28,11 +29,11 @@ class PokemonMoveTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final moveLearnMethod = pokemonMove.pokemon_v2_movelearnmethod?.description();
+    final description = pokemonMove.pokemon_v2_move?.flavorText() ?? context.strings.noDescription;
     return ExpansionCard(
       bottomWidgetBuilder: _buildMoveTypeChipHolder,
       title: pokemonMove.pokemon_v2_move?.name?.capitalize() ?? '',
-      subtitle: moveLearnMethod,
+      subtitle: description,
       expandedChildren: _buildPokemonMoveExpanse(
         context,
       ),
@@ -42,17 +43,20 @@ class PokemonMoveTile extends StatelessWidget {
   List<Widget> _buildPokemonMoveExpanse(
     BuildContext context,
   ) {
-    final description = pokemonMove.pokemon_v2_move?.flavorText() ?? context.strings.noDescription;
+    final moveLearnMethod = pokemonMove.pokemon_v2_movelearnmethod?.description() ?? '';
     return [
       _buildMediumMargin(),
-      _buildMoveDescription(
-        context,
-        description,
-      ),
-      _buildMediumMargin(),
+      if (moveLearnMethod.isNotEmpty)
+        _buildMoveLearnMethod(
+          context,
+          moveLearnMethod,
+        ),
       _buildMediumMargin(),
       _buildLearnMethodTable(context),
-      _buildMediumMargin(),
+      Padding(
+        padding: const EdgeInsets.all(16),
+        child: PokeDivider(),
+      ),
       _buildMoveDetailHeader(
         context,
       ),
@@ -60,7 +64,10 @@ class PokemonMoveTile extends StatelessWidget {
       _buildMoveDetailsTable(
         context,
       ),
-      _buildMediumMargin(),
+      Padding(
+        padding: const EdgeInsets.all(16),
+        child: PokeDivider(),
+      ),
       _buildMoveMetumTable(
         context,
       ),
@@ -76,26 +83,56 @@ class PokemonMoveTile extends StatelessWidget {
     final criticalRate = moveMetum?.crit_rate?.toPercentageDisplayName();
     final ailmentChance = moveMetum?.ailment_chance?.toPercentageDisplayName();
     final flinchChance = moveMetum?.flinch_chance?.toPercentageDisplayName();
-    final drain = moveMetum?.drain?.toString() ?? '';
-    final minHits = moveMetum?.min_hits?.toString() ?? '';
-    final maxHits = moveMetum?.max_hits?.toString() ?? '';
-    final minTurns = moveMetum?.min_turns?.toString() ?? '';
-    final maxTurns = moveMetum?.max_turns?.toString() ?? '';
-    final statChance = moveMetum?.stat_chance?.toString() ?? '';
+    final drain = (moveMetum?.drain ?? '').toString();
+    final minHits = (moveMetum?.min_hits ?? '').toString();
+    final maxHits = (moveMetum?.max_hits ?? '').toString();
+    final minTurns = (moveMetum?.min_turns ?? '').toString();
+    final maxTurns = (moveMetum?.max_turns ?? '').toString();
+    final statChance = (moveMetum?.stat_chance ?? '').toString();
     return PokemonTable(
       tableTitle: 'MoveMetum',
       padding: const EdgeInsets.only(bottom: 8),
       pokemonTableRowInfoList: [
-        PokemonTableRowInfo(context.strings.ailment, value: ailmentName),
-        PokemonTableRowInfo(context.strings.criticalRate, value: criticalRate),
-        PokemonTableRowInfo(context.strings.ailmentChance, value: ailmentChance),
-        PokemonTableRowInfo(context.strings.flinchChance, value: flinchChance),
-        PokemonTableRowInfo(context.strings.statChance, value: statChance),
-        PokemonTableRowInfo(context.strings.drain, value: drain),
-        PokemonTableRowInfo(context.strings.minHits, value: minHits),
-        PokemonTableRowInfo(context.strings.maxHits, value: maxHits),
-        PokemonTableRowInfo(context.strings.minTurns, value: minTurns),
-        PokemonTableRowInfo(context.strings.maxTurns, value: maxTurns),
+        PokemonTableRowInfo(
+          context.strings.ailment,
+          value: ailmentName,
+        ),
+        PokemonTableRowInfo(
+          context.strings.criticalRate,
+          value: criticalRate,
+        ),
+        PokemonTableRowInfo(
+          context.strings.ailmentChance,
+          value: ailmentChance,
+        ),
+        PokemonTableRowInfo(
+          context.strings.flinchChance,
+          value: flinchChance,
+        ),
+        PokemonTableRowInfo(
+          context.strings.statChance,
+          value: statChance,
+        ),
+        PokemonTableRowInfo(
+          context.strings.drain,
+          value: drain,
+        ),
+        PokemonTableRowInfo(
+          context.strings.minHits,
+          value: minHits,
+        ),
+        PokemonTableRowInfo(
+          context.strings.maxHits,
+          value: maxHits,
+        ),
+        PokemonTableRowInfo(
+          context.strings.minTurns,
+          value: minTurns,
+        ),
+        PokemonTableRowInfo(
+          context.strings.maxTurns,
+          value: maxTurns,
+        ),
       ],
     );
   }
@@ -157,11 +194,9 @@ class PokemonMoveTile extends StatelessWidget {
   ) {
     final moveTypeChips = _buildMoveTypeChips(isExpanded);
     return Padding(
-      padding: isExpanded
-          ? const EdgeInsets.only(
-              top: 8,
-            )
-          : EdgeInsets.zero,
+      padding: const EdgeInsets.only(
+        top: 8,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: moveTypeChips,
@@ -177,7 +212,7 @@ class PokemonMoveTile extends StatelessWidget {
     );
     final moveDamageClass = pokemonMove
             .pokemon_v2_move?.pokemon_v2_type?.pokemon_v2_movedamageclass?.pokemon_v2_movedamageclassdescriptions
-            ?.toList() ??
+            .toList() ??
         <PokemonResource>[];
     final damageType = moveDamageClass
         .map(
@@ -230,7 +265,7 @@ class PokemonMoveTile extends StatelessWidget {
     );
   }
 
-  Widget _buildMoveDescription(
+  Widget _buildMoveLearnMethod(
     BuildContext context,
     String description,
   ) {

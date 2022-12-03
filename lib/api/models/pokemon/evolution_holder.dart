@@ -1,9 +1,9 @@
+// ignore_for_file: non_constant_identifier_names
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
 import '../../serializers/serializers.dart';
-import 'evolution_chain_holder.dart';
 import 'pokemon_species_holder.dart';
 
 part 'evolution_holder.g.dart';

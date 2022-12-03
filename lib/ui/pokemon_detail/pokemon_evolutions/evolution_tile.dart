@@ -71,7 +71,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
         final minAffection = evolutionMetaData.min_affection;
         final knownMoveId = evolutionMetaData.known_move_id;
         final knownMoveTypeId = evolutionMetaData.known_move_type_id;
-        final heldItemId = evolutionMetaData.held_item_id;
+        final heldItemName = evolutionMetaData.pokemonV2ItemByHeldItemId?.name?.capitalize();
         final genderId = evolutionMetaData.gender_id;
         final turnUpsideDown = evolutionMetaData.turn_upside_down;
         final tradeSpeciesId = evolutionMetaData.trade_species_id;
@@ -158,12 +158,12 @@ class _EvolutionTileState extends State<EvolutionTile> {
             ),
           );
         }
-        if (heldItemId != null) {
+        if (heldItemName != null) {
           final isFirst = evolutionConditions.isNotEmpty;
           evolutionConditions.add(
             _buildEvolutionCondition(
               'Held item :',
-              heldItemId.toString(),
+              heldItemName,
               isFirst,
             ),
           );

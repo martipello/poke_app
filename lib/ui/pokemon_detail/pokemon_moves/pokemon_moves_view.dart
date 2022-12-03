@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 import '../../../api/models/api_response.dart';
-import '../../../api/models/error_response.dart';
 import '../../../api/models/pokemon/pokemon_move_holder.dart';
-import '../../../api/models/pokemon/pokemon_response.dart';
+import '../../../api/models/pokemon/pokemon_request.dart';
 import '../../../dependency_injection_container.dart';
 import '../../../extensions/build_context_extension.dart';
-import '../../../extensions/iterable_extension.dart';
-import '../../../extensions/pokemon_extension.dart';
+import '../../../theme/base_theme.dart';
 import '../../../theme/poke_app_text.dart';
 import '../../shared_widgets/error_widget.dart' as ew;
-import '../../shared_widgets/poke_divider.dart';
+import '../../shared_widgets/no_results.dart';
 import '../../shared_widgets/pokeball_loading_widget.dart';
+import '../../shared_widgets/rounded_button.dart';
 import '../../shared_widgets/sliver_refresh_indicator.dart';
 import 'pokemon_move_tile.dart';
 import 'view_models/pokemon_moves_view_model.dart';
@@ -38,8 +38,11 @@ class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepA
   @override
   void initState() {
     super.initState();
-    _pokemonMovesViewModel.getPokemonMoves(
-      widget.pokemonId,
+    _pokemonMovesViewModel.updateQuery(
+      PokemonRequest(
+        (b) => b
+          ..pokemonId = widget.pokemonId,
+      ),
     );
   }
 
@@ -52,99 +55,104 @@ class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepA
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return StreamBuilder<ApiResponse<PokemonResponse>>(
-      stream: _pokemonMovesViewModel.pokemonMovesStream,
-      builder: (context, snapshot) {
-        return SliverRefreshIndicator(
-          onRefresh: () {
-            _pokemonMovesViewModel.getPokemonMoves(widget.pokemonId);
-          },
-          sliver: _buildLayoutForState(snapshot),
-        );
+    return _buildPokemonList();
+  }
+
+  Widget _buildPokemonList() {
+    return SliverRefreshIndicator(
+      onRefresh: () async {
+        //TODO this refresh doesn't get the current search and just retries whatever the last search was even if the text has changed
+        _pokemonMovesViewModel.refresh();
       },
+      padding: EdgeInsets.zero,
+      sliver: MultiSliver(
+        children: [
+          SliverPadding(
+            padding: const EdgeInsets.all(8),
+            sliver: PagedSliverList.separated(
+              pagingController: _pokemonMovesViewModel.getPagingController(),
+              builderDelegate: PagedChildBuilderDelegate<PokemonMoveHolder>(
+                itemBuilder: (context, moveHolder, index) => _buildMoveTile(
+                  moveHolder,
+                ),
+                firstPageErrorIndicatorBuilder: (context) => _buildErrorWidget(),
+                noItemsFoundIndicatorBuilder: (context) => _emptyListIndicator(),
+                newPageErrorIndicatorBuilder: (context) =>
+                    _errorListItemWidget(onTryAgain: _pokemonMovesViewModel.retryLastRequest),
+                firstPageProgressIndicatorBuilder: (context) => const Center(
+                  child: PokeballLoadingWidget(
+                    size: Size(80, 80),
+                  ),
+                ),
+                newPageProgressIndicatorBuilder: (context) => _loadingListItemWidget(),
+              ),
+              separatorBuilder: (context, index) => const SizedBox(
+                height: 4,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
-  Widget _buildLayoutForState(
-    AsyncSnapshot<ApiResponse<PokemonResponse>> snapshot,
-  ) {
-    final _pokemonMoves = snapshot.data?.data?.pokemon_v2_pokemon.firstOrNull()?.pokemonMoves() ?? [];
-    final _hasError = snapshot.data?.status == Status.ERROR;
-    final _isLoading = snapshot.data?.status == Status.LOADING;
-    if (_isLoading) return _buildLoadingWidget();
-    if (!_isLoading && _hasError) return _buildErrorWidget(snapshot.data?.error);
-    return _buildPokemonMoves(_pokemonMoves);
+  Widget _buildErrorWidget() {
+    final error = _pokemonMovesViewModel.getPagingController().error as ApiResponse;
+    return ew.ErrorWidget(
+      showImage: true,
+      error: error,
+      onTryAgain: () => _pokemonMovesViewModel.getPagingController().refresh(),
+    );
   }
 
-  Widget _buildLoadingWidget() {
-    return const SliverFillRemaining(
+  Widget _errorListItemWidget({
+    required VoidCallback onTryAgain,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            context.strings.error_getting_page,
+            style: PokeAppText.body4Style.copyWith(
+              color: colors(context).textOnForeground,
+            ),
+          ),
+          const SizedBox(
+            height: 4,
+          ),
+          RoundedButton(
+            label: context.strings.retry,
+            textStyle: PokeAppText.body4Style.copyWith(
+              color: colors(context).textOnForeground,
+            ),
+            outlineColor: colors(context).warning,
+            isFilled: true,
+            fillColor: colors(context).cardBackground,
+            onPressed: onTryAgain,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _loadingListItemWidget() {
+    return const SizedBox(
+      height: 108,
       child: Center(
         child: PokeballLoadingWidget(
-          size: Size(80, 80),
+          size: Size(
+            42,
+            42,
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildErrorWidget(ErrorResponse? error) {
-    return SliverFillRemaining(
-      hasScrollBody: false,
-      child: ew.ErrorWidget(
-        errorMessage: 'Something went wrong...',
-        showImage: true,
-        error: ApiResponse.error(
-          error?.message ?? '',
-          error: error,
-        ),
-        onTryAgain: () => _pokemonMovesViewModel.getPokemonMoves(
-          widget.pokemonId,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPokemonMoves(
-    List<PokemonMoveHolder> moves,
-  ) {
-    return MultiSliver(
-      children: [
-        SliverToBoxAdapter(
-          child: _buildTitle(context),
-        ),
-        _buildMoveList(moves),
-        SliverToBoxAdapter(
-          child: _buildDivider(),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildTitle(
-    BuildContext context,
-  ) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 8.0,
-      ),
-      child: Text(
-        context.strings.moves,
-        style: PokeAppText.subtitle3Style,
-      ),
-    );
-  }
-
-  Widget _buildMoveList(
-    List<PokemonMoveHolder> moves,
-  ) {
-    return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        childCount: moves.length,
-        (context, index) {
-          final move = moves[index];
-          return _buildMoveTile(move);
-        },
-      ),
-    );
+  Widget _emptyListIndicator() {
+    return const NoResults();
   }
 
   Widget _buildMoveTile(
@@ -152,16 +160,6 @@ class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepA
   ) {
     return PokemonMoveTile(
       pokemonMove: move,
-    );
-  }
-
-  Widget _buildDivider() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 12.0,
-        horizontal: 8,
-      ),
-      child: PokeDivider(),
     );
   }
 }

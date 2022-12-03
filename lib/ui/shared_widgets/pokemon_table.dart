@@ -54,7 +54,7 @@ class PokemonTable extends StatelessWidget {
                       tableTitle,
                     ),
                     const SizedBox(
-                      height: 16,
+                      height: 12,
                     ),
                   ],
                 ),

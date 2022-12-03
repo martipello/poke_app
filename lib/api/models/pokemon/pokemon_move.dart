@@ -40,7 +40,7 @@ abstract class PokemonMove implements Built<PokemonMove, PokemonMoveBuilder> {
 
   TypeData? get pokemon_v2_type;
 
-  BuiltList<Machine> get machines;
+  BuiltList<Machine> get pokemon_v2_machines;
 
   MoveMetum? get pokemon_v2_movemetum;
 

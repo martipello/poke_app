@@ -3,7 +3,7 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../../api/models/pokemon/pokemon.dart';
 import '../../../api/models/pokemon/pokemon_request.dart';
-import '../adapter/pokemon_paging_adapter.dart';
+import '../adapters/pokemon_paging_adapter.dart';
 
 class PokemonListViewModel {
   PokemonListViewModel(this._pokemonPagingAdapter);

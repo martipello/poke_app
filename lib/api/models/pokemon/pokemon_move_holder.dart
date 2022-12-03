@@ -14,9 +14,11 @@ abstract class PokemonMoveHolder implements Built<PokemonMoveHolder, PokemonMove
   factory PokemonMoveHolder([void Function(PokemonMoveHolderBuilder) updates]) = _$PokemonMoveHolder;
   PokemonMoveHolder._();
 
-  PokemonMove? get pokemon_v2_move;
+  int? get id;
 
-  PokemonResource? get pokemon_v2_versiongroup;
+  int? get level;
+
+  PokemonMove? get pokemon_v2_move;
 
   MoveLearnMethod? get pokemon_v2_movelearnmethod;
 

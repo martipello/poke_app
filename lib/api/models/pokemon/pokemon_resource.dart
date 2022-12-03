@@ -38,6 +38,8 @@ abstract class PokemonResource implements Built<PokemonResource, PokemonResource
 
   PokemonResource? get pokemon_v2_movedamageclass;
 
+  BuiltList<PokemonResource> get pokemon_v2_movedamageclassdescriptions;
+
   PokemonResource? get pokemon_v2_movelearnmethod;
 
   BuiltList<PokemonResource> get pokemon_v2_evolutiontriggernames;

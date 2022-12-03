@@ -15,7 +15,7 @@ extension PokemonExtension on PokemonResource? {
   String generationName() {
     final _versionGroupName = this?.name ?? '';
     final splitString = _versionGroupName.split(RegExp('-'));
-    if(splitString.isNotEmpty){
+    if(splitString.length > 1){
       splitString[1] = splitString[1].toUpperCase();
     }
     return splitString.join(' ').capitalize();

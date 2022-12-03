@@ -42,7 +42,7 @@ class _$TypeDataSerializer implements StructuredSerializer<TypeData> {
       result
         ..add('pokemon_v2_movedamageclass')
         ..add(serializers.serialize(value,
-            specifiedType: const FullType(MoveDamageClass)));
+            specifiedType: const FullType(PokemonResource)));
     }
     return result;
   }
@@ -69,8 +69,8 @@ class _$TypeDataSerializer implements StructuredSerializer<TypeData> {
         case 'pokemon_v2_movedamageclass':
           result.pokemon_v2_movedamageclass.replace(serializers.deserialize(
                   value,
-                  specifiedType: const FullType(MoveDamageClass))!
-              as MoveDamageClass);
+                  specifiedType: const FullType(PokemonResource))!
+              as PokemonResource);
           break;
         case 'pokemonV2TypeefficaciesByTargetTypeId':
           result.pokemonV2TypeefficaciesByTargetTypeId.replace(
@@ -92,7 +92,7 @@ class _$TypeData extends TypeData {
   @override
   final String? name;
   @override
-  final MoveDamageClass? pokemon_v2_movedamageclass;
+  final PokemonResource? pokemon_v2_movedamageclass;
   @override
   final BuiltList<TypeEfficacies> pokemonV2TypeefficaciesByTargetTypeId;
 
@@ -158,11 +158,11 @@ class TypeDataBuilder implements Builder<TypeData, TypeDataBuilder> {
   String? get name => _$this._name;
   set name(String? name) => _$this._name = name;
 
-  MoveDamageClassBuilder? _pokemon_v2_movedamageclass;
-  MoveDamageClassBuilder get pokemon_v2_movedamageclass =>
-      _$this._pokemon_v2_movedamageclass ??= new MoveDamageClassBuilder();
+  PokemonResourceBuilder? _pokemon_v2_movedamageclass;
+  PokemonResourceBuilder get pokemon_v2_movedamageclass =>
+      _$this._pokemon_v2_movedamageclass ??= new PokemonResourceBuilder();
   set pokemon_v2_movedamageclass(
-          MoveDamageClassBuilder? pokemon_v2_movedamageclass) =>
+          PokemonResourceBuilder? pokemon_v2_movedamageclass) =>
       _$this._pokemon_v2_movedamageclass = pokemon_v2_movedamageclass;
 
   ListBuilder<TypeEfficacies>? _pokemonV2TypeefficaciesByTargetTypeId;

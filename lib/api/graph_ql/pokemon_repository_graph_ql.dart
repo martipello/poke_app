@@ -1,5 +1,6 @@
 import 'package:graphql/client.dart';
 
+import '../../utils/console_output.dart';
 import '../models/pokemon/pokemon_request.dart';
 import '../models/pokemon/pokemon_response.dart';
 import '../models/pokemon/pokemon_type.dart';
@@ -274,6 +275,9 @@ query MyQuery {
         known_move_type_id
         held_item_id
         gender_id
+        pokemonV2ItemByHeldItemId {
+          name
+        }
       }
       pokemon_v2_pokemonspeciesnames(where: {language_id: {_eq: ${pokemonRequest.languageId}}}) {
         genus
@@ -347,11 +351,18 @@ query MyQuery {
       document: gql(
         '''
 query MyQuery {
-  pokemon_v2_pokemon(where: {id: {_eq: 1}}) {
+  pokemon_v2_pokemon(where: {id: {_eq: ${pokemonRequest.pokemonId}}}) {
     id
-    pokemon_v2_pokemonmoves(distinct_on: id) {
+    pokemon_v2_pokemonmoves(limit: ${pokemonRequest.limit}, offset: ${pokemonRequest.skip}, distinct_on: move_id) {
       id
       level
+      pokemon_v2_movelearnmethod {
+        name
+        pokemon_v2_movelearnmethoddescriptions(where: {language_id: {_eq: ${pokemonRequest.languageId}}}) {
+          id
+          description
+        }
+      }
       pokemon_v2_move {
         accuracy
         move_effect_chance
@@ -364,7 +375,7 @@ query MyQuery {
         pokemon_v2_type {
           name
           pokemon_v2_movedamageclass {
-            pokemon_v2_movedamageclassdescriptions(where: {language_id: {_eq: 9}}) {
+            pokemon_v2_movedamageclassdescriptions {
               pokemon_v2_movedamageclass {
                 name
                 id
@@ -391,18 +402,14 @@ query MyQuery {
           }
         }
         id
-        pokemon_v2_machines {
+        pokemon_v2_machines(distinct_on: machine_number) {
           machine_number
           pokemon_v2_versiongroup {
             name
           }
         }
-      }
-      pokemon_v2_movelearnmethod {
-        name
-        pokemon_v2_movelearnmethodnames(where: {language_id: {_eq: 9}}) {
-          id
-          name
+        pokemon_v2_moveflavortexts(where: {language_id: {_eq: ${pokemonRequest.languageId}}}, limit: 1, order_by: {version_group_id: desc}) {
+          flavor_text
         }
       }
     }

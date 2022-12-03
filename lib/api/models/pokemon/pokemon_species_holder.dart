@@ -3,10 +3,10 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:poke_app/api/models/pokemon/pokemon.dart';
 
 import '../../serializers/serializers.dart';
 import 'evolution.dart';
+import 'pokemon.dart';
 import 'pokemon_resource.dart';
 import 'pokemon_species.dart';
 

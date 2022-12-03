@@ -7,7 +7,6 @@ import '../models/pokemon/evolution.dart';
 import '../models/pokemon/evolution_chain_holder.dart';
 import '../models/pokemon/evolution_holder.dart';
 import '../models/pokemon/machine.dart';
-import '../models/pokemon/move_damage_class.dart';
 import '../models/pokemon/move_learn_method.dart';
 import '../models/pokemon/move_metum.dart';
 import '../models/pokemon/pokemon.dart';
@@ -39,7 +38,6 @@ part 'serializers.g.dart';
   EvolutionChainHolder,
   EvolutionHolder,
   Machine,
-  MoveDamageClass,
   MoveLearnMethod,
   MoveMetum,
   Pokemon,

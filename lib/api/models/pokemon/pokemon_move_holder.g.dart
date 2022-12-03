@@ -21,19 +21,24 @@ class _$PokemonMoveHolderSerializer
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[];
     Object? value;
+    value = object.id;
+    if (value != null) {
+      result
+        ..add('id')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.level;
+    if (value != null) {
+      result
+        ..add('level')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
     value = object.pokemon_v2_move;
     if (value != null) {
       result
         ..add('pokemon_v2_move')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(PokemonMove)));
-    }
-    value = object.pokemon_v2_versiongroup;
-    if (value != null) {
-      result
-        ..add('pokemon_v2_versiongroup')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(PokemonResource)));
     }
     value = object.pokemon_v2_movelearnmethod;
     if (value != null) {
@@ -57,14 +62,17 @@ class _$PokemonMoveHolderSerializer
       iterator.moveNext();
       final Object? value = iterator.current;
       switch (key) {
+        case 'id':
+          result.id = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
+        case 'level':
+          result.level = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
         case 'pokemon_v2_move':
           result.pokemon_v2_move.replace(serializers.deserialize(value,
               specifiedType: const FullType(PokemonMove))! as PokemonMove);
-          break;
-        case 'pokemon_v2_versiongroup':
-          result.pokemon_v2_versiongroup.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(PokemonResource))!
-              as PokemonResource);
           break;
         case 'pokemon_v2_movelearnmethod':
           result.pokemon_v2_movelearnmethod.replace(serializers.deserialize(
@@ -81,9 +89,11 @@ class _$PokemonMoveHolderSerializer
 
 class _$PokemonMoveHolder extends PokemonMoveHolder {
   @override
-  final PokemonMove? pokemon_v2_move;
+  final int? id;
   @override
-  final PokemonResource? pokemon_v2_versiongroup;
+  final int? level;
+  @override
+  final PokemonMove? pokemon_v2_move;
   @override
   final MoveLearnMethod? pokemon_v2_movelearnmethod;
 
@@ -92,8 +102,9 @@ class _$PokemonMoveHolder extends PokemonMoveHolder {
       (new PokemonMoveHolderBuilder()..update(updates))._build();
 
   _$PokemonMoveHolder._(
-      {this.pokemon_v2_move,
-      this.pokemon_v2_versiongroup,
+      {this.id,
+      this.level,
+      this.pokemon_v2_move,
       this.pokemon_v2_movelearnmethod})
       : super._();
 
@@ -109,23 +120,25 @@ class _$PokemonMoveHolder extends PokemonMoveHolder {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is PokemonMoveHolder &&
+        id == other.id &&
+        level == other.level &&
         pokemon_v2_move == other.pokemon_v2_move &&
-        pokemon_v2_versiongroup == other.pokemon_v2_versiongroup &&
         pokemon_v2_movelearnmethod == other.pokemon_v2_movelearnmethod;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc(0, pokemon_v2_move.hashCode), pokemon_v2_versiongroup.hashCode),
+        $jc($jc($jc(0, id.hashCode), level.hashCode), pokemon_v2_move.hashCode),
         pokemon_v2_movelearnmethod.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'PokemonMoveHolder')
+          ..add('id', id)
+          ..add('level', level)
           ..add('pokemon_v2_move', pokemon_v2_move)
-          ..add('pokemon_v2_versiongroup', pokemon_v2_versiongroup)
           ..add('pokemon_v2_movelearnmethod', pokemon_v2_movelearnmethod))
         .toString();
   }
@@ -135,18 +148,19 @@ class PokemonMoveHolderBuilder
     implements Builder<PokemonMoveHolder, PokemonMoveHolderBuilder> {
   _$PokemonMoveHolder? _$v;
 
+  int? _id;
+  int? get id => _$this._id;
+  set id(int? id) => _$this._id = id;
+
+  int? _level;
+  int? get level => _$this._level;
+  set level(int? level) => _$this._level = level;
+
   PokemonMoveBuilder? _pokemon_v2_move;
   PokemonMoveBuilder get pokemon_v2_move =>
       _$this._pokemon_v2_move ??= new PokemonMoveBuilder();
   set pokemon_v2_move(PokemonMoveBuilder? pokemon_v2_move) =>
       _$this._pokemon_v2_move = pokemon_v2_move;
-
-  PokemonResourceBuilder? _pokemon_v2_versiongroup;
-  PokemonResourceBuilder get pokemon_v2_versiongroup =>
-      _$this._pokemon_v2_versiongroup ??= new PokemonResourceBuilder();
-  set pokemon_v2_versiongroup(
-          PokemonResourceBuilder? pokemon_v2_versiongroup) =>
-      _$this._pokemon_v2_versiongroup = pokemon_v2_versiongroup;
 
   MoveLearnMethodBuilder? _pokemon_v2_movelearnmethod;
   MoveLearnMethodBuilder get pokemon_v2_movelearnmethod =>
@@ -160,8 +174,9 @@ class PokemonMoveHolderBuilder
   PokemonMoveHolderBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
+      _id = $v.id;
+      _level = $v.level;
       _pokemon_v2_move = $v.pokemon_v2_move?.toBuilder();
-      _pokemon_v2_versiongroup = $v.pokemon_v2_versiongroup?.toBuilder();
       _pokemon_v2_movelearnmethod = $v.pokemon_v2_movelearnmethod?.toBuilder();
       _$v = null;
     }
@@ -187,16 +202,15 @@ class PokemonMoveHolderBuilder
     try {
       _$result = _$v ??
           new _$PokemonMoveHolder._(
+              id: id,
+              level: level,
               pokemon_v2_move: _pokemon_v2_move?.build(),
-              pokemon_v2_versiongroup: _pokemon_v2_versiongroup?.build(),
               pokemon_v2_movelearnmethod: _pokemon_v2_movelearnmethod?.build());
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'pokemon_v2_move';
         _pokemon_v2_move?.build();
-        _$failedField = 'pokemon_v2_versiongroup';
-        _pokemon_v2_versiongroup?.build();
         _$failedField = 'pokemon_v2_movelearnmethod';
         _pokemon_v2_movelearnmethod?.build();
       } catch (e) {
