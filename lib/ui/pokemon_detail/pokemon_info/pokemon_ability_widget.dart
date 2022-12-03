@@ -6,6 +6,7 @@ import '../../../api/models/pokemon/pokemon_ability_holder.dart';
 import '../../../extensions/build_context_extension.dart';
 import '../../../extensions/pokemon_ability_holder_extension.dart';
 import '../../../extensions/pokemon_extension.dart';
+import '../../../theme/base_theme.dart';
 import '../../../theme/poke_app_text.dart';
 import '../../shared_widgets/poke_divider.dart';
 import '../../shared_widgets/pokemon_expansion_tile.dart';
@@ -54,6 +55,7 @@ class PokemonAbilityWidget extends StatelessWidget {
                       ability.is_hidden == true,
                     ),
                     subtitle: _buildExpansionTileSubtitle(
+                      context,
                       ability,
                     ),
                     children: _buildPokemonAbilityDetail(
@@ -82,13 +84,15 @@ class PokemonAbilityWidget extends StatelessWidget {
       ),
       child: Text(
         context.strings.abilities,
-        style: PokeAppText.subtitle3Style,
+        style: PokeAppText.subtitle3Style.copyWith(
+          color: colors(context).textOnForeground,
+        ),
       ),
     );
   }
 
   List<Widget> _buildPokemonAbilityDetail(
-      BuildContext context,
+    BuildContext context,
     PokemonAbilityHolder abilityHolder,
   ) {
     final generation = abilityHolder.pokemon_v2_ability?.generation_id?.toString() ?? '';
@@ -150,7 +154,9 @@ class PokemonAbilityWidget extends StatelessWidget {
         children: [
           Text(
             title,
-            style: PokeAppText.body3Style,
+            style: PokeAppText.body3Style.copyWith(
+              color: colors(context).textOnForeground,
+            ),
           ),
           if (isHidden)
             Padding(
@@ -159,7 +165,9 @@ class PokemonAbilityWidget extends StatelessWidget {
               ),
               child: Text(
                 context.strings.hidden,
-                style: PokeAppText.body3Style,
+                style: PokeAppText.body3Style.copyWith(
+                  color: colors(context).textOnForeground,
+                ),
               ),
             ),
         ],
@@ -168,11 +176,14 @@ class PokemonAbilityWidget extends StatelessWidget {
   }
 
   Widget _buildExpansionTileSubtitle(
+      BuildContext context,
     PokemonAbilityHolder pokemonAbilityHolder,
   ) {
     return Text(
       pokemonAbilityHolder.description(),
-      style: PokeAppText.body4Style,
+      style: PokeAppText.body4Style.copyWith(
+        color: colors(context).textOnForeground,
+      ),
     );
   }
 }

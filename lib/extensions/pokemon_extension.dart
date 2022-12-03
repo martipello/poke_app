@@ -2,7 +2,6 @@ import '../api/models/pokemon/pokemon.dart';
 import '../api/models/pokemon/pokemon_ability_holder.dart';
 import '../api/models/pokemon/pokemon_move_holder.dart';
 import '../api/models/pokemon/pokemon_resource.dart';
-import '../utils/console_output.dart';
 import 'iterable_extension.dart';
 
 extension PokemonExtension on Pokemon? {
@@ -44,11 +43,6 @@ extension PokemonExtension on Pokemon? {
 
   List<PokemonMoveHolder> pokemonMoves() {
     final _pokemonMoves = this?.pokemon_v2_pokemonmoves.toList() ?? [];
-    final groupedMoves = _pokemonMoves.groupBy((e) => e.pokemon_v2_move?.id);
-    log('MOVES').d(groupedMoves);
-    // log('MOVES').d('GROUP MOVE COUNT ${groupedMoves.length}');
-    // log('MOVES').d('MOVE COUNT ${_pokemonMoves.length}');
-    // final moves = groupedMoves.values.map((moves) => moves.map((move) => move.rebuild((mb) => mb..),),);
     return _pokemonMoves;
   }
 }

@@ -5,6 +5,7 @@ import '../../../api/models/pokemon/pokemon_resource.dart';
 import '../../../extensions/build_context_extension.dart';
 import '../../../extensions/pokemon_extension.dart';
 import '../../../extensions/pokemon_resource_extension.dart';
+import '../../../theme/base_theme.dart';
 import '../../../theme/poke_app_text.dart';
 import '../../shared_widgets/poke_divider.dart';
 import '../../shared_widgets/pokemon_expansion_tile.dart';
@@ -26,8 +27,8 @@ class PokedexInfoWidget extends StatelessWidget {
         children: [
           _buildTitle(context),
           _buildExpansionTile(
-            pokedexEntries,
             context,
+            pokedexEntries,
           ),
           _buildDivider(
             horizontalPadding: 8,
@@ -54,26 +55,32 @@ class PokedexInfoWidget extends StatelessWidget {
   }
 
   Widget _buildExpansionTile(
+      BuildContext context,
     List<PokemonResource> pokedexEntries,
-    BuildContext context,
   ) {
     final _firstEntry = pokedexEntries.first;
     return PokemonExpansionTile(
       canExpand: pokedexEntries.length > 1,
       title: _buildExpansionTileTitle(
+          context,
         _firstEntry.versionGroupName(),
-        titleTextStyle: PokeAppText.body3Style,
+        titleTextStyle: PokeAppText.body3Style.copyWith(
+          color: colors(context).textOnForeground,
+        ),
       ),
       subtitle: _buildExpansionTileSubtitle(
+        context,
         _firstEntry,
       ),
       children: _buildSubsequentPokedexEntries(
+        context,
         pokedexEntries,
       ),
     );
   }
 
   List<Widget> _buildSubsequentPokedexEntries(
+    BuildContext context,
     List<PokemonResource> pokedexEntries,
   ) {
     return pokedexEntries.map(
@@ -87,11 +94,17 @@ class PokedexInfoWidget extends StatelessWidget {
           children: [
             _buildDivider(),
             _buildExpansionTileTitle(
+              context,
               entry.versionGroupName(),
-              titleTextStyle: PokeAppText.body3Style,
+              titleTextStyle: PokeAppText.body3Style.copyWith(
+                color: colors(context).textOnForeground,
+              ),
             ),
             _buildExtraSmallMargin(),
-            _buildExpansionTileSubtitle(entry),
+            _buildExpansionTileSubtitle(
+              context,
+              entry,
+            ),
           ],
         );
       },
@@ -111,8 +124,9 @@ class PokedexInfoWidget extends StatelessWidget {
   }
 
   Widget _buildExpansionTileTitle(
+    BuildContext context,
     String title, {
-    TextStyle titleTextStyle = PokeAppText.subtitle3Style,
+    TextStyle? titleTextStyle,
   }) {
     return Padding(
       padding: const EdgeInsets.only(
@@ -121,17 +135,23 @@ class PokedexInfoWidget extends StatelessWidget {
       ),
       child: Text(
         title,
-        style: titleTextStyle,
+        style: titleTextStyle ??
+            PokeAppText.subtitle3Style.copyWith(
+              color: colors(context).textOnForeground,
+            ),
       ),
     );
   }
 
   Widget _buildExpansionTileSubtitle(
+    BuildContext context,
     PokemonResource resource,
   ) {
     return Text(
       resource.flavorText(),
-      style: PokeAppText.body4Style,
+      style: PokeAppText.body4Style.copyWith(
+        color: colors(context).textOnForeground,
+      ),
     );
   }
 

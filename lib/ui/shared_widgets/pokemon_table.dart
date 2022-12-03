@@ -54,7 +54,7 @@ class PokemonTable extends StatelessWidget {
                       tableTitle,
                     ),
                     const SizedBox(
-                      height: 8,
+                      height: 16,
                     ),
                   ],
                 ),
@@ -67,7 +67,7 @@ class PokemonTable extends StatelessWidget {
                 children: [
                   ...pokemonTableRowInfoList
                       .where(
-                    (element) => element.value?.isNotEmpty == true || element.child != null,
+                    (element) => element.value?.isNotEmpty == true && element.value != 'null' || element.child != null,
                   )
                       .map(
                     (e) {

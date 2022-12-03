@@ -79,6 +79,13 @@ class _$PokemonResourceSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(PokemonResource)));
     }
+    value = object.pokemon_v2_region;
+    if (value != null) {
+      result
+        ..add('pokemon_v2_region')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(PokemonResource)));
+    }
     value = object.pokemon_v2_versiongroup;
     if (value != null) {
       result
@@ -162,6 +169,11 @@ class _$PokemonResourceSerializer
                   specifiedType: const FullType(PokemonResource))!
               as PokemonResource);
           break;
+        case 'pokemon_v2_region':
+          result.pokemon_v2_region.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(PokemonResource))!
+              as PokemonResource);
+          break;
         case 'pokemon_v2_versiongroup':
           result.pokemon_v2_versiongroup.replace(serializers.deserialize(value,
                   specifiedType: const FullType(PokemonResource))!
@@ -221,6 +233,8 @@ class _$PokemonResource extends PokemonResource {
   @override
   final PokemonResource? pokemon_v2_version;
   @override
+  final PokemonResource? pokemon_v2_region;
+  @override
   final PokemonResource? pokemon_v2_versiongroup;
   @override
   final PokemonResource? pokemon_v2_egggroup;
@@ -245,6 +259,7 @@ class _$PokemonResource extends PokemonResource {
       this.pokemon_species_id,
       this.short_effect,
       this.pokemon_v2_version,
+      this.pokemon_v2_region,
       this.pokemon_v2_versiongroup,
       this.pokemon_v2_egggroup,
       this.pokemon_v2_movedamageclass,
@@ -276,6 +291,7 @@ class _$PokemonResource extends PokemonResource {
         pokemon_species_id == other.pokemon_species_id &&
         short_effect == other.short_effect &&
         pokemon_v2_version == other.pokemon_v2_version &&
+        pokemon_v2_region == other.pokemon_v2_region &&
         pokemon_v2_versiongroup == other.pokemon_v2_versiongroup &&
         pokemon_v2_egggroup == other.pokemon_v2_egggroup &&
         pokemon_v2_movedamageclass == other.pokemon_v2_movedamageclass &&
@@ -299,14 +315,19 @@ class _$PokemonResource extends PokemonResource {
                                         $jc(
                                             $jc(
                                                 $jc(
-                                                    $jc($jc(0, name.hashCode),
-                                                        description.hashCode),
-                                                    id.hashCode),
-                                                flavor_text.hashCode),
-                                            version_id.hashCode),
-                                        pokemon_species_id.hashCode),
-                                    short_effect.hashCode),
-                                pokemon_v2_version.hashCode),
+                                                    $jc(
+                                                        $jc(
+                                                            $jc(0,
+                                                                name.hashCode),
+                                                            description
+                                                                .hashCode),
+                                                        id.hashCode),
+                                                    flavor_text.hashCode),
+                                                version_id.hashCode),
+                                            pokemon_species_id.hashCode),
+                                        short_effect.hashCode),
+                                    pokemon_v2_version.hashCode),
+                                pokemon_v2_region.hashCode),
                             pokemon_v2_versiongroup.hashCode),
                         pokemon_v2_egggroup.hashCode),
                     pokemon_v2_movedamageclass.hashCode),
@@ -326,6 +347,7 @@ class _$PokemonResource extends PokemonResource {
           ..add('pokemon_species_id', pokemon_species_id)
           ..add('short_effect', short_effect)
           ..add('pokemon_v2_version', pokemon_v2_version)
+          ..add('pokemon_v2_region', pokemon_v2_region)
           ..add('pokemon_v2_versiongroup', pokemon_v2_versiongroup)
           ..add('pokemon_v2_egggroup', pokemon_v2_egggroup)
           ..add('pokemon_v2_movedamageclass', pokemon_v2_movedamageclass)
@@ -375,6 +397,12 @@ class PokemonResourceBuilder
       _$this._pokemon_v2_version ??= new PokemonResourceBuilder();
   set pokemon_v2_version(PokemonResourceBuilder? pokemon_v2_version) =>
       _$this._pokemon_v2_version = pokemon_v2_version;
+
+  PokemonResourceBuilder? _pokemon_v2_region;
+  PokemonResourceBuilder get pokemon_v2_region =>
+      _$this._pokemon_v2_region ??= new PokemonResourceBuilder();
+  set pokemon_v2_region(PokemonResourceBuilder? pokemon_v2_region) =>
+      _$this._pokemon_v2_region = pokemon_v2_region;
 
   PokemonResourceBuilder? _pokemon_v2_versiongroup;
   PokemonResourceBuilder get pokemon_v2_versiongroup =>
@@ -431,6 +459,7 @@ class PokemonResourceBuilder
       _pokemon_species_id = $v.pokemon_species_id;
       _short_effect = $v.short_effect;
       _pokemon_v2_version = $v.pokemon_v2_version?.toBuilder();
+      _pokemon_v2_region = $v.pokemon_v2_region?.toBuilder();
       _pokemon_v2_versiongroup = $v.pokemon_v2_versiongroup?.toBuilder();
       _pokemon_v2_egggroup = $v.pokemon_v2_egggroup?.toBuilder();
       _pokemon_v2_movedamageclass = $v.pokemon_v2_movedamageclass?.toBuilder();
@@ -470,6 +499,7 @@ class PokemonResourceBuilder
               pokemon_species_id: pokemon_species_id,
               short_effect: short_effect,
               pokemon_v2_version: _pokemon_v2_version?.build(),
+              pokemon_v2_region: _pokemon_v2_region?.build(),
               pokemon_v2_versiongroup: _pokemon_v2_versiongroup?.build(),
               pokemon_v2_egggroup: _pokemon_v2_egggroup?.build(),
               pokemon_v2_movedamageclass: _pokemon_v2_movedamageclass?.build(),
@@ -482,6 +512,8 @@ class PokemonResourceBuilder
       try {
         _$failedField = 'pokemon_v2_version';
         _pokemon_v2_version?.build();
+        _$failedField = 'pokemon_v2_region';
+        _pokemon_v2_region?.build();
         _$failedField = 'pokemon_v2_versiongroup';
         _pokemon_v2_versiongroup?.build();
         _$failedField = 'pokemon_v2_egggroup';

@@ -4,7 +4,6 @@ import '../../../../api/error_handler.dart';
 import '../../../../api/graph_ql/pokemon_repository_graph_ql.dart';
 import '../../../../api/models/api_response.dart';
 import '../../../../api/models/pokemon/evolution_chain_holder.dart';
-import '../../../../api/models/pokemon/evolution_response.dart';
 import '../../../../api/models/pokemon/pokemon_request.dart';
 import '../../../../services/language_service.dart';
 

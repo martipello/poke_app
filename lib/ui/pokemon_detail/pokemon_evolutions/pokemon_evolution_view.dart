@@ -4,7 +4,6 @@ import '../../../api/models/api_response.dart';
 import '../../../api/models/error_response.dart';
 import '../../../api/models/pokemon/evolution_chain_holder.dart';
 import '../../../api/models/pokemon/evolution_holder.dart';
-import '../../../api/models/pokemon/evolution_response.dart';
 import '../../../dependency_injection_container.dart';
 import '../../../extensions/iterable_extension.dart';
 import '../../shared_widgets/error_widget.dart' as ew;

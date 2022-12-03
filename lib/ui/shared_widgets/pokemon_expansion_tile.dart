@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../theme/base_theme.dart';
+
 class PokemonExpansionTile extends StatelessWidget {
   const PokemonExpansionTile({
     Key? key,
@@ -32,6 +34,8 @@ class PokemonExpansionTile extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: 4),
           child: title,
         ),
+        collapsedIconColor: colors(context).textOnForeground,
+        iconColor: colors(context).textOnForeground,
         subtitle: subtitle,
         children: children,
       ),

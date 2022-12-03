@@ -89,6 +89,44 @@ class _$EvolutionSerializer implements StructuredSerializer<Evolution> {
         ..add('relative_physical_stats')
         ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
+    value = object.pokemon_v2_location;
+    if (value != null) {
+      result
+        ..add('pokemon_v2_location')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(PokemonResource)));
+    }
+    value = object.pokemon_v2_item;
+    if (value != null) {
+      result
+        ..add('pokemon_v2_item')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(PokemonResource)));
+    }
+    value = object.known_move_id;
+    if (value != null) {
+      result
+        ..add('known_move_id')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.known_move_type_id;
+    if (value != null) {
+      result
+        ..add('known_move_type_id')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.held_item_id;
+    if (value != null) {
+      result
+        ..add('held_item_id')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.gender_id;
+    if (value != null) {
+      result
+        ..add('gender_id')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
     return result;
   }
 
@@ -149,6 +187,32 @@ class _$EvolutionSerializer implements StructuredSerializer<Evolution> {
           result.relative_physical_stats = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int?;
           break;
+        case 'pokemon_v2_location':
+          result.pokemon_v2_location.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(PokemonResource))!
+              as PokemonResource);
+          break;
+        case 'pokemon_v2_item':
+          result.pokemon_v2_item.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(PokemonResource))!
+              as PokemonResource);
+          break;
+        case 'known_move_id':
+          result.known_move_id = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
+        case 'known_move_type_id':
+          result.known_move_type_id = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
+        case 'held_item_id':
+          result.held_item_id = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
+        case 'gender_id':
+          result.gender_id = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
       }
     }
 
@@ -179,6 +243,18 @@ class _$Evolution extends Evolution {
   final String? time_of_day;
   @override
   final int? relative_physical_stats;
+  @override
+  final PokemonResource? pokemon_v2_location;
+  @override
+  final PokemonResource? pokemon_v2_item;
+  @override
+  final int? known_move_id;
+  @override
+  final int? known_move_type_id;
+  @override
+  final int? held_item_id;
+  @override
+  final int? gender_id;
 
   factory _$Evolution([void Function(EvolutionBuilder)? updates]) =>
       (new EvolutionBuilder()..update(updates))._build();
@@ -194,7 +270,13 @@ class _$Evolution extends Evolution {
       this.turn_upside_down,
       this.trade_species_id,
       this.time_of_day,
-      this.relative_physical_stats})
+      this.relative_physical_stats,
+      this.pokemon_v2_location,
+      this.pokemon_v2_item,
+      this.known_move_id,
+      this.known_move_type_id,
+      this.held_item_id,
+      this.gender_id})
       : super._();
 
   @override
@@ -218,7 +300,13 @@ class _$Evolution extends Evolution {
         turn_upside_down == other.turn_upside_down &&
         trade_species_id == other.trade_species_id &&
         time_of_day == other.time_of_day &&
-        relative_physical_stats == other.relative_physical_stats;
+        relative_physical_stats == other.relative_physical_stats &&
+        pokemon_v2_location == other.pokemon_v2_location &&
+        pokemon_v2_item == other.pokemon_v2_item &&
+        known_move_id == other.known_move_id &&
+        known_move_type_id == other.known_move_type_id &&
+        held_item_id == other.held_item_id &&
+        gender_id == other.gender_id;
   }
 
   @override
@@ -233,18 +321,36 @@ class _$Evolution extends Evolution {
                                 $jc(
                                     $jc(
                                         $jc(
-                                            $jc(0,
-                                                needs_overworld_rain.hashCode),
-                                            min_level.hashCode),
-                                        min_happiness.hashCode),
-                                    min_beauty.hashCode),
-                                min_affection.hashCode),
-                            location_id.hashCode),
-                        pokemon_v2_evolutiontrigger.hashCode),
-                    turn_upside_down.hashCode),
-                trade_species_id.hashCode),
-            time_of_day.hashCode),
-        relative_physical_stats.hashCode));
+                                            $jc(
+                                                $jc(
+                                                    $jc(
+                                                        $jc(
+                                                            $jc(
+                                                                $jc(
+                                                                    $jc(
+                                                                        0,
+                                                                        needs_overworld_rain
+                                                                            .hashCode),
+                                                                    min_level
+                                                                        .hashCode),
+                                                                min_happiness
+                                                                    .hashCode),
+                                                            min_beauty
+                                                                .hashCode),
+                                                        min_affection.hashCode),
+                                                    location_id.hashCode),
+                                                pokemon_v2_evolutiontrigger
+                                                    .hashCode),
+                                            turn_upside_down.hashCode),
+                                        trade_species_id.hashCode),
+                                    time_of_day.hashCode),
+                                relative_physical_stats.hashCode),
+                            pokemon_v2_location.hashCode),
+                        pokemon_v2_item.hashCode),
+                    known_move_id.hashCode),
+                known_move_type_id.hashCode),
+            held_item_id.hashCode),
+        gender_id.hashCode));
   }
 
   @override
@@ -260,7 +366,13 @@ class _$Evolution extends Evolution {
           ..add('turn_upside_down', turn_upside_down)
           ..add('trade_species_id', trade_species_id)
           ..add('time_of_day', time_of_day)
-          ..add('relative_physical_stats', relative_physical_stats))
+          ..add('relative_physical_stats', relative_physical_stats)
+          ..add('pokemon_v2_location', pokemon_v2_location)
+          ..add('pokemon_v2_item', pokemon_v2_item)
+          ..add('known_move_id', known_move_id)
+          ..add('known_move_type_id', known_move_type_id)
+          ..add('held_item_id', held_item_id)
+          ..add('gender_id', gender_id))
         .toString();
   }
 }
@@ -321,6 +433,36 @@ class EvolutionBuilder implements Builder<Evolution, EvolutionBuilder> {
   set relative_physical_stats(int? relative_physical_stats) =>
       _$this._relative_physical_stats = relative_physical_stats;
 
+  PokemonResourceBuilder? _pokemon_v2_location;
+  PokemonResourceBuilder get pokemon_v2_location =>
+      _$this._pokemon_v2_location ??= new PokemonResourceBuilder();
+  set pokemon_v2_location(PokemonResourceBuilder? pokemon_v2_location) =>
+      _$this._pokemon_v2_location = pokemon_v2_location;
+
+  PokemonResourceBuilder? _pokemon_v2_item;
+  PokemonResourceBuilder get pokemon_v2_item =>
+      _$this._pokemon_v2_item ??= new PokemonResourceBuilder();
+  set pokemon_v2_item(PokemonResourceBuilder? pokemon_v2_item) =>
+      _$this._pokemon_v2_item = pokemon_v2_item;
+
+  int? _known_move_id;
+  int? get known_move_id => _$this._known_move_id;
+  set known_move_id(int? known_move_id) =>
+      _$this._known_move_id = known_move_id;
+
+  int? _known_move_type_id;
+  int? get known_move_type_id => _$this._known_move_type_id;
+  set known_move_type_id(int? known_move_type_id) =>
+      _$this._known_move_type_id = known_move_type_id;
+
+  int? _held_item_id;
+  int? get held_item_id => _$this._held_item_id;
+  set held_item_id(int? held_item_id) => _$this._held_item_id = held_item_id;
+
+  int? _gender_id;
+  int? get gender_id => _$this._gender_id;
+  set gender_id(int? gender_id) => _$this._gender_id = gender_id;
+
   EvolutionBuilder();
 
   EvolutionBuilder get _$this {
@@ -338,6 +480,12 @@ class EvolutionBuilder implements Builder<Evolution, EvolutionBuilder> {
       _trade_species_id = $v.trade_species_id;
       _time_of_day = $v.time_of_day;
       _relative_physical_stats = $v.relative_physical_stats;
+      _pokemon_v2_location = $v.pokemon_v2_location?.toBuilder();
+      _pokemon_v2_item = $v.pokemon_v2_item?.toBuilder();
+      _known_move_id = $v.known_move_id;
+      _known_move_type_id = $v.known_move_type_id;
+      _held_item_id = $v.held_item_id;
+      _gender_id = $v.gender_id;
       _$v = null;
     }
     return this;
@@ -373,12 +521,23 @@ class EvolutionBuilder implements Builder<Evolution, EvolutionBuilder> {
               turn_upside_down: turn_upside_down,
               trade_species_id: trade_species_id,
               time_of_day: time_of_day,
-              relative_physical_stats: relative_physical_stats);
+              relative_physical_stats: relative_physical_stats,
+              pokemon_v2_location: _pokemon_v2_location?.build(),
+              pokemon_v2_item: _pokemon_v2_item?.build(),
+              known_move_id: known_move_id,
+              known_move_type_id: known_move_type_id,
+              held_item_id: held_item_id,
+              gender_id: gender_id);
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'pokemon_v2_evolutiontrigger';
         _pokemon_v2_evolutiontrigger?.build();
+
+        _$failedField = 'pokemon_v2_location';
+        _pokemon_v2_location?.build();
+        _$failedField = 'pokemon_v2_item';
+        _pokemon_v2_item?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'Evolution', _$failedField, e.toString());

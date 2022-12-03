@@ -146,7 +146,10 @@ class _PokemonListViewState extends State<PokemonListView> {
 
   Widget _buildPokemonList() {
     return SliverRefreshIndicator(
-      onRefresh: _pokemonViewModel.refresh,
+      onRefresh: () async {
+        //TODO this refresh doesn't get the current search and just retries whatever the last search was even if the text has changed
+        _pokemonViewModel.refresh();
+      },
       padding: EdgeInsets.zero,
       sliver: MultiSliver(
         children: [

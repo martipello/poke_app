@@ -43,19 +43,11 @@ class PokemonEvolutionWidget extends StatelessWidget {
             childCount: speciesHolders.length,
             (context, index) {
               final speciesHolder = speciesHolders[index];
-              return Column(
-                children: [
-                  if (index != 0)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                      ),
-                      child: _buildDivider(),
-                    ),
-                  EvolutionTile(
-                    speciesHolder: speciesHolder,
-                  ),
-                ],
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: EvolutionTile(
+                  speciesHolder: speciesHolder,
+                ),
               );
             },
           ),

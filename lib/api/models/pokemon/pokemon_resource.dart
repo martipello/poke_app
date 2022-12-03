@@ -30,6 +30,8 @@ abstract class PokemonResource implements Built<PokemonResource, PokemonResource
 
   PokemonResource? get pokemon_v2_version;
 
+  PokemonResource? get pokemon_v2_region;
+
   PokemonResource? get pokemon_v2_versiongroup;
 
   PokemonResource? get pokemon_v2_egggroup;

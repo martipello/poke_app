@@ -261,6 +261,19 @@ query MyQuery {
         trade_species_id
         time_of_day
         relative_physical_stats
+        pokemon_v2_location {
+          name
+          pokemon_v2_region {
+            name
+          }
+        }
+        pokemon_v2_item {
+          name
+        }
+        known_move_id
+        known_move_type_id
+        held_item_id
+        gender_id
       }
       pokemon_v2_pokemonspeciesnames(where: {language_id: {_eq: ${pokemonRequest.languageId}}}) {
         genus

@@ -34,6 +34,18 @@ abstract class Evolution implements Built<Evolution, EvolutionBuilder> {
 
   int? get relative_physical_stats;
 
+  PokemonResource? get pokemon_v2_location;
+
+  PokemonResource? get pokemon_v2_item;
+
+  int? get known_move_id;
+
+  int? get known_move_type_id;
+
+  int? get held_item_id;
+
+  int? get gender_id;
+
   Map<String, dynamic> toJson() {
     return serializers.serializeWith(Evolution.serializer, this) as Map<String, dynamic>;
   }

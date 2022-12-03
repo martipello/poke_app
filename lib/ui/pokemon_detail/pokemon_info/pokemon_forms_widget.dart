@@ -5,6 +5,7 @@ import '../../../api/models/pokemon/pokemon.dart';
 import '../../../api/models/pokemon/pokemon_form.dart';
 import '../../../extensions/build_context_extension.dart';
 import '../../../extensions/pokemon_form_extension.dart';
+import '../../../theme/base_theme.dart';
 import '../../../theme/poke_app_text.dart';
 import '../../shared_widgets/poke_divider.dart';
 import '../../shared_widgets/pokemon_expansion_tile.dart';
@@ -31,7 +32,7 @@ class PokemonFormsWidget extends StatelessWidget {
         SliverToBoxAdapter(
           child: _buildTitle(context),
         ),
-        _buildFormsList(forms),
+        _buildFormsList(context, forms),
         SliverToBoxAdapter(
           child: _buildDivider(),
         ),
@@ -40,6 +41,7 @@ class PokemonFormsWidget extends StatelessWidget {
   }
 
   Widget _buildFormsList(
+    BuildContext context,
     List<PokemonForm> forms,
   ) {
     return SliverList(
@@ -50,7 +52,10 @@ class PokemonFormsWidget extends StatelessWidget {
           return Column(
             children: [
               if (index != 0) _buildFormsListDivider(),
-              _buildFormTile(form),
+              _buildFormTile(
+                context,
+                form,
+              ),
             ],
           );
         },
@@ -58,10 +63,14 @@ class PokemonFormsWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildFormTile(PokemonForm form) {
+  Widget _buildFormTile(
+    BuildContext context,
+    PokemonForm form,
+  ) {
     return PokemonExpansionTile(
       canExpand: true,
       title: _buildExpansionTileTitle(
+        context,
         form.title(),
       ),
       children: _buildPokemonFormDetail(
@@ -88,7 +97,9 @@ class PokemonFormsWidget extends StatelessWidget {
       ),
       child: Text(
         context.strings.forms,
-        style: PokeAppText.subtitle3Style,
+        style: PokeAppText.subtitle3Style.copyWith(
+          color: colors(context).textOnForeground,
+        ),
       ),
     );
   }
@@ -133,6 +144,7 @@ class PokemonFormsWidget extends StatelessWidget {
   }
 
   Widget _buildExpansionTileTitle(
+    BuildContext context,
     String title,
   ) {
     return Padding(
@@ -142,7 +154,9 @@ class PokemonFormsWidget extends StatelessWidget {
       ),
       child: Text(
         title,
-        style: PokeAppText.body3Style,
+        style: PokeAppText.body3Style.copyWith(
+          color: colors(context).textOnForeground,
+        ),
       ),
     );
   }

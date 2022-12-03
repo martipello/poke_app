@@ -12,14 +12,19 @@ class ExpansionCard extends StatefulWidget {
   ExpansionCard({
     Key? key,
     this.onTap,
-    required this.title,
+    this.title,
     required this.expandedChildren,
     this.subtitle,
     required this.bottomWidgetBuilder,
-  }) : super(key: key);
+    this.titleWidget,
+    this.subtitleWidget,
+  })  : assert(title?.isNotEmpty == true || titleWidget != null),
+        super(key: key);
 
-  final String title;
+  final String? title;
   final String? subtitle;
+  final Widget? titleWidget;
+  final Widget? subtitleWidget;
   final List<Widget> expandedChildren;
   final VoidCallback? onTap;
   final ExpansionCardBuilder bottomWidgetBuilder;
@@ -101,18 +106,21 @@ class _ExpansionCardState extends State<ExpansionCard> with TickerProviderStateM
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _buildTitle(),
-                  if (widget.subtitle != null) _buildSubtitle(),
+                  widget.titleWidget ?? _buildTitle(),
+                  if (widget.subtitleWidget != null) widget.subtitleWidget!,
+                  if (widget.subtitle != null && widget.subtitle?.isNotEmpty == true) _buildSubtitle(),
                 ],
               ),
             ),
+            if(widget.expandedChildren.isNotEmpty)
             _buildRotatingIconButton(
               _isExpanded,
             ),
           ],
         ),
+        if(widget.expandedChildren.isNotEmpty)
         _buildExpandable(_isExpanded),
-        if (!_isExpanded)
+        if (widget.expandedChildren.isNotEmpty && !_isExpanded)
           const SizedBox(
             height: 16,
           ),
@@ -135,7 +143,7 @@ class _ExpansionCardState extends State<ExpansionCard> with TickerProviderStateM
   Widget _buildTitle() {
     return Flexible(
       child: Text(
-        widget.title,
+        widget.title ?? '',
         style: PokeAppText.subtitle3Style.copyWith(
           color: colors(context).textOnForeground,
         ),
