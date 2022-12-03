@@ -120,10 +120,6 @@ class _ExpansionCardState extends State<ExpansionCard> with TickerProviderStateM
         ),
         if(widget.expandedChildren.isNotEmpty)
         _buildExpandable(_isExpanded),
-        if (widget.expandedChildren.isNotEmpty && !_isExpanded)
-          const SizedBox(
-            height: 16,
-          ),
         widget.bottomWidgetBuilder(_isExpanded),
       ],
     );
