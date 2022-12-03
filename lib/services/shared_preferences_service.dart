@@ -16,9 +16,9 @@ class SharedPreferencesService extends PokemonService {
     return _sharedPreferences;
   }
 
-  Future<int> getLanguageId() async {
+  Future<int?> getLanguageId() async {
     final sharedPreferences = await _sharedPreferences;
-    return sharedPreferences.getInt(kLanguage) ?? SupportedLanguage.english.id;
+    return sharedPreferences.getInt(kLanguage);
   }
 
   Future<void> setLanguageId(SupportedLanguage language) async {

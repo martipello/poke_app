@@ -7,6 +7,7 @@ import 'package:palette_generator/palette_generator.dart';
 import '../../api/models/pokemon/pokemon.dart';
 import '../../api/models/pokemon/sprite.dart';
 import '../../dependency_injection_container.dart';
+import '../../extensions/iterable_extension.dart';
 import 'view_models/image_color_view_model.dart';
 
 typedef ImageErrorBuilder = Widget Function(BuildContext context, Object? object, StackTrace? stacktrace);
@@ -43,7 +44,6 @@ class _PokemonImageState extends State<PokemonImage> {
   late final NetworkImage mainImageProvider;
   late final NetworkImage secondaryImageProvider;
 
-
   @override
   void initState() {
     super.initState();
@@ -76,10 +76,12 @@ class _PokemonImageState extends State<PokemonImage> {
       type: MaterialType.transparency,
       child: _buildImageHolder(
         context,
+        true,
         mainImageProvider,
         mainImageColorViewModel.paletteGeneratorStream,
         (context, _, __) => _buildImageHolder(
           context,
+          false,
           secondaryImageProvider,
           secondaryImageColorViewModel.paletteGeneratorStream,
           (context, _, __) => _buildEmptyImage(),
@@ -90,6 +92,7 @@ class _PokemonImageState extends State<PokemonImage> {
 
   Widget _buildImageHolder(
     BuildContext context,
+    bool buildHeroWidget,
     ImageProvider imageProvider,
     Stream<PaletteGenerator> paletteGeneratorStream,
     ImageErrorBuilder imageErrorBuilder,
@@ -108,10 +111,15 @@ class _PokemonImageState extends State<PokemonImage> {
             Positioned.fill(
               child: Align(
                 alignment: Alignment.center,
-                child: _buildImage(
-                  imageProvider,
-                  imageErrorBuilder,
-                ),
+                child: buildHeroWidget
+                    ? _buildImageWithHero(
+                        imageProvider,
+                        imageErrorBuilder,
+                      )
+                    : _buildImage(
+                        imageProvider,
+                        imageErrorBuilder,
+                      ),
               ),
             ),
           ],
@@ -166,30 +174,40 @@ class _PokemonImageState extends State<PokemonImage> {
     );
   }
 
-  Widget _buildImage(
+  Widget _buildImageWithHero(
     ImageProvider imageProvider,
     ImageErrorBuilder imageErrorBuilder,
   ) {
     return Hero(
       tag: '${widget.pokemon.id}',
       transitionOnUserGestures: true,
-      child: Image(
-        image: imageProvider,
-        fit: BoxFit.cover,
-        gaplessPlayback: true,
-        height: widget.size?.height ?? kDefaultImageHeight,
-        width: widget.size?.width ?? kDefaultImageHeight,
-        loadingBuilder: (context, child, chunk) {
-          if (chunk == null) {
-            return child;
-          }
-          return _buildEmptyImageHolder(
-            context,
-            isLoading: true,
-          );
-        },
-        errorBuilder: imageErrorBuilder,
+      child: _buildImage(
+        imageProvider,
+        imageErrorBuilder,
       ),
+    );
+  }
+
+  Widget _buildImage(
+    ImageProvider imageProvider,
+    ImageErrorBuilder imageErrorBuilder,
+  ) {
+    return Image(
+      image: imageProvider,
+      fit: BoxFit.cover,
+      gaplessPlayback: true,
+      height: widget.size?.height ?? kDefaultImageHeight,
+      width: widget.size?.width ?? kDefaultImageHeight,
+      loadingBuilder: (context, child, chunk) {
+        if (chunk == null) {
+          return child;
+        }
+        return _buildEmptyImageHolder(
+          context,
+          isLoading: true,
+        );
+      },
+      errorBuilder: imageErrorBuilder,
     );
   }
 
@@ -213,12 +231,9 @@ class _PokemonImageState extends State<PokemonImage> {
   }
 
   Widget _buildEmptyImage() {
-    return Hero(
-      tag: 'empty',
-      child: Image.asset(
-        'assets/images/pokeball_outline.png',
-        gaplessPlayback: true,
-      ),
+    return Image.asset(
+      'assets/images/pokeball_outline.png',
+      gaplessPlayback: true,
     );
   }
 
@@ -241,12 +256,17 @@ class _PokemonImageState extends State<PokemonImage> {
   BorderRadius _buildBorderRadius() => BorderRadius.circular(180);
 
   String _createImageUrl() {
+    //TODO figure out how to handle forms id:666
     return 'https://firebasestorage.googleapis.com/v0/b/pokeapp-86eec.appspot.com/o/pokemon_image_${widget.pokemon.id}.png?alt=media';
   }
 
   String _createSpriteImageUrl() {
-    final spriteData = jsonDecode(widget.pokemon.pokemon_v2_pokemonsprites.first.sprites ?? '');
-    final sprite = Sprite.fromJson(spriteData);
-    return sprite.front_default ?? '';
+    try {
+      final spriteData = jsonDecode(widget.pokemon.pokemon_v2_pokemonsprites.firstOrNull()?.sprites ?? '');
+      final sprite = Sprite.fromJson(spriteData);
+      return sprite.front_default ?? '';
+    } catch (_) {
+      return '';
+    }
   }
 }

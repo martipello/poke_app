@@ -4,6 +4,7 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
 import '../../serializers/serializers.dart';
+import 'pokemon.dart';
 
 part 'pokemon_form.g.dart';
 
@@ -22,7 +23,13 @@ abstract class PokemonForm implements Built<PokemonForm, PokemonFormBuilder> {
 
   String? get form_name;
 
+  int? get formOrder;
+
   int? get pokemon_id;
+
+  int? get order;
+
+  Pokemon? get pokemon;
 
   Map<String, dynamic> toJson() {
     return serializers.serializeWith(PokemonForm.serializer, this) as Map<String, dynamic>;

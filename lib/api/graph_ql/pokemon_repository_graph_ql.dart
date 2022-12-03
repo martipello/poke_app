@@ -229,34 +229,56 @@ class PokemonRepositoryGraphQl {
       document: gql(
         '''
 query MyQuery {
-  pokemon_v2_pokemonevolution {
-    needs_overworld_rain
-    min_level
-    min_happiness
-    min_beauty
-    min_affection
-    pokemon_v2_evolutiontrigger {
+  pokemon_v2_evolutionchain(where: {pokemon_v2_pokemonspecies: {pokemon_v2_pokemons: {id: {_eq: ${pokemonRequest.pokemonId}}}}}) {
+    id
+    pokemon_v2_pokemonspecies {
+      base_happiness
+      capture_rate
+      evolution_chain_id
+      evolves_from_species_id
+      forms_switchable
+      gender_rate
+      is_baby
+      hatch_counter
+      is_legendary
+      is_mythical
       name
       pokemon_v2_pokemonevolutions {
-        id
         needs_overworld_rain
         min_level
         min_happiness
         min_beauty
         min_affection
-        relative_physical_stats
-        time_of_day
-        turn_upside_down
+        location_id
         pokemon_v2_evolutiontrigger {
           name
+          pokemon_v2_evolutiontriggernames(where: {language_id: {_eq: ${pokemonRequest.languageId}}}) {
+            id
+            name
+          }
         }
+        turn_upside_down
+        trade_species_id
+        time_of_day
+        relative_physical_stats
+      }
+      pokemon_v2_pokemonspeciesnames(where: {language_id: {_eq: ${pokemonRequest.languageId}}}) {
+        genus
+      }
+      pokemon_v2_pokemons {
+        name
+        pokemon_v2_pokemontypes {
+          pokemon_v2_type {
+            name
+            id
+          }
+        }
+        id
       }
     }
-    turn_upside_down
-    time_of_day
-    relative_physical_stats
   }
 }
+
       ''',
       ),
     );
@@ -271,22 +293,32 @@ query MyQuery {
     final options = QueryOptions(
       document: gql(
         '''
-          query MyQuery {
-            pokemon_v2_pokemon(where: {id: {_eq: 1}}) {
-              id
-              pokemon_v2_pokemonforms {
-                form_name
-                is_mega
-                is_default
-                is_battle_only
-                form_order
-                pokemon_id
-                order
-                name
-                version_group_id
-              }
-            }
+query MyQuery {
+  pokemon_v2_pokemon(where: {id: {_eq: 666}}) {
+    id
+    pokemon_v2_pokemonforms {
+      form_name
+      is_mega
+      is_default
+      is_battle_only
+      form_order
+      pokemon_id
+      order
+      name
+      pokemon_v2_pokemon {
+        id
+        pokemon_v2_encounters {
+          location_area_id
+          max_level
+          min_level
+          pokemon_v2_locationarea {
+            name
           }
+        }
+      }
+    }
+  }
+}
       ''',
       ),
     );
@@ -300,162 +332,71 @@ query MyQuery {
     final _graphQlClient = graphQlClient.getClient();
     final options = QueryOptions(
       document: gql(
-//         '''
-//         query MyQuery {
-//   pokemon_v2_pokemon(where: {id: {_eq: 1}}) {
-//     id
-//     pokemon_v2_pokemonmoves(distinct_on: id) {
-//       id
-//       level
-//       pokemon_v2_move {
-//         accuracy
-//         move_effect_chance
-//         name
-//         priority
-//         pp
-//         power
-//         super_contest_effect_id
-//         type_id
-//         pokemon_v2_type {
-//           name
-//           pokemon_v2_movedamageclass {
-//             pokemon_v2_movedamageclassdescriptions(where: {language_id: {_eq: 9}}) {
-//               pokemon_v2_movedamageclass {
-//                 name
-//                 id
-//               }
-//             }
-//           }
-//           id
-//         }
-//         pokemon_v2_movemetum {
-//           crit_rate
-//           ailment_chance
-//           flinch_chance
-//           drain
-//           max_hits
-//           max_turns
-//           min_hits
-//           min_turns
-//           stat_chance
-//           pokemon_v2_movemetaailment {
-//             name
-//           }
-//           pokemon_v2_movemetacategory {
-//             name
-//           }
-//         }
-//         id
-//       }
-//       pokemon_v2_movelearnmethod {
-//         name
-//         pokemon_v2_versiongroupmovelearnmethods {
-//           pokemon_v2_versiongroup {
-//             name
-//           }
-//         }
-//         pokemon_v2_movelearnmethoddescriptions(where: {language_id: {_eq: 9}}) {
-//           description
-//           pokemon_v2_movelearnmethod {
-//             name
-//             pokemon_v2_movelearnmethoddescriptions(where: {language_id: {_eq: 9}}) {
-//               description
-//               id
-//               move_learn_method_id
-//             }
-//           }
-//         }
-//       }
-//     }
-//   }
-//   pokemon_v2_move {
-//     id
-//   }
-// }
-//         '''
         '''
-          query MyQuery {
-            pokemon_v2_pokemon(where: {id: {_eq: 1}}) {
-              id
-              pokemon_v2_pokemonmoves {
+query MyQuery {
+  pokemon_v2_pokemon(where: {id: {_eq: 1}}) {
+    id
+    pokemon_v2_pokemonmoves(distinct_on: id) {
+      id
+      level
+      pokemon_v2_move {
+        accuracy
+        move_effect_chance
+        name
+        priority
+        pp
+        power
+        super_contest_effect_id
+        type_id
+        pokemon_v2_type {
+          name
+          pokemon_v2_movedamageclass {
+            pokemon_v2_movedamageclassdescriptions(where: {language_id: {_eq: 9}}) {
+              pokemon_v2_movedamageclass {
+                name
                 id
-                level
-                pokemon_v2_move {
-                  id
-                  accuracy
-                  move_effect_chance
-                  name
-                  priority
-                  pp
-                  power
-                  super_contest_effect_id
-                  type_id
-                  pokemon_v2_generation {
-                    name
-                  }
-                  pokemon_v2_type {
-                    name
-                    pokemon_v2_movedamageclass {
-                      pokemon_v2_movedamageclassdescriptions(where: {language_id: {_eq: 9}}) {
-                        pokemon_v2_movedamageclass {
-                          name
-                          id
-                        }
-                      }
-                    }
-                    id
-                  }
-                  pokemon_v2_machines {
-                    machine_number
-                    pokemon_v2_versiongroup {
-                      name
-                    }
-                  }
-                  pokemon_v2_moveflavortexts(where: {language_id: {_eq: 9}}) {
-                    flavor_text
-                  }
-                  pokemon_v2_movemetum {
-                    crit_rate
-                    ailment_chance
-                    flinch_chance
-                    drain
-                    max_hits
-                    max_turns
-                    min_hits
-                    min_turns
-                    stat_chance
-                    pokemon_v2_movemetaailment {
-                      name
-                    }
-                    pokemon_v2_movemetacategory {
-                      name
-                    }
-                  }
-                }
-                pokemon_v2_versiongroup {
-                  name
-                }
-                pokemon_v2_movelearnmethod {
-                  name
-                  pokemon_v2_movelearnmethoddescriptions(where: {language_id: {_eq: 9}}) {
-                    description
-                    pokemon_v2_movelearnmethod {
-                      name
-                      pokemon_v2_movelearnmethoddescriptions(where: {language_id: {_eq: 9}}) {
-                        description
-                        id
-                        move_learn_method_id
-                      }
-                    }
-                  }
-                }
               }
             }
-            pokemon_v2_move {
-              id
-            }
           }
-      ''',
+          id
+        }
+        pokemon_v2_movemetum {
+          crit_rate
+          ailment_chance
+          flinch_chance
+          drain
+          max_hits
+          max_turns
+          min_hits
+          min_turns
+          stat_chance
+          pokemon_v2_movemetaailment {
+            name
+          }
+          pokemon_v2_movemetacategory {
+            name
+          }
+        }
+        id
+        pokemon_v2_machines {
+          machine_number
+          pokemon_v2_versiongroup {
+            name
+          }
+        }
+      }
+      pokemon_v2_movelearnmethod {
+        name
+        pokemon_v2_movelearnmethodnames(where: {language_id: {_eq: 9}}) {
+          id
+          name
+        }
+      }
+    }
+  }
+}
+
+        ''',
       ),
     );
 

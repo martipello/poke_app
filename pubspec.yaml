@@ -31,6 +31,7 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  intl: ^0.17.0
   flutter_flavorizr: ^2.0.0
   firebase_core: ^1.4.0
   firebase_messaging: ^10.0.8

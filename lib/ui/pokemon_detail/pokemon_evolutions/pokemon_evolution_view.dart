@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../../api/models/api_response.dart';
 import '../../../api/models/error_response.dart';
-import '../../../api/models/pokemon/pokemon.dart';
-import '../../../api/models/pokemon/pokemon_response.dart';
+import '../../../api/models/pokemon/evolution_chain_holder.dart';
+import '../../../api/models/pokemon/evolution_holder.dart';
+import '../../../api/models/pokemon/evolution_response.dart';
 import '../../../dependency_injection_container.dart';
 import '../../../extensions/iterable_extension.dart';
 import '../../shared_widgets/error_widget.dart' as ew;
@@ -48,12 +49,14 @@ class _PokemonEvolutionViewState extends State<PokemonEvolutionView>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return StreamBuilder<ApiResponse<PokemonResponse>>(
+    return StreamBuilder<ApiResponse<EvolutionChainHolder>>(
       stream: _pokemonEvolutionViewModel.pokemonEvolutionStream,
       builder: (context, snapshot) {
         return SliverRefreshIndicator(
           onRefresh: () {
-            _pokemonEvolutionViewModel.getPokemonEvolutions(widget.pokemonId);
+            _pokemonEvolutionViewModel.getPokemonEvolutions(
+              widget.pokemonId,
+            );
           },
           sliver: _buildLayoutForState(snapshot),
         );
@@ -62,15 +65,15 @@ class _PokemonEvolutionViewState extends State<PokemonEvolutionView>
   }
 
   Widget _buildLayoutForState(
-    AsyncSnapshot<ApiResponse<PokemonResponse>> snapshot,
+    AsyncSnapshot<ApiResponse<EvolutionChainHolder>> snapshot,
   ) {
     //TODO this could inadvertently show error state
-    final _pokemonInfo = snapshot.data?.data?.pokemon_v2_pokemon.firstOrNull();
-    final _hasError = snapshot.data?.status == Status.ERROR || _pokemonInfo == null;
+    final _evolutionHolder = snapshot.data?.data?.pokemon_v2_evolutionchain.firstOrNull();
+    final _hasError = snapshot.data?.status == Status.ERROR || _evolutionHolder == null;
     final _isLoading = snapshot.data?.status == Status.LOADING;
     if (_isLoading) return _buildLoadingWidget();
     if (_hasError) return _buildErrorWidget(snapshot.data?.error);
-    return _buildPokemonEvolutions(_pokemonInfo);
+    return _buildPokemonEvolutions(_evolutionHolder);
   }
 
   Widget _buildLoadingWidget() {
@@ -100,9 +103,11 @@ class _PokemonEvolutionViewState extends State<PokemonEvolutionView>
     );
   }
 
-  Widget _buildPokemonEvolutions(Pokemon _pokemon) {
+  Widget _buildPokemonEvolutions(
+    EvolutionHolder evolutionHolder,
+  ) {
     return PokemonEvolutionWidget(
-      pokemon: _pokemon,
+      evolutionHolder: evolutionHolder,
     );
   }
 }

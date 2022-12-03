@@ -1,23 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
+import '../../../api/models/pokemon/evolution_holder.dart';
 import '../../../api/models/pokemon/pokemon.dart';
 import '../../../extensions/build_context_extension.dart';
 import '../../../theme/poke_app_text.dart';
 import '../../pokemon_list/pokemon_tile.dart';
 import '../../shared_widgets/poke_divider.dart';
+import 'evolution_tile.dart';
 
 class PokemonEvolutionWidget extends StatelessWidget {
   const PokemonEvolutionWidget({
     Key? key,
-    required this.pokemon,
+    required this.evolutionHolder,
   }) : super(key: key);
 
-  final Pokemon pokemon;
+  final EvolutionHolder evolutionHolder;
 
   @override
   Widget build(BuildContext context) {
-    final evolutions = [];//pokemon.evolution();
+    final evolutions = evolutionHolder.pokemon_v2_pokemonspecies
+        .map(
+          (specie) => specie.pokemon_v2_pokemonevolutions,
+        )
+        .expand(
+          (evolutions) => evolutions,
+        )
+        .toList();
+    final speciesHolders = evolutionHolder.pokemon_v2_pokemonspecies;
     if (evolutions.isEmpty) {
       return const SliverToBoxAdapter(
         child: SizedBox(),
@@ -30,9 +40,9 @@ class PokemonEvolutionWidget extends StatelessWidget {
         ),
         SliverList(
           delegate: SliverChildBuilderDelegate(
-            childCount: evolutions.length,
+            childCount: speciesHolders.length,
             (context, index) {
-              final pokemon = evolutions[index];
+              final speciesHolder = speciesHolders[index];
               return Column(
                 children: [
                   if (index != 0)
@@ -42,8 +52,8 @@ class PokemonEvolutionWidget extends StatelessWidget {
                       ),
                       child: _buildDivider(),
                     ),
-                  PokemonTile(
-                    pokemon: pokemon,
+                  EvolutionTile(
+                    speciesHolder: speciesHolder,
                   ),
                 ],
               );
@@ -80,5 +90,4 @@ class PokemonEvolutionWidget extends StatelessWidget {
       child: PokeDivider(),
     );
   }
-
 }

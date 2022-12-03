@@ -3,8 +3,10 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:poke_app/api/models/pokemon/pokemon.dart';
 
 import '../../serializers/serializers.dart';
+import 'evolution.dart';
 import 'pokemon_resource.dart';
 import 'pokemon_species.dart';
 
@@ -15,11 +17,19 @@ abstract class PokemonSpeciesHolder implements Built<PokemonSpeciesHolder, Pokem
   factory PokemonSpeciesHolder([void Function(PokemonSpeciesHolderBuilder) updates]) = _$PokemonSpeciesHolder;
   PokemonSpeciesHolder._();
 
+  int? get id;
+
+  String? get name;
+
   double? get base_happiness;
 
   int? get capture_rate;
 
   int? get evolution_chain_id;
+
+  int? get evolves_from_species_id;
+
+  bool? get forms_switchable;
 
   int? get generation_id;
 
@@ -29,9 +39,11 @@ abstract class PokemonSpeciesHolder implements Built<PokemonSpeciesHolder, Pokem
 
   bool? get is_mythical;
 
+  BuiltList<Evolution> get pokemon_v2_pokemonevolutions;
+
   BuiltList<PokemonSpecies> get pokemon_v2_pokemonspeciesnames;
 
-  BuiltList<PokemonResource> get pokemon_v2_pokemonspeciesflavortexts;
+  BuiltList<Pokemon> get pokemon_v2_pokemons;
 
   double? get hatch_counter;
 
@@ -42,6 +54,8 @@ abstract class PokemonSpeciesHolder implements Built<PokemonSpeciesHolder, Pokem
   double? get gender_rate;
 
   BuiltList<PokemonResource> get pokemon_v2_pokemonegggroups;
+
+  BuiltList<PokemonResource> get pokemon_v2_pokemonspeciesflavortexts;
 
   PokemonResource? get pokemon_v2_pokemoncolor;
 

@@ -8,6 +8,10 @@ part of 'serializers.dart';
 
 Serializers _$serializers = (new Serializers().toBuilder()
       ..add(ErrorResponse.serializer)
+      ..add(Evolution.serializer)
+      ..add(EvolutionChainHolder.serializer)
+      ..add(EvolutionHolder.serializer)
+      ..add(EvolutionResponse.serializer)
       ..add(Machine.serializer)
       ..add(MoveDamageClass.serializer)
       ..add(MoveLearnMethod.serializer)
@@ -31,8 +35,29 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(TypeDataHolder.serializer)
       ..add(TypeEfficacies.serializer)
       ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(Evolution)]),
+          () => new ListBuilder<Evolution>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(PokemonSpecies)]),
+          () => new ListBuilder<PokemonSpecies>())
+      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Pokemon)]),
           () => new ListBuilder<Pokemon>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(PokemonResource)]),
+          () => new ListBuilder<PokemonResource>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(PokemonResource)]),
+          () => new ListBuilder<PokemonResource>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(EvolutionHolder)]),
+          () => new ListBuilder<EvolutionHolder>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(Pokemon)]),
+          () => new ListBuilder<Pokemon>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(PokemonResource)]),
+          () => new ListBuilder<PokemonResource>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(PokemonResource)]),
           () => new ListBuilder<PokemonResource>())
@@ -52,14 +77,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(PokemonResource)]),
           () => new ListBuilder<PokemonResource>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(PokemonSpecies)]),
-          () => new ListBuilder<PokemonSpecies>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(PokemonResource)]),
-          () => new ListBuilder<PokemonResource>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(PokemonResource)]),
-          () => new ListBuilder<PokemonResource>())
+          const FullType(
+              BuiltList, const [const FullType(PokemonSpeciesHolder)]),
+          () => new ListBuilder<PokemonSpeciesHolder>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(PokemonType)]),
           () => new ListBuilder<PokemonType>())

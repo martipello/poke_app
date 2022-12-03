@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
@@ -36,6 +37,8 @@ abstract class PokemonResource implements Built<PokemonResource, PokemonResource
   PokemonResource? get pokemon_v2_movedamageclass;
 
   PokemonResource? get pokemon_v2_movelearnmethod;
+
+  BuiltList<PokemonResource> get pokemon_v2_evolutiontriggernames;
 
   PokemonAbility? get pokemon_v2_ability;
 
