@@ -34,9 +34,10 @@ class _FormTileState extends State<FormTile> {
   final mainImageColorViewModel = getIt.get<ImageColorViewModel>();
   final spriteImageColorViewModel = getIt.get<ImageColorViewModel>();
 
-  PokemonFormWithVersionGroup? get pokemonForm => widget.pokemonForm;
+  PokemonFormWithVersionGroup get pokemonForm => widget.pokemonForm;
 
-  Pokemon? get pokemon => widget.pokemonForm.pokemon_v2_pokemonformnames.firstOrNull()?.pokemon_v2_pokemonform?.pokemon_v2_pokemon;
+  Pokemon? get pokemon =>
+      pokemonForm.pokemon_v2_pokemonformnames.firstOrNull()?.pokemon_v2_pokemonform?.pokemon_v2_pokemon;
 
   @override
   void dispose() {
@@ -47,7 +48,7 @@ class _FormTileState extends State<FormTile> {
 
   @override
   Widget build(BuildContext context) {
-    log('tag').d(pokemonForm);
+    log('tag').d('pokemonForm $pokemonForm');
     return ExpansionCard(
       titleWidget: _buildPokemonCardBody(),
       expandedChildren: [
@@ -66,6 +67,9 @@ class _FormTileState extends State<FormTile> {
         _buildPokemonImage(),
         const SizedBox(
           width: 16,
+        ),
+        Expanded(
+          child: _buildPokemonInfo(),
         ),
       ],
     );
@@ -97,7 +101,13 @@ class _FormTileState extends State<FormTile> {
   }
 
   Widget _buildPokemonInfo() {
-    final pokemonName = pokemon?.name ?? 'Unknown Pokemon';
+    final pokemonName = pokemonForm.pokemon_v2_pokemonformnames
+            .firstOrNull()
+            ?.pokemon_v2_pokemonform
+            ?.pokemon_v2_pokemonformnames
+            .firstOrNull()
+            ?.name ??
+        'Unknown Pokemon';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,

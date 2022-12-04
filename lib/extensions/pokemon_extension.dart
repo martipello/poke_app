@@ -51,8 +51,9 @@ extension PokemonExtension on Pokemon? {
             ?.pokemon_v2_pokemonspecy
             ?.pokemon_v2_pokemons
             .map(
-              (pokemon) => pokemon.pokemon_v2_pokemonforms.firstOrNull(),
+              (speciesHolder) => speciesHolder.pokemon_v2_pokemonforms,
             )
+            .expand((element) => element)
             .whereType<PokemonFormWithVersionGroup>()
             .where(
               (formHolder) => formHolder.pokemon_v2_pokemonformnames.isNotEmpty,

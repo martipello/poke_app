@@ -7,6 +7,7 @@ import '../../../api/models/pokemon/pokemon_response.dart';
 import '../../../dependency_injection_container.dart';
 import '../../../extensions/iterable_extension.dart';
 import '../../../extensions/pokemon_extension.dart';
+import '../../../utils/console_output.dart';
 import '../../shared_widgets/error_widget.dart' as ew;
 import '../../shared_widgets/no_results.dart';
 import '../../shared_widgets/pokeball_loading_widget.dart';
