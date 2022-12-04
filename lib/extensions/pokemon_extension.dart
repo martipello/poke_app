@@ -1,12 +1,11 @@
 import '../api/models/pokemon/pokemon.dart';
 import '../api/models/pokemon/pokemon_ability_holder.dart';
-import '../api/models/pokemon/pokemon_form.dart';
+import '../api/models/pokemon/pokemon_form_with_version_group.dart';
 import '../api/models/pokemon/pokemon_move_holder.dart';
 import '../api/models/pokemon/pokemon_resource.dart';
 import 'iterable_extension.dart';
 
 extension PokemonExtension on Pokemon? {
-
   List<PokemonResource> pokedexEntries() {
     final entries = this?.pokemon_v2_pokemonspecy?.pokemon_v2_pokemonspeciesflavortexts.toList() ?? [];
     return entries.uniqueBy((entry) => entry.pokemon_v2_version?.pokemon_v2_versiongroup?.name).toList();
@@ -47,14 +46,18 @@ extension PokemonExtension on Pokemon? {
     return _pokemonMoves;
   }
 
-  List<PokemonForm> getForms(){
-    return this?.pokemon_v2_pokemonspecy?.pokemon_v2_pokemons
-        .map(
-          (pokemon) => pokemon.pokemon_v2_pokemonforms,
-    )
-        .expand(
-          (_forms) => _forms,
-    )
-        .toList() ?? [];
+  List<PokemonFormWithVersionGroup> getFormHolders() {
+    return this
+            ?.pokemon_v2_pokemonspecy
+            ?.pokemon_v2_pokemons
+            .map(
+              (pokemon) => pokemon.pokemon_v2_pokemonforms.firstOrNull(),
+            )
+            .whereType<PokemonFormWithVersionGroup>()
+            .where(
+              (formHolder) => formHolder.pokemon_v2_pokemonformnames.isNotEmpty,
+            )
+            .toList() ??
+        [];
   }
 }

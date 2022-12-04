@@ -32,8 +32,8 @@ class _$PokemonSerializer implements StructuredSerializer<Pokemon> {
               BuiltList, const [const FullType(PokemonAbilityHolder)])),
       'pokemon_v2_pokemonforms',
       serializers.serialize(object.pokemon_v2_pokemonforms,
-          specifiedType:
-              const FullType(BuiltList, const [const FullType(PokemonForm)])),
+          specifiedType: const FullType(
+              BuiltList, const [const FullType(PokemonFormWithVersionGroup)])),
       'pokemon_v2_pokemonstats',
       serializers.serialize(object.pokemon_v2_pokemonstats,
           specifiedType:
@@ -157,9 +157,9 @@ class _$PokemonSerializer implements StructuredSerializer<Pokemon> {
           break;
         case 'pokemon_v2_pokemonforms':
           result.pokemon_v2_pokemonforms.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(
-                      BuiltList, const [const FullType(PokemonForm)]))!
-              as BuiltList<Object?>);
+              specifiedType: const FullType(BuiltList, const [
+                const FullType(PokemonFormWithVersionGroup)
+              ]))! as BuiltList<Object?>);
           break;
         case 'pokemon_v2_pokemonstats':
           result.pokemon_v2_pokemonstats.replace(serializers.deserialize(value,
@@ -202,7 +202,7 @@ class _$Pokemon extends Pokemon {
   @override
   final PokemonSpeciesHolder? pokemon_v2_pokemonspecy;
   @override
-  final BuiltList<PokemonForm> pokemon_v2_pokemonforms;
+  final BuiltList<PokemonFormWithVersionGroup> pokemon_v2_pokemonforms;
   @override
   final BuiltList<PokemonStat> pokemon_v2_pokemonstats;
   @override
@@ -372,11 +372,12 @@ class PokemonBuilder implements Builder<Pokemon, PokemonBuilder> {
           PokemonSpeciesHolderBuilder? pokemon_v2_pokemonspecy) =>
       _$this._pokemon_v2_pokemonspecy = pokemon_v2_pokemonspecy;
 
-  ListBuilder<PokemonForm>? _pokemon_v2_pokemonforms;
-  ListBuilder<PokemonForm> get pokemon_v2_pokemonforms =>
-      _$this._pokemon_v2_pokemonforms ??= new ListBuilder<PokemonForm>();
+  ListBuilder<PokemonFormWithVersionGroup>? _pokemon_v2_pokemonforms;
+  ListBuilder<PokemonFormWithVersionGroup> get pokemon_v2_pokemonforms =>
+      _$this._pokemon_v2_pokemonforms ??=
+          new ListBuilder<PokemonFormWithVersionGroup>();
   set pokemon_v2_pokemonforms(
-          ListBuilder<PokemonForm>? pokemon_v2_pokemonforms) =>
+          ListBuilder<PokemonFormWithVersionGroup>? pokemon_v2_pokemonforms) =>
       _$this._pokemon_v2_pokemonforms = pokemon_v2_pokemonforms;
 
   ListBuilder<PokemonStat>? _pokemon_v2_pokemonstats;

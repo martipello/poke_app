@@ -37,6 +37,13 @@ class _$PokemonResourceSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
+    value = object.pokemonName;
+    if (value != null) {
+      result
+        ..add('pokemonName')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     value = object.description;
     if (value != null) {
       result
@@ -144,6 +151,10 @@ class _$PokemonResourceSerializer
           result.name = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
+        case 'pokemonName':
+          result.pokemonName = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
         case 'description':
           result.description = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
@@ -230,6 +241,8 @@ class _$PokemonResource extends PokemonResource {
   @override
   final String? name;
   @override
+  final String? pokemonName;
+  @override
   final String? description;
   @override
   final int? id;
@@ -265,6 +278,7 @@ class _$PokemonResource extends PokemonResource {
 
   _$PokemonResource._(
       {this.name,
+      this.pokemonName,
       this.description,
       this.id,
       this.flavor_text,
@@ -302,6 +316,7 @@ class _$PokemonResource extends PokemonResource {
     if (identical(other, this)) return true;
     return other is PokemonResource &&
         name == other.name &&
+        pokemonName == other.pokemonName &&
         description == other.description &&
         id == other.id &&
         flavor_text == other.flavor_text &&
@@ -339,8 +354,11 @@ class _$PokemonResource extends PokemonResource {
                                                         $jc(
                                                             $jc(
                                                                 $jc(
-                                                                    0,
-                                                                    name
+                                                                    $jc(
+                                                                        0,
+                                                                        name
+                                                                            .hashCode),
+                                                                    pokemonName
                                                                         .hashCode),
                                                                 description
                                                                     .hashCode),
@@ -364,6 +382,7 @@ class _$PokemonResource extends PokemonResource {
   String toString() {
     return (newBuiltValueToStringHelper(r'PokemonResource')
           ..add('name', name)
+          ..add('pokemonName', pokemonName)
           ..add('description', description)
           ..add('id', id)
           ..add('flavor_text', flavor_text)
@@ -392,6 +411,10 @@ class PokemonResourceBuilder
   String? _name;
   String? get name => _$this._name;
   set name(String? name) => _$this._name = name;
+
+  String? _pokemonName;
+  String? get pokemonName => _$this._pokemonName;
+  set pokemonName(String? pokemonName) => _$this._pokemonName = pokemonName;
 
   String? _description;
   String? get description => _$this._description;
@@ -488,6 +511,7 @@ class PokemonResourceBuilder
     final $v = _$v;
     if ($v != null) {
       _name = $v.name;
+      _pokemonName = $v.pokemonName;
       _description = $v.description;
       _id = $v.id;
       _flavor_text = $v.flavor_text;
@@ -530,6 +554,7 @@ class PokemonResourceBuilder
       _$result = _$v ??
           new _$PokemonResource._(
               name: name,
+              pokemonName: pokemonName,
               description: description,
               id: id,
               flavor_text: flavor_text,

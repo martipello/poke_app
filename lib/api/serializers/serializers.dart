@@ -13,6 +13,8 @@ import '../models/pokemon/pokemon.dart';
 import '../models/pokemon/pokemon_ability.dart';
 import '../models/pokemon/pokemon_ability_holder.dart';
 import '../models/pokemon/pokemon_form.dart';
+import '../models/pokemon/pokemon_form_with_version_group.dart';
+import '../models/pokemon/pokemon_form_holder.dart';
 import '../models/pokemon/pokemon_move.dart';
 import '../models/pokemon/pokemon_move_holder.dart';
 import '../models/pokemon/pokemon_request.dart';
@@ -44,6 +46,8 @@ part 'serializers.g.dart';
   PokemonAbility,
   PokemonAbilityHolder,
   PokemonForm,
+  PokemonFormHolder,
+  PokemonFormWithVersionGroup,
   PokemonMove,
   PokemonMoveHolder,
   PokemonRequest,

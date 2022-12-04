@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
 import '../../../api/models/pokemon/pokemon.dart';
-import '../../../api/models/pokemon/pokemon_form.dart';
+import '../../../api/models/pokemon/pokemon_form_with_version_group.dart';
 import '../../../api/models/pokemon/pokemon_type.dart';
 import '../../../dependency_injection_container.dart';
+import '../../../extensions/iterable_extension.dart';
 import '../../../extensions/string_extension.dart';
 import '../../../extensions/type_data_extension.dart';
 import '../../../theme/base_theme.dart';
 import '../../../theme/poke_app_text.dart';
+import '../../../utils/console_output.dart';
 import '../../shared_widgets/chip_group.dart';
 import '../../shared_widgets/expansion_card.dart';
 import '../../shared_widgets/pokemon_image.dart';
@@ -22,7 +24,7 @@ class FormTile extends StatefulWidget {
     required this.pokemonForm,
   }) : super(key: key);
 
-  final PokemonForm pokemonForm;
+  final PokemonFormWithVersionGroup pokemonForm;
 
   @override
   State<FormTile> createState() => _FormTileState();
@@ -32,9 +34,9 @@ class _FormTileState extends State<FormTile> {
   final mainImageColorViewModel = getIt.get<ImageColorViewModel>();
   final spriteImageColorViewModel = getIt.get<ImageColorViewModel>();
 
-  PokemonForm? get pokemonForm => widget.pokemonForm;
+  PokemonFormWithVersionGroup? get pokemonForm => widget.pokemonForm;
 
-  Pokemon? get pokemon => widget.pokemonForm.pokemon;
+  Pokemon? get pokemon => widget.pokemonForm.pokemon_v2_pokemonformnames.firstOrNull()?.pokemon_v2_pokemonform?.pokemon_v2_pokemon;
 
   @override
   void dispose() {
@@ -45,6 +47,7 @@ class _FormTileState extends State<FormTile> {
 
   @override
   Widget build(BuildContext context) {
+    log('tag').d(pokemonForm);
     return ExpansionCard(
       titleWidget: _buildPokemonCardBody(),
       expandedChildren: [

@@ -18,6 +18,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(PokemonAbility.serializer)
       ..add(PokemonAbilityHolder.serializer)
       ..add(PokemonForm.serializer)
+      ..add(PokemonFormHolder.serializer)
+      ..add(PokemonFormWithVersionGroup.serializer)
       ..add(PokemonMove.serializer)
       ..add(PokemonMoveHolder.serializer)
       ..add(PokemonRequest.serializer)
@@ -54,6 +56,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(Pokemon)]),
           () => new ListBuilder<Pokemon>())
       ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(PokemonFormHolder)]),
+          () => new ListBuilder<PokemonFormHolder>())
+      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(PokemonResource)]),
           () => new ListBuilder<PokemonResource>())
       ..addBuilderFactory(
@@ -62,6 +67,12 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Machine)]),
           () => new ListBuilder<Machine>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(PokemonResource)]),
+          () => new ListBuilder<PokemonResource>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(PokemonResource)]),
+          () => new ListBuilder<PokemonResource>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(PokemonResource)]),
           () => new ListBuilder<PokemonResource>())
@@ -92,8 +103,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
               BuiltList, const [const FullType(PokemonAbilityHolder)]),
           () => new ListBuilder<PokemonAbilityHolder>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(PokemonForm)]),
-          () => new ListBuilder<PokemonForm>())
+          const FullType(
+              BuiltList, const [const FullType(PokemonFormWithVersionGroup)]),
+          () => new ListBuilder<PokemonFormWithVersionGroup>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(PokemonStat)]),
           () => new ListBuilder<PokemonStat>())

@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 import '../../../api/models/pokemon/pokemon.dart';
-import '../../../api/models/pokemon/pokemon_form.dart';
+import '../../../api/models/pokemon/pokemon_form_with_version_group.dart';
 import '../../../extensions/build_context_extension.dart';
+import '../../../extensions/iterable_extension.dart';
 import '../../../extensions/pokemon_form_extension.dart';
 import '../../../theme/base_theme.dart';
 import '../../../theme/poke_app_text.dart';
@@ -42,7 +43,7 @@ class PokemonFormsWidget extends StatelessWidget {
 
   Widget _buildFormsList(
     BuildContext context,
-    List<PokemonForm> forms,
+    List<PokemonFormWithVersionGroup> forms,
   ) {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
@@ -65,8 +66,9 @@ class PokemonFormsWidget extends StatelessWidget {
 
   Widget _buildFormTile(
     BuildContext context,
-    PokemonForm form,
+    PokemonFormWithVersionGroup formHolder,
   ) {
+    final form = formHolder.pokemon_v2_pokemonformnames.firstOrNull()?.pokemon_v2_pokemonform;
     return PokemonExpansionTile(
       canExpand: true,
       title: _buildExpansionTileTitle(
@@ -74,7 +76,7 @@ class PokemonFormsWidget extends StatelessWidget {
         form.title(),
       ),
       children: _buildPokemonFormDetail(
-        form,
+        formHolder,
       ),
     );
   }
@@ -105,8 +107,9 @@ class PokemonFormsWidget extends StatelessWidget {
   }
 
   List<Widget> _buildPokemonFormDetail(
-    PokemonForm form,
+    PokemonFormWithVersionGroup formHolder,
   ) {
+    final form = formHolder.pokemon_v2_pokemonformnames.firstOrNull()?.pokemon_v2_pokemonform;
     final isMega = form.isMega();
     final isDefault = form.isDefault();
     final isBattleOnly = form.isBattleOnly();

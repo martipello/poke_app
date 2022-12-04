@@ -16,8 +16,8 @@ class PokemonFormsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pokemonForms = pokemon.getForms();
-    if (pokemonForms.isEmpty) {
+    final pokemonFormHolder = pokemon.getFormHolders();
+    if (pokemonFormHolder.isEmpty) {
       return const SliverToBoxAdapter(
         child: SizedBox(),
       );
@@ -26,9 +26,9 @@ class PokemonFormsWidget extends StatelessWidget {
       children: [
         SliverList(
           delegate: SliverChildBuilderDelegate(
-            childCount: pokemonForms.length,
+            childCount: pokemonFormHolder.length,
             (context, index) {
-              final pokemonForm = pokemonForms[index];
+              final pokemonForm = pokemonFormHolder[index];
               return Padding(
                 padding: const EdgeInsets.only(
                   bottom: 8,

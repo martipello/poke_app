@@ -5,7 +5,7 @@ import 'package:built_value/serializer.dart';
 
 import '../../serializers/serializers.dart';
 import 'pokemon_ability_holder.dart';
-import 'pokemon_form.dart';
+import 'pokemon_form_with_version_group.dart';
 import 'pokemon_move_holder.dart';
 import 'pokemon_species_holder.dart';
 import 'pokemon_stat.dart';
@@ -39,7 +39,7 @@ abstract class Pokemon implements Built<Pokemon, PokemonBuilder> {
 
   PokemonSpeciesHolder? get pokemon_v2_pokemonspecy;
 
-  BuiltList<PokemonForm> get pokemon_v2_pokemonforms;
+  BuiltList<PokemonFormWithVersionGroup> get pokemon_v2_pokemonforms;
 
   BuiltList<PokemonStat> get pokemon_v2_pokemonstats;
 

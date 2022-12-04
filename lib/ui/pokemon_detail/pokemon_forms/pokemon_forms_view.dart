@@ -72,7 +72,7 @@ class _PokemonFormsViewState extends State<PokemonFormsView> with AutomaticKeepA
     final _hasError = snapshot.data?.status == Status.ERROR || pokemon == null;
     if (_isLoading) return _buildLoadingWidget();
     if (_hasError) return _buildErrorWidget(snapshot.data?.error);
-    if (pokemon.getForms().isEmpty) return _buildNoResultsWidget();
+    if (pokemon.getFormHolders().isEmpty) return _buildNoResultsWidget();
     return _buildPokemonForms(pokemon);
   }
 
