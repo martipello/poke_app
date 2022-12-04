@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:palette_generator/palette_generator.dart';
-import 'package:poke_app/ui/pokemon_detail/pokemon_forms/pokemon_forms_view.dart';
 
 import '../../api/models/pokemon/pokemon.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../theme/base_theme.dart';
 import 'pokemon_detail_app_bar.dart';
 import 'pokemon_evolutions/pokemon_evolution_view.dart';
+import 'pokemon_forms/pokemon_forms_view.dart';
 import 'pokemon_info/pokemon_info_view.dart';
 import 'pokemon_moves/pokemon_moves_view.dart';
 import 'pokemon_stats/pokemon_stats_view.dart';
@@ -38,8 +38,15 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
 
   late final _tabBarController = TabController(length: 5, vsync: this);
 
-  Color get primaryColor => pokemonDetailArguments.mainImagePaletteGenerator?.lightVibrantColor?.color ?? pokemonDetailArguments.spriteImagePaletteGenerator?.dominantColor?.color ?? Colors.red;
-  Color get secondaryColor => pokemonDetailArguments.mainImagePaletteGenerator?.dominantColor?.color ?? pokemonDetailArguments.spriteImagePaletteGenerator?.lightVibrantColor?.color ?? Colors.green;
+  Color get primaryColor =>
+      pokemonDetailArguments.mainImagePaletteGenerator?.lightVibrantColor?.color ??
+      pokemonDetailArguments.spriteImagePaletteGenerator?.dominantColor?.color ??
+      Colors.red;
+
+  Color get secondaryColor =>
+      pokemonDetailArguments.mainImagePaletteGenerator?.dominantColor?.color ??
+      pokemonDetailArguments.spriteImagePaletteGenerator?.lightVibrantColor?.color ??
+      Colors.green;
 
   @override
   Widget build(BuildContext context) {

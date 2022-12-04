@@ -1,6 +1,5 @@
 import 'package:graphql/client.dart';
 
-import '../../utils/console_output.dart';
 import '../models/pokemon/pokemon_request.dart';
 import '../models/pokemon/pokemon_response.dart';
 import '../models/pokemon/pokemon_type.dart';

@@ -5,7 +5,6 @@ import 'package:built_value/serializer.dart';
 import '../../serializers/serializers.dart';
 import 'move_learn_method.dart';
 import 'pokemon_move.dart';
-import 'pokemon_resource.dart';
 
 part 'pokemon_move_holder.g.dart';
 
