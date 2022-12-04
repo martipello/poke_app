@@ -311,31 +311,57 @@ query MyQuery {
       document: gql(
         '''
 query MyQuery {
-  pokemon_v2_pokemon(where: {id: {_eq: 666}}) {
+  pokemon_v2_pokemon(where: {id: {_eq: ${pokemonRequest.pokemonId}}}) {
     id
-    pokemon_v2_pokemonforms {
-      form_name
-      is_mega
-      is_default
-      is_battle_only
-      form_order
-      pokemon_id
-      order
-      name
-      pokemon_v2_pokemon {
-        id
-        pokemon_v2_encounters {
-          location_area_id
-          max_level
-          min_level
-          pokemon_v2_locationarea {
+    pokemon_v2_pokemonspecy {
+      pokemon_v2_pokemons {
+        pokemon_v2_pokemonforms {
+          pokemon_v2_versiongroup {
             name
+          }
+          pokemon_v2_pokemonformnames(where: {language_id: {_eq: ${pokemonRequest.languageId}}}) {
+            pokemon_v2_pokemonform {
+              pokemon_v2_pokemonformgenerations {
+                pokemon_v2_generation {
+                  name
+                }
+              }
+              pokemon_v2_pokemon {
+                pokemon_v2_pokemontypes {
+                  pokemon_v2_type {
+                    name
+                    id
+                  }
+                }
+                pokemon_v2_pokemonsprites(limit: 1) {
+                  sprites
+                }
+                weight
+                height
+                base_experience
+                id
+                is_default
+              }
+              form_name
+              form_order
+              id
+              is_battle_only
+              is_default
+              is_mega
+              order
+              pokemon_id
+              pokemon_v2_pokemonformnames(where: {language_id: {_eq: ${pokemonRequest.languageId}}}) {
+                pokemon_name
+                name
+              }
+            }
           }
         }
       }
     }
   }
 }
+
       ''',
       ),
     );

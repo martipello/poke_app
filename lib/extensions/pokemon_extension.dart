@@ -1,5 +1,6 @@
 import '../api/models/pokemon/pokemon.dart';
 import '../api/models/pokemon/pokemon_ability_holder.dart';
+import '../api/models/pokemon/pokemon_form.dart';
 import '../api/models/pokemon/pokemon_move_holder.dart';
 import '../api/models/pokemon/pokemon_resource.dart';
 import 'iterable_extension.dart';
@@ -44,5 +45,16 @@ extension PokemonExtension on Pokemon? {
   List<PokemonMoveHolder> pokemonMoves() {
     final _pokemonMoves = this?.pokemon_v2_pokemonmoves.toList() ?? [];
     return _pokemonMoves;
+  }
+
+  List<PokemonForm> getForms(){
+    return this?.pokemon_v2_pokemonspecy?.pokemon_v2_pokemons
+        .map(
+          (pokemon) => pokemon.pokemon_v2_pokemonforms,
+    )
+        .expand(
+          (_forms) => _forms,
+    )
+        .toList() ?? [];
   }
 }

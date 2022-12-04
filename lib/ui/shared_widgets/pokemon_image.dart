@@ -24,6 +24,7 @@ class PokemonImage extends StatefulWidget {
     this.imageColorCallback,
     this.spriteImageColorCallback,
     this.color,
+    this.forceSpriteImage,
   });
 
   final Pokemon pokemon;
@@ -32,6 +33,7 @@ class PokemonImage extends StatefulWidget {
   final ImageColorCallback? spriteImageColorCallback;
   final Clip clipBehavior;
   final Size? size;
+  final bool? forceSpriteImage;
 
   @override
   State<PokemonImage> createState() => _PokemonImageState();
@@ -256,7 +258,9 @@ class _PokemonImageState extends State<PokemonImage> {
   BorderRadius _buildBorderRadius() => BorderRadius.circular(180);
 
   String _createImageUrl() {
-    //TODO figure out how to handle forms id:666
+    if(widget.forceSpriteImage == true) {
+      return '';
+    }
     return 'https://firebasestorage.googleapis.com/v0/b/pokeapp-86eec.appspot.com/o/pokemon_image_${widget.pokemon.id}.png?alt=media';
   }
 

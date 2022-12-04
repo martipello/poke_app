@@ -10,6 +10,7 @@ import 'services/launch_service.dart';
 import 'services/shared_preferences_service.dart';
 import 'services/theme_service.dart';
 import 'ui/pokemon_detail/pokemon_evolutions/view_models/pokemon_evolution_view_model.dart';
+import 'ui/pokemon_detail/pokemon_forms/view_models/pokemon_forms_view_model.dart';
 import 'ui/pokemon_detail/pokemon_info/view_models/pokemon_info_view_model.dart';
 import 'ui/pokemon_detail/pokemon_moves/adapters/moves_paging_adapter.dart';
 import 'ui/pokemon_detail/pokemon_moves/view_models/pokemon_moves_view_model.dart';
@@ -40,6 +41,7 @@ Future<void> init() async {
   getIt.registerFactory(() => PokemonListViewModel(getIt()));
   getIt.registerFactory(() => PokemonInfoViewModel(getIt(), getIt(), getIt()));
   getIt.registerFactory(() => PokemonMovesViewModel(getIt()));
+  getIt.registerFactory(() => PokemonFormsViewModel(getIt(), getIt(), getIt()));
   getIt.registerFactory(() => PokemonEvolutionViewModel(getIt(), getIt(), getIt()));
   getIt.registerFactory(() => PokemonStatsWeaknessResistanceViewModel(getIt(), getIt(), getIt()));
   getIt.registerFactory(FilterViewModel.new);

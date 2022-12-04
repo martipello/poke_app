@@ -1,26 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
-import '../../../api/models/pokemon/evolution_holder.dart';
-import '../../../extensions/build_context_extension.dart';
-import '../../../extensions/evolution_extension.dart';
-import '../../../theme/poke_app_text.dart';
+import '../../../api/models/pokemon/pokemon.dart';
+import '../../../extensions/pokemon_extension.dart';
 import '../../shared_widgets/poke_divider.dart';
-import 'evolution_tile.dart';
+import 'form_tile.dart';
 
-class PokemonEvolutionWidget extends StatelessWidget {
-  const PokemonEvolutionWidget({
+class PokemonFormsWidget extends StatelessWidget {
+  const PokemonFormsWidget({
     Key? key,
-    required this.evolutionHolder,
+    required this.pokemon,
   }) : super(key: key);
 
-  final EvolutionHolder evolutionHolder;
+  final Pokemon pokemon;
 
   @override
   Widget build(BuildContext context) {
-    final evolutions = evolutionHolder.getEvolutions();
-    final speciesHolders = evolutionHolder.pokemon_v2_pokemonspecies;
-    if (evolutions.isEmpty) {
+    final pokemonForms = pokemon.getForms();
+    if (pokemonForms.isEmpty) {
       return const SliverToBoxAdapter(
         child: SizedBox(),
       );
@@ -29,13 +26,15 @@ class PokemonEvolutionWidget extends StatelessWidget {
       children: [
         SliverList(
           delegate: SliverChildBuilderDelegate(
-            childCount: speciesHolders.length,
+            childCount: pokemonForms.length,
             (context, index) {
-              final speciesHolder = speciesHolders[index];
+              final pokemonForm = pokemonForms[index];
               return Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: EvolutionTile(
-                  speciesHolder: speciesHolder,
+                padding: const EdgeInsets.only(
+                  bottom: 8,
+                ),
+                child: FormTile(
+                  pokemonForm: pokemonForm,
                 ),
               );
             },

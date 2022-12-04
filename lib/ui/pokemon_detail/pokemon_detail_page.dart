@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'package:poke_app/ui/pokemon_detail/pokemon_forms/pokemon_forms_view.dart';
 
 import '../../api/models/pokemon/pokemon.dart';
 import '../../extensions/build_context_extension.dart';
@@ -35,7 +36,7 @@ class PokemonDetailPage extends StatefulWidget {
 class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProviderStateMixin {
   PokemonDetailPageArguments get pokemonDetailArguments => context.routeArguments as PokemonDetailPageArguments;
 
-  late final _tabBarController = TabController(length: 4, vsync: this);
+  late final _tabBarController = TabController(length: 5, vsync: this);
 
   Color get primaryColor => pokemonDetailArguments.mainImagePaletteGenerator?.lightVibrantColor?.color ?? pokemonDetailArguments.spriteImagePaletteGenerator?.dominantColor?.color ?? Colors.red;
   Color get secondaryColor => pokemonDetailArguments.mainImagePaletteGenerator?.dominantColor?.color ?? pokemonDetailArguments.spriteImagePaletteGenerator?.lightVibrantColor?.color ?? Colors.green;
@@ -98,6 +99,9 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
           PokemonEvolutionView(
             pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
           ),
+          PokemonFormsView(
+            pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
+          ),
           PokemonMovesView(
             pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
           ),
@@ -135,6 +139,9 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
           ),
           Tab(
             text: context.strings.evolutions.toUpperCase(),
+          ),
+          Tab(
+            text: context.strings.forms.toUpperCase(),
           ),
           Tab(
             text: context.strings.moves.toUpperCase(),
