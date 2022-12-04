@@ -278,7 +278,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
     return Text(
       value,
       style: PokeAppText.body4Style.copyWith(
-        color: colors(context).textOnPrimary,
+        color: colors(context).textOnForeground,
       ),
     );
   }
@@ -289,7 +289,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
     return Text(
       label,
       style: PokeAppText.body3Style.copyWith(
-        color: colors(context).textOnPrimary,
+        color: colors(context).textOnForeground,
       ),
     );
   }
