@@ -6,7 +6,6 @@ import '../../../../api/models/api_response.dart';
 import '../../../../api/models/pokemon/pokemon_request.dart';
 import '../../../../api/models/pokemon/pokemon_response.dart';
 import '../../../../services/language_service.dart';
-import '../../../../utils/console_output.dart';
 
 class PokemonFormsViewModel {
   PokemonFormsViewModel(
@@ -31,8 +30,6 @@ class PokemonFormsViewModel {
       final pokemonResponse = PokemonResponse.fromJson(
         _pokemonResponse.data!,
       );
-
-      log('_pokemonResponse').d('_pokemonResponse $pokemonResponse');
       pokemonFormStream.add(
         ApiResponse.completed(pokemonResponse),
       );
