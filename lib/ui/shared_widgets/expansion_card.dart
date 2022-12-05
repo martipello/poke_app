@@ -6,7 +6,7 @@ import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import 'view_models/expansion_card_state_view_model.dart';
 
-typedef ExpansionCardBuilder = Widget Function(bool isExapnded);
+typedef ExpansionCardBuilder = Widget Function(bool isExpanded);
 
 class ExpansionCard extends StatefulWidget {
   ExpansionCard({

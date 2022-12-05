@@ -4,6 +4,7 @@ import 'package:palette_generator/palette_generator.dart';
 import '../../api/models/pokemon/pokemon.dart';
 import '../../api/models/pokemon/pokemon_type.dart';
 import '../../dependency_injection_container.dart';
+import '../../extensions/build_context_extension.dart';
 import '../../extensions/string_extension.dart';
 import '../../extensions/type_data_extension.dart';
 import '../../theme/base_theme.dart';
@@ -55,6 +56,7 @@ class _PokemonTileState extends State<PokemonTile> {
               height: kPokemonTileImageHeight + kChipHeight + kCardPadding + 16 + 4,
               child: RoundedCard(
                 onTap: () {
+                  context.closeKeyBoard();
                   Navigator.of(context).pushNamed(
                     PokemonDetailPage.routeName,
                     arguments: PokemonDetailPageArguments(
@@ -143,11 +145,7 @@ class _PokemonTileState extends State<PokemonTile> {
   Widget _buildPokemonId() {
     final pokemonId = widget.pokemon.id ?? '??';
     return Padding(
-      padding: const EdgeInsets.only(
-        top: 4,
-        right: 4,
-        left: 16
-      ),
+      padding: const EdgeInsets.only(top: 4, right: 4, left: 16),
       child: Text(
         '#${pokemonId.toString()}',
         style: PokeAppText.body6Style.copyWith(

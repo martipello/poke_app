@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 import '../../api/models/pokemon/pokemon_type.dart';
@@ -39,17 +40,22 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<bool>(
-      stream: searchAppBarViewModel.isSearching,
-      builder: (context, isSearchingSnapshot) {
-        final isSearching = isSearchingSnapshot.data == true;
-        return MultiSliver(
-          children: [
-            _buildHeroImageAppBar(),
-            _buildSearchAppBar(
-              isSearching,
-            ),
-          ],
+    return KeyboardVisibilityBuilder(
+      builder: (context, isKeyboardVisible) {
+        return StreamBuilder<bool>(
+          stream: searchAppBarViewModel.isSearching,
+          builder: (context, isSearchingSnapshot) {
+            final isSearching = isSearchingSnapshot.data == true;
+            return MultiSliver(
+              children: [
+                _buildHeroImageAppBar(),
+                _buildSearchAppBar(
+                  isSearching,
+                  isKeyboardVisible,
+                ),
+              ],
+            );
+          },
         );
       },
     );
@@ -57,6 +63,7 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
 
   Widget _buildSearchAppBar(
     bool isSearching,
+    bool isKeyboardVisible,
   ) {
     return StreamBuilder<List<PokemonType>>(
       initialData: [],
@@ -71,7 +78,11 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
           systemOverlayStyle: const SystemUiOverlayStyle(
             statusBarColor: Colors.black,
           ),
-          leading: isSearching ? _buildBackButton() : null,
+          leading: isSearching
+              ? _buildBackButton(
+                  isKeyboardVisible,
+                )
+              : null,
           actions: [
             if (!isSearching) _buildSearchAction(),
             _buildMenuAction(),
@@ -191,17 +202,19 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
     );
   }
 
-  Widget _buildBackButton() {
+  Widget _buildBackButton(bool isKeyboardVisible) {
     return Padding(
       padding: const EdgeInsets.only(left: 16.0),
       child: IconButton(
         onPressed: () {
-          if (widget.searchTextController.text.isEmpty) {
+          if (isKeyboardVisible && widget.searchTextController.text.isNotEmpty) {
+            context.closeKeyBoard();
+          } else {
+            widget.searchTextController.clear();
             searchAppBarViewModel.isSearching.add(
               false,
             );
           }
-          context.closeKeyBoard();
         },
         icon: Icon(
           Icons.arrow_back,
