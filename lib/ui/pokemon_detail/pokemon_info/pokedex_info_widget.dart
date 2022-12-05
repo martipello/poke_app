@@ -23,6 +23,7 @@ class PokedexInfoWidget extends StatelessWidget {
     final pokedexEntries = pokemon.pokedexEntries();
     if (pokedexEntries.isNotEmpty) {
       return Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _buildTitle(context),

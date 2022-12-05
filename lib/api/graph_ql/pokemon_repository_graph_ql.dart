@@ -339,7 +339,21 @@ query MyQuery {
                 height
                 base_experience
                 id
-                is_default
+                is_default                
+                pokemon_v2_pokemonabilities {
+                  pokemon_v2_ability {
+                    name
+                    pokemon_v2_abilityeffecttexts(where: {language_id: {_eq: ${pokemonRequest.languageId}}}) {
+                      short_effect
+                    }
+                    pokemon_v2_abilityflavortexts(where: {language_id: {_eq: ${pokemonRequest.languageId}}}, distinct_on: flavor_text) {
+                      flavor_text
+                    }
+                    pokemon_v2_generation {
+                      name
+                    }
+                  }
+                }
               }
               form_name
               form_order

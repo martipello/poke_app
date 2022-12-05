@@ -56,6 +56,16 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(Pokemon)]),
           () => new ListBuilder<Pokemon>())
       ..addBuilderFactory(
+          const FullType(
+              BuiltList, const [const FullType(PokemonAbilityHolder)]),
+          () => new ListBuilder<PokemonAbilityHolder>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(PokemonResource)]),
+          () => new ListBuilder<PokemonResource>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(PokemonResource)]),
+          () => new ListBuilder<PokemonResource>())
+      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(PokemonFormHolder)]),
           () => new ListBuilder<PokemonFormHolder>())
       ..addBuilderFactory(
@@ -67,12 +77,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Machine)]),
           () => new ListBuilder<Machine>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(PokemonResource)]),
-          () => new ListBuilder<PokemonResource>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(PokemonResource)]),
-          () => new ListBuilder<PokemonResource>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(PokemonResource)]),
           () => new ListBuilder<PokemonResource>())

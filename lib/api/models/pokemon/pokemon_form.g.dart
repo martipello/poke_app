@@ -18,6 +18,10 @@ class _$PokemonFormSerializer implements StructuredSerializer<PokemonForm> {
   Iterable<Object?> serialize(Serializers serializers, PokemonForm object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[
+      'pokemon_v2_pokemonabilities',
+      serializers.serialize(object.pokemon_v2_pokemonabilities,
+          specifiedType: const FullType(
+              BuiltList, const [const FullType(PokemonAbilityHolder)])),
       'pokemon_v2_pokemonformgenerations',
       serializers.serialize(object.pokemon_v2_pokemonformgenerations,
           specifiedType: const FullType(
@@ -148,6 +152,13 @@ class _$PokemonFormSerializer implements StructuredSerializer<PokemonForm> {
           result.pokemon_v2_pokemon.replace(serializers.deserialize(value,
               specifiedType: const FullType(Pokemon))! as Pokemon);
           break;
+        case 'pokemon_v2_pokemonabilities':
+          result.pokemon_v2_pokemonabilities.replace(serializers.deserialize(
+                  value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(PokemonAbilityHolder)]))!
+              as BuiltList<Object?>);
+          break;
         case 'pokemon_v2_pokemonformgenerations':
           result.pokemon_v2_pokemonformgenerations.replace(
               serializers.deserialize(value,
@@ -191,6 +202,8 @@ class _$PokemonForm extends PokemonForm {
   @override
   final Pokemon? pokemon_v2_pokemon;
   @override
+  final BuiltList<PokemonAbilityHolder> pokemon_v2_pokemonabilities;
+  @override
   final BuiltList<PokemonResource> pokemon_v2_pokemonformgenerations;
   @override
   final BuiltList<PokemonResource> pokemon_v2_pokemonformnames;
@@ -209,9 +222,12 @@ class _$PokemonForm extends PokemonForm {
       this.pokemon_id,
       this.order,
       this.pokemon_v2_pokemon,
+      required this.pokemon_v2_pokemonabilities,
       required this.pokemon_v2_pokemonformgenerations,
       required this.pokemon_v2_pokemonformnames})
       : super._() {
+    BuiltValueNullFieldError.checkNotNull(pokemon_v2_pokemonabilities,
+        r'PokemonForm', 'pokemon_v2_pokemonabilities');
     BuiltValueNullFieldError.checkNotNull(pokemon_v2_pokemonformgenerations,
         r'PokemonForm', 'pokemon_v2_pokemonformgenerations');
     BuiltValueNullFieldError.checkNotNull(pokemon_v2_pokemonformnames,
@@ -239,6 +255,7 @@ class _$PokemonForm extends PokemonForm {
         pokemon_id == other.pokemon_id &&
         order == other.order &&
         pokemon_v2_pokemon == other.pokemon_v2_pokemon &&
+        pokemon_v2_pokemonabilities == other.pokemon_v2_pokemonabilities &&
         pokemon_v2_pokemonformgenerations ==
             other.pokemon_v2_pokemonformgenerations &&
         pokemon_v2_pokemonformnames == other.pokemon_v2_pokemonformnames;
@@ -256,16 +273,18 @@ class _$PokemonForm extends PokemonForm {
                                 $jc(
                                     $jc(
                                         $jc(
-                                            $jc($jc(0, id.hashCode),
-                                                name.hashCode),
-                                            is_mega.hashCode),
-                                        is_default.hashCode),
-                                    is_battle_only.hashCode),
-                                form_name.hashCode),
-                            formOrder.hashCode),
-                        pokemon_id.hashCode),
-                    order.hashCode),
-                pokemon_v2_pokemon.hashCode),
+                                            $jc(
+                                                $jc($jc(0, id.hashCode),
+                                                    name.hashCode),
+                                                is_mega.hashCode),
+                                            is_default.hashCode),
+                                        is_battle_only.hashCode),
+                                    form_name.hashCode),
+                                formOrder.hashCode),
+                            pokemon_id.hashCode),
+                        order.hashCode),
+                    pokemon_v2_pokemon.hashCode),
+                pokemon_v2_pokemonabilities.hashCode),
             pokemon_v2_pokemonformgenerations.hashCode),
         pokemon_v2_pokemonformnames.hashCode));
   }
@@ -283,6 +302,7 @@ class _$PokemonForm extends PokemonForm {
           ..add('pokemon_id', pokemon_id)
           ..add('order', order)
           ..add('pokemon_v2_pokemon', pokemon_v2_pokemon)
+          ..add('pokemon_v2_pokemonabilities', pokemon_v2_pokemonabilities)
           ..add('pokemon_v2_pokemonformgenerations',
               pokemon_v2_pokemonformgenerations)
           ..add('pokemon_v2_pokemonformnames', pokemon_v2_pokemonformnames))
@@ -336,6 +356,14 @@ class PokemonFormBuilder implements Builder<PokemonForm, PokemonFormBuilder> {
   set pokemon_v2_pokemon(PokemonBuilder? pokemon_v2_pokemon) =>
       _$this._pokemon_v2_pokemon = pokemon_v2_pokemon;
 
+  ListBuilder<PokemonAbilityHolder>? _pokemon_v2_pokemonabilities;
+  ListBuilder<PokemonAbilityHolder> get pokemon_v2_pokemonabilities =>
+      _$this._pokemon_v2_pokemonabilities ??=
+          new ListBuilder<PokemonAbilityHolder>();
+  set pokemon_v2_pokemonabilities(
+          ListBuilder<PokemonAbilityHolder>? pokemon_v2_pokemonabilities) =>
+      _$this._pokemon_v2_pokemonabilities = pokemon_v2_pokemonabilities;
+
   ListBuilder<PokemonResource>? _pokemon_v2_pokemonformgenerations;
   ListBuilder<PokemonResource> get pokemon_v2_pokemonformgenerations =>
       _$this._pokemon_v2_pokemonformgenerations ??=
@@ -368,6 +396,7 @@ class PokemonFormBuilder implements Builder<PokemonForm, PokemonFormBuilder> {
       _pokemon_id = $v.pokemon_id;
       _order = $v.order;
       _pokemon_v2_pokemon = $v.pokemon_v2_pokemon?.toBuilder();
+      _pokemon_v2_pokemonabilities = $v.pokemon_v2_pokemonabilities.toBuilder();
       _pokemon_v2_pokemonformgenerations =
           $v.pokemon_v2_pokemonformgenerations.toBuilder();
       _pokemon_v2_pokemonformnames = $v.pokemon_v2_pokemonformnames.toBuilder();
@@ -405,6 +434,7 @@ class PokemonFormBuilder implements Builder<PokemonForm, PokemonFormBuilder> {
               pokemon_id: pokemon_id,
               order: order,
               pokemon_v2_pokemon: _pokemon_v2_pokemon?.build(),
+              pokemon_v2_pokemonabilities: pokemon_v2_pokemonabilities.build(),
               pokemon_v2_pokemonformgenerations:
                   pokemon_v2_pokemonformgenerations.build(),
               pokemon_v2_pokemonformnames: pokemon_v2_pokemonformnames.build());
@@ -413,6 +443,8 @@ class PokemonFormBuilder implements Builder<PokemonForm, PokemonFormBuilder> {
       try {
         _$failedField = 'pokemon_v2_pokemon';
         _pokemon_v2_pokemon?.build();
+        _$failedField = 'pokemon_v2_pokemonabilities';
+        pokemon_v2_pokemonabilities.build();
         _$failedField = 'pokemon_v2_pokemonformgenerations';
         pokemon_v2_pokemonformgenerations.build();
         _$failedField = 'pokemon_v2_pokemonformnames';

@@ -6,6 +6,7 @@ import 'package:built_value/serializer.dart';
 
 import '../../serializers/serializers.dart';
 import 'pokemon.dart';
+import 'pokemon_ability_holder.dart';
 import 'pokemon_resource.dart';
 
 part 'pokemon_form.g.dart';
@@ -34,6 +35,8 @@ abstract class PokemonForm implements Built<PokemonForm, PokemonFormBuilder> {
   int? get order;
 
   Pokemon? get pokemon_v2_pokemon;
+
+  BuiltList<PokemonAbilityHolder> get pokemon_v2_pokemonabilities;
 
   BuiltList<PokemonResource> get pokemon_v2_pokemonformgenerations;
 

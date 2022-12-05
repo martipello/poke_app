@@ -27,6 +27,7 @@ class PokemonSpeciesWidget extends StatelessWidget {
       return const SizedBox();
     }
     return Column(
+      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _buildTitle(context),
@@ -71,6 +72,7 @@ class PokemonSpeciesWidget extends StatelessWidget {
     final shape = speciesHolder.shape();
     final habitat = speciesHolder.habitat();
     return Column(
+      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         if (shape.isNotEmpty)

@@ -1,5 +1,6 @@
 import '../api/models/pokemon/pokemon_ability_holder.dart';
 import 'iterable_extension.dart';
+import 'pokemon_resource_extension.dart';
 import 'string_extension.dart';
 
 extension PokemonAbilityHolderExtension on PokemonAbilityHolder? {
@@ -8,7 +9,7 @@ extension PokemonAbilityHolderExtension on PokemonAbilityHolder? {
   }
 
   String description() {
-    return this?.pokemon_v2_ability?.pokemon_v2_abilityflavortexts.lastOrNull()?.flavor_text ?? '';
+    return this?.pokemon_v2_ability?.pokemon_v2_abilityflavortexts.lastOrNull()?.flavorText() ?? '';
   }
 
   String versionDisplayName() {

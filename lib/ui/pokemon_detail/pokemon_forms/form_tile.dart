@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../api/models/pokemon/pokemon.dart';
+import '../../../api/models/pokemon/pokemon_ability_holder.dart';
 import '../../../api/models/pokemon/pokemon_form_with_version_group.dart';
 import '../../../api/models/pokemon/pokemon_type.dart';
 import '../../../dependency_injection_container.dart';
@@ -9,12 +10,13 @@ import '../../../extensions/string_extension.dart';
 import '../../../extensions/type_data_extension.dart';
 import '../../../theme/base_theme.dart';
 import '../../../theme/poke_app_text.dart';
-import '../../../utils/console_output.dart';
 import '../../shared_widgets/chip_group.dart';
 import '../../shared_widgets/expansion_card.dart';
+import '../../shared_widgets/poke_divider.dart';
 import '../../shared_widgets/pokemon_image.dart';
 import '../../shared_widgets/type_chip.dart';
 import '../../shared_widgets/view_models/image_color_view_model.dart';
+import '../pokemon_info/ability_tile.dart';
 
 const kPokemonTileImageHeight = 80.0;
 
@@ -39,6 +41,8 @@ class _FormTileState extends State<FormTile> {
   Pokemon? get pokemon =>
       pokemonForm.pokemon_v2_pokemonformnames.firstOrNull()?.pokemon_v2_pokemonform?.pokemon_v2_pokemon;
 
+  List<PokemonAbilityHolder> get abilities => pokemon?.pokemon_v2_pokemonabilities.toList() ?? [];
+
   @override
   void dispose() {
     mainImageColorViewModel.dispose();
@@ -48,11 +52,10 @@ class _FormTileState extends State<FormTile> {
 
   @override
   Widget build(BuildContext context) {
-    log('tag').d('pokemonForm $pokemonForm');
     return ExpansionCard(
       titleWidget: _buildPokemonCardBody(),
       expandedChildren: [
-        _buildPokemonInfo(),
+        _buildPokemonAbilities(),
       ],
       bottomWidgetBuilder: (_) {
         return _buildPokemonTypesHolder();
@@ -72,6 +75,39 @@ class _FormTileState extends State<FormTile> {
           child: _buildPokemonInfo(),
         ),
       ],
+    );
+  }
+
+  Widget _buildPokemonAbilities() {
+    return SizedBox(
+      child: CustomScrollView(
+        shrinkWrap: true,
+        slivers: [
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              childCount: abilities.length,
+              (context, index) {
+                final ability = abilities[index];
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (index != 0)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                        ),
+                        child: _buildDivider(),
+                      ),
+                    AbilityTile(
+                      ability: ability,
+                    ),
+                  ],
+                );
+              },
+            ),
+          )
+        ],
+      ),
     );
   }
 
@@ -154,5 +190,15 @@ class _FormTileState extends State<FormTile> {
     } else {
       return const SizedBox();
     }
+  }
+
+  Widget _buildDivider() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 12.0,
+        horizontal: 8,
+      ),
+      child: PokeDivider(),
+    );
   }
 }

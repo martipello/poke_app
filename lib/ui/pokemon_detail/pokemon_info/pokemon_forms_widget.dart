@@ -51,6 +51,7 @@ class PokemonFormsWidget extends StatelessWidget {
         (context, index) {
           final form = forms[index];
           return Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               if (index != 0) _buildFormsListDivider(),
               _buildFormTile(
