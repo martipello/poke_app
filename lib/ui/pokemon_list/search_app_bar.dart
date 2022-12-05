@@ -29,6 +29,13 @@ class SearchAppBar extends StatefulWidget {
 
 class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMixin {
   final searchAppBarViewModel = getIt.get<SearchAppBarViewModel>();
+  final focusNode = FocusNode();
+
+  @override
+  void dispose() {
+    super.dispose();
+    focusNode.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -189,9 +196,12 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
       padding: const EdgeInsets.only(left: 16.0),
       child: IconButton(
         onPressed: () {
-          searchAppBarViewModel.isSearching.add(
-            false,
-          );
+          if (widget.searchTextController.text.isEmpty) {
+            searchAppBarViewModel.isSearching.add(
+              false,
+            );
+          }
+          context.closeKeyBoard();
         },
         icon: Icon(
           Icons.arrow_back,
@@ -248,6 +258,8 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
 
   Widget _buildSearchView() {
     return TextField(
+      autofocus: true,
+      focusNode: focusNode,
       controller: widget.searchTextController,
       maxLines: 1,
       style: PokeAppText.body4Style.copyWith(
@@ -277,7 +289,6 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
                 color: colors(context).textOnPrimary,
               ),
               onPressed: () {
-                FocusScope.of(context).unfocus();
                 widget.searchTextController.clear();
               },
             )
@@ -286,5 +297,4 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
   }
 
   SizedBox get _buildSmallMargin => const SizedBox(height: 8);
-
 }

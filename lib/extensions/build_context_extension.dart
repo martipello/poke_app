@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
 extension BuildContextExt on BuildContext {
   double get statusBarHeight => MediaQuery.of(this).viewPadding.top;
+
   double get screenWidth => MediaQuery.of(this).size.width;
+
   double get screenHeight => MediaQuery.of(this).size.height;
+
   double get scaleFactor => MediaQuery.of(this).textScaleFactor;
 
   NavigatorState get navigator => Navigator.of(this);
@@ -15,6 +17,17 @@ extension BuildContextExt on BuildContext {
   AppLocalizations get strings => AppLocalizations.of(this)!;
 
   dynamic get routeArguments => ModalRoute.of(this)?.settings.arguments;
+
+  void openKeyBoard(FocusNode focusNode) {
+    FocusScope.of(this).requestFocus(focusNode);
+  }
+
+  void closeKeyBoard() {
+    final currentFocus = FocusScope.of(this);
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
+  }
 
   void nextEditableTextFocus() {
     do {
