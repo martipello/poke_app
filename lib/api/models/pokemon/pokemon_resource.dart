@@ -16,7 +16,7 @@ abstract class PokemonResource implements Built<PokemonResource, PokemonResource
 
   String? get name;
 
-  String? get pokemonName;
+  String? get pokemon_name;
 
   String? get description;
 

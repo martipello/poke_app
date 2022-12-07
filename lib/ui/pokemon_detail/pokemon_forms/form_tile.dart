@@ -5,9 +5,10 @@ import '../../../api/models/pokemon/pokemon.dart';
 import '../../../api/models/pokemon/pokemon_ability_holder.dart';
 import '../../../api/models/pokemon/pokemon_form.dart';
 import '../../../api/models/pokemon/pokemon_form_with_version_group.dart';
-import '../../../api/models/pokemon/pokemon_species_holder.dart';
+import '../../../api/models/pokemon/pokemon_species.dart';
 import '../../../api/models/pokemon/pokemon_type.dart';
 import '../../../dependency_injection_container.dart';
+import '../../../extensions/build_context_extension.dart';
 import '../../../extensions/iterable_extension.dart';
 import '../../../extensions/string_extension.dart';
 import '../../../extensions/type_data_extension.dart';
@@ -43,17 +44,13 @@ class _FormTileState extends State<FormTile> {
   PokemonFormWithVersionGroup get pokemonFormWithVersionGroup => widget.pokemonFormWithVersionGroup;
 
   PokemonForm? get pokemonForm =>
-      pokemonFormWithVersionGroup.pokemon_v2_pokemonformnames
-          .firstOrNull()
-          ?.pokemon_v2_pokemonform;
+      pokemonFormWithVersionGroup.pokemon_v2_pokemonformnames.firstOrNull()?.pokemon_v2_pokemonform;
 
   Pokemon? get pokemon => pokemonForm?.pokemon_v2_pokemon;
 
-  String get pokemonName =>
-      pokemonForm?.pokemon_v2_pokemonformnames
-          .firstOrNull()
-          ?.name ??
-          'Unknown Pokemon';
+  String get pokemonName => pokemonForm?.pokemon_v2_pokemonformnames.firstOrNull()?.pokemon_name ?? 'Unknown pokemon';
+
+  String get formName => pokemonForm?.pokemon_v2_pokemonformnames.firstOrNull()?.name ?? 'Unknown form';
 
   List<PokemonAbilityHolder> get abilities => pokemon?.pokemon_v2_pokemonabilities.toList() ?? [];
 
@@ -78,24 +75,16 @@ class _FormTileState extends State<FormTile> {
               titleWidget: _buildPokemonCardBody(),
               expandedChildren: [
                 _buildPokemonAbilities(),
+                const SizedBox(
+                  height: 16,
+                ),
               ],
               onTap: () {
-                final _pokemon = pokemon;
-                if (_pokemon != null) {
-                  Navigator.of(context).pushNamed(
-                    PokemonDetailPage.routeName,
-                    arguments: PokemonDetailPageArguments(
-                      pokemon: _pokemon.rebuild((p) =>
-                      p
-                        ..id = pokemon?.id
-                        ..name = pokemonName
-                        ..height = pokemon?.height
-                        ..weight = pokemon?.weight,),
-                      spriteImagePaletteGenerator: spriteImagePaletteGenerator,
-                      mainImagePaletteGenerator: mainImagePaletteGenerator,
-                    ),
-                  );
-                }
+                _navigateToDetailPage(
+                  context,
+                  spriteImagePaletteGenerator,
+                  mainImagePaletteGenerator,
+                );
               },
               bottomWidgetBuilder: (_) {
                 return _buildPokemonTypesHolder();
@@ -123,35 +112,47 @@ class _FormTileState extends State<FormTile> {
   }
 
   Widget _buildPokemonAbilities() {
-    return SizedBox(
-      child: CustomScrollView(
-        shrinkWrap: true,
-        slivers: [
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              childCount: abilities.length,
-                  (context, index) {
-                final ability = abilities[index];
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (index != 0)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                        ),
-                        child: _buildDivider(),
-                      ),
-                    AbilityTile(
-                      ability: ability,
-                    ),
-                  ],
-                );
-              },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+            left: 8.0,
+            top: 16,
+          ),
+          child: Text(
+            context.strings.abilities,
+            style: PokeAppText.subtitle3Style.copyWith(
+              color: colors(context).textOnForeground,
             ),
-          )
-        ],
-      ),
+          ),
+        ),
+        ...abilities.map(
+          (a) => Column(
+            children: [
+              if (a != abilities.first)
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 16,
+                    right: 16,
+                    top: 8,
+                    bottom: 4,
+                  ),
+                  child: _buildDivider(
+                    hasThinDivider: true,
+                  ),
+                ),
+              AbilityTile(
+                ability: a,
+                tilePadding: const EdgeInsets.only(
+                  left: 8,
+                  right: 14,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -166,12 +167,11 @@ class _FormTileState extends State<FormTile> {
             scrollDirection: Axis.horizontal,
             chips: _types
                 .map(
-                  (type) =>
-                  TypeChip(
+                  (type) => TypeChip(
                     pokemonType: type.pokemon_v2_type?.pokemonType() ?? PokemonType.unknown,
                     chipType: ChipType.normal,
                   ),
-            )
+                )
                 .toList(),
           )
         ],
@@ -230,13 +230,48 @@ class _FormTileState extends State<FormTile> {
     }
   }
 
-  Widget _buildDivider() {
+  Widget _buildDivider({
+    bool hasThinDivider = false,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(
-        vertical: 12.0,
         horizontal: 8,
       ),
-      child: PokeDivider(),
+      child: PokeDivider(
+        thickness: hasThinDivider ? kThicknessThin : kThicknessThick,
+      ),
     );
+  }
+
+  void _navigateToDetailPage(
+    BuildContext context,
+    PaletteGenerator? spriteImagePaletteGenerator,
+    PaletteGenerator? mainImagePaletteGenerator,
+  ) {
+    final _pokemon = pokemon;
+    if (_pokemon != null) {
+      final generation = pokemonFormWithVersionGroup.pokemon_v2_versiongroup;
+      Navigator.of(context).pushNamed(
+        PokemonDetailPage.routeName,
+        arguments: PokemonDetailPageArguments(
+          pokemon: _pokemon.rebuild(
+            (p) => p
+              ..id = pokemon?.id
+              ..name = pokemonName
+              ..height = pokemon?.height
+              ..weight = pokemon?.weight
+              ..pokemon_v2_pokemonspecy.generation_id = generation?.id
+              ..pokemon_v2_pokemonspecy.pokemon_v2_pokemonspeciesnames.insert(
+                    0,
+                    PokemonSpecies(
+                      (ps) => ps.genus = formName,
+                    ),
+                  ),
+          ),
+          spriteImagePaletteGenerator: spriteImagePaletteGenerator,
+          mainImagePaletteGenerator: mainImagePaletteGenerator,
+        ),
+      );
+    }
   }
 }

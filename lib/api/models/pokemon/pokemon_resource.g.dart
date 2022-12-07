@@ -37,10 +37,10 @@ class _$PokemonResourceSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    value = object.pokemonName;
+    value = object.pokemon_name;
     if (value != null) {
       result
-        ..add('pokemonName')
+        ..add('pokemon_name')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
@@ -151,8 +151,8 @@ class _$PokemonResourceSerializer
           result.name = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
-        case 'pokemonName':
-          result.pokemonName = serializers.deserialize(value,
+        case 'pokemon_name':
+          result.pokemon_name = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
         case 'description':
@@ -241,7 +241,7 @@ class _$PokemonResource extends PokemonResource {
   @override
   final String? name;
   @override
-  final String? pokemonName;
+  final String? pokemon_name;
   @override
   final String? description;
   @override
@@ -278,7 +278,7 @@ class _$PokemonResource extends PokemonResource {
 
   _$PokemonResource._(
       {this.name,
-      this.pokemonName,
+      this.pokemon_name,
       this.description,
       this.id,
       this.flavor_text,
@@ -316,7 +316,7 @@ class _$PokemonResource extends PokemonResource {
     if (identical(other, this)) return true;
     return other is PokemonResource &&
         name == other.name &&
-        pokemonName == other.pokemonName &&
+        pokemon_name == other.pokemon_name &&
         description == other.description &&
         id == other.id &&
         flavor_text == other.flavor_text &&
@@ -358,7 +358,7 @@ class _$PokemonResource extends PokemonResource {
                                                                         0,
                                                                         name
                                                                             .hashCode),
-                                                                    pokemonName
+                                                                    pokemon_name
                                                                         .hashCode),
                                                                 description
                                                                     .hashCode),
@@ -382,7 +382,7 @@ class _$PokemonResource extends PokemonResource {
   String toString() {
     return (newBuiltValueToStringHelper(r'PokemonResource')
           ..add('name', name)
-          ..add('pokemonName', pokemonName)
+          ..add('pokemon_name', pokemon_name)
           ..add('description', description)
           ..add('id', id)
           ..add('flavor_text', flavor_text)
@@ -412,9 +412,9 @@ class PokemonResourceBuilder
   String? get name => _$this._name;
   set name(String? name) => _$this._name = name;
 
-  String? _pokemonName;
-  String? get pokemonName => _$this._pokemonName;
-  set pokemonName(String? pokemonName) => _$this._pokemonName = pokemonName;
+  String? _pokemon_name;
+  String? get pokemon_name => _$this._pokemon_name;
+  set pokemon_name(String? pokemon_name) => _$this._pokemon_name = pokemon_name;
 
   String? _description;
   String? get description => _$this._description;
@@ -511,7 +511,7 @@ class PokemonResourceBuilder
     final $v = _$v;
     if ($v != null) {
       _name = $v.name;
-      _pokemonName = $v.pokemonName;
+      _pokemon_name = $v.pokemon_name;
       _description = $v.description;
       _id = $v.id;
       _flavor_text = $v.flavor_text;
@@ -554,7 +554,7 @@ class PokemonResourceBuilder
       _$result = _$v ??
           new _$PokemonResource._(
               name: name,
-              pokemonName: pokemonName,
+              pokemon_name: pokemon_name,
               description: description,
               id: id,
               flavor_text: flavor_text,

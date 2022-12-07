@@ -108,7 +108,7 @@ class PokemonDetailHeader extends StatelessWidget {
     BuildContext context,
   ) {
     final speciesName =
-        pokemon.pokemon_v2_pokemonspecy?.pokemon_v2_pokemonspeciesnames.first.genus ?? 'Unknown Species';
+        pokemon.pokemon_v2_pokemonspecy?.pokemon_v2_pokemonspeciesnames.first.genus ?? 'Unknown species';
     return Text(
       speciesName.capitalize(),
       style: PokeAppText.title4Style.copyWith(

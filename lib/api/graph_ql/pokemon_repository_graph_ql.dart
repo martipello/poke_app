@@ -186,7 +186,7 @@ class PokemonRepositoryGraphQl {
       document: gql(
         '''
           query statsWeaknessResistanceQuery {
-            pokemon_v2_pokemon(where: {id: {_eq: 1}}) {
+            pokemon_v2_pokemon(where: {id: {_eq: ${pokemonRequest.pokemonId}}}) {
               pokemon_v2_pokemonstats {
                 base_stat
                 effort
@@ -293,8 +293,12 @@ query MyQuery {
         weight
         height
         base_experience
-        is_default     
+        is_default 
+        pokemon_v2_pokemonspecy {
+          generation_id
+        }    
       }
+      generation_id
     }
   }
 }
@@ -321,6 +325,7 @@ query MyQuery {
         pokemon_v2_pokemonforms {
           pokemon_v2_versiongroup {
             name
+            id
           }
           pokemon_v2_pokemonformnames(where: {language_id: {_eq: ${pokemonRequest.languageId}}}) {
             pokemon_v2_pokemonform {
@@ -342,6 +347,10 @@ query MyQuery {
                 weight
                 height
                 base_experience
+                
+                
+                
+                
                 id
                 is_default                
                 pokemon_v2_pokemonabilities {

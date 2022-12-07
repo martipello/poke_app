@@ -12,14 +12,20 @@ class AbilityTile extends StatelessWidget {
   const AbilityTile({
     Key? key,
     required this.ability,
+    this.tilePadding,
+    this.childrenPadding,
   }) : super(key: key);
 
   final PokemonAbilityHolder ability;
+  final EdgeInsetsGeometry? tilePadding;
+  final EdgeInsetsGeometry? childrenPadding;
 
   @override
   Widget build(BuildContext context) {
     return PokemonExpansionTile(
       canExpand: true,
+      tilePadding: tilePadding,
+      childrenPadding: childrenPadding,
       title: _buildExpansionTileTitle(
         context,
         ability.title(),
@@ -46,7 +52,7 @@ class AbilityTile extends StatelessWidget {
     final mainSeries = abilityHolder.mainSeries();
     return [
       Padding(
-        padding: const EdgeInsets.only(top: 8),
+        padding: const EdgeInsets.symmetric(vertical: 8),
         child: PokemonTable(
           pokemonTableRowInfoList: [
             if (shortEffect.isNotEmpty)

@@ -9,12 +9,16 @@ class PokemonExpansionTile extends StatelessWidget {
     required this.title,
     this.subtitle,
     required this.children,
+    this.tilePadding,
+    this.childrenPadding,
   }) : super(key: key);
 
   final bool canExpand;
   final Widget title;
   final Widget? subtitle;
   final List<Widget> children;
+  final EdgeInsetsGeometry? tilePadding;
+  final EdgeInsetsGeometry? childrenPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -23,15 +27,17 @@ class PokemonExpansionTile extends StatelessWidget {
         dividerColor: Colors.transparent,
       ),
       child: ExpansionTile(
-        tilePadding: const EdgeInsets.symmetric(
-          horizontal: 8,
-        ),
-        childrenPadding: const EdgeInsets.symmetric(
-          horizontal: 8,
-        ),
+        tilePadding: tilePadding ??
+            const EdgeInsets.symmetric(
+              horizontal: 8,
+            ),
+        childrenPadding: childrenPadding ??
+            const EdgeInsets.symmetric(
+              horizontal: 8,
+            ),
         trailing: canExpand ? null : const SizedBox(),
         title: Padding(
-          padding: const EdgeInsets.only(bottom: 4),
+          padding: subtitle != null ? const EdgeInsets.only(bottom: 4) : EdgeInsets.zero,
           child: title,
         ),
         collapsedIconColor: colors(context).textOnForeground,

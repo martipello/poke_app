@@ -44,7 +44,9 @@ class PokemonAbilityWidget extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
                       ),
-                      child: _buildDivider(),
+                      child: _buildDivider(
+                        hasThinDivider: true,
+                      ),
                     ),
                   _buildPokemonAbilityTile(ability),
                 ],
@@ -81,14 +83,17 @@ class PokemonAbilityWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildDivider() {
+  Widget _buildDivider({
+    bool hasThinDivider = false,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 12.0,
         horizontal: 8,
       ),
-      child: PokeDivider(),
+      child: PokeDivider(
+        thickness: hasThinDivider ? kThicknessThin : kThicknessThick,
+      ),
     );
   }
-
 }

@@ -260,10 +260,10 @@ class _EvolutionTileState extends State<EvolutionTile> {
     return [
       Padding(
         padding: const EdgeInsets.only(
-          top: 32,
-          left: 8,
+          top: 8,
+          left: kPokemonTileImageHeight + 32,
           right: 8,
-          bottom: 16,
+          bottom: 24,
         ),
         child: PokemonTable(
           tableTitle: 'Evolution Methods',
