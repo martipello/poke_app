@@ -34,7 +34,6 @@ dependencies:
   intl: ^0.17.0
   flutter_flavorizr: ^2.0.0
   firebase_core: ^1.4.0
-  firebase_messaging: ^10.0.8
   firebase_crashlytics: ^2.2.0
   package_info: ^2.0.2
   logger: ^1.0.0

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:palette_generator/palette_generator.dart';
 
 import '../../../api/models/pokemon/pokemon.dart';
 import '../../../api/models/pokemon/pokemon_ability_holder.dart';
+import '../../../api/models/pokemon/pokemon_form.dart';
 import '../../../api/models/pokemon/pokemon_form_with_version_group.dart';
+import '../../../api/models/pokemon/pokemon_species_holder.dart';
 import '../../../api/models/pokemon/pokemon_type.dart';
 import '../../../dependency_injection_container.dart';
 import '../../../extensions/iterable_extension.dart';
@@ -16,6 +19,7 @@ import '../../shared_widgets/poke_divider.dart';
 import '../../shared_widgets/pokemon_image.dart';
 import '../../shared_widgets/type_chip.dart';
 import '../../shared_widgets/view_models/image_color_view_model.dart';
+import '../pokemon_detail_page.dart';
 import '../pokemon_info/ability_tile.dart';
 
 const kPokemonTileImageHeight = 80.0;
@@ -23,10 +27,10 @@ const kPokemonTileImageHeight = 80.0;
 class FormTile extends StatefulWidget {
   FormTile({
     Key? key,
-    required this.pokemonForm,
+    required this.pokemonFormWithVersionGroup,
   }) : super(key: key);
 
-  final PokemonFormWithVersionGroup pokemonForm;
+  final PokemonFormWithVersionGroup pokemonFormWithVersionGroup;
 
   @override
   State<FormTile> createState() => _FormTileState();
@@ -36,10 +40,20 @@ class _FormTileState extends State<FormTile> {
   final mainImageColorViewModel = getIt.get<ImageColorViewModel>();
   final spriteImageColorViewModel = getIt.get<ImageColorViewModel>();
 
-  PokemonFormWithVersionGroup get pokemonForm => widget.pokemonForm;
+  PokemonFormWithVersionGroup get pokemonFormWithVersionGroup => widget.pokemonFormWithVersionGroup;
 
-  Pokemon? get pokemon =>
-      pokemonForm.pokemon_v2_pokemonformnames.firstOrNull()?.pokemon_v2_pokemonform?.pokemon_v2_pokemon;
+  PokemonForm? get pokemonForm =>
+      pokemonFormWithVersionGroup.pokemon_v2_pokemonformnames
+          .firstOrNull()
+          ?.pokemon_v2_pokemonform;
+
+  Pokemon? get pokemon => pokemonForm?.pokemon_v2_pokemon;
+
+  String get pokemonName =>
+      pokemonForm?.pokemon_v2_pokemonformnames
+          .firstOrNull()
+          ?.name ??
+          'Unknown Pokemon';
 
   List<PokemonAbilityHolder> get abilities => pokemon?.pokemon_v2_pokemonabilities.toList() ?? [];
 
@@ -52,13 +66,43 @@ class _FormTileState extends State<FormTile> {
 
   @override
   Widget build(BuildContext context) {
-    return ExpansionCard(
-      titleWidget: _buildPokemonCardBody(),
-      expandedChildren: [
-        _buildPokemonAbilities(),
-      ],
-      bottomWidgetBuilder: (_) {
-        return _buildPokemonTypesHolder();
+    return StreamBuilder<PaletteGenerator>(
+      stream: mainImageColorViewModel.paletteGeneratorStream,
+      builder: (context, mainImagePaletteGeneratorSnapshot) {
+        return StreamBuilder<PaletteGenerator>(
+          stream: spriteImageColorViewModel.paletteGeneratorStream,
+          builder: (context, spriteImagePaletteGeneratorSnapshot) {
+            final spriteImagePaletteGenerator = spriteImagePaletteGeneratorSnapshot.data;
+            final mainImagePaletteGenerator = mainImagePaletteGeneratorSnapshot.data;
+            return ExpansionCard(
+              titleWidget: _buildPokemonCardBody(),
+              expandedChildren: [
+                _buildPokemonAbilities(),
+              ],
+              onTap: () {
+                final _pokemon = pokemon;
+                if (_pokemon != null) {
+                  Navigator.of(context).pushNamed(
+                    PokemonDetailPage.routeName,
+                    arguments: PokemonDetailPageArguments(
+                      pokemon: _pokemon.rebuild((p) =>
+                      p
+                        ..id = pokemon?.id
+                        ..name = pokemonName
+                        ..height = pokemon?.height
+                        ..weight = pokemon?.weight,),
+                      spriteImagePaletteGenerator: spriteImagePaletteGenerator,
+                      mainImagePaletteGenerator: mainImagePaletteGenerator,
+                    ),
+                  );
+                }
+              },
+              bottomWidgetBuilder: (_) {
+                return _buildPokemonTypesHolder();
+              },
+            );
+          },
+        );
       },
     );
   }
@@ -86,7 +130,7 @@ class _FormTileState extends State<FormTile> {
           SliverList(
             delegate: SliverChildBuilderDelegate(
               childCount: abilities.length,
-              (context, index) {
+                  (context, index) {
                 final ability = abilities[index];
                 return Column(
                   mainAxisSize: MainAxisSize.min,
@@ -122,11 +166,12 @@ class _FormTileState extends State<FormTile> {
             scrollDirection: Axis.horizontal,
             chips: _types
                 .map(
-                  (type) => TypeChip(
+                  (type) =>
+                  TypeChip(
                     pokemonType: type.pokemon_v2_type?.pokemonType() ?? PokemonType.unknown,
                     chipType: ChipType.normal,
                   ),
-                )
+            )
                 .toList(),
           )
         ],
@@ -137,13 +182,6 @@ class _FormTileState extends State<FormTile> {
   }
 
   Widget _buildPokemonInfo() {
-    final pokemonName = pokemonForm.pokemon_v2_pokemonformnames
-            .firstOrNull()
-            ?.pokemon_v2_pokemonform
-            ?.pokemon_v2_pokemonformnames
-            .firstOrNull()
-            ?.name ??
-        'Unknown Pokemon';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,

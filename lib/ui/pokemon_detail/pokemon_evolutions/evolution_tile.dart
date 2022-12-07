@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:palette_generator/palette_generator.dart';
 
 import '../../../api/models/pokemon/pokemon.dart';
 import '../../../api/models/pokemon/pokemon_species_holder.dart';
@@ -16,6 +17,7 @@ import '../../shared_widgets/pokemon_image.dart';
 import '../../shared_widgets/pokemon_table.dart';
 import '../../shared_widgets/type_chip.dart';
 import '../../shared_widgets/view_models/image_color_view_model.dart';
+import '../pokemon_detail_page.dart';
 
 const kPokemonTileImageHeight = 80.0;
 
@@ -46,11 +48,38 @@ class _EvolutionTileState extends State<EvolutionTile> {
 
   @override
   Widget build(BuildContext context) {
-    return ExpansionCard(
-      titleWidget: _buildPokemonCardBody(),
-      expandedChildren: _buildPokemonEvolutionTable(),
-      bottomWidgetBuilder: (_) {
-        return _buildPokemonTypesHolder();
+    return StreamBuilder<PaletteGenerator>(
+      stream: mainImageColorViewModel.paletteGeneratorStream,
+      builder: (context, mainImagePaletteGeneratorSnapshot) {
+        return StreamBuilder<PaletteGenerator>(
+          stream: spriteImageColorViewModel.paletteGeneratorStream,
+          builder: (context, spriteImagePaletteGeneratorSnapshot) {
+            final spriteImagePaletteGenerator = spriteImagePaletteGeneratorSnapshot.data;
+            final mainImagePaletteGenerator = mainImagePaletteGeneratorSnapshot.data;
+            return ExpansionCard(
+              titleWidget: _buildPokemonCardBody(),
+              expandedChildren: _buildPokemonEvolutionTable(),
+              onTap: () {
+                final _pokemon = pokemon;
+                if (_pokemon != null) {
+                  Navigator.of(context).pushNamed(
+                    PokemonDetailPage.routeName,
+                    arguments: PokemonDetailPageArguments(
+                      pokemon: _pokemon.rebuild(
+                        (p) => p..pokemon_v2_pokemonspecy = widget.speciesHolder.toBuilder(),
+                      ),
+                      spriteImagePaletteGenerator: spriteImagePaletteGenerator,
+                      mainImagePaletteGenerator: mainImagePaletteGenerator,
+                    ),
+                  );
+                }
+              },
+              bottomWidgetBuilder: (_) {
+                return _buildPokemonTypesHolder();
+              },
+            );
+          },
+        );
       },
     );
   }
@@ -201,11 +230,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
         if (timeOfDay != null && timeOfDay.isNotEmpty) {
           final isFirst = evolutionConditions.isNotEmpty;
           evolutionConditions.add(
-            _buildEvolutionCondition(
-              'Time of day :',
-              timeOfDay,
-              isFirst
-            ),
+            _buildEvolutionCondition('Time of day :', timeOfDay, isFirst),
           );
         }
         if (relativePhysicalStats != null) {

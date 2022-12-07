@@ -290,6 +290,10 @@ query MyQuery {
           }
         }
         id
+        weight
+        height
+        base_experience
+        is_default     
       }
     }
   }

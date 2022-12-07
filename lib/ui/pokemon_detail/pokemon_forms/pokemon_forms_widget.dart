@@ -28,13 +28,13 @@ class PokemonFormsWidget extends StatelessWidget {
           delegate: SliverChildBuilderDelegate(
             childCount: pokemonFormHolder.length,
             (context, index) {
-              final pokemonForm = pokemonFormHolder[index];
+              final pokemonFormWithVersionGroup = pokemonFormHolder[index];
               return Padding(
                 padding: const EdgeInsets.only(
                   bottom: 8,
                 ),
                 child: FormTile(
-                  pokemonForm: pokemonForm,
+                  pokemonFormWithVersionGroup: pokemonFormWithVersionGroup,
                 ),
               );
             },

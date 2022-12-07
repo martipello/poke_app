@@ -31,6 +31,7 @@ class PokemonMovesView extends StatefulWidget {
 
 class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepAliveClientMixin<PokemonMovesView> {
   final _pokemonMovesViewModel = getIt.get<PokemonMovesViewModel>();
+  final scrollController = ScrollController();
 
   @override
   bool get wantKeepAlive => true;
@@ -49,6 +50,7 @@ class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepA
   @override
   void dispose() {
     _pokemonMovesViewModel.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 
@@ -64,6 +66,7 @@ class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepA
         //TODO this refresh doesn't get the current search and just retries whatever the last search was even if the text has changed
         _pokemonMovesViewModel.refresh();
       },
+      scrollController: scrollController,
       padding: EdgeInsets.zero,
       sliver: MultiSliver(
         children: [

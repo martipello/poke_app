@@ -4,6 +4,7 @@ import 'package:palette_generator/palette_generator.dart';
 import '../../api/models/pokemon/pokemon.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../theme/base_theme.dart';
+import '../shared_widgets/view_constraints.dart';
 import 'pokemon_detail_app_bar.dart';
 import 'pokemon_evolutions/pokemon_evolution_view.dart';
 import 'pokemon_forms/pokemon_forms_view.dart';
@@ -68,23 +69,25 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
 
   Widget _buildPokemonDetailBody() {
     final tabBarTopPadding = 16 + context.statusBarHeight;
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: colors(context).cardBackground,
-      ),
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(
-              top: tabBarTopPadding,
-              bottom: 16,
+    return ViewConstraints(
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: colors(context).cardBackground,
+        ),
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                top: tabBarTopPadding,
+                bottom: 16,
+              ),
+              child: _buildTabBar(context),
             ),
-            child: _buildTabBar(context),
-          ),
-          Expanded(
-            child: _buildTabBarView(),
-          ),
-        ],
+            Expanded(
+              child: _buildTabBarView(),
+            ),
+          ],
+        ),
       ),
     );
   }

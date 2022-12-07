@@ -79,12 +79,18 @@ class _ExpansionCardState extends State<ExpansionCard> with TickerProviderStateM
         borderRadius: BorderRadius.circular(8),
       ),
       clipBehavior: Clip.hardEdge,
-      child: Padding(
-        padding: const EdgeInsets.all(
-          16,
-        ),
-        child: _buildCardBody(
-          _isExpanded,
+      child: Material(
+        type: MaterialType.transparency,
+        child: InkWell(
+          onTap: widget.onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(
+              16,
+            ),
+            child: _buildCardBody(
+              _isExpanded,
+            ),
+          ),
         ),
       ),
     );
@@ -180,7 +186,6 @@ class _ExpansionCardState extends State<ExpansionCard> with TickerProviderStateM
             !_isExpanded,
           );
           _expandableController.toggle();
-          widget.onTap?.call();
         },
       ),
     );
