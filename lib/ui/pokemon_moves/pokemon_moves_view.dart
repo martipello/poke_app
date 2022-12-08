@@ -9,11 +9,11 @@ import '../../../dependency_injection_container.dart';
 import '../../../extensions/build_context_extension.dart';
 import '../../../theme/base_theme.dart';
 import '../../../theme/poke_app_text.dart';
-import '../../shared_widgets/error_widget.dart' as ew;
-import '../../shared_widgets/no_results.dart';
-import '../../shared_widgets/pokeball_loading_widget.dart';
-import '../../shared_widgets/rounded_button.dart';
-import '../../shared_widgets/sliver_refresh_indicator.dart';
+import '../shared_widgets/error_widget.dart' as ew;
+import '../shared_widgets/no_results.dart';
+import '../shared_widgets/pokeball_loading_widget.dart';
+import '../shared_widgets/rounded_button.dart';
+import '../shared_widgets/sliver_refresh_indicator.dart';
 import 'pokemon_move_tile.dart';
 import 'view_models/pokemon_moves_view_model.dart';
 

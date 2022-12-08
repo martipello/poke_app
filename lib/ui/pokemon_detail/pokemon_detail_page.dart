@@ -4,13 +4,13 @@ import 'package:palette_generator/palette_generator.dart';
 import '../../api/models/pokemon/pokemon.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../theme/base_theme.dart';
+import '../pokemon_evolutions/pokemon_evolution_view.dart';
+import '../pokemon_forms/pokemon_forms_view.dart';
+import '../pokemon_info/pokemon_info_view.dart';
+import '../pokemon_moves/pokemon_moves_view.dart';
+import '../pokemon_stats/pokemon_stats_view.dart';
 import '../shared_widgets/view_constraints.dart';
 import 'pokemon_detail_app_bar.dart';
-import 'pokemon_evolutions/pokemon_evolution_view.dart';
-import 'pokemon_forms/pokemon_forms_view.dart';
-import 'pokemon_info/pokemon_info_view.dart';
-import 'pokemon_moves/pokemon_moves_view.dart';
-import 'pokemon_stats/pokemon_stats_view.dart';
 
 class PokemonDetailPageArguments {
   PokemonDetailPageArguments({

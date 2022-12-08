@@ -8,7 +8,6 @@ import '../../../../api/models/pokemon/pokemon_request.dart';
 import '../../../../api/models/pokemon/pokemon_response.dart';
 import '../../../../extensions/iterable_extension.dart';
 import '../../../../services/language_service.dart';
-import '../../../../utils/console_output.dart';
 
 class MovesPagingAdapter {
   MovesPagingAdapter(

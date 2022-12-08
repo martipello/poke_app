@@ -7,7 +7,6 @@ import '../../../api/models/pokemon/pokemon.dart';
 import '../../../api/models/pokemon/pokemon_request.dart';
 import '../../../api/models/pokemon/pokemon_response.dart';
 import '../../../services/language_service.dart';
-import '../../../utils/console_output.dart';
 
 class PokemonPagingAdapter {
   PokemonPagingAdapter(

@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 
 import '../../../api/models/api_response.dart';
 import '../../../api/models/error_response.dart';
-import '../../../api/models/pokemon/pokemon.dart';
-import '../../../api/models/pokemon/pokemon_response.dart';
+import '../../../api/models/pokemon/evolution_chain_holder.dart';
+import '../../../api/models/pokemon/evolution_holder.dart';
 import '../../../dependency_injection_container.dart';
+import '../../../extensions/evolution_extension.dart';
 import '../../../extensions/iterable_extension.dart';
-import '../../../extensions/pokemon_extension.dart';
-import '../../shared_widgets/error_widget.dart' as ew;
-import '../../shared_widgets/no_results.dart';
-import '../../shared_widgets/pokeball_loading_widget.dart';
-import '../../shared_widgets/sliver_refresh_indicator.dart';
-import '../pokemon_forms/pokemon_forms_widget.dart';
-import 'view_models/pokemon_forms_view_model.dart';
+import '../shared_widgets/error_widget.dart' as ew;
+import '../shared_widgets/no_results.dart';
+import '../shared_widgets/pokeball_loading_widget.dart';
+import '../shared_widgets/sliver_refresh_indicator.dart';
+import 'pokemon_evolution_widget.dart';
+import 'view_models/pokemon_evolution_view_model.dart';
 
-class PokemonFormsView extends StatefulWidget {
-  PokemonFormsView({
+class PokemonEvolutionView extends StatefulWidget {
+  PokemonEvolutionView({
     Key? key,
     required this.pokemonId,
   }) : super(key: key);
@@ -23,11 +23,12 @@ class PokemonFormsView extends StatefulWidget {
   final int pokemonId;
 
   @override
-  State<PokemonFormsView> createState() => _PokemonFormsViewState();
+  State<PokemonEvolutionView> createState() => _PokemonEvolutionViewState();
 }
 
-class _PokemonFormsViewState extends State<PokemonFormsView> with AutomaticKeepAliveClientMixin<PokemonFormsView> {
-  final _pokemonFormsViewModel = getIt.get<PokemonFormsViewModel>();
+class _PokemonEvolutionViewState extends State<PokemonEvolutionView>
+    with AutomaticKeepAliveClientMixin<PokemonEvolutionView> {
+  final _pokemonEvolutionViewModel = getIt.get<PokemonEvolutionViewModel>();
 
   @override
   bool get wantKeepAlive => true;
@@ -35,26 +36,26 @@ class _PokemonFormsViewState extends State<PokemonFormsView> with AutomaticKeepA
   @override
   void initState() {
     super.initState();
-    _pokemonFormsViewModel.getPokemonForms(
+    _pokemonEvolutionViewModel.getPokemonEvolutions(
       widget.pokemonId,
     );
   }
 
   @override
   void dispose() {
-    _pokemonFormsViewModel.dispose();
+    _pokemonEvolutionViewModel.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return StreamBuilder<ApiResponse<PokemonResponse>>(
-      stream: _pokemonFormsViewModel.pokemonFormStream,
+    return StreamBuilder<ApiResponse<EvolutionChainHolder>>(
+      stream: _pokemonEvolutionViewModel.pokemonEvolutionStream,
       builder: (context, snapshot) {
         return SliverRefreshIndicator(
           onRefresh: () {
-            _pokemonFormsViewModel.getPokemonForms(
+            _pokemonEvolutionViewModel.getPokemonEvolutions(
               widget.pokemonId,
             );
           },
@@ -65,15 +66,16 @@ class _PokemonFormsViewState extends State<PokemonFormsView> with AutomaticKeepA
   }
 
   Widget _buildLayoutForState(
-    AsyncSnapshot<ApiResponse<PokemonResponse>> snapshot,
+    AsyncSnapshot<ApiResponse<EvolutionChainHolder>> snapshot,
   ) {
-    final pokemon = snapshot.data?.data?.pokemon_v2_pokemon.firstOrNull();
+    final _evolutionHolder = snapshot.data?.data?.pokemon_v2_evolutionchain.firstOrNull();
+    final evolutions = _evolutionHolder.getEvolutions();
+    final _hasError = snapshot.data?.status == Status.ERROR || _evolutionHolder == null;
     final _isLoading = snapshot.data?.status == Status.LOADING;
-    final _hasError = snapshot.data?.status == Status.ERROR || pokemon == null;
     if (_isLoading) return _buildLoadingWidget();
     if (_hasError) return _buildErrorWidget(snapshot.data?.error);
-    if (pokemon.getFormHolders().isEmpty) return _buildNoResultsWidget();
-    return _buildPokemonForms(pokemon);
+    if (evolutions.isEmpty) return _buildNoResultsWidget();
+    return _buildPokemonEvolutions(_evolutionHolder);
   }
 
   Widget _buildLoadingWidget() {
@@ -105,18 +107,18 @@ class _PokemonFormsViewState extends State<PokemonFormsView> with AutomaticKeepA
           error?.message ?? '',
           error: error,
         ),
-        onTryAgain: () => _pokemonFormsViewModel.getPokemonForms(
+        onTryAgain: () => _pokemonEvolutionViewModel.getPokemonEvolutions(
           widget.pokemonId,
         ),
       ),
     );
   }
 
-  Widget _buildPokemonForms(
-    Pokemon pokemon,
+  Widget _buildPokemonEvolutions(
+    EvolutionHolder evolutionHolder,
   ) {
-    return PokemonFormsWidget(
-      pokemon: pokemon,
+    return PokemonEvolutionWidget(
+      evolutionHolder: evolutionHolder,
     );
   }
 }

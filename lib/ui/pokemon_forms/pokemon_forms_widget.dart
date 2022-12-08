@@ -3,7 +3,7 @@ import 'package:sliver_tools/sliver_tools.dart';
 
 import '../../../api/models/pokemon/pokemon.dart';
 import '../../../extensions/pokemon_extension.dart';
-import '../../shared_widgets/poke_divider.dart';
+import '../shared_widgets/poke_divider.dart';
 import 'form_tile.dart';
 
 class PokemonFormsWidget extends StatelessWidget {

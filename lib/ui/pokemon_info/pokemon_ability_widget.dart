@@ -7,7 +7,7 @@ import '../../../extensions/build_context_extension.dart';
 import '../../../extensions/pokemon_extension.dart';
 import '../../../theme/base_theme.dart';
 import '../../../theme/poke_app_text.dart';
-import '../../shared_widgets/poke_divider.dart';
+import '../shared_widgets/poke_divider.dart';
 import 'ability_tile.dart';
 
 class PokemonAbilityWidget extends StatelessWidget {

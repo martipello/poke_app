@@ -7,8 +7,8 @@ import '../../../extensions/pokemon_extension.dart';
 import '../../../extensions/pokemon_resource_extension.dart';
 import '../../../theme/base_theme.dart';
 import '../../../theme/poke_app_text.dart';
-import '../../shared_widgets/poke_divider.dart';
-import '../../shared_widgets/pokemon_expansion_tile.dart';
+import '../shared_widgets/poke_divider.dart';
+import '../shared_widgets/pokemon_expansion_tile.dart';
 
 class PokedexInfoWidget extends StatelessWidget {
   const PokedexInfoWidget({

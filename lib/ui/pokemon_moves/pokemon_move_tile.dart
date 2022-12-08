@@ -13,10 +13,10 @@ import '../../../extensions/pokemon_resource_extension.dart';
 import '../../../extensions/string_extension.dart';
 import '../../../theme/base_theme.dart';
 import '../../../theme/poke_app_text.dart';
-import '../../shared_widgets/expansion_card.dart';
-import '../../shared_widgets/poke_divider.dart';
-import '../../shared_widgets/pokemon_table.dart';
-import '../../shared_widgets/type_chip.dart';
+import '../shared_widgets/expansion_card.dart';
+import '../shared_widgets/poke_divider.dart';
+import '../shared_widgets/pokemon_table.dart';
+import '../shared_widgets/type_chip.dart';
 import 'pokemon_move_learn_table.dart';
 
 class PokemonMoveTile extends StatelessWidget {

@@ -8,9 +8,9 @@ import '../../../extensions/double_extension.dart';
 import '../../../extensions/iterable_extension.dart';
 import '../../../extensions/type_list_extension.dart';
 import '../../../theme/poke_app_text.dart';
-import '../../shared_widgets/chip_group.dart';
-import '../../shared_widgets/poke_divider.dart';
-import '../../shared_widgets/type_chip.dart';
+import '../shared_widgets/chip_group.dart';
+import '../shared_widgets/poke_divider.dart';
+import '../shared_widgets/type_chip.dart';
 
 class PokemonWeaknessResistanceWidget extends StatelessWidget {
   const PokemonWeaknessResistanceWidget({

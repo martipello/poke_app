@@ -12,13 +12,13 @@ import '../../../extensions/string_extension.dart';
 import '../../../extensions/type_data_extension.dart';
 import '../../../theme/base_theme.dart';
 import '../../../theme/poke_app_text.dart';
-import '../../shared_widgets/chip_group.dart';
-import '../../shared_widgets/expansion_card.dart';
-import '../../shared_widgets/pokemon_image.dart';
-import '../../shared_widgets/pokemon_table.dart';
-import '../../shared_widgets/type_chip.dart';
-import '../../shared_widgets/view_models/image_color_view_model.dart';
-import '../pokemon_detail_page.dart';
+import '../pokemon_detail/pokemon_detail_page.dart';
+import '../shared_widgets/chip_group.dart';
+import '../shared_widgets/expansion_card.dart';
+import '../shared_widgets/pokemon_image.dart';
+import '../shared_widgets/pokemon_table.dart';
+import '../shared_widgets/type_chip.dart';
+import '../shared_widgets/view_models/image_color_view_model.dart';
 
 const kPokemonTileImageHeight = 80.0;
 
