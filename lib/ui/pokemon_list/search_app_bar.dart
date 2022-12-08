@@ -285,7 +285,7 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
   InputDecoration _buildSearchInputDecoration() {
     return InputDecoration(
       contentPadding: EdgeInsets.zero,
-      labelText: 'Search by name',
+      labelText: context.strings.searchByName,
       labelStyle: PokeAppText.subtitle2Style.copyWith(
         color: colors(context).textOnPrimary,
       ),

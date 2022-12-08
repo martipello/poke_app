@@ -157,7 +157,7 @@ class PokemonSpeciesWidget extends StatelessWidget {
           ),
         if (eggGroups.isNotEmpty)
           PokemonTableRowInfo(
-            'Egg group',
+            context.strings.eggGroup,
             child: _buildEggGroups(
               context,
               eggGroups,

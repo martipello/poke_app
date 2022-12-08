@@ -120,7 +120,7 @@ class _PokemonTileState extends State<PokemonTile> {
   }
 
   Widget _buildPokemonInfo(String speciesName) {
-    final pokemonName = widget.pokemon.name ?? 'Unknown Pokemon';
+    final pokemonName = widget.pokemon.name ?? context.strings.unknownPokemon;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
@@ -143,7 +143,7 @@ class _PokemonTileState extends State<PokemonTile> {
   }
 
   Widget _buildPokemonId() {
-    final pokemonId = widget.pokemon.id ?? '??';
+    final pokemonId = widget.pokemon.id ?? context.strings.questionMark;
     return Padding(
       padding: const EdgeInsets.only(top: 4, right: 4, left: 16),
       child: Text(

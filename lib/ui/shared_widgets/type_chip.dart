@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../api/models/pokemon/damage_type.dart';
 import '../../api/models/pokemon/pokemon_type.dart';
+import '../../extensions/build_context_extension.dart';
 import '../../extensions/string_extension.dart';
 import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
@@ -74,7 +75,7 @@ class TypeChip extends StatelessWidget {
         labelStyle: PokeAppText.body4Style.copyWith(
           color: colors(context).cardBackground,
         ),
-        deleteButtonTooltipMessage: 'Delete',
+        deleteButtonTooltipMessage: context.strings.delete,
         deleteIconColor: colors(context).cardBackground,
         onDeleted: isSelected ? onDelete : null,
         deleteIcon: const Icon(

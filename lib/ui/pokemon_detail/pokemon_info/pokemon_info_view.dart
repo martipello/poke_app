@@ -6,6 +6,7 @@ import '../../../api/models/error_response.dart';
 import '../../../api/models/pokemon/pokemon.dart';
 import '../../../api/models/pokemon/pokemon_response.dart';
 import '../../../dependency_injection_container.dart';
+import '../../../extensions/build_context_extension.dart';
 import '../../../extensions/iterable_extension.dart';
 import '../../shared_widgets/error_widget.dart' as ew;
 import '../../shared_widgets/pokeball_loading_widget.dart';
@@ -92,7 +93,7 @@ class _PokemonInfoViewState extends State<PokemonInfoView> with AutomaticKeepAli
     return SliverFillRemaining(
       hasScrollBody: false,
       child: ew.ErrorWidget(
-        errorMessage: 'Something went wrong...',
+        errorMessage: context.strings.errorMessage,
         showImage: true,
         error: ApiResponse.error(
           error?.message ?? '',

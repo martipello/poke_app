@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../extensions/build_context_extension.dart';
 import '../../theme/poke_app_text.dart';
 
 class NoResults extends StatelessWidget {
@@ -35,7 +36,7 @@ class NoResults extends StatelessWidget {
               ),
               child: Text(
                 emptyMessage ??
-                    'No Results, you can swipe down to refresh.',
+                    context.strings.emptyMessage,
                 style: PokeAppText.body1Style,
                 textAlign: TextAlign.center,
               ),

@@ -63,7 +63,6 @@ class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepA
   Widget _buildPokemonList() {
     return SliverRefreshIndicator(
       onRefresh: () async {
-        //TODO this refresh doesn't get the current search and just retries whatever the last search was even if the text has changed
         _pokemonMovesViewModel.refresh();
       },
       scrollController: scrollController,

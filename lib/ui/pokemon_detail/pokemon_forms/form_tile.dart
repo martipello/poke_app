@@ -198,7 +198,7 @@ class _FormTileState extends State<FormTile> {
   }
 
   Widget _buildPokemonId() {
-    final pokemonId = pokemon?.id ?? '??';
+    final pokemonId = pokemon?.id ?? context.strings.questionMark;
     return Padding(
       padding: const EdgeInsets.only(top: 8),
       child: Text(

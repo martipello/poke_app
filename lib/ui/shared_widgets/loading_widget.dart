@@ -14,7 +14,6 @@ class LoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //TODO make this the pokeball animation
     return CircularProgressIndicator(
       strokeWidth: width ?? 4.0,
       valueColor: valueColor != null

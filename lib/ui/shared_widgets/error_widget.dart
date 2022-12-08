@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../api/models/api_response.dart';
+import '../../extensions/build_context_extension.dart';
 import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import 'rounded_button.dart';
@@ -54,7 +55,7 @@ class ErrorWidget extends StatelessWidget {
                 ),
                 Flexible(
                   child: Text(
-                    errorMessage ?? 'Oops that\'s an error...',
+                    errorMessage ?? context.strings.errorMessage,
                     style: PokeAppText.body2Style.copyWith(
                       color: colors(context).textOnForeground,
                     ),
@@ -68,7 +69,7 @@ class ErrorWidget extends StatelessWidget {
             ),
             if (onTryAgain != null)
               RoundedButton(
-                label: retryLabel ?? 'Try Again',
+                label: retryLabel ?? context.strings.retry,
                 disableShadow: true,
                 fillColor: colors(context).cardBackground,
                 onPressed: onTryAgain,

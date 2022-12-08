@@ -77,6 +77,7 @@ class PokemonFormsWidget extends StatelessWidget {
         form.title(),
       ),
       children: _buildPokemonFormDetail(
+        context,
         formHolder,
       ),
     );
@@ -108,6 +109,7 @@ class PokemonFormsWidget extends StatelessWidget {
   }
 
   List<Widget> _buildPokemonFormDetail(
+      BuildContext context,
     PokemonFormWithVersionGroup formHolder,
   ) {
     final form = formHolder.pokemon_v2_pokemonformnames.firstOrNull()?.pokemon_v2_pokemonform;
@@ -119,17 +121,17 @@ class PokemonFormsWidget extends StatelessWidget {
         pokemonTableRowInfoList: [
           if (isMega.isNotEmpty)
             PokemonTableRowInfo(
-              'Mega',
+              context.strings.megaForm,
               value: isMega,
             ),
           if (isDefault.isNotEmpty)
             PokemonTableRowInfo(
-              'Default',
+              context.strings.defaultForm,
               value: isDefault,
             ),
           if (isBattleOnly.isNotEmpty)
             PokemonTableRowInfo(
-              'Battle Only',
+              context.strings.battleOnlyForm,
               value: isBattleOnly,
             ),
         ],

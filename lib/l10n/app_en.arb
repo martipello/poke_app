@@ -1,6 +1,7 @@
 {
     "app_name" : "PokéApp",
     "pokedex" : "Pokédex",
+    "searchByName" : "Search by name",
     "abilities" : "Abilities",
     "species" : "Species",
     "forms" : "Forms",
@@ -18,10 +19,15 @@
     "weightLabel" : "Weight :",
     "generationLabel" : "Generation :",
 
-    "baseHappiness" : "Base Happiness",
-    "captureRate" : "Capture Rate",
-    "genderRate" : "Gender Rate",
-    "hatchCounter" : "Hatch Counter",
+    "moveMetaData" : "Move meta data",
+    "questionMark" : "??",
+    "evolutionMethod" : "Evolution Methods",
+
+    "baseHappiness" : "Base happiness",
+    "captureRate" : "Capture rate",
+    "genderRate" : "Gender rate",
+    "eggGroup" : "Egg group",
+    "hatchCounter" : "Hatch counter",
     "legendary" : "Legendary",
     "mythical" : "Mythical",
     "baby" : "Baby",
@@ -29,9 +35,25 @@
     "unknownPokemon" : "Unknown Pokemon",
     "effect" : "Effect",
     "version" : "Version",
-    "mainSeries" : "Main Series",
+    "mainSeries" : "Main series",
     "hidden" : "(Hidden)",
     "baseStats" : "Base stats",
+
+    "physicalStatLabel" : "Physical stat :",
+    "timeOfDayLabel" : "Time of day :",
+    "turnUpsideDownLabel" : "Turn upside down :",
+    "genderIdLabel" : "Gender id :",
+    "tradeSpeciesIdLabel" : "Trade species id :",
+    "heldItemLabel" : "Held item :",
+    "knownMoveTypeLabel" : "Known move type :",
+    "knownMoveIdLabel" : "Known move id :",
+    "affectionLabel" : "Affection :",
+    "beautyLabel" : "Beauty :",
+    "happinessLabel" : "Happiness :",
+    "levelLabel" : "Level :",
+    "itemLabel" : "Item :",
+    "locationLabel" : "Location :",
+    "trueLabel" : "true",
 
     "generation" : "Generation :",
     "power" : "Power :",
@@ -40,7 +62,6 @@
     "noDescription" : "No description.",
     "moveDetails" : "Move Details",
     "learningMethods" : "Learning Methods",
-
 
     "ailment" : "Ailment Name :",
     "criticalRate" : "Critical :",
@@ -52,6 +73,10 @@
     "maxHits" : "Max Hits :",
     "minTurns" : "Min Turns :",
     "maxTurns" : "Max Turns :",
+
+    "megaForm" : "Mega",
+    "defaultForm" : "Default",
+    "battleOnlyForm" : "Battle only",
 
     "total" : "Total",
     "typeEffectiveness" : "Type Effectiveness",
@@ -77,6 +102,9 @@
     "shareLabel" : "Check out the PokéApp : https://PokéApp.example.playstore.com",
     "ok" : "Ok",
     "cancel" : "Cancel",
+    "delete" : "Delete",
+    "emptyMessage" : "No Results, you can swipe down to refresh.",
+    "errorMessage" : "Oops that's an error...",
 
     "weaknessLabel" : "Weakness to :",
     "resistantLabel" : "Resistant to :",

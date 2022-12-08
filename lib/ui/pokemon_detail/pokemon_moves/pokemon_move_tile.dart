@@ -90,7 +90,7 @@ class PokemonMoveTile extends StatelessWidget {
     final maxTurns = (moveMetum?.max_turns ?? '').toString();
     final statChance = (moveMetum?.stat_chance ?? '').toString();
     return PokemonTable(
-      tableTitle: 'MoveMetum',
+      tableTitle: context.strings.moveMetaData,
       padding: const EdgeInsets.only(bottom: 8),
       pokemonTableRowInfoList: [
         PokemonTableRowInfo(

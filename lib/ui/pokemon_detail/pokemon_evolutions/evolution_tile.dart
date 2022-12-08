@@ -5,6 +5,7 @@ import '../../../api/models/pokemon/pokemon.dart';
 import '../../../api/models/pokemon/pokemon_species_holder.dart';
 import '../../../api/models/pokemon/pokemon_type.dart';
 import '../../../dependency_injection_container.dart';
+import '../../../extensions/build_context_extension.dart';
 import '../../../extensions/iterable_extension.dart';
 import '../../../extensions/pokemon_resource_extension.dart';
 import '../../../extensions/string_extension.dart';
@@ -111,7 +112,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
           final isFirst = evolutionConditions.isNotEmpty;
           evolutionConditions.add(
             _buildEvolutionCondition(
-              'Location :',
+              context.strings.locationLabel,
               '$location $region',
               isFirst,
             ),
@@ -121,7 +122,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
           final isFirst = evolutionConditions.isNotEmpty;
           evolutionConditions.add(
             _buildEvolutionCondition(
-              'Item :',
+              context.strings.itemLabel,
               item,
               isFirst,
             ),
@@ -131,7 +132,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
           final isFirst = evolutionConditions.isNotEmpty;
           evolutionConditions.add(
             _buildEvolutionCondition(
-              'Level :',
+              context.strings.levelLabel,
               minLevel.toString(),
               isFirst,
             ),
@@ -141,7 +142,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
           final isFirst = evolutionConditions.isNotEmpty;
           evolutionConditions.add(
             _buildEvolutionCondition(
-              'Happiness :',
+              context.strings.happinessLabel,
               minHappiness.toString(),
               isFirst,
             ),
@@ -151,7 +152,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
           final isFirst = evolutionConditions.isNotEmpty;
           evolutionConditions.add(
             _buildEvolutionCondition(
-              'Beauty :',
+              context.strings.beautyLabel,
               minBeauty.toString(),
               isFirst,
             ),
@@ -161,7 +162,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
           final isFirst = evolutionConditions.isNotEmpty;
           evolutionConditions.add(
             _buildEvolutionCondition(
-              'Affection :',
+              context.strings.affectionLabel,
               minAffection.toString(),
               isFirst,
             ),
@@ -171,7 +172,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
           final isFirst = evolutionConditions.isNotEmpty;
           evolutionConditions.add(
             _buildEvolutionCondition(
-              'Known move id :',
+              context.strings.knownMoveIdLabel,
               knownMoveId.toString(),
               isFirst,
             ),
@@ -181,7 +182,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
           final isFirst = evolutionConditions.isNotEmpty;
           evolutionConditions.add(
             _buildEvolutionCondition(
-              'Known move type :',
+              context.strings.knownMoveTypeLabel,
               PokemonType.getTypeForId(knownMoveTypeId).name.capitalize(),
               isFirst,
             ),
@@ -191,7 +192,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
           final isFirst = evolutionConditions.isNotEmpty;
           evolutionConditions.add(
             _buildEvolutionCondition(
-              'Held item :',
+              context.strings.heldItemLabel,
               heldItemName,
               isFirst,
             ),
@@ -201,7 +202,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
           final isFirst = evolutionConditions.isNotEmpty;
           evolutionConditions.add(
             _buildEvolutionCondition(
-              'Trade species id :',
+              context.strings.tradeSpeciesIdLabel,
               tradeSpeciesId.toString(),
               isFirst,
             ),
@@ -211,7 +212,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
           final isFirst = evolutionConditions.isNotEmpty;
           evolutionConditions.add(
             _buildEvolutionCondition(
-              'Gender id :',
+              context.strings.genderIdLabel,
               genderId.toString(),
               isFirst,
             ),
@@ -221,8 +222,8 @@ class _EvolutionTileState extends State<EvolutionTile> {
           final isFirst = evolutionConditions.isNotEmpty;
           evolutionConditions.add(
             _buildEvolutionCondition(
-              'Turn upside down :',
-              'true',
+              context.strings.turnUpsideDownLabel,
+              context.strings.trueLabel,
               isFirst,
             ),
           );
@@ -230,14 +231,18 @@ class _EvolutionTileState extends State<EvolutionTile> {
         if (timeOfDay != null && timeOfDay.isNotEmpty) {
           final isFirst = evolutionConditions.isNotEmpty;
           evolutionConditions.add(
-            _buildEvolutionCondition('Time of day :', timeOfDay, isFirst),
+            _buildEvolutionCondition(
+              context.strings.timeOfDayLabel,
+              timeOfDay,
+              isFirst,
+            ),
           );
         }
         if (relativePhysicalStats != null) {
           final isFirst = evolutionConditions.isNotEmpty;
           evolutionConditions.add(
             _buildEvolutionCondition(
-              'Physical stat :',
+              context.strings.physicalStatLabel,
               relativePhysicalStats.toString(),
               isFirst,
             ),
@@ -266,7 +271,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
           bottom: 24,
         ),
         child: PokemonTable(
-          tableTitle: 'Evolution Methods',
+          tableTitle: context.strings.evolutionMethod,
           pokemonTableRowInfoList: evolutionMetaData,
         ),
       ),
@@ -362,7 +367,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
   }
 
   Widget _buildPokemonInfo(String speciesName) {
-    final pokemonName = pokemon?.name ?? 'Unknown Pokemon';
+    final pokemonName = pokemon?.name ?? context.strings.unknownPokemon;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
@@ -386,7 +391,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
   }
 
   Widget _buildPokemonId() {
-    final pokemonId = pokemon?.id ?? '??';
+    final pokemonId = pokemon?.id ?? context.strings.questionMark;
     return Padding(
       padding: const EdgeInsets.only(top: 8),
       child: Text(
