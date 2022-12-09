@@ -155,7 +155,7 @@ class PokemonMoveTile extends StatelessWidget {
     } else if (learnMethodsByVersionGroup.length == 1) {
       final pokemonMoveLearnTableRow = PokemonTableRowInfo(
         learnMethodsByVersionGroup.keys.firstOrNull() ?? '',
-        value: 'All generations.',
+        value: context.strings.allGenerations,
       );
       return _buildLearnMethodTable(
         context,
@@ -199,8 +199,11 @@ class PokemonMoveTile extends StatelessWidget {
     BuildContext context,
   ) {
     final tmList = pokemonMove.pokemon_v2_move?.pokemon_v2_machines.toList() ?? [];
-    if (tmList.length == 1) {
-      final machineNumber = tmList.first.machine_number;
+    final tmVersionGroupsByMachineNumber = tmList.groupBy(
+      (e) => e.machine_number,
+    );
+    if (tmVersionGroupsByMachineNumber.length == 1) {
+      final machineNumber = tmVersionGroupsByMachineNumber.keys.first;
       if (machineNumber != null) {
         final tmTableRow = PokemonTableRowInfo(
           context.strings.tm(
@@ -214,13 +217,17 @@ class PokemonMoveTile extends StatelessWidget {
         );
       }
     } else if (tmList.isNotEmpty) {
-      final tmTableRows = tmList
+      final tmTableRows = tmVersionGroupsByMachineNumber.entries
           .map(
-            (tm) => PokemonTableRowInfo(
+            (tme) => PokemonTableRowInfo(
               context.strings.tm(
-                tm.machine_number!,
+                tme.key!,
               ),
-              value: tm.pokemon_v2_versiongroup?.name,
+              value: tme.value
+                  .map(
+                    (e) => e.pokemon_v2_versiongroup?.normalizeName(),
+                  )
+                  .join(', '),
             ),
           )
           .toList();

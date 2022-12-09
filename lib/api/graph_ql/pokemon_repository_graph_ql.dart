@@ -459,7 +459,7 @@ query MyQuery {
           healing
         }
         id
-        pokemon_v2_machines(distinct_on: machine_number, order_by: {version_group_id: asc}) {
+        pokemon_v2_machines(order_by: {version_group_id: asc}) {
           machine_number
           pokemon_v2_versiongroup {
             name
