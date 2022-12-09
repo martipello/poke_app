@@ -73,6 +73,12 @@ class _$MoveMetumSerializer implements StructuredSerializer<MoveMetum> {
         ..add('stat_chance')
         ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
+    value = object.healing;
+    if (value != null) {
+      result
+        ..add('healing')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
     value = object.pokemon_v2_movemetaailment;
     if (value != null) {
       result
@@ -137,6 +143,10 @@ class _$MoveMetumSerializer implements StructuredSerializer<MoveMetum> {
           result.stat_chance = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int?;
           break;
+        case 'healing':
+          result.healing = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
         case 'pokemon_v2_movemetaailment':
           result.pokemon_v2_movemetaailment.replace(serializers.deserialize(
                   value,
@@ -176,6 +186,8 @@ class _$MoveMetum extends MoveMetum {
   @override
   final int? stat_chance;
   @override
+  final int? healing;
+  @override
   final PokemonResource? pokemon_v2_movemetaailment;
   @override
   final PokemonResource? pokemon_v2_movemetacategory;
@@ -193,6 +205,7 @@ class _$MoveMetum extends MoveMetum {
       this.min_hits,
       this.min_turns,
       this.stat_chance,
+      this.healing,
       this.pokemon_v2_movemetaailment,
       this.pokemon_v2_movemetacategory})
       : super._();
@@ -217,6 +230,7 @@ class _$MoveMetum extends MoveMetum {
         min_hits == other.min_hits &&
         min_turns == other.min_turns &&
         stat_chance == other.stat_chance &&
+        healing == other.healing &&
         pokemon_v2_movemetaailment == other.pokemon_v2_movemetaailment &&
         pokemon_v2_movemetacategory == other.pokemon_v2_movemetacategory;
   }
@@ -232,15 +246,17 @@ class _$MoveMetum extends MoveMetum {
                             $jc(
                                 $jc(
                                     $jc(
-                                        $jc($jc(0, crit_rate.hashCode),
-                                            ailment_chance.hashCode),
-                                        flinch_chance.hashCode),
-                                    drain.hashCode),
-                                max_hits.hashCode),
-                            max_turns.hashCode),
-                        min_hits.hashCode),
-                    min_turns.hashCode),
-                stat_chance.hashCode),
+                                        $jc(
+                                            $jc($jc(0, crit_rate.hashCode),
+                                                ailment_chance.hashCode),
+                                            flinch_chance.hashCode),
+                                        drain.hashCode),
+                                    max_hits.hashCode),
+                                max_turns.hashCode),
+                            min_hits.hashCode),
+                        min_turns.hashCode),
+                    stat_chance.hashCode),
+                healing.hashCode),
             pokemon_v2_movemetaailment.hashCode),
         pokemon_v2_movemetacategory.hashCode));
   }
@@ -257,6 +273,7 @@ class _$MoveMetum extends MoveMetum {
           ..add('min_hits', min_hits)
           ..add('min_turns', min_turns)
           ..add('stat_chance', stat_chance)
+          ..add('healing', healing)
           ..add('pokemon_v2_movemetaailment', pokemon_v2_movemetaailment)
           ..add('pokemon_v2_movemetacategory', pokemon_v2_movemetacategory))
         .toString();
@@ -304,6 +321,10 @@ class MoveMetumBuilder implements Builder<MoveMetum, MoveMetumBuilder> {
   int? get stat_chance => _$this._stat_chance;
   set stat_chance(int? stat_chance) => _$this._stat_chance = stat_chance;
 
+  int? _healing;
+  int? get healing => _$this._healing;
+  set healing(int? healing) => _$this._healing = healing;
+
   PokemonResourceBuilder? _pokemon_v2_movemetaailment;
   PokemonResourceBuilder get pokemon_v2_movemetaailment =>
       _$this._pokemon_v2_movemetaailment ??= new PokemonResourceBuilder();
@@ -332,6 +353,7 @@ class MoveMetumBuilder implements Builder<MoveMetum, MoveMetumBuilder> {
       _min_hits = $v.min_hits;
       _min_turns = $v.min_turns;
       _stat_chance = $v.stat_chance;
+      _healing = $v.healing;
       _pokemon_v2_movemetaailment = $v.pokemon_v2_movemetaailment?.toBuilder();
       _pokemon_v2_movemetacategory =
           $v.pokemon_v2_movemetacategory?.toBuilder();
@@ -368,6 +390,7 @@ class MoveMetumBuilder implements Builder<MoveMetum, MoveMetumBuilder> {
               min_hits: min_hits,
               min_turns: min_turns,
               stat_chance: stat_chance,
+              healing: healing,
               pokemon_v2_movemetaailment: _pokemon_v2_movemetaailment?.build(),
               pokemon_v2_movemetacategory:
                   _pokemon_v2_movemetacategory?.build());

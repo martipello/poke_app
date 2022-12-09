@@ -410,9 +410,17 @@ query MyQuery {
       level
       pokemon_v2_movelearnmethod {
         name
-        pokemon_v2_movelearnmethoddescriptions(where: {language_id: {_eq: ${pokemonRequest.languageId}}}) {
-          id
-          description
+        pokemon_v2_versiongroupmovelearnmethods {
+          pokemon_v2_versiongroup {
+            name
+            id
+          }
+          pokemon_v2_movelearnmethod {
+            name
+            pokemon_v2_movelearnmethoddescriptions(where: {language_id: {_eq: ${pokemonRequest.languageId}}}, limit: 1) {
+              description
+            }
+          }
         }
       }
       pokemon_v2_move {
@@ -426,15 +434,11 @@ query MyQuery {
         type_id
         pokemon_v2_type {
           name
-          pokemon_v2_movedamageclass {
-            pokemon_v2_movedamageclassdescriptions {
-              pokemon_v2_movedamageclass {
-                name
-                id
-              }
-            }
-          }
           id
+          pokemon_v2_movedamageclass {
+            name
+            id
+          }
         }
         pokemon_v2_movemetum {
           crit_rate
@@ -452,9 +456,10 @@ query MyQuery {
           pokemon_v2_movemetacategory {
             name
           }
+          healing
         }
         id
-        pokemon_v2_machines(distinct_on: machine_number) {
+        pokemon_v2_machines(distinct_on: machine_number, order_by: {version_group_id: asc}) {
           machine_number
           pokemon_v2_versiongroup {
             name
@@ -467,7 +472,6 @@ query MyQuery {
     }
   }
 }
-
         ''',
       ),
     );

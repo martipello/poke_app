@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../api/models/pokemon/damage_type.dart';
 import '../../../api/models/pokemon/pokemon_move_holder.dart';
-import '../../../api/models/pokemon/pokemon_resource.dart';
 import '../../../api/models/pokemon/pokemon_type.dart';
 import '../../../extensions/build_context_extension.dart';
 import '../../../extensions/int_extension.dart';
@@ -17,7 +16,6 @@ import '../shared_widgets/expansion_card.dart';
 import '../shared_widgets/poke_divider.dart';
 import '../shared_widgets/pokemon_table.dart';
 import '../shared_widgets/type_chip.dart';
-import 'pokemon_move_learn_table.dart';
 
 class PokemonMoveTile extends StatelessWidget {
   PokemonMoveTile({
@@ -29,11 +27,11 @@ class PokemonMoveTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final description = pokemonMove.pokemon_v2_move?.flavorText() ?? context.strings.noDescription;
+    final moveLearnMethod = pokemonMove.pokemon_v2_movelearnmethod?.description() ?? '';
     return ExpansionCard(
       bottomWidgetBuilder: _buildMoveTypeChipHolder,
       title: pokemonMove.pokemon_v2_move?.name?.capitalize() ?? '',
-      subtitle: description,
+      subtitle: moveLearnMethod,
       expandedChildren: _buildPokemonMoveExpanse(
         context,
       ),
@@ -43,24 +41,25 @@ class PokemonMoveTile extends StatelessWidget {
   List<Widget> _buildPokemonMoveExpanse(
     BuildContext context,
   ) {
-    final moveLearnMethod = pokemonMove.pokemon_v2_movelearnmethod?.description() ?? '';
+    final description = pokemonMove.pokemon_v2_move?.flavorText() ?? context.strings.noDescription;
     return [
       _buildMediumMargin(),
-      if (moveLearnMethod.isNotEmpty)
-        _buildMoveLearnMethod(
+      if (description.isNotEmpty)
+        _buildDescription(
           context,
-          moveLearnMethod,
+          description,
         ),
-      _buildMediumMargin(),
-      _buildLearnMethodTable(context),
+      _buildLargeMargin(),
+      _buildLearnMethodSection(context),
       Padding(
         padding: const EdgeInsets.all(16),
         child: PokeDivider(),
       ),
-      _buildMoveDetailHeader(
-        context,
+      _buildTMSection(context),
+      Padding(
+        padding: const EdgeInsets.all(16),
+        child: PokeDivider(),
       ),
-      _buildMediumMargin(),
       _buildMoveDetailsTable(
         context,
       ),
@@ -88,6 +87,7 @@ class PokemonMoveTile extends StatelessWidget {
     final maxHits = (moveMetum?.max_hits ?? '').toString();
     final minTurns = (moveMetum?.min_turns ?? '').toString();
     final maxTurns = (moveMetum?.max_turns ?? '').toString();
+    final healing = (moveMetum?.healing ?? '').toString();
     final statChance = (moveMetum?.stat_chance ?? '').toString();
     return PokemonTable(
       tableTitle: context.strings.moveMetaData,
@@ -100,6 +100,10 @@ class PokemonMoveTile extends StatelessWidget {
         PokemonTableRowInfo(
           context.strings.criticalRate,
           value: criticalRate,
+        ),
+        PokemonTableRowInfo(
+          context.strings.healing,
+          value: healing,
         ),
         PokemonTableRowInfo(
           context.strings.ailmentChance,
@@ -137,34 +141,118 @@ class PokemonMoveTile extends StatelessWidget {
     );
   }
 
-  Widget _buildLearnMethodTable(
+  Widget _buildLearnMethodSection(
     BuildContext context,
   ) {
-    final pokemonMoveLearnTableRows = pokemonMove.pokemon_v2_movelearnmethod?.pokemon_v2_movelearnmethoddescriptions
-            .map(
-              (moveLearnMethod) => PokemonMoveLearnTableRow(
-                generation: moveLearnMethod.pokemon_v2_versiongroup?.name ?? '',
-                level: 'level',
-                learnMethod: moveLearnMethod.pokemon_v2_movelearnmethod?.name ?? '',
-              ),
-            )
-            .toList() ??
-        [];
-    return PokemonMoveLearnTable(
+    final learnMethodsByVersionGroup =
+        pokemonMove.pokemon_v2_movelearnmethod?.pokemon_v2_versiongroupmovelearnmethods.groupBy(
+              (e) => e.pokemon_v2_movelearnmethod?.name,
+            ) ??
+            {};
+
+    if (learnMethodsByVersionGroup.isEmpty) {
+      return const SizedBox();
+    } else if (learnMethodsByVersionGroup.length == 1) {
+      final pokemonMoveLearnTableRow = PokemonTableRowInfo(
+        learnMethodsByVersionGroup.keys.firstOrNull() ?? '',
+        value: 'All generations.',
+      );
+      return _buildLearnMethodTable(
+        context,
+        [
+          pokemonMoveLearnTableRow,
+        ],
+      );
+    } else {
+      final pokemonMoveLearnTableRows = learnMethodsByVersionGroup.entries
+          .map(
+            (moveLearnMethod) => PokemonTableRowInfo(
+              moveLearnMethod.value.firstOrNull()?.pokemon_v2_movelearnmethod?.name ?? '',
+              value: moveLearnMethod.value
+                  .map(
+                    (e) => e.pokemon_v2_versiongroup?.normalizeName(),
+                  )
+                  .join(', '),
+            ),
+          )
+          .toList();
+
+      return _buildLearnMethodTable(
+        context,
+        pokemonMoveLearnTableRows,
+      );
+    }
+  }
+
+  Widget _buildLearnMethodTable(
+    BuildContext context,
+    List<PokemonTableRowInfo> pokemonMoveLearnTableRows,
+  ) {
+    return PokemonTable(
       tableTitle: context.strings.learningMethods,
       padding: const EdgeInsets.only(bottom: 8),
-      pokemonMoveLearnTableRows: pokemonMoveLearnTableRows,
+      pokemonTableRowInfoList: pokemonMoveLearnTableRows,
+    );
+  }
+
+  Widget _buildTMSection(
+    BuildContext context,
+  ) {
+    final tmList = pokemonMove.pokemon_v2_move?.pokemon_v2_machines.toList() ?? [];
+    if (tmList.length == 1) {
+      final machineNumber = tmList.first.machine_number;
+      if (machineNumber != null) {
+        final tmTableRow = PokemonTableRowInfo(
+          context.strings.tm(
+            machineNumber,
+          ),
+          value: context.strings.allGenerations,
+        );
+        return _buildTMTable(
+          context,
+          [tmTableRow],
+        );
+      }
+    } else if (tmList.isNotEmpty) {
+      final tmTableRows = tmList
+          .map(
+            (tm) => PokemonTableRowInfo(
+              context.strings.tm(
+                tm.machine_number!,
+              ),
+              value: tm.pokemon_v2_versiongroup?.name,
+            ),
+          )
+          .toList();
+      return _buildTMTable(
+        context,
+        tmTableRows,
+      );
+    }
+    return const SizedBox();
+  }
+
+  Widget _buildTMTable(
+    BuildContext context,
+    List<PokemonTableRowInfo> pokemonMoveLearnTableRows,
+  ) {
+    return PokemonTable(
+      tableTitle: context.strings.tmTitle,
+      padding: const EdgeInsets.only(bottom: 8),
+      pokemonTableRowInfoList: pokemonMoveLearnTableRows,
     );
   }
 
   Widget _buildMoveDetailsTable(
     BuildContext context,
   ) {
+    final accuracy = pokemonMove.pokemon_v2_move?.accuracy;
     final generation = pokemonMove.pokemon_v2_move?.pokemon_v2_generation.generationName();
     final power = (pokemonMove.pokemon_v2_move?.power ?? '').toString();
-    final accuracy = '${(pokemonMove.pokemon_v2_move?.accuracy ?? '-').toString()}%';
+    final accuracyText = accuracy != null ? '$accuracy%' : '-';
     final pp = (pokemonMove.pokemon_v2_move?.pp ?? '').toString();
     return PokemonTable(
+      tableTitle: context.strings.moveDetails,
       padding: const EdgeInsets.only(
         bottom: 8,
       ),
@@ -179,7 +267,7 @@ class PokemonMoveTile extends StatelessWidget {
         ),
         PokemonTableRowInfo(
           context.strings.accuracy,
-          value: accuracy,
+          value: accuracyText,
         ),
         PokemonTableRowInfo(
           context.strings.pp,
@@ -210,15 +298,8 @@ class PokemonMoveTile extends StatelessWidget {
     final moveType = PokemonType.getTypeForId(
       pokemonMove.pokemon_v2_move?.pokemon_v2_type?.id ?? 0,
     );
-    final moveDamageClass = pokemonMove
-            .pokemon_v2_move?.pokemon_v2_type?.pokemon_v2_movedamageclass?.pokemon_v2_movedamageclassdescriptions
-            .toList() ??
-        <PokemonResource>[];
-    final damageType = moveDamageClass
-        .map(
-          (e) => DamageType.getTypeForId(e.pokemon_v2_movedamageclass?.id ?? 0),
-        )
-        .firstOrNull();
+    final moveDamageClass = pokemonMove.pokemon_v2_move?.pokemon_v2_type?.pokemon_v2_movedamageclass;
+    final damageType = DamageType.getTypeForId(moveDamageClass?.id ?? 0);
     final moveTypeChips = [damageType, Object(), moveType].map(
       (type) {
         if (type is PokemonType) {
@@ -265,7 +346,7 @@ class PokemonMoveTile extends StatelessWidget {
     );
   }
 
-  Widget _buildMoveLearnMethod(
+  Widget _buildDescription(
     BuildContext context,
     String description,
   ) {
@@ -274,6 +355,12 @@ class PokemonMoveTile extends StatelessWidget {
       style: PokeAppText.body4Style.copyWith(
         color: colors(context).textOnForeground,
       ),
+    );
+  }
+
+  Widget _buildLargeMargin() {
+    return const SizedBox(
+      height: 24,
     );
   }
 

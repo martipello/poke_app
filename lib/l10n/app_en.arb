@@ -11,6 +11,18 @@
     "moves" : "Moves",
     "evolutions" : "Evolutions",
     "info" : "Info",
+    "allGenerations" : "All generations",
+
+    "tmTitle" : "TMs",
+
+    "tm": "TM {number} ",
+    "@tm": {
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
 
     "shape" : "Shape",
     "habitat" : "Habitat",
@@ -65,6 +77,7 @@
 
     "ailment" : "Ailment Name :",
     "criticalRate" : "Critical :",
+    "healing" : "Healing :",
     "ailmentChance" : "Ailment :",
     "flinchChance" : "Flinch :",
     "statChance" : "Stat Change :",

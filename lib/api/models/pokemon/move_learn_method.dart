@@ -15,6 +15,8 @@ abstract class MoveLearnMethod implements Built<MoveLearnMethod, MoveLearnMethod
 
   String? get name;
 
+  BuiltList<PokemonResource> get pokemon_v2_versiongroupmovelearnmethods;
+
   BuiltList<PokemonResource> get pokemon_v2_movelearnmethoddescriptions;
 
   Map<String, dynamic> toJson() {

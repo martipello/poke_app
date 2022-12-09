@@ -2,19 +2,19 @@ import 'dart:ui';
 
 enum DamageType {
   physical(
-    1,
+    2,
     'physical',
     Color(0xFFCA2212),
     'assets/images/physical.png',
   ),
   special(
-    2,
+    3,
     'special',
     Color(0xFF505970),
     'assets/images/special.png',
   ),
   status(
-    3,
+    1,
     'status',
     Color(0xFF8C888C),
     'assets/images/status.png',
@@ -41,11 +41,11 @@ enum DamageType {
   static DamageType getTypeForId(int id) {
     switch (id) {
       case 1:
-        return DamageType.physical;
-      case 2:
-        return DamageType.special;
-      case 3:
         return DamageType.status;
+      case 2:
+        return DamageType.physical;
+      case 3:
+        return DamageType.special;
       default:
         return DamageType.unknown;
     }

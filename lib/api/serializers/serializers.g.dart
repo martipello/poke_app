@@ -72,11 +72,14 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(PokemonResource)]),
           () => new ListBuilder<PokemonResource>())
       ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(Machine)]),
+          () => new ListBuilder<Machine>())
+      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(PokemonResource)]),
           () => new ListBuilder<PokemonResource>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(Machine)]),
-          () => new ListBuilder<Machine>())
+          const FullType(BuiltList, const [const FullType(PokemonResource)]),
+          () => new ListBuilder<PokemonResource>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(PokemonResource)]),
           () => new ListBuilder<PokemonResource>())

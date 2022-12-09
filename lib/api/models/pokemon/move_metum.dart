@@ -30,6 +30,8 @@ abstract class MoveMetum implements Built<MoveMetum, MoveMetumBuilder> {
 
   int? get stat_chance;
 
+  int? get healing;
+
   PokemonResource? get pokemon_v2_movemetaailment;
 
   PokemonResource? get pokemon_v2_movemetacategory;
