@@ -7,6 +7,7 @@ import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import '../shared_widgets/clipped_app_bar.dart';
 import '../shared_widgets/poke_divider.dart';
+import '../shared_widgets/pokeball_scroll_thumb.dart';
 
 class About extends StatefulWidget {
   About({Key? key}) : super(key: key);
@@ -33,9 +34,8 @@ class _AboutState extends State<About> {
           scrollThumbBuilder: (
             scrollInfo,
           ) {
-            return _buildScrollThumbHolder(
-              context,
-              scrollInfo,
+            return PokeballScrollThumb(
+              scrollbarInfo: scrollInfo,
             );
           },
           child: _buildScrollWidget(
@@ -83,53 +83,6 @@ class _AboutState extends State<About> {
         _buildAboutFairUse(context),
         _buildAboutLicences(context),
       ],
-    );
-  }
-
-  Widget _buildScrollThumbHolder(
-    BuildContext context,
-    ScrollbarInfo scrollInfo,
-  ) {
-    final offsetY = _calculateScrollOffset(
-      context,
-      scrollInfo,
-    );
-
-    return Stack(
-      children: [
-        SizedBox(
-          height: scrollInfo.thumbMainAxisSize,
-          width: 24,
-        ),
-        AnimatedPositioned(
-          duration: const Duration(
-            milliseconds: 30,
-          ),
-          top: offsetY,
-          child: _buildScrollThumb(
-            context,
-            scrollInfo,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildScrollThumb(
-    BuildContext context,
-    ScrollbarInfo scrollInfo,
-  ) {
-    final turns = scrollInfo.thumbMainAxisOffset.toInt().toDouble();
-    return AnimatedRotation(
-      duration: const Duration(
-        milliseconds: 100,
-      ),
-      turns: turns > 0 ? -(turns / 100) : -turns,
-      child: Image.asset(
-        'assets/images/pokeball.png',
-        height: 24,
-        width: 24,
-      ),
     );
   }
 
@@ -285,25 +238,4 @@ class _AboutState extends State<About> {
     );
   }
 
-  double _calculateScrollOffset(
-    BuildContext context,
-    ScrollbarInfo scrollInfo,
-  ) {
-    final thumbMainAxisSize = scrollInfo.thumbMainAxisSize;
-    final thumbMainAxisOffset = scrollInfo.thumbMainAxisOffset;
-    final screenHeight = context.screenHeight;
-    final statusBarHeight = context.statusBarHeight;
-
-    final percentage = (thumbMainAxisOffset / ((screenHeight) - (kToolbarHeight + statusBarHeight + 100))).clamp(
-      0.1,
-      1,
-    );
-    final offsetY = (thumbMainAxisSize * percentage)
-        .clamp(
-          kToolbarHeight,
-          thumbMainAxisSize,
-        )
-        .toDouble();
-    return offsetY;
-  }
 }

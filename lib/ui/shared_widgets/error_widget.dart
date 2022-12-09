@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:package_info/package_info.dart';
 
 import '../../api/models/api_response.dart';
+import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
+import '../../extensions/string_extension.dart';
+import '../../flavors.dart';
+import '../../services/launch_service.dart';
 import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
+import '../../utils/constants.dart';
+import 'poke_dialog.dart';
 import 'rounded_button.dart';
 
 class ErrorWidget extends StatelessWidget {
@@ -23,6 +30,8 @@ class ErrorWidget extends StatelessWidget {
   final String? errorMessage;
   final String? retryLabel;
   final bool showImage;
+
+  final _launcherService = getIt.get<LaunchService>();
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +53,7 @@ class ErrorWidget extends StatelessWidget {
               ),
             Row(
               mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 2.0),
@@ -87,10 +96,92 @@ class ErrorWidget extends StatelessWidget {
   Widget _buildInfoIcon(
     BuildContext context,
   ) {
-    return Icon(
-      Icons.info_outline,
+    return IconButton(
+      icon: const Icon(
+        Icons.info_outline,
+        size: 18,
+      ),
       color: colors(context).textOnForeground,
-      size: 18,
+      onPressed: () {
+        _showErrorDialog(context, error);
+      },
+    );
+  }
+
+  Future _showErrorDialog(
+    BuildContext context,
+    ApiResponse? error,
+  ) async {
+    final errorCode = error?.error?.statusCode ?? 'No error code';
+    final errorMessage = error?.error?.message ?? 'No error message';
+    return PokeDialog(
+      title: 'Error',
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const SizedBox(
+            height: 8,
+          ),
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: (context.screenHeight - 200),
+            ),
+            child: SingleChildScrollView(
+              child: Text(
+                'Message : $errorMessage',
+                style: PokeAppText.body4Style,
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 4,
+          ),
+          Text(
+            'Code : $errorCode',
+            style: PokeAppText.body4Style,
+          ),
+        ],
+      ),
+      dialogActions: [
+        DialogAction(
+          actionText: 'Send Report',
+          actionVoidCallback: () async {
+            final mailToUri = await _createMailToUri(context);
+            _launcherService.launchEvent(
+              context,
+              mailToUri,
+            );
+          },
+        ),
+      ],
+    ).show(context);
+  }
+
+  Future<Uri> _createMailToUri(
+    BuildContext context,
+  ) async {
+    final errorMessage = error?.error?.message ?? 'No error message';
+    final errorCode = error?.error?.statusCode ?? 'No error code';
+    final errorUrl = error?.error?.url ?? 'No url';
+    final packageInfo = await getIt.getAsync<PackageInfo>();
+    final appName = packageInfo.appName;
+    final appVersion = packageInfo.version;
+    final platformName = Theme.of(context).platform;
+    final flavorName = F.title;
+    const subject = 'PokeApp Error';
+    final emailBody = '<br/>Name       : $appName.'
+        '<br/>Platform   : $platformName.'
+        '<br/>Version    : $appVersion.'
+        '<br/>Flavor     : $flavorName.'
+        '<br/>Url        : $errorUrl.'
+        '<br/>Error      : $errorMessage.'
+        '<br/>Error Code : $errorCode.';
+    return Constants.kAppError.toEmailUri(
+      queryParameters: {
+        'subject': subject,
+        'body': emailBody,
+      },
     );
   }
 }

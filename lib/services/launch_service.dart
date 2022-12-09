@@ -1,19 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../theme/base_theme.dart';
 import '../theme/poke_app_text.dart';
+import '../utils/constants.dart';
 
 class LaunchService {
   Future<void> launchEvent(
     BuildContext context,
-    String _url,
-  ) async =>
-      await canLaunchUrlString(_url)
-          ? await launchUrlString(_url)
-          : await launchSnackBar(
-              context,
-              _url,
-            );
+    Uri uri,
+  ) async {
+    if (uri.scheme == Constants.kMailto) {
+      await launchUrl(uri);
+    } else {
+      try {
+        await canLaunchUrl(uri);
+        launchUrl(uri);
+      } catch (e) {
+        launchSnackBar(context, e.toString());
+      }
+    }
+  }
 
   Future<void> launchSnackBar(
     BuildContext context,
@@ -29,7 +36,9 @@ class LaunchService {
             children: [
               Text(
                 'Failed to launch $_url',
-                style: PokeAppText.body3Style,
+                style: PokeAppText.body3Style.copyWith(
+                  color: colors(context).textOnPrimary,
+                ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),

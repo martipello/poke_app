@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api/api_client.dart';
@@ -27,8 +28,9 @@ import 'ui/shared_widgets/view_models/spash_view_model.dart';
 final getIt = GetIt.instance;
 
 Future<void> init() async {
-  getIt.registerLazySingleton(() => ApiClient(getIt()));
   getIt.registerLazySingletonAsync(SharedPreferences.getInstance);
+  getIt.registerLazySingletonAsync(PackageInfo.fromPlatform);
+  getIt.registerLazySingleton(() => ApiClient(getIt()));
   getIt.registerLazySingleton(SharedPreferencesService.new);
   getIt.registerLazySingleton(() => LanguageService(getIt()));
   getIt.registerLazySingleton(() => ThemeService(getIt()));

@@ -3,9 +3,11 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '../../../api/error_handler.dart';
 import '../../../api/graph_ql/pokemon_repository_graph_ql.dart';
 import '../../../api/models/api_response.dart';
+import '../../../api/models/error_response.dart';
 import '../../../api/models/pokemon/pokemon.dart';
 import '../../../api/models/pokemon/pokemon_request.dart';
 import '../../../api/models/pokemon/pokemon_response.dart';
+import '../../../extensions/iterable_extension.dart';
 import '../../../services/language_service.dart';
 
 class PokemonPagingAdapter {
@@ -75,7 +77,13 @@ class PokemonPagingAdapter {
           }
         } else {
           if (!_hasBeenDisposed) {
-            _handleError(ApiResponse.error('Unknown error...'));
+            _handleError(
+              ErrorResponse(
+                    (b) => b
+                  ..error = newPage.exception?.graphqlErrors.firstOrNull()?.message
+                  ..statusCode = 503,
+              ),
+            );
           }
         }
       } catch (error) {
@@ -109,7 +117,9 @@ class PokemonPagingAdapter {
   }
 
   void _handleError(Object error) {
-    final handledError = errorHandler.handleError(error);
+    final handledError = errorHandler.handleError(
+      error,
+    );
     pagingController?.error = handledError;
   }
 

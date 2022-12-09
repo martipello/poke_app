@@ -8,6 +8,7 @@ import '../../../../api/models/pokemon/pokemon_request.dart';
 import '../../../../api/models/pokemon/pokemon_response.dart';
 import '../../../../extensions/iterable_extension.dart';
 import '../../../../services/language_service.dart';
+import '../../../api/models/error_response.dart';
 
 class MovesPagingAdapter {
   MovesPagingAdapter(
@@ -77,7 +78,13 @@ class MovesPagingAdapter {
           }
         } else {
           if (!_hasBeenDisposed) {
-            _handleError(ApiResponse.error('Unknown error...'));
+            _handleError(
+              ErrorResponse(
+                    (b) => b
+                  ..error = newPage.exception?.graphqlErrors.firstOrNull()?.message
+                  ..statusCode = 503,
+              ),
+            );
           }
         }
       } catch (error) {
@@ -110,7 +117,9 @@ class MovesPagingAdapter {
   }
 
   void _handleError(Object error) {
-    final handledError = errorHandler.handleError(error);
+    final handledError = errorHandler.handleError(
+      error,
+    );
     pagingController?.error = handledError;
   }
 

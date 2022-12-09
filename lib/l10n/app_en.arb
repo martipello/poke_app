@@ -15,7 +15,7 @@
 
     "tmTitle" : "TMs",
 
-    "tm": "TM {number} ",
+    "tm": "TM-{number} ",
     "@tm": {
         "placeholders": {
             "number": {

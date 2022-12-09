@@ -14,6 +14,7 @@ import '../../services/theme_service.dart';
 import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import '../../utils/constants.dart';
+import '../shared_widgets/poke_dialog.dart';
 import 'about.dart';
 
 class Settings extends StatelessWidget {
@@ -135,12 +136,8 @@ class Settings extends StatelessWidget {
     BuildContext context,
     SupportedLanguage _tempSelectedLanguage,
   ) {
-    return AlertDialog(
-      title: _buildSelectLanguageAlertDialogTitle(context),
-      actionsPadding: const EdgeInsets.only(
-        right: 16,
-        bottom: 8,
-      ),
+    return PokeDialog(
+      title: context.strings.language,
       content: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -155,7 +152,7 @@ class Settings extends StatelessWidget {
               ),
         ],
       ),
-      actions: [
+      dialogActions: [
         _buildSelectLanguageAlertDialogAction(
           context,
           context.strings.cancel,
@@ -172,29 +169,16 @@ class Settings extends StatelessWidget {
     );
   }
 
-  Widget _buildSelectLanguageAlertDialogTitle(
-    BuildContext context,
-  ) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 4),
-      child: Text(
-        context.strings.language,
-        style: PokeAppText.subtitle1Style.copyWith(
-          color: colors(context).textOnForeground,
-          height: 1,
-        ),
-      ),
-    );
-  }
-
   Widget _buildSelectLanguageAlertDialogSubtitle(
     BuildContext context,
   ) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.symmetric(
+        vertical: 8,
+      ),
       child: Text(
         context.strings.selectLanguage,
-        style: PokeAppText.body4Style.copyWith(
+        style: PokeAppText.body3Style.copyWith(
           color: colors(context).textOnForeground,
         ),
       ),
@@ -225,29 +209,17 @@ class Settings extends StatelessWidget {
     );
   }
 
-  Widget _buildSelectLanguageAlertDialogAction(
+  DialogAction _buildSelectLanguageAlertDialogAction(
     BuildContext context,
     String label,
     VoidCallback? onTap,
   ) {
-    return TextButton(
-      onPressed: () {
+    return DialogAction(
+      actionText: label,
+      actionVoidCallback: () {
         onTap?.call();
         Navigator.of(context).pop();
       },
-      style: ButtonStyle(
-        padding: MaterialStateProperty.all(
-          const EdgeInsets.symmetric(
-            horizontal: 16,
-          ),
-        ),
-      ),
-      child: Text(
-        label,
-        style: PokeAppText.body4Style.copyWith(
-          color: colors(context).textOnForeground,
-        ),
-      ),
     );
   }
 
@@ -340,17 +312,15 @@ class Settings extends StatelessWidget {
         context.strings.feedbackLabel,
       ),
       onPressed: (_) {
-        _launchService
-            .launchEvent(
-              context,
-              Constants.APP_ERROR,
-            )
-            .onError(
-              (error, stackTrace) => _launchService.launchSnackBar(
-                context,
-                error.toString(),
-              ),
-            );
+        _launchService.launchEvent(
+          context,
+          Constants.kAppError.toEmailUri(
+            queryParameters: {
+              'subject': 'Feedback',
+              'body': '',
+            },
+          ),
+        );
       },
     );
   }

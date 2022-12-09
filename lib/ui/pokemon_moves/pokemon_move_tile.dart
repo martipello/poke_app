@@ -335,17 +335,6 @@ class PokemonMoveTile extends StatelessWidget {
     );
   }
 
-  Widget _buildMoveDetailHeader(
-    BuildContext context,
-  ) {
-    return Text(
-      context.strings.moveDetails,
-      style: PokeAppText.subtitle4Style.copyWith(
-        color: colors(context).textOnForeground,
-      ),
-    );
-  }
-
   Widget _buildDescription(
     BuildContext context,
     String description,
