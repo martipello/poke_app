@@ -6,6 +6,7 @@ import '../../../../api/models/api_response.dart';
 import '../../../../api/models/pokemon/pokemon_request.dart';
 import '../../../../api/models/pokemon/pokemon_response.dart';
 import '../../../../services/language_service.dart';
+import '../../../extensions/iterable_extension.dart';
 
 class PokemonFormsViewModel {
   PokemonFormsViewModel(
@@ -27,18 +28,28 @@ class PokemonFormsViewModel {
       final _pokemonResponse = await pokemonRepository.getPokemonForms(
         _buildPokemonRequest(pokemonId, language.id),
       );
-      final pokemonResponse = PokemonResponse.fromJson(
-        _pokemonResponse.data!,
-      );
-      pokemonFormStream.add(
-        ApiResponse.completed(pokemonResponse),
-      );
+      if (_pokemonResponse.hasException) {
+        _addError(
+          _pokemonResponse.exception?.graphqlErrors.firstOrNull(),
+        );
+      } else {
+        final pokemonResponse = PokemonResponse.fromJson(
+          _pokemonResponse.data!,
+        );
+        pokemonFormStream.add(
+          ApiResponse.completed(pokemonResponse),
+        );
+      }
     } catch (error) {
-      final errorResponse = errorHandler.handleError<PokemonResponse>(
-        error,
-      );
-      pokemonFormStream.add(errorResponse);
+      _addError(error);
     }
+  }
+
+  void _addError(dynamic error) {
+    final errorResponse = errorHandler.handleError<PokemonResponse>(
+      error,
+    );
+    pokemonFormStream.add(errorResponse);
   }
 
   PokemonRequest _buildPokemonRequest(

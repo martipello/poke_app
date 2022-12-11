@@ -6,6 +6,7 @@ import '../../../../api/models/api_response.dart';
 import '../../../../api/models/pokemon/pokemon_request.dart';
 import '../../../../api/models/pokemon/pokemon_response.dart';
 import '../../../../services/language_service.dart';
+import '../../../extensions/iterable_extension.dart';
 
 class PokemonInfoViewModel {
   PokemonInfoViewModel(
@@ -28,25 +29,34 @@ class PokemonInfoViewModel {
         _buildPokemonRequest(pokemonId, language.id),
       );
 
-      final pokemon = PokemonResponse.fromJson(pokemonInfoResponse.data!);
-
-      pokemonInfoStream.add(
-        ApiResponse.completed(pokemon),
-      );
+      if (pokemonInfoResponse.hasException) {
+        _addError(
+          pokemonInfoResponse.exception?.graphqlErrors.firstOrNull(),
+        );
+      } else {
+        final pokemon = PokemonResponse.fromJson(pokemonInfoResponse.data!);
+        pokemonInfoStream.add(
+          ApiResponse.completed(pokemon),
+        );
+      }
     } catch (error) {
-      final errorResponse = errorHandler.handleError<PokemonResponse>(
-        error,
-      );
-      pokemonInfoStream.add(errorResponse);
+      _addError(error);
     }
   }
 
+  void _addError(dynamic error) {
+    final errorResponse = errorHandler.handleError<PokemonResponse>(
+      error,
+    );
+    pokemonInfoStream.add(errorResponse);
+  }
+
   PokemonRequest _buildPokemonRequest(
-      int pokemonId,
-      int languageId,
-      ) {
+    int pokemonId,
+    int languageId,
+  ) {
     return PokemonRequest(
-          (b) => b
+      (b) => b
         ..languageId = languageId
         ..pokemonId = pokemonId,
     );

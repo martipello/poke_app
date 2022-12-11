@@ -93,6 +93,12 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(PokemonResource)]),
           () => new ListBuilder<PokemonResource>())
       ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(PokemonResource)]),
+          () => new ListBuilder<PokemonResource>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(PokemonResource)]),
+          () => new ListBuilder<PokemonResource>())
+      ..addBuilderFactory(
           const FullType(
               BuiltList, const [const FullType(PokemonSpeciesHolder)]),
           () => new ListBuilder<PokemonSpeciesHolder>())

@@ -1,4 +1,5 @@
 import '../api/models/pokemon/pokemon_species_holder.dart';
+import 'iterable_extension.dart';
 import 'string_extension.dart';
 
 extension PokemonSpeciesHolderExtension on PokemonSpeciesHolder? {
@@ -8,11 +9,11 @@ extension PokemonSpeciesHolderExtension on PokemonSpeciesHolder? {
    */
 
   String shape() {
-    return this?.pokemon_v2_pokemonshape?.name.capitalize() ?? '';
+    return this?.pokemon_v2_pokemonshape?.pokemon_v2_shapenames.firstOrNull()?.name.capitalize() ?? '';
   }
 
   String habitat() {
-    return this?.pokemon_v2_pokemonhabitat?.name.capitalize() ?? '';
+    return this?.pokemon_v2_pokemonhabitat?.pokemon_v2_habitatnames.firstOrNull()?.name.capitalize() ?? '';
   }
 
   String color() {

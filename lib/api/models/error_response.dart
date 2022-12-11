@@ -11,7 +11,7 @@ abstract class ErrorResponse implements Built<ErrorResponse, ErrorResponseBuilde
 
   String? get message;
 
-  String? get error;
+  Object get error;
 
   String? get url;
 

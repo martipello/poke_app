@@ -45,62 +45,94 @@ class PokeDialog extends StatelessWidget {
           ),
         ),
         clipBehavior: Clip.hardEdge,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: Stack(
           children: [
-            Container(
-              color: Colors.red,
-              height: 50,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  title != null
-                      ? Padding(
-                          padding: const EdgeInsets.only(left: 16.0),
-                          child: Text(
-                            title!,
-                            style: PokeAppText.subtitle1Style.copyWith(
-                              color: colors(context).textOnPrimary,
-                            ),
-                          ),
-                        )
-                      : const SizedBox(),
-                  if (isDismissible)
-                    _buildCloseButton(
-                      context,
-                    )
-                ],
-              ),
+            _buildBackgroundPokeball(),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _buildHeader(context),
+                const SizedBox(
+                  height: 8,
+                ),
+                _buildContent(),
+                const SizedBox(
+                  height: 24,
+                ),
+                if (dialogButtonBar != null)
+                  dialogButtonBar!
+                else
+                  _buildPickerButtons(
+                    context,
+                    _getActions(context),
+                  ),
+              ],
             ),
-            const SizedBox(
-              height: 8,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-              ),
-              child: content,
-            ),
-            const SizedBox(
-              height: 24,
-            ),
-            if (dialogButtonBar != null)
-              dialogButtonBar!
-            else
-              _buildPickerButtons(
-                context,
-                _getActions(context),
-              ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildCloseButton(BuildContext context) {
+  Widget _buildContent() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 16,
+      ),
+      child: content,
+    );
+  }
+
+  Widget _buildHeader(BuildContext context) {
+    return Container(
+      color: Colors.red,
+      height: 50,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          title != null
+              ? Padding(
+                  padding: const EdgeInsets.only(left: 16.0),
+                  child: Text(
+                    title!,
+                    style: PokeAppText.subtitle1Style.copyWith(
+                      color: colors(context).textOnPrimary,
+                    ),
+                  ),
+                )
+              : const SizedBox(),
+          if (isDismissible)
+            _buildCloseButton(
+              context,
+            )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBackgroundPokeball() {
+    return Positioned(
+      bottom: -16,
+      left: -15,
+      child: Transform.rotate(
+        angle: 0.75,
+        child: Image.asset(
+          'assets/images/pokeball_outline.png',
+          height: 80,
+          width: 80,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCloseButton(
+    BuildContext context,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 8.0,
+      ),
       child: IconButton(
         splashRadius: 12,
         constraints: const BoxConstraints(
@@ -118,11 +150,17 @@ class PokeDialog extends StatelessWidget {
     );
   }
 
-  Widget _buildPickerButtons(BuildContext context, List<Widget> actions) {
+  Widget _buildPickerButtons(
+    BuildContext context,
+    List<Widget> actions,
+  ) {
     return Align(
       alignment: Alignment.bottomRight,
       child: Padding(
-        padding: const EdgeInsets.only(right: 16.0, bottom: 8.0),
+        padding: const EdgeInsets.only(
+          right: 16.0,
+          bottom: 8.0,
+        ),
         child: Wrap(
           spacing: actions.length > 2 ? 0 : 16,
           runSpacing: 12,

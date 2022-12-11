@@ -18,19 +18,16 @@ class _$ErrorResponseSerializer implements StructuredSerializer<ErrorResponse> {
   @override
   Iterable<Object?> serialize(Serializers serializers, ErrorResponse object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object?>[];
+    final result = <Object?>[
+      'error',
+      serializers.serialize(object.error,
+          specifiedType: const FullType(Object)),
+    ];
     Object? value;
     value = object.message;
     if (value != null) {
       result
         ..add('message')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
-    }
-    value = object.error;
-    if (value != null) {
-      result
-        ..add('error')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
@@ -74,7 +71,7 @@ class _$ErrorResponseSerializer implements StructuredSerializer<ErrorResponse> {
           break;
         case 'error':
           result.error = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+              specifiedType: const FullType(Object));
           break;
         case 'url':
           result.url = serializers.deserialize(value,
@@ -99,7 +96,7 @@ class _$ErrorResponse extends ErrorResponse {
   @override
   final String? message;
   @override
-  final String? error;
+  final Object error;
   @override
   final String? url;
   @override
@@ -112,11 +109,13 @@ class _$ErrorResponse extends ErrorResponse {
 
   _$ErrorResponse._(
       {this.message,
-      this.error,
+      required this.error,
       this.url,
       this.statusCode,
       this.attempts_remaining})
-      : super._();
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(error, r'ErrorResponse', 'error');
+  }
 
   @override
   ErrorResponse rebuild(void Function(ErrorResponseBuilder) updates) =>
@@ -164,9 +163,9 @@ class ErrorResponseBuilder
   String? get message => _$this._message;
   set message(String? message) => _$this._message = message;
 
-  String? _error;
-  String? get error => _$this._error;
-  set error(String? error) => _$this._error = error;
+  Object? _error;
+  Object? get error => _$this._error;
+  set error(Object? error) => _$this._error = error;
 
   String? _url;
   String? get url => _$this._url;
@@ -214,7 +213,8 @@ class ErrorResponseBuilder
     final _$result = _$v ??
         new _$ErrorResponse._(
             message: message,
-            error: error,
+            error: BuiltValueNullFieldError.checkNotNull(
+                error, r'ErrorResponse', 'error'),
             url: url,
             statusCode: statusCode,
             attempts_remaining: attempts_remaining);

@@ -123,10 +123,15 @@ class PokemonRepositoryGraphQl {
                forms_switchable
                hatch_counter
                pokemon_v2_pokemonshape {
-                 name
+                 pokemon_v2_pokemonshapenames(where: {language_id: {_eq: ${pokemonRequest.languageId}}}) {
+                   name
+                 }
                }
                pokemon_v2_pokemonhabitat {
-                 name
+                 pokemon_v2_pokemonhabitatnames(where: {language_id: {_eq: ${pokemonRequest.languageId}}}) {
+                   id
+                   name
+                 }
                }
                gender_rate
                pokemon_v2_pokemonegggroups {
@@ -302,7 +307,6 @@ query MyQuery {
     }
   }
 }
-
       ''',
       ),
     );
@@ -347,10 +351,6 @@ query MyQuery {
                 weight
                 height
                 base_experience
-                
-                
-                
-                
                 id
                 is_default                
                 pokemon_v2_pokemonabilities {
@@ -387,7 +387,6 @@ query MyQuery {
     }
   }
 }
-
       ''',
       ),
     );

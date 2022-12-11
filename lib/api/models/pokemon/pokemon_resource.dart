@@ -47,6 +47,10 @@ abstract class PokemonResource implements Built<PokemonResource, PokemonResource
 
   BuiltList<PokemonResource> get pokemon_v2_evolutiontriggernames;
 
+  BuiltList<PokemonResource> get pokemon_v2_shapenames;
+
+  BuiltList<PokemonResource> get pokemon_v2_habitatnames;
+
   PokemonAbility? get pokemon_v2_ability;
 
   Map<String, dynamic> toJson() {
