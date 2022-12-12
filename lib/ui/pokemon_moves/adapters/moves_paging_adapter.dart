@@ -2,7 +2,6 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../../../api/error_handler.dart';
 import '../../../../api/graph_ql/pokemon_repository_graph_ql.dart';
-import '../../../../api/models/api_response.dart';
 import '../../../../api/models/pokemon/pokemon_move_holder.dart';
 import '../../../../api/models/pokemon/pokemon_request.dart';
 import '../../../../api/models/pokemon/pokemon_response.dart';

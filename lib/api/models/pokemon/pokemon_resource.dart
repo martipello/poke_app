@@ -5,7 +5,6 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
 import '../../serializers/serializers.dart';
-import 'encounter_slot.dart';
 import 'move_learn_method.dart';
 import 'pokemon_ability.dart';
 
