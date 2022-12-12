@@ -97,6 +97,34 @@ class PokemonRepositoryGraphQl {
              name
              height
              base_experience
+             pokemon_v2_encounters(order_by: {version_id: asc}) {
+               max_level
+               min_level
+               pokemon_v2_version {
+                 name
+                 id
+                 version_group_id
+               }
+               id
+               location_area_id
+               encounter_slot_id
+               version_id
+               pokemon_v2_locationarea {
+                 id
+                 name
+                 game_index
+               }
+               pokemon_v2_encounterslot {
+                 rarity
+                 pokemon_v2_encountermethod {
+                   pokemon_v2_encountermethodnames(where: {language_id: {_eq: ${pokemonRequest.languageId}}}) {
+                     name
+                   }
+                 }
+                 encounter_method_id
+                 id
+               }
+             }        
              pokemon_v2_pokemonspecy {
                base_happiness
                capture_rate

@@ -3,6 +3,9 @@ import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
 
 import '../models/error_response.dart';
+import '../models/pokemon/encounter.dart';
+import '../models/pokemon/encounter_method.dart';
+import '../models/pokemon/encounter_slot.dart';
 import '../models/pokemon/evolution.dart';
 import '../models/pokemon/evolution_chain_holder.dart';
 import '../models/pokemon/evolution_holder.dart';
@@ -35,6 +38,9 @@ import 'date_time_serializer.dart';
 part 'serializers.g.dart';
 
 @SerializersFor([
+  Encounter,
+  EncounterMethod,
+  EncounterSlot,
   ErrorResponse,
   Evolution,
   EvolutionChainHolder,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:poke_app/ui/pokemon_info/pokemon_location_widget.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 import '../../../api/models/api_response.dart';
@@ -14,6 +13,7 @@ import '../shared_widgets/pokeball_loading_widget.dart';
 import '../shared_widgets/sliver_refresh_indicator.dart';
 import 'pokedex_info_widget.dart';
 import 'pokemon_ability_widget.dart';
+import 'pokemon_encounter_widget.dart';
 import 'pokemon_species_widget.dart';
 import 'view_models/pokemon_info_view_model.dart';
 
@@ -140,7 +140,7 @@ class _PokemonInfoViewState extends State<PokemonInfoView> with AutomaticKeepAli
   }
 
   Widget _buildPokemonLocation(Pokemon _pokemon) {
-    return PokemonLocationWidget(
+    return PokemonEncounterWidget(
       pokemon: _pokemon,
     );
   }

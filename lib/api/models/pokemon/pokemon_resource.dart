@@ -5,6 +5,7 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
 import '../../serializers/serializers.dart';
+import 'encounter_slot.dart';
 import 'move_learn_method.dart';
 import 'pokemon_ability.dart';
 
@@ -47,9 +48,11 @@ abstract class PokemonResource implements Built<PokemonResource, PokemonResource
 
   BuiltList<PokemonResource> get pokemon_v2_evolutiontriggernames;
 
-  BuiltList<PokemonResource> get pokemon_v2_shapenames;
+  BuiltList<PokemonResource> get pokemon_v2_pokemonshapenames;
 
-  BuiltList<PokemonResource> get pokemon_v2_habitatnames;
+  BuiltList<PokemonResource> get pokemon_v2_pokemonhabitatnames;
+  
+  BuiltList<PokemonResource> get pokemon_v2_locationnames;
 
   PokemonAbility? get pokemon_v2_ability;
 

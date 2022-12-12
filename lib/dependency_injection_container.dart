@@ -12,6 +12,7 @@ import 'services/shared_preferences_service.dart';
 import 'services/theme_service.dart';
 import 'ui/pokemon_evolutions/view_models/pokemon_evolution_view_model.dart';
 import 'ui/pokemon_forms/view_models/pokemon_forms_view_model.dart';
+import 'ui/pokemon_info/view_models/pokemon_encounter_view_model.dart';
 import 'ui/pokemon_info/view_models/pokemon_info_view_model.dart';
 import 'ui/pokemon_list/adapters/pokemon_paging_adapter.dart';
 import 'ui/pokemon_list/view_models/filter_view_model.dart';
@@ -42,6 +43,7 @@ Future<void> init() async {
   getIt.registerFactory(() => MovesPagingAdapter(getIt(), getIt(), getIt()));
   getIt.registerFactory(() => PokemonListViewModel(getIt()));
   getIt.registerFactory(() => PokemonInfoViewModel(getIt(), getIt(), getIt()));
+  getIt.registerFactory(PokemonEncounterViewModel.new);
   getIt.registerFactory(() => PokemonMovesViewModel(getIt()));
   getIt.registerFactory(() => PokemonFormsViewModel(getIt(), getIt(), getIt()));
   getIt.registerFactory(() => PokemonEvolutionViewModel(getIt(), getIt(), getIt()));

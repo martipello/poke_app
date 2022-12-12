@@ -28,12 +28,16 @@ class _$PokemonResourceSerializer
       serializers.serialize(object.pokemon_v2_evolutiontriggernames,
           specifiedType: const FullType(
               BuiltList, const [const FullType(PokemonResource)])),
-      'pokemon_v2_shapenames',
-      serializers.serialize(object.pokemon_v2_shapenames,
+      'pokemon_v2_pokemonshapenames',
+      serializers.serialize(object.pokemon_v2_pokemonshapenames,
           specifiedType: const FullType(
               BuiltList, const [const FullType(PokemonResource)])),
-      'pokemon_v2_habitatnames',
-      serializers.serialize(object.pokemon_v2_habitatnames,
+      'pokemon_v2_pokemonhabitatnames',
+      serializers.serialize(object.pokemon_v2_pokemonhabitatnames,
+          specifiedType: const FullType(
+              BuiltList, const [const FullType(PokemonResource)])),
+      'pokemon_v2_locationnames',
+      serializers.serialize(object.pokemon_v2_locationnames,
           specifiedType: const FullType(
               BuiltList, const [const FullType(PokemonResource)])),
     ];
@@ -233,14 +237,22 @@ class _$PokemonResourceSerializer
                           BuiltList, const [const FullType(PokemonResource)]))!
                   as BuiltList<Object?>);
           break;
-        case 'pokemon_v2_shapenames':
-          result.pokemon_v2_shapenames.replace(serializers.deserialize(value,
+        case 'pokemon_v2_pokemonshapenames':
+          result.pokemon_v2_pokemonshapenames.replace(serializers.deserialize(
+                  value,
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(PokemonResource)]))!
               as BuiltList<Object?>);
           break;
-        case 'pokemon_v2_habitatnames':
-          result.pokemon_v2_habitatnames.replace(serializers.deserialize(value,
+        case 'pokemon_v2_pokemonhabitatnames':
+          result.pokemon_v2_pokemonhabitatnames.replace(serializers.deserialize(
+                  value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(PokemonResource)]))!
+              as BuiltList<Object?>);
+          break;
+        case 'pokemon_v2_locationnames':
+          result.pokemon_v2_locationnames.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(PokemonResource)]))!
               as BuiltList<Object?>);
@@ -291,9 +303,11 @@ class _$PokemonResource extends PokemonResource {
   @override
   final BuiltList<PokemonResource> pokemon_v2_evolutiontriggernames;
   @override
-  final BuiltList<PokemonResource> pokemon_v2_shapenames;
+  final BuiltList<PokemonResource> pokemon_v2_pokemonshapenames;
   @override
-  final BuiltList<PokemonResource> pokemon_v2_habitatnames;
+  final BuiltList<PokemonResource> pokemon_v2_pokemonhabitatnames;
+  @override
+  final BuiltList<PokemonResource> pokemon_v2_locationnames;
   @override
   final PokemonAbility? pokemon_v2_ability;
 
@@ -317,8 +331,9 @@ class _$PokemonResource extends PokemonResource {
       this.pokemon_v2_movelearnmethod,
       required this.pokemon_v2_movedamageclassdescriptions,
       required this.pokemon_v2_evolutiontriggernames,
-      required this.pokemon_v2_shapenames,
-      required this.pokemon_v2_habitatnames,
+      required this.pokemon_v2_pokemonshapenames,
+      required this.pokemon_v2_pokemonhabitatnames,
+      required this.pokemon_v2_locationnames,
       this.pokemon_v2_ability})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
@@ -327,10 +342,12 @@ class _$PokemonResource extends PokemonResource {
         'pokemon_v2_movedamageclassdescriptions');
     BuiltValueNullFieldError.checkNotNull(pokemon_v2_evolutiontriggernames,
         r'PokemonResource', 'pokemon_v2_evolutiontriggernames');
-    BuiltValueNullFieldError.checkNotNull(
-        pokemon_v2_shapenames, r'PokemonResource', 'pokemon_v2_shapenames');
-    BuiltValueNullFieldError.checkNotNull(
-        pokemon_v2_habitatnames, r'PokemonResource', 'pokemon_v2_habitatnames');
+    BuiltValueNullFieldError.checkNotNull(pokemon_v2_pokemonshapenames,
+        r'PokemonResource', 'pokemon_v2_pokemonshapenames');
+    BuiltValueNullFieldError.checkNotNull(pokemon_v2_pokemonhabitatnames,
+        r'PokemonResource', 'pokemon_v2_pokemonhabitatnames');
+    BuiltValueNullFieldError.checkNotNull(pokemon_v2_locationnames,
+        r'PokemonResource', 'pokemon_v2_locationnames');
   }
 
   @override
@@ -363,8 +380,10 @@ class _$PokemonResource extends PokemonResource {
             other.pokemon_v2_movedamageclassdescriptions &&
         pokemon_v2_evolutiontriggernames ==
             other.pokemon_v2_evolutiontriggernames &&
-        pokemon_v2_shapenames == other.pokemon_v2_shapenames &&
-        pokemon_v2_habitatnames == other.pokemon_v2_habitatnames &&
+        pokemon_v2_pokemonshapenames == other.pokemon_v2_pokemonshapenames &&
+        pokemon_v2_pokemonhabitatnames ==
+            other.pokemon_v2_pokemonhabitatnames &&
+        pokemon_v2_locationnames == other.pokemon_v2_locationnames &&
         pokemon_v2_ability == other.pokemon_v2_ability;
   }
 
@@ -389,32 +408,35 @@ class _$PokemonResource extends PokemonResource {
                                                                     $jc(
                                                                         $jc(
                                                                             $jc(
-                                                                                0,
-                                                                                name
+                                                                                $jc(
+                                                                                    0,
+                                                                                    name
+                                                                                        .hashCode),
+                                                                                pokemon_name
                                                                                     .hashCode),
-                                                                            pokemon_name
+                                                                            description
                                                                                 .hashCode),
-                                                                        description
+                                                                        id
                                                                             .hashCode),
-                                                                    id
+                                                                    flavor_text
                                                                         .hashCode),
-                                                                flavor_text
+                                                                version_id
                                                                     .hashCode),
-                                                            version_id
+                                                            pokemon_species_id
                                                                 .hashCode),
-                                                        pokemon_species_id
-                                                            .hashCode),
-                                                    short_effect.hashCode),
-                                                pokemon_v2_version.hashCode),
-                                            pokemon_v2_region.hashCode),
-                                        pokemon_v2_versiongroup.hashCode),
-                                    pokemon_v2_egggroup.hashCode),
-                                pokemon_v2_movedamageclass.hashCode),
-                            pokemon_v2_movelearnmethod.hashCode),
-                        pokemon_v2_movedamageclassdescriptions.hashCode),
-                    pokemon_v2_evolutiontriggernames.hashCode),
-                pokemon_v2_shapenames.hashCode),
-            pokemon_v2_habitatnames.hashCode),
+                                                        short_effect.hashCode),
+                                                    pokemon_v2_version
+                                                        .hashCode),
+                                                pokemon_v2_region.hashCode),
+                                            pokemon_v2_versiongroup.hashCode),
+                                        pokemon_v2_egggroup.hashCode),
+                                    pokemon_v2_movedamageclass.hashCode),
+                                pokemon_v2_movelearnmethod.hashCode),
+                            pokemon_v2_movedamageclassdescriptions.hashCode),
+                        pokemon_v2_evolutiontriggernames.hashCode),
+                    pokemon_v2_pokemonshapenames.hashCode),
+                pokemon_v2_pokemonhabitatnames.hashCode),
+            pokemon_v2_locationnames.hashCode),
         pokemon_v2_ability.hashCode));
   }
 
@@ -439,8 +461,10 @@ class _$PokemonResource extends PokemonResource {
               pokemon_v2_movedamageclassdescriptions)
           ..add('pokemon_v2_evolutiontriggernames',
               pokemon_v2_evolutiontriggernames)
-          ..add('pokemon_v2_shapenames', pokemon_v2_shapenames)
-          ..add('pokemon_v2_habitatnames', pokemon_v2_habitatnames)
+          ..add('pokemon_v2_pokemonshapenames', pokemon_v2_pokemonshapenames)
+          ..add(
+              'pokemon_v2_pokemonhabitatnames', pokemon_v2_pokemonhabitatnames)
+          ..add('pokemon_v2_locationnames', pokemon_v2_locationnames)
           ..add('pokemon_v2_ability', pokemon_v2_ability))
         .toString();
   }
@@ -541,19 +565,28 @@ class PokemonResourceBuilder
       _$this._pokemon_v2_evolutiontriggernames =
           pokemon_v2_evolutiontriggernames;
 
-  ListBuilder<PokemonResource>? _pokemon_v2_shapenames;
-  ListBuilder<PokemonResource> get pokemon_v2_shapenames =>
-      _$this._pokemon_v2_shapenames ??= new ListBuilder<PokemonResource>();
-  set pokemon_v2_shapenames(
-          ListBuilder<PokemonResource>? pokemon_v2_shapenames) =>
-      _$this._pokemon_v2_shapenames = pokemon_v2_shapenames;
+  ListBuilder<PokemonResource>? _pokemon_v2_pokemonshapenames;
+  ListBuilder<PokemonResource> get pokemon_v2_pokemonshapenames =>
+      _$this._pokemon_v2_pokemonshapenames ??=
+          new ListBuilder<PokemonResource>();
+  set pokemon_v2_pokemonshapenames(
+          ListBuilder<PokemonResource>? pokemon_v2_pokemonshapenames) =>
+      _$this._pokemon_v2_pokemonshapenames = pokemon_v2_pokemonshapenames;
 
-  ListBuilder<PokemonResource>? _pokemon_v2_habitatnames;
-  ListBuilder<PokemonResource> get pokemon_v2_habitatnames =>
-      _$this._pokemon_v2_habitatnames ??= new ListBuilder<PokemonResource>();
-  set pokemon_v2_habitatnames(
-          ListBuilder<PokemonResource>? pokemon_v2_habitatnames) =>
-      _$this._pokemon_v2_habitatnames = pokemon_v2_habitatnames;
+  ListBuilder<PokemonResource>? _pokemon_v2_pokemonhabitatnames;
+  ListBuilder<PokemonResource> get pokemon_v2_pokemonhabitatnames =>
+      _$this._pokemon_v2_pokemonhabitatnames ??=
+          new ListBuilder<PokemonResource>();
+  set pokemon_v2_pokemonhabitatnames(
+          ListBuilder<PokemonResource>? pokemon_v2_pokemonhabitatnames) =>
+      _$this._pokemon_v2_pokemonhabitatnames = pokemon_v2_pokemonhabitatnames;
+
+  ListBuilder<PokemonResource>? _pokemon_v2_locationnames;
+  ListBuilder<PokemonResource> get pokemon_v2_locationnames =>
+      _$this._pokemon_v2_locationnames ??= new ListBuilder<PokemonResource>();
+  set pokemon_v2_locationnames(
+          ListBuilder<PokemonResource>? pokemon_v2_locationnames) =>
+      _$this._pokemon_v2_locationnames = pokemon_v2_locationnames;
 
   PokemonAbilityBuilder? _pokemon_v2_ability;
   PokemonAbilityBuilder get pokemon_v2_ability =>
@@ -584,8 +617,11 @@ class PokemonResourceBuilder
           $v.pokemon_v2_movedamageclassdescriptions.toBuilder();
       _pokemon_v2_evolutiontriggernames =
           $v.pokemon_v2_evolutiontriggernames.toBuilder();
-      _pokemon_v2_shapenames = $v.pokemon_v2_shapenames.toBuilder();
-      _pokemon_v2_habitatnames = $v.pokemon_v2_habitatnames.toBuilder();
+      _pokemon_v2_pokemonshapenames =
+          $v.pokemon_v2_pokemonshapenames.toBuilder();
+      _pokemon_v2_pokemonhabitatnames =
+          $v.pokemon_v2_pokemonhabitatnames.toBuilder();
+      _pokemon_v2_locationnames = $v.pokemon_v2_locationnames.toBuilder();
       _pokemon_v2_ability = $v.pokemon_v2_ability?.toBuilder();
       _$v = null;
     }
@@ -629,8 +665,11 @@ class PokemonResourceBuilder
                   pokemon_v2_movedamageclassdescriptions.build(),
               pokemon_v2_evolutiontriggernames:
                   pokemon_v2_evolutiontriggernames.build(),
-              pokemon_v2_shapenames: pokemon_v2_shapenames.build(),
-              pokemon_v2_habitatnames: pokemon_v2_habitatnames.build(),
+              pokemon_v2_pokemonshapenames:
+                  pokemon_v2_pokemonshapenames.build(),
+              pokemon_v2_pokemonhabitatnames:
+                  pokemon_v2_pokemonhabitatnames.build(),
+              pokemon_v2_locationnames: pokemon_v2_locationnames.build(),
               pokemon_v2_ability: _pokemon_v2_ability?.build());
     } catch (_) {
       late String _$failedField;
@@ -651,10 +690,12 @@ class PokemonResourceBuilder
         pokemon_v2_movedamageclassdescriptions.build();
         _$failedField = 'pokemon_v2_evolutiontriggernames';
         pokemon_v2_evolutiontriggernames.build();
-        _$failedField = 'pokemon_v2_shapenames';
-        pokemon_v2_shapenames.build();
-        _$failedField = 'pokemon_v2_habitatnames';
-        pokemon_v2_habitatnames.build();
+        _$failedField = 'pokemon_v2_pokemonshapenames';
+        pokemon_v2_pokemonshapenames.build();
+        _$failedField = 'pokemon_v2_pokemonhabitatnames';
+        pokemon_v2_pokemonhabitatnames.build();
+        _$failedField = 'pokemon_v2_locationnames';
+        pokemon_v2_locationnames.build();
         _$failedField = 'pokemon_v2_ability';
         _pokemon_v2_ability?.build();
       } catch (e) {

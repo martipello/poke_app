@@ -1,6 +1,6 @@
 import '../api/models/pokemon/pokemon_species_holder.dart';
 import 'iterable_extension.dart';
-import 'string_extension.dart';
+import 'pokemon_resource_extension.dart';
 
 extension PokemonSpeciesHolderExtension on PokemonSpeciesHolder? {
   /*
@@ -9,15 +9,15 @@ extension PokemonSpeciesHolderExtension on PokemonSpeciesHolder? {
    */
 
   String shape() {
-    return this?.pokemon_v2_pokemonshape?.pokemon_v2_shapenames.firstOrNull()?.name.capitalize() ?? '';
+    return this?.pokemon_v2_pokemonshape?.pokemon_v2_pokemonshapenames.firstOrNull()?.normalizeName() ?? '';
   }
 
   String habitat() {
-    return this?.pokemon_v2_pokemonhabitat?.pokemon_v2_habitatnames.firstOrNull()?.name.capitalize() ?? '';
+    return this?.pokemon_v2_pokemonhabitat?.pokemon_v2_pokemonhabitatnames.firstOrNull()?.normalizeName() ?? '';
   }
 
   String color() {
-    return this?.pokemon_v2_pokemoncolor?.name.capitalize() ?? '';
+    return this?.pokemon_v2_pokemoncolor?.normalizeName() ?? '';
   }
 
   int baseHappiness() {
