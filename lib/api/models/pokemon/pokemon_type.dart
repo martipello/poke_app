@@ -16,7 +16,7 @@ enum PokemonType {
   electric(13, 'electric', Color(0xFFF9CF30), 'assets/images/electric_type_icon.png'),
   psychic(14, 'psychic', Color(0xFFF85888), 'assets/images/psychic_type_icon.png'),
   ice(15, 'ice', Color(0xFF98D8D8), 'assets/images/ice_type_icon.png'),
-  dragon(16, 'dragon', Color(0xFF7038), 'assets/images/dragon_type_icon.png'),
+  dragon(16, 'dragon', Color(0xFFFF7038), 'assets/images/dragon_type_icon.png'),
   dark(17, 'dark', Color(0xFF6F5848), 'assets/images/dark_type_icon.png'),
   fairy(18, 'fairy', Color(0xFFF0B6BC), 'assets/images/fairy_type_icon.png'),
   unknown(10001, 'unknown', Color(0xFFFFFFFF), 'assets/images/pokeball.png'),

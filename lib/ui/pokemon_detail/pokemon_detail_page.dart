@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 import '../../api/models/pokemon/pokemon.dart';
+import '../../api/models/pokemon/pokemon_type.dart';
 import '../../extensions/build_context_extension.dart';
+import '../../extensions/iterable_extension.dart';
 import '../../theme/base_theme.dart';
 import '../pokemon_evolutions/pokemon_evolution_view.dart';
 import '../pokemon_forms/pokemon_forms_view.dart';
@@ -41,13 +43,27 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
 
   Color get primaryColor =>
       pokemonDetailArguments.mainImagePaletteGenerator?.lightVibrantColor?.color ??
-      pokemonDetailArguments.spriteImagePaletteGenerator?.dominantColor?.color ??
-      Colors.red;
+          pokemonDetailArguments.spriteImagePaletteGenerator?.dominantColor?.color ??
+          PokemonType
+              .getTypeForId(pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes
+              .firstOrNull()
+              ?.pokemon_v2_type
+              ?.id ?? 0)
+              .color;
 
   Color get secondaryColor =>
       pokemonDetailArguments.mainImagePaletteGenerator?.dominantColor?.color ??
-      pokemonDetailArguments.spriteImagePaletteGenerator?.lightVibrantColor?.color ??
-      Colors.green;
+          pokemonDetailArguments.spriteImagePaletteGenerator?.lightVibrantColor?.color ??
+
+          PokemonType
+              .getTypeForId(pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes
+              .secondOrNull()
+              ?.pokemon_v2_type
+              ?.id ?? pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes
+              .firstOrNull()
+              ?.pokemon_v2_type
+              ?.id ?? 0)
+              .color;
 
   @override
   Widget build(BuildContext context) {

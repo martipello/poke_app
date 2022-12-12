@@ -154,7 +154,7 @@ class PokemonMoveTile extends StatelessWidget {
       return const SizedBox();
     } else if (learnMethodsByVersionGroup.length == 1) {
       final pokemonMoveLearnTableRow = PokemonTableRowInfo(
-        learnMethodsByVersionGroup.keys.firstOrNull() ?? '',
+        learnMethodsByVersionGroup.keys.firstOrNull().capitalize(),
         value: context.strings.allGenerations,
       );
       return _buildLearnMethodTable(
@@ -167,7 +167,7 @@ class PokemonMoveTile extends StatelessWidget {
       final pokemonMoveLearnTableRows = learnMethodsByVersionGroup.entries
           .map(
             (moveLearnMethod) => PokemonTableRowInfo(
-              moveLearnMethod.value.firstOrNull()?.pokemon_v2_movelearnmethod?.name ?? '',
+              moveLearnMethod.value.firstOrNull()?.pokemon_v2_movelearnmethod?.name.capitalize() ?? '',
               value: moveLearnMethod.value
                   .map(
                     (e) => e.pokemon_v2_versiongroup?.normalizeName(),
