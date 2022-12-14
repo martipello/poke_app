@@ -9,7 +9,10 @@ class PokemonListViewModel {
   PokemonListViewModel(this._pokemonPagingAdapter);
 
   final PokemonPagingAdapter _pokemonPagingAdapter;
-  final _pagingController = PagingController<int, Pokemon>(firstPageKey: 0);
+  final _pagingController = PagingController<int, Pokemon>(
+    firstPageKey: 0,
+    invisibleItemsThreshold: 10,
+  );
   var _isPagingAdapterInitialized = false;
 
   final searchText = BehaviorSubject<String?>.seeded('');

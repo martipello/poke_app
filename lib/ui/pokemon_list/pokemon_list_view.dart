@@ -114,7 +114,7 @@ class _PokemonListViewState extends State<PokemonListView> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        //TODO if is searching or filters open close search or close filters.
+        //TODO if filters open close filters.
 
         return true;
       },
@@ -151,33 +151,26 @@ class _PokemonListViewState extends State<PokemonListView> {
         _pokemonViewModel.refresh();
       },
       padding: EdgeInsets.zero,
-      sliver: MultiSliver(
-        children: [
-          SliverPadding(
-            padding: const EdgeInsets.all(8),
-            sliver: PagedSliverList.separated(
-              pagingController: _pokemonViewModel.getPagingController(),
-              builderDelegate: PagedChildBuilderDelegate<Pokemon>(
-                itemBuilder: (context, pokemon, index) => _buildPokemonTile(
-                  pokemon: pokemon,
-                ),
-                firstPageErrorIndicatorBuilder: (context) => _buildErrorWidget(),
-                noItemsFoundIndicatorBuilder: (context) => _emptyListIndicator(),
-                newPageErrorIndicatorBuilder: (context) =>
-                    _errorListItemWidget(onTryAgain: _pokemonViewModel.retryLastRequest),
-                firstPageProgressIndicatorBuilder: (context) => const Center(
-                  child: PokeballLoadingWidget(
-                    size: Size(80, 80),
-                  ),
-                ),
-                newPageProgressIndicatorBuilder: (context) => _loadingListItemWidget(),
-              ),
-              separatorBuilder: (context, index) => const SizedBox(
-                height: 4,
+      sliver: SliverPadding(
+        padding: const EdgeInsets.all(8),
+        sliver: PagedSliverList(
+          pagingController: _pokemonViewModel.getPagingController(),
+          builderDelegate: PagedChildBuilderDelegate<Pokemon>(
+            itemBuilder: (context, pokemon, index) => _buildPokemonTile(
+              pokemon: pokemon,
+            ),
+            firstPageErrorIndicatorBuilder: (context) => _buildErrorWidget(),
+            noItemsFoundIndicatorBuilder: (context) => _emptyListIndicator(),
+            newPageErrorIndicatorBuilder: (context) =>
+                _errorListItemWidget(onTryAgain: _pokemonViewModel.retryLastRequest),
+            firstPageProgressIndicatorBuilder: (context) => const Center(
+              child: PokeballLoadingWidget(
+                size: Size(80, 80),
               ),
             ),
+            newPageProgressIndicatorBuilder: (context) => _loadingListItemWidget(),
           ),
-        ],
+        ),
       ),
     );
   }

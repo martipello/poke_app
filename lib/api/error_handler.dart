@@ -1,4 +1,5 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 import '../../api/models/api_response.dart';
@@ -11,11 +12,13 @@ class ErrorHandler {
     String? errorHandlerMessage,
   }) {
     log('ERROR').d('error: ${error.toString()} \nerrorHandlerMessage: $errorHandlerMessage');
-    FirebaseCrashlytics.instance.recordError(
-      error,
-      null,
-      reason: errorHandlerMessage ?? error,
-    );
+    if (!kIsWeb) {
+      FirebaseCrashlytics.instance.recordError(
+        error,
+        null,
+        reason: errorHandlerMessage ?? error,
+      );
+    }
     try {
       final appException = error as ErrorResponse;
       return ApiResponse.error(
