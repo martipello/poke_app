@@ -11,6 +11,14 @@ extension IterableExtension<E> on Iterable<E> {
     }
   }
 
+  E? lastOrNull() {
+    try {
+      return last;
+    } catch (e) {
+      return null;
+    }
+  }
+
   E? secondOrNull() {
     try {
       return toList()[1];
@@ -64,7 +72,6 @@ extension IterableExtension<E> on Iterable<E> {
 
   Iterable<E> uniqueBy<T>(T Function(E e) extractor) {
     final ids = map(extractor).toSet();
-
     return where((element) {
       final id = extractor(element);
       final isInIds = ids.contains(id);
@@ -86,6 +93,7 @@ extension IterableExtension<E> on Iterable<E> {
 
 extension NullableIterableExtension<E> on Iterable<E>? {
   bool isNotNullAndIsNotEmpty() => this != null && this!.isNotEmpty == true;
+
   bool isNullOrEmpty() => this == null || this!.isEmpty == true;
 }
 

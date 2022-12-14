@@ -1,30 +1,47 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 import '../../api/models/api_response.dart';
-import '../../api/models/app_exceptions.dart';
-import 'models/api_response.dart';
+import '../utils/console_output.dart';
+import 'models/error_response.dart';
 
 class ErrorHandler {
-
   ApiResponse<T> handleError<T>(
     Object error, {
     String? errorHandlerMessage,
   }) {
-    FirebaseCrashlytics.instance.recordError(
-      error,
-      null,
-      reason: errorHandlerMessage,
-    );
+    log('ERROR').d('error: ${error.toString()} \nerrorHandlerMessage: $errorHandlerMessage');
+    if (!kIsWeb) {
+      FirebaseCrashlytics.instance.recordError(
+        error,
+        null,
+        reason: errorHandlerMessage ?? error,
+      );
+    }
     try {
-      final appException = error as AppException;
+      final appException = error as ErrorResponse;
       return ApiResponse.error(
-        appException.error?.message,
-        error: appException.error,
+        errorHandlerMessage ?? appException.message ?? appException.toString(),
+        error: appException,
       );
     } catch (_) {
-      return ApiResponse.error(
-        error.toString(),
-      );
+      try {
+        final appException = error as GraphQLError;
+        return ApiResponse.error(
+          appException.message,
+          error: ErrorResponse(
+            (eb) => eb
+              ..message = appException.message
+              ..error = appException
+              ..statusCode = 502,
+          ),
+        );
+      } catch (_) {
+        return ApiResponse.error(
+          error.toString(),
+        );
+      }
     }
   }
 }

@@ -31,25 +31,41 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  intl: ^0.17.0
   flutter_flavorizr: ^2.0.0
   firebase_core: ^1.4.0
-  firebase_messaging: ^10.0.8
   firebase_crashlytics: ^2.2.0
+  package_info: ^2.0.2
   logger: ^1.0.0
   get_it: ^7.1.0
   http: ^0.13.1
   dio: ^4.0.0
-  rxdart: ^0.26.0
+  rxdart: ^0.27.1
   url_launcher: ^6.0.3
   shared_preferences: ^2.0.5
-  built_value: ^8.1.2
-  built_collection: ^5.0.0
+  built_value: ^8.4.2
+  built_collection: ^5.1.1
   infinite_scroll_pagination: ^3.0.1
-
+  sliver_tools: ^0.2.5
+  palette_generator: ^0.3.3+2
+  themed: ^4.0.0
+  tuple: ^2.0.1
+  circular_reveal_animation: ^2.0.1
+  local_hero_with_callback: ^0.0.1
+  flutter_animate: ^2.0.1
+  flutter_animation_progress_bar: ^2.3.1
+  rive: ^0.9.1
+  expandable: ^5.0.1
+  settings_ui: ^2.0.2
+  flexible_scrollbar: ^0.1.2
+  in_app_review: ^2.0.6
+  share_plus: ^6.3.0
+  flutter_keyboard_visibility: ^5.4.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.5
+  graphql_flutter: ^5.1.0
 
 dev_dependencies:
   flutter_test:
@@ -61,10 +77,14 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.1
-  build_runner: ^1.12.2
-  built_value_generator: ^8.0.4
+  build_runner: ^2.3.2
+  built_value_generator: ^8.4.2
+  hive: ^2.2.3
+  hive_generator: ^2.0.0
+  hive_flutter: ^1.1.0
   flutter_native_splash: ^1.1.8+4
   flutter_launcher_icons: ^0.9.0
+  path_provider: ^2.0.11
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -79,6 +99,7 @@ flutter:
   assets:
     - assets/
     - assets/images/
+    - assets/animations/
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:

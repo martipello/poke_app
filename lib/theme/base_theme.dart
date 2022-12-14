@@ -66,7 +66,7 @@ class AppTheme {
 class BaseAppBarTheme {
   const BaseAppBarTheme({
     this.appBarTheme = const AppBarTheme(
-      color: Color(0xFF006CC7),
+      color: Color(0xFF000000),
       iconTheme: IconThemeData(
         color: Color(0xFFFFFFFF),
       ),
@@ -85,7 +85,7 @@ class BaseInputDecorationTheme {
   const BaseInputDecorationTheme({
     this.inputDecorationTheme = const InputDecorationTheme(
       focusedBorder: UnderlineInputBorder(
-        borderSide: BorderSide(color: Color(0xFF006CC7)),
+        borderSide: BorderSide(color: Color(0xFFFFFFFF)),
       ),
     ),
   });
@@ -96,7 +96,7 @@ class BaseInputDecorationTheme {
 class BaseIconThemeData {
   const BaseIconThemeData({
     this.iconThemeData = const IconThemeData(
-      color: Color(0xFF2e2e2e),
+      color: Color(0xFFFFFFFF),
     ),
   });
 
@@ -104,6 +104,7 @@ class BaseIconThemeData {
 }
 
 class BaseColorScheme {
+
   const BaseColorScheme({
     this.colorScheme = const ColorScheme(
       primary: Color(0xFF006CC7),
@@ -121,6 +122,8 @@ class BaseColorScheme {
   });
 
   final ColorScheme colorScheme;
+
+  Brightness get brightness => colorScheme.brightness;
 }
 
 class BaseThemeColors {
@@ -137,11 +140,6 @@ class BaseThemeColors {
     this.textOnPrimary = const Color(0xFFFFFFFF),
     this.textOnSecondary = const Color(0xFFFFFFFF),
     this.textOnForeground = const Color(0xFF2e2e2e),
-    this.chrome = const Color(0xFFCCCCCC),
-    this.chromeLight = const Color(0xFFE1E1E1),
-    this.chromeLighter = const Color(0xFFF2F2F4),
-    this.chromeLightest = const Color(0xFFF7F7F8),
-    this.chromeDark = const Color(0xFF333333),
     this.link = const Color(0xFF3965FF),
     this.positive = const Color(0xFF26A626),
     this.error = const Color(0xFFBA2F00),
@@ -150,16 +148,31 @@ class BaseThemeColors {
     this.black = const Color(0xFF000000),
     this.white = const Color(0xFFFFFFFF),
     this.background = const Color(0xFFEEEEEE),
-    this.statusCompleted = const Color(0xFFA6CE39),
-    this.statusAllocation = const Color(0xFFffb933),
-    this.statusInProgress = const Color(0xFF419bf9),
-    this.statusRejected = const Color(0xFFf96a58),
-    this.statusConfirmedLinguist = const Color(0xFF53c4cf),
-    this.serviceTelephone = const Color(0xFFA6CE39),
-    this.serviceLive = const Color(0xFFA6CE39),
-    this.serviceVideo = const Color(0xFFA6CE39),
-    this.serviceFace2Face = const Color(0xFFA6CE39),
-    this.serviceTranslation = const Color(0xFFA6CE39),
+    this.cardBackground = const Color(0xFFFFFFFF),
+
+
+    this.normal = const Color(0xFFA8A878),
+    this.water = const Color(0xFF6790F0),
+    this.fire = const Color(0xFFF08030),
+    this.grass = const Color(0xFF78C750),
+    this.electric = const Color(0xFFF9CF30),
+    this.ice = const Color(0xFF98D8D8),
+    this.fighting = const Color(0xFFC13128),
+    this.poison = const Color(0xFFA040A0),
+    this.ground = const Color(0xFFE1C068),
+    this.flying = const Color(0xFFA791F0),
+    this.psychic = const Color(0xFFF85888),
+    this.bug = const Color(0xFFA8B720),
+    this.rock = const Color(0xFFB8A038),
+    this.ghost = const Color(0xFF705898),
+    this.dark = const Color(0xFF6F5848),
+    this.dragon = const Color(0xFF7038),
+    this.steel = const Color(0xFFB8B7D0),
+    this.fairy = const Color(0xFFF0B6BC),
+
+    this.special = const Color(0xFFFF7038),
+    this.physical = const Color(0xFFB8B7D0),
+    this.status = const Color(0xFFF0B6BC),
   });
 
   final Color primary;
@@ -171,11 +184,6 @@ class BaseThemeColors {
   final Color secondaryDark;
   final Color foreground;
 
-  final Color chrome;
-  final Color chromeLight;
-  final Color chromeLighter;
-  final Color chromeLightest;
-  final Color chromeDark;
   final Color text;
   final Color textOnForeground;
   final Color textOnPrimary;
@@ -191,16 +199,29 @@ class BaseThemeColors {
   final Color black;
   final Color white;
   final Color background;
+  final Color cardBackground;
 
-  final Color statusCompleted;
-  final Color statusAllocation;
-  final Color statusInProgress;
-  final Color statusRejected;
-  final Color statusConfirmedLinguist;
+  final Color normal;
+  final Color water;
+  final Color fire;
+  final Color grass;
+  final Color electric;
+  final Color ice;
+  final Color fighting;
+  final Color poison;
+  final Color ground;
+  final Color flying;
+  final Color psychic;
+  final Color bug;
+  final Color rock;
+  final Color ghost;
+  final Color dark;
+  final Color dragon;
+  final Color steel;
+  final Color fairy;
 
-  final Color serviceTelephone;
-  final Color serviceLive;
-  final Color serviceVideo;
-  final Color serviceFace2Face;
-  final Color serviceTranslation;
+  final Color physical;
+  final Color status;
+  final Color special;
+
 }
