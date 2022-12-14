@@ -1,5 +1,6 @@
 import 'package:graphql/client.dart';
 
+import '../../utils/console_output.dart';
 import '../models/pokemon/pokemon_request.dart';
 import '../models/pokemon/pokemon_response.dart';
 import '../models/pokemon/pokemon_type.dart';
@@ -17,7 +18,17 @@ class PokemonRepositoryGraphQl {
   ) async {
     //TODO this should be calling fetch more
     final _graphQlClient = graphQlClient.getClient();
+    final _pokemonDocument = _createGetPokemonDocument(pokemonRequest);
+    final options = QueryOptions(
+      document: gql(
+        _pokemonDocument,
+      ),
+    );
+    log('QUERY').d('GET POKEMONS $_pokemonDocument');
+    return _graphQlClient.query(options);
+  }
 
+  String _createGetPokemonDocument(PokemonRequest pokemonRequest) {
     final typeIds = pokemonRequest.pokemonTypes.isNotEmpty
         ? pokemonRequest.pokemonTypes.map(
             (p0) => p0.id,
@@ -25,62 +36,56 @@ class PokemonRepositoryGraphQl {
         : PokemonType.values.map(
             (e) => e.id,
           );
-    final options = QueryOptions(
-      document: gql(
-        """
-          query pokemonQuery {
-            pokemon_v2_pokemon(where: {
-              pokemon_v2_pokemontypes: {
-                type_id: {
-                  _in: ${typeIds.toList()}
-                }, 
-              pokemon_v2_pokemon: {
-                name: {
-                  _like: "%${pokemonRequest.search ?? ''}%"}
-                  }
-                }
-              }, order_by: {
-                id: asc
+    return """
+        query pokemonQuery {
+          pokemon_v2_pokemon(where: {
+            pokemon_v2_pokemontypes: {
+              type_id: {
+                _in: ${typeIds.toList()}
               }, 
-              limit: ${pokemonRequest.limit ?? 0}, 
-              offset: ${pokemonRequest.skip ?? 0},
-            ) {
-              id
-              name
-              pokemon_v2_pokemontypes {
-                type_id
-                pokemon_v2_type {
-                  id
-                  name
+            pokemon_v2_pokemon: {
+              name: {
+                _like: "%${pokemonRequest.search ?? ''}%"}
                 }
               }
-              pokemon_v2_pokemonspecy {
-                evolution_chain_id
+            }, order_by: {
+              id: asc
+            }, 
+            limit: ${pokemonRequest.limit ?? 0}, 
+            offset: ${pokemonRequest.skip ?? 0},
+          ) {
+            id
+            name
+            pokemon_v2_pokemontypes {
+              type_id
+              pokemon_v2_type {
+                id
+                name
               }
-              pokemon_v2_pokemonsprites {
-                sprites
-              }
-              pokemon_v2_pokemonspecy {
-                pokemon_v2_pokemonspeciesnames(
-                  where: {
-                    language_id: {
-                      _eq: ${pokemonRequest.languageId}
-                    }
+            }
+            pokemon_v2_pokemonspecy {
+              evolution_chain_id
+            }
+            pokemon_v2_pokemonsprites {
+              sprites
+            }
+            pokemon_v2_pokemonspecy {
+              pokemon_v2_pokemonspeciesnames(
+                where: {
+                  language_id: {
+                    _eq: ${pokemonRequest.languageId}
                   }
-                ) {
-                    genus
-                  }
-                  generation_id
                 }
-                height
-                weight
+              ) {
+                  genus
+                }
+                generation_id
               }
-          }
-      """,
-      ),
-    );
-
-    return _graphQlClient.query(options);
+              height
+              weight
+            }
+        }
+    """;
   }
 
   Future<QueryResult<dynamic>> getPokemonInfo(
@@ -207,7 +212,7 @@ class PokemonRepositoryGraphQl {
       ''',
       ),
     );
-
+    log('QUERY').d('GET POKEMON INFO ${options.document}');
     return _graphQlClient.query(options);
   }
 
@@ -250,7 +255,7 @@ class PokemonRepositoryGraphQl {
       ''',
       ),
     );
-
+    log('QUERY').d('GET POKEMON WEAKNESS RESISTANCE ${options.document}');
     return _graphQlClient.query(options);
   }
 
@@ -338,7 +343,7 @@ query MyQuery {
       ''',
       ),
     );
-
+    log('QUERY').d('GET POKEMON EVOLUTIONS ${options.document}');
     return _graphQlClient.query(options);
   }
 
@@ -418,7 +423,7 @@ query MyQuery {
       ''',
       ),
     );
-
+    log('QUERY').d('GET POKEMON FORMS ${options.document}');
     return _graphQlClient.query(options);
   }
 
@@ -502,7 +507,7 @@ query MyQuery {
         ''',
       ),
     );
-
+    log('QUERY').d('GET POKEMON FORMS ${options.document}');
     return _graphQlClient.query(options);
   }
 

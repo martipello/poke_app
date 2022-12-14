@@ -29,7 +29,7 @@ class PokemonPagingAdapter {
 
   PokemonRequest? get pokemonRequest => _pokemonRequest;
 
-  int get offset => 40;
+  int get limit => 40;
 
   void setPokemonRequest(PokemonRequest pokemonRequest) {
     if (_pokemonRequest == null) {
@@ -56,7 +56,7 @@ class PokemonPagingAdapter {
           _pokemonRequest!.rebuild(
             (b) => b
               ..languageId = language.id
-              ..limit = pageKey + offset
+              ..limit = limit
               ..skip = pageKey
               ..pagination = true,
           ),
@@ -70,7 +70,7 @@ class PokemonPagingAdapter {
             if (isLastPage) {
               pagingController?.appendLastPage(pokemon.pokemon_v2_pokemon.toList());
             } else {
-              final nextPageKey = pageKey + offset;
+              final nextPageKey = pageKey + limit;
               pagingController?.appendPage(pokemon.pokemon_v2_pokemon.toList(), nextPageKey);
             }
           }
@@ -112,7 +112,7 @@ class PokemonPagingAdapter {
 
   bool _getIsLastPage(PokemonResponse newPage) {
     final count = newPage.pokemon_v2_pokemon.length;
-    return count < offset;
+    return count < limit;
   }
 
   void _handleError(Object error) {
