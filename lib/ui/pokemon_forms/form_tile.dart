@@ -223,7 +223,6 @@ class _FormTileState extends State<FormTile> {
         ),
         forceSpriteImage: true,
         imageColorCallback: mainImageColorViewModel.paletteGeneratorStream.add,
-        spriteImageColorCallback: spriteImageColorViewModel.paletteGeneratorStream.add,
       );
     } else {
       return const SizedBox();
@@ -268,7 +267,6 @@ class _FormTileState extends State<FormTile> {
                     ),
                   ),
           ),
-          spriteImagePaletteGenerator: spriteImagePaletteGenerator,
           mainImagePaletteGenerator: mainImagePaletteGenerator,
         ),
       );

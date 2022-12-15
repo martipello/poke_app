@@ -18,12 +18,10 @@ class PokemonDetailPageArguments {
   PokemonDetailPageArguments({
     required this.pokemon,
     this.mainImagePaletteGenerator,
-    this.spriteImagePaletteGenerator,
   });
 
   final Pokemon pokemon;
   final PaletteGenerator? mainImagePaletteGenerator;
-  final PaletteGenerator? spriteImagePaletteGenerator;
 }
 
 class PokemonDetailPage extends StatefulWidget {
@@ -43,7 +41,6 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
 
   Color get primaryColor =>
       pokemonDetailArguments.mainImagePaletteGenerator?.lightVibrantColor?.color ??
-          pokemonDetailArguments.spriteImagePaletteGenerator?.dominantColor?.color ??
           PokemonType
               .getTypeForId(pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes
               .firstOrNull()
@@ -53,7 +50,6 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
 
   Color get secondaryColor =>
       pokemonDetailArguments.mainImagePaletteGenerator?.dominantColor?.color ??
-          pokemonDetailArguments.spriteImagePaletteGenerator?.lightVibrantColor?.color ??
 
           PokemonType
               .getTypeForId(pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes

@@ -32,12 +32,10 @@ class PokemonTile extends StatefulWidget {
 
 class _PokemonTileState extends State<PokemonTile> {
   final mainImageColorViewModel = getIt.get<ImageColorViewModel>();
-  final spriteImageColorViewModel = getIt.get<ImageColorViewModel>();
 
   @override
   void dispose() {
     mainImageColorViewModel.dispose();
-    spriteImageColorViewModel.dispose();
     super.dispose();
   }
 
@@ -46,30 +44,23 @@ class _PokemonTileState extends State<PokemonTile> {
     return StreamBuilder<PaletteGenerator>(
       stream: mainImageColorViewModel.paletteGeneratorStream,
       builder: (context, mainImagePaletteGeneratorSnapshot) {
-        return StreamBuilder<PaletteGenerator>(
-          stream: spriteImageColorViewModel.paletteGeneratorStream,
-          builder: (context, spriteImagePaletteGeneratorSnapshot) {
-            final spriteImagePaletteGenerator = spriteImagePaletteGeneratorSnapshot.data;
-            final mainImagePaletteGenerator = mainImagePaletteGeneratorSnapshot.data;
-            const kCardPadding = 32;
-            return SizedBox(
-              height: kPokemonTileImageHeight + kChipHeight + kCardPadding + 16 + 4,
-              child: RoundedCard(
-                onTap: () {
-                  context.closeKeyBoard();
-                  Navigator.of(context).pushNamed(
-                    PokemonDetailPage.routeName,
-                    arguments: PokemonDetailPageArguments(
-                      pokemon: widget.pokemon,
-                      spriteImagePaletteGenerator: spriteImagePaletteGenerator,
-                      mainImagePaletteGenerator: mainImagePaletteGenerator,
-                    ),
-                  );
-                },
-                child: _buildPokemonCardBody(),
-              ),
-            );
-          },
+        final mainImagePaletteGenerator = mainImagePaletteGeneratorSnapshot.data;
+        const kCardPadding = 32;
+        return SizedBox(
+          height: kPokemonTileImageHeight + kChipHeight + kCardPadding + 16 + 4,
+          child: RoundedCard(
+            onTap: () {
+              context.closeKeyBoard();
+              Navigator.of(context).pushNamed(
+                PokemonDetailPage.routeName,
+                arguments: PokemonDetailPageArguments(
+                  pokemon: widget.pokemon,
+                  mainImagePaletteGenerator: mainImagePaletteGenerator,
+                ),
+              );
+            },
+            child: _buildPokemonCardBody(),
+          ),
         );
       },
     );
@@ -165,7 +156,6 @@ class _PokemonTileState extends State<PokemonTile> {
         kPokemonTileImageHeight,
       ),
       imageColorCallback: mainImageColorViewModel.paletteGeneratorStream.add,
-      spriteImageColorCallback: spriteImageColorViewModel.paletteGeneratorStream.add,
     );
   }
 }

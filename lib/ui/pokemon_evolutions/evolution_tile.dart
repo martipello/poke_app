@@ -52,33 +52,26 @@ class _EvolutionTileState extends State<EvolutionTile> {
     return StreamBuilder<PaletteGenerator>(
       stream: mainImageColorViewModel.paletteGeneratorStream,
       builder: (context, mainImagePaletteGeneratorSnapshot) {
-        return StreamBuilder<PaletteGenerator>(
-          stream: spriteImageColorViewModel.paletteGeneratorStream,
-          builder: (context, spriteImagePaletteGeneratorSnapshot) {
-            final spriteImagePaletteGenerator = spriteImagePaletteGeneratorSnapshot.data;
-            final mainImagePaletteGenerator = mainImagePaletteGeneratorSnapshot.data;
-            return ExpansionCard(
-              titleWidget: _buildPokemonCardBody(),
-              expandedChildren: _buildPokemonEvolutionTable(),
-              onTap: () {
-                final _pokemon = pokemon;
-                if (_pokemon != null) {
-                  Navigator.of(context).pushNamed(
-                    PokemonDetailPage.routeName,
-                    arguments: PokemonDetailPageArguments(
-                      pokemon: _pokemon.rebuild(
+        final mainImagePaletteGenerator = mainImagePaletteGeneratorSnapshot.data;
+        return ExpansionCard(
+          titleWidget: _buildPokemonCardBody(),
+          expandedChildren: _buildPokemonEvolutionTable(),
+          onTap: () {
+            final _pokemon = pokemon;
+            if (_pokemon != null) {
+              Navigator.of(context).pushNamed(
+                PokemonDetailPage.routeName,
+                arguments: PokemonDetailPageArguments(
+                  pokemon: _pokemon.rebuild(
                         (p) => p..pokemon_v2_pokemonspecy = widget.speciesHolder.toBuilder(),
-                      ),
-                      spriteImagePaletteGenerator: spriteImagePaletteGenerator,
-                      mainImagePaletteGenerator: mainImagePaletteGenerator,
-                    ),
-                  );
-                }
-              },
-              bottomWidgetBuilder: (_) {
-                return _buildPokemonTypesHolder();
-              },
-            );
+                  ),
+                  mainImagePaletteGenerator: mainImagePaletteGenerator,
+                ),
+              );
+            }
+          },
+          bottomWidgetBuilder: (_) {
+            return _buildPokemonTypesHolder();
           },
         );
       },
@@ -415,7 +408,6 @@ class _EvolutionTileState extends State<EvolutionTile> {
           kPokemonTileImageHeight,
         ),
         imageColorCallback: mainImageColorViewModel.paletteGeneratorStream.add,
-        spriteImageColorCallback: spriteImageColorViewModel.paletteGeneratorStream.add,
       );
     } else {
       return const SizedBox();

@@ -7,12 +7,12 @@ class ImageColorViewModel {
   final paletteGeneratorStream = BehaviorSubject<PaletteGenerator>();
 
   void updatePaletteGenerator(ImageProvider imageProvider) async {
-    final paletteGenerator = await PaletteGenerator.fromImageProvider(
-      imageProvider,
-    );
-    if(!paletteGeneratorStream.isClosed) {
-      paletteGeneratorStream.add(paletteGenerator);
-    }
+    // final paletteGenerator = await PaletteGenerator.fromImageProvider(
+    //   imageProvider,
+    // );
+    // if(!paletteGeneratorStream.isClosed) {
+    //   paletteGeneratorStream.add(paletteGenerator);
+    // }
   }
 
   void dispose(){
