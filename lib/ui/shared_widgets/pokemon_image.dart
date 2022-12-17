@@ -48,7 +48,7 @@ class _PokemonImageState extends State<PokemonImage> {
     mainImageProvider = NetworkImage(
       _createImageUrl(),
     );
-    mainImageColorViewModel.updatePaletteGenerator(mainImageProvider);
+    mainImageColorViewModel.updatePalette(mainImageProvider);
     mainImageColorViewModel.paletteGeneratorStream.listen((value) {
       widget.imageColorCallback?.call(value);
     });
@@ -126,7 +126,8 @@ class _PokemonImageState extends State<PokemonImage> {
     return ClipRRect(
       clipBehavior: widget.clipBehavior,
       borderRadius: _buildBorderRadius(),
-      child: Container(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
         decoration: BoxDecoration(
           color: widget.color ?? lightVibrantColor,
         ),

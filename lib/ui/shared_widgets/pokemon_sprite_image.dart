@@ -41,7 +41,7 @@ class _PokemonSpriteImageState extends State<PokemonSpriteImage> {
     spriteImageProvider = NetworkImage(
       _createSpriteImageUrl(),
     );
-    spriteImageColorViewModel.updatePaletteGenerator(spriteImageProvider);
+    spriteImageColorViewModel.updatePalette(spriteImageProvider);
     spriteImageColorViewModel.paletteGeneratorStream.listen((value) {
       widget.spriteImageColorCallback?.call(value);
     });
