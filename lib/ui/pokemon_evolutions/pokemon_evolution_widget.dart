@@ -39,20 +39,8 @@ class PokemonEvolutionWidget extends StatelessWidget {
             },
           ),
         ),
-        SliverToBoxAdapter(
-          child: _buildDivider(),
-        ),
       ],
     );
   }
 
-  Widget _buildDivider() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 12.0,
-        horizontal: 8,
-      ),
-      child: PokeDivider(),
-    );
-  }
 }

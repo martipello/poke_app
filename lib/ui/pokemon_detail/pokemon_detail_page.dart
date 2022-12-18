@@ -5,13 +5,14 @@ import '../../api/models/pokemon/pokemon.dart';
 import '../../api/models/pokemon/pokemon_type.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../extensions/iterable_extension.dart';
+import '../../extensions/media_query_context_extension.dart';
 import '../../theme/base_theme.dart';
 import '../pokemon_evolutions/pokemon_evolution_view.dart';
 import '../pokemon_forms/pokemon_forms_view.dart';
 import '../pokemon_info/pokemon_info_view.dart';
 import '../pokemon_moves/pokemon_moves_view.dart';
 import '../pokemon_stats/pokemon_stats_view.dart';
-import '../shared_widgets/view_constraints.dart';
+import '../shared_widgets/view_constraint.dart';
 import 'pokemon_detail_app_bar.dart';
 
 class PokemonDetailPageArguments {
@@ -81,25 +82,24 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
 
   Widget _buildPokemonDetailBody() {
     final tabBarTopPadding = 16 + context.statusBarHeight;
-    return ViewConstraints(
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: colors(context).cardBackground,
-        ),
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(
-                top: tabBarTopPadding,
-                bottom: 16,
-              ),
-              child: _buildTabBar(context),
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: colors(context).cardBackground,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(
+              top: tabBarTopPadding,
+              bottom: 16,
             ),
-            Expanded(
-              child: _buildTabBarView(),
-            ),
-          ],
-        ),
+            child: _buildTabBar(context),
+          ),
+          Expanded(
+            child: _buildTabBarView(),
+          ),
+        ],
       ),
     );
   }
@@ -136,39 +136,41 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
     return SizedBox(
       height: 36,
       width: double.infinity,
-      child: TabBar(
-        controller: _tabBarController,
-        isScrollable: true,
-        padding: const EdgeInsets.symmetric(
-          horizontal: 16,
+      child: Center(
+        child: TabBar(
+          controller: _tabBarController,
+          isScrollable: MediaQuery.of(context).isLargeScreen ? false : true,
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
+          ),
+          labelPadding: const EdgeInsets.only(
+            left: 16,
+            right: 16,
+            top: 2,
+          ),
+          indicator: BoxDecoration(
+            borderRadius: BorderRadius.circular(90), // Creates border
+            color: primaryColor,
+          ),
+          unselectedLabelColor: colors(context).textOnForeground,
+          tabs: [
+            Tab(
+              text: context.strings.info.toUpperCase(),
+            ),
+            Tab(
+              text: context.strings.stats.toUpperCase(),
+            ),
+            Tab(
+              text: context.strings.evolutions.toUpperCase(),
+            ),
+            Tab(
+              text: context.strings.forms.toUpperCase(),
+            ),
+            Tab(
+              text: context.strings.moves.toUpperCase(),
+            )
+          ],
         ),
-        labelPadding: const EdgeInsets.only(
-          left: 16,
-          right: 16,
-          top: 2,
-        ),
-        indicator: BoxDecoration(
-          borderRadius: BorderRadius.circular(90), // Creates border
-          color: primaryColor,
-        ),
-        unselectedLabelColor: colors(context).textOnForeground,
-        tabs: [
-          Tab(
-            text: context.strings.info.toUpperCase(),
-          ),
-          Tab(
-            text: context.strings.stats.toUpperCase(),
-          ),
-          Tab(
-            text: context.strings.evolutions.toUpperCase(),
-          ),
-          Tab(
-            text: context.strings.forms.toUpperCase(),
-          ),
-          Tab(
-            text: context.strings.moves.toUpperCase(),
-          )
-        ],
       ),
     );
   }

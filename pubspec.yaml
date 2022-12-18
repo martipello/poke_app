@@ -62,6 +62,7 @@ dependencies:
   in_app_review: ^2.0.6
   share_plus: ^6.3.0
   flutter_keyboard_visibility: ^5.4.0
+  google_mobile_ads: ^2.3.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -171,4 +172,17 @@ flavorizr:
         bundleId: "com.sealstudios.pokeapp.prod"
         firebase:
           config: "firebase/prod/GoogleService-Info.plist"
+
+    paid:
+      app:
+        name: "PokeApp"
+
+      android:
+        applicationId: "com.sealstudios.pokeapp.paid"
+        firebase:
+          config: "firebase/paid/google-services.json"
+      ios:
+        bundleId: "com.sealstudios.pokeapp.paid"
+        firebase:
+          config: "firebase/paid/GoogleService-Info.plist"
 

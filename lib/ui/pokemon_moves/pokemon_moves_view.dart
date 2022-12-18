@@ -9,11 +9,14 @@ import '../../../dependency_injection_container.dart';
 import '../../../extensions/build_context_extension.dart';
 import '../../../theme/base_theme.dart';
 import '../../../theme/poke_app_text.dart';
+import '../../ads/list_banner_ad.dart';
+import '../../ads/view_models/google_ads_view_model.dart';
 import '../shared_widgets/error_widget.dart' as ew;
 import '../shared_widgets/no_results.dart';
 import '../shared_widgets/pokeball_loading_widget.dart';
 import '../shared_widgets/rounded_button.dart';
 import '../shared_widgets/sliver_refresh_indicator.dart';
+import '../shared_widgets/view_constraint.dart';
 import 'pokemon_move_tile.dart';
 import 'view_models/pokemon_moves_view_model.dart';
 
@@ -31,6 +34,7 @@ class PokemonMovesView extends StatefulWidget {
 
 class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepAliveClientMixin<PokemonMovesView> {
   final _pokemonMovesViewModel = getIt.get<PokemonMovesViewModel>();
+  final _googleAdsViewModel = getIt.get<GoogleAdsViewModel>();
   final scrollController = ScrollController();
 
   @override
@@ -41,8 +45,7 @@ class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepA
     super.initState();
     _pokemonMovesViewModel.updateQuery(
       PokemonRequest(
-        (b) => b
-          ..pokemonId = widget.pokemonId,
+        (b) => b..pokemonId = widget.pokemonId,
       ),
     );
   }
@@ -51,13 +54,16 @@ class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepA
   void dispose() {
     _pokemonMovesViewModel.dispose();
     scrollController.dispose();
+    _googleAdsViewModel.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return _buildPokemonList();
+    return ViewConstraint(
+      child: _buildPokemonList(),
+    );
   }
 
   Widget _buildPokemonList() {
@@ -76,6 +82,7 @@ class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepA
               builderDelegate: PagedChildBuilderDelegate<PokemonMoveHolder>(
                 itemBuilder: (context, moveHolder, index) => _buildMoveTile(
                   moveHolder,
+                  showAd: _googleAdsViewModel.showAdAtIndex(index) && index != 0,
                 ),
                 firstPageErrorIndicatorBuilder: (context) => _buildErrorWidget(),
                 noItemsFoundIndicatorBuilder: (context) => _emptyListIndicator(),
@@ -158,10 +165,18 @@ class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepA
   }
 
   Widget _buildMoveTile(
-    PokemonMoveHolder move,
-  ) {
-    return PokemonMoveTile(
-      pokemonMove: move,
+    PokemonMoveHolder move, {
+    bool showAd = false,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (showAd) ListBannerAd(),
+        PokemonMoveTile(
+          pokemonMove: move,
+        ),
+      ],
     );
   }
 }

@@ -11,6 +11,7 @@ import '../../../extensions/iterable_extension.dart';
 import '../shared_widgets/error_widget.dart' as ew;
 import '../shared_widgets/pokeball_loading_widget.dart';
 import '../shared_widgets/sliver_refresh_indicator.dart';
+import '../shared_widgets/view_constraint.dart';
 import 'pokedex_info_widget.dart';
 import 'pokemon_ability_widget.dart';
 import 'pokemon_encounter_widget.dart';
@@ -58,11 +59,13 @@ class _PokemonInfoViewState extends State<PokemonInfoView> with AutomaticKeepAli
     return StreamBuilder<ApiResponse<PokemonResponse>>(
       stream: _pokemonInfoViewModel.pokemonInfoStream,
       builder: (context, snapshot) {
-        return SliverRefreshIndicator(
-          onRefresh: () {
-            _pokemonInfoViewModel.getPokemonInfo(widget.pokemonId);
-          },
-          sliver: _buildLayoutForState(snapshot),
+        return ViewConstraint(
+          child: SliverRefreshIndicator(
+            onRefresh: () {
+              _pokemonInfoViewModel.getPokemonInfo(widget.pokemonId);
+            },
+            sliver: _buildLayoutForState(snapshot),
+          ),
         );
       },
     );
@@ -112,7 +115,7 @@ class _PokemonInfoViewState extends State<PokemonInfoView> with AutomaticKeepAli
         _buildPokedexInfo(_pokemonInfo),
         _buildPokemonSpecies(_pokemonInfo),
         _buildPokemonAbilities(_pokemonInfo),
-        _buildPokemonLocation(_pokemonInfo),
+        _buildPokemonEncounter(_pokemonInfo),
       ],
     );
   }
@@ -139,7 +142,7 @@ class _PokemonInfoViewState extends State<PokemonInfoView> with AutomaticKeepAli
     );
   }
 
-  Widget _buildPokemonLocation(Pokemon _pokemon) {
+  Widget _buildPokemonEncounter(Pokemon _pokemon) {
     return PokemonEncounterWidget(
       pokemon: _pokemon,
     );

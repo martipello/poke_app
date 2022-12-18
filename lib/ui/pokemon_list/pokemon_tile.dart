@@ -14,6 +14,7 @@ import '../shared_widgets/chip_group.dart';
 import '../shared_widgets/pokemon_image.dart';
 import '../shared_widgets/rounded_card.dart';
 import '../shared_widgets/type_chip.dart';
+import '../shared_widgets/view_constraint.dart';
 import '../shared_widgets/view_models/image_color_view_model.dart';
 
 const kPokemonTileImageHeight = 80.0;
@@ -46,20 +47,22 @@ class _PokemonTileState extends State<PokemonTile> {
       builder: (context, mainImagePaletteGeneratorSnapshot) {
         final mainImagePaletteGenerator = mainImagePaletteGeneratorSnapshot.data;
         const kCardPadding = 32;
-        return SizedBox(
-          height: kPokemonTileImageHeight + kChipHeight + kCardPadding + 16 + 4,
-          child: RoundedCard(
-            onTap: () {
-              context.closeKeyBoard();
-              Navigator.of(context).pushNamed(
-                PokemonDetailPage.routeName,
-                arguments: PokemonDetailPageArguments(
-                  pokemon: widget.pokemon,
-                  mainImagePaletteGenerator: mainImagePaletteGenerator,
-                ),
-              );
-            },
-            child: _buildPokemonCardBody(),
+        return ViewConstraint(
+          child: SizedBox(
+            height: kPokemonTileImageHeight + kChipHeight + kCardPadding + 16 + 4,
+            child: RoundedCard(
+              onTap: () {
+                context.closeKeyBoard();
+                Navigator.of(context).pushNamed(
+                  PokemonDetailPage.routeName,
+                  arguments: PokemonDetailPageArguments(
+                    pokemon: widget.pokemon,
+                    mainImagePaletteGenerator: mainImagePaletteGenerator,
+                  ),
+                );
+              },
+              child: _buildPokemonCardBody(),
+            ),
           ),
         );
       },

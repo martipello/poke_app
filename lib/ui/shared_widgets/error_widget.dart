@@ -12,6 +12,7 @@ import '../../theme/poke_app_text.dart';
 import '../../utils/constants.dart';
 import 'poke_dialog.dart';
 import 'rounded_button.dart';
+import 'view_constraint.dart';
 
 class ErrorWidget extends StatelessWidget {
   ErrorWidget({
@@ -36,58 +37,59 @@ class ErrorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (showImage)
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 24.0,
-                ),
-                child: Image.asset(
-                  'assets/images/pika_detective.png',
-                  width: 200,
-                ),
-              ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
+      child: ViewConstraint(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (showImage)
                 Padding(
-                  padding: const EdgeInsets.only(top: 2.0),
-                  child: _buildInfoIcon(context),
-                ),
-                const SizedBox(
-                  width: 4,
-                ),
-                Flexible(
-                  child: Text(
-                    errorMessage ?? context.strings.errorMessage,
-                    style: PokeAppText.body2Style.copyWith(
-                      color: colors(context).textOnForeground,
-                    ),
-                    textAlign: textAlign ?? TextAlign.center,
+                  padding: const EdgeInsets.only(
+                    bottom: 24.0,
+                  ),
+                  child: Image.asset(
+                    'assets/images/pika_detective.png',
                   ),
                 ),
-              ],
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            if (onTryAgain != null)
-              RoundedButton(
-                label: retryLabel ?? context.strings.retry,
-                disableShadow: true,
-                fillColor: colors(context).cardBackground,
-                onPressed: onTryAgain,
-                textStyle: PokeAppText.body4Style.copyWith(
-                  color: colors(context).cardBackground,
-                ),
-                outlineColor: colors(context).warning,
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 2.0),
+                    child: _buildInfoIcon(context),
+                  ),
+                  const SizedBox(
+                    width: 4,
+                  ),
+                  Flexible(
+                    child: Text(
+                      errorMessage ?? context.strings.errorMessage,
+                      style: PokeAppText.body2Style.copyWith(
+                        color: colors(context).textOnForeground,
+                      ),
+                      textAlign: textAlign ?? TextAlign.center,
+                    ),
+                  ),
+                ],
               ),
-          ],
+              const SizedBox(
+                height: 16,
+              ),
+              if (onTryAgain != null)
+                RoundedButton(
+                  label: retryLabel ?? context.strings.retry,
+                  disableShadow: true,
+                  fillColor: colors(context).cardBackground,
+                  onPressed: onTryAgain,
+                  textStyle: PokeAppText.body4Style.copyWith(
+                    color: colors(context).cardBackground,
+                  ),
+                  outlineColor: colors(context).warning,
+                ),
+            ],
+          ),
         ),
       ),
     );

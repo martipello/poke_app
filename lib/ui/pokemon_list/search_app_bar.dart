@@ -11,6 +11,7 @@ import '../../theme/poke_app_text.dart';
 import '../settings/settings.dart';
 import '../shared_widgets/chip_group.dart';
 import '../shared_widgets/type_chip.dart';
+import '../shared_widgets/view_constraint.dart';
 import 'view_models/filter_view_model.dart';
 import 'view_models/search_app_bar_view_model.dart';
 
@@ -260,9 +261,11 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
         collapseMode: CollapseMode.parallax,
         background: Padding(
           padding: const EdgeInsets.only(top: 32),
-          child: Image.asset(
-            'assets/images/pokemon_hero.png',
-            fit: BoxFit.cover,
+          child: ViewConstraint(
+            child: Image.asset(
+              'assets/images/pokemon_hero.png',
+              fit: BoxFit.cover,
+            ),
           ),
         ),
       ),

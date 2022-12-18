@@ -40,9 +40,6 @@ class PokemonFormsWidget extends StatelessWidget {
             },
           ),
         ),
-        SliverToBoxAdapter(
-          child: _buildDivider(),
-        ),
       ],
     );
   }

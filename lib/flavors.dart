@@ -1,8 +1,10 @@
 //ignore_for_file:avoid_classes_with_only_static_members
+
 enum Flavor {
   dev,
   uat,
   prod,
+  paid,
 }
 
 class F {
@@ -17,9 +19,9 @@ class F {
       case Flavor.uat:
         return 'PokeApp UAT';
       case Flavor.prod:
-        return 'PokeApp';
+      case Flavor.paid:
       default:
-        return 'title';
+        return 'PokeApp';
     }
   }
 

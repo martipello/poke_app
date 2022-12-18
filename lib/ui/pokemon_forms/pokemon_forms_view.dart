@@ -11,6 +11,7 @@ import '../shared_widgets/error_widget.dart' as ew;
 import '../shared_widgets/no_results.dart';
 import '../shared_widgets/pokeball_loading_widget.dart';
 import '../shared_widgets/sliver_refresh_indicator.dart';
+import '../shared_widgets/view_constraint.dart';
 import 'pokemon_forms_widget.dart';
 import 'view_models/pokemon_forms_view_model.dart';
 
@@ -52,13 +53,15 @@ class _PokemonFormsViewState extends State<PokemonFormsView> with AutomaticKeepA
     return StreamBuilder<ApiResponse<PokemonResponse>>(
       stream: _pokemonFormsViewModel.pokemonFormStream,
       builder: (context, snapshot) {
-        return SliverRefreshIndicator(
-          onRefresh: () {
-            _pokemonFormsViewModel.getPokemonForms(
-              widget.pokemonId,
-            );
-          },
-          sliver: _buildLayoutForState(snapshot),
+        return ViewConstraint(
+          child: SliverRefreshIndicator(
+            onRefresh: () {
+              _pokemonFormsViewModel.getPokemonForms(
+                widget.pokemonId,
+              );
+            },
+            sliver: _buildLayoutForState(snapshot),
+          ),
         );
       },
     );

@@ -92,9 +92,6 @@ class _PokemonEncounterWidgetState extends State<PokemonEncounterWidget> {
                 },
               ),
             ),
-            SliverToBoxAdapter(
-              child: _buildDivider(),
-            ),
           ],
         );
       },
