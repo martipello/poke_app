@@ -6,6 +6,7 @@ import 'package:sliver_tools/sliver_tools.dart';
 import '../../api/models/pokemon/pokemon_type.dart';
 import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
+import '../../extensions/media_query_context_extension.dart';
 import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import '../settings/settings.dart';
@@ -265,6 +266,7 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
             child: Image.asset(
               'assets/images/pokemon_hero.png',
               fit: BoxFit.cover,
+              width: MediaQuery.of(context).fullSizeImageScreenWidth,
             ),
           ),
         ),

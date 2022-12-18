@@ -112,7 +112,7 @@ class _SplashViewState extends State<SplashView> with SingleTickerProviderStateM
     return Container(
       width: double.infinity,
       height: double.infinity,
-      color: Color(0xFFff0000),
+      color: const Color(0xFFff0000),
       child: child,
     );
   }

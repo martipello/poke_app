@@ -12,7 +12,6 @@ import '../pokemon_forms/pokemon_forms_view.dart';
 import '../pokemon_info/pokemon_info_view.dart';
 import '../pokemon_moves/pokemon_moves_view.dart';
 import '../pokemon_stats/pokemon_stats_view.dart';
-import '../shared_widgets/view_constraint.dart';
 import 'pokemon_detail_app_bar.dart';
 
 class PokemonDetailPageArguments {

@@ -2,7 +2,9 @@ import 'package:circular_reveal_animation/circular_reveal_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:local_hero_with_callback/local_hero_with_callback.dart';
 
+import '../../extensions/media_query_context_extension.dart';
 import '../pokemon_list/view_models/filter_view_model.dart';
+import '../shared_widgets/view_constraint.dart';
 import 'filter_button.dart';
 import 'filter_view.dart';
 
@@ -48,7 +50,7 @@ class _FilterViewHolderState extends State<FilterViewHolder> with SingleTickerPr
         builder: (context, snapshot) {
           final _isFilterBottomSheetShown = snapshot.data == true;
           return SizedBox(
-            height: widget.filterViewModel.filterHeight,
+            height: MediaQuery.of(context).filterBottomSheetHeight,
             width: double.infinity,
             child: Stack(
               children: [
@@ -92,15 +94,17 @@ class _FilterViewHolderState extends State<FilterViewHolder> with SingleTickerPr
   ) {
     return CircularRevealAnimation(
       animation: _circleRevealAnimation,
-      child: FilterView(
-        filterViewModel: widget.filterViewModel,
-        onClose: () {
-          _circleRevealAnimationController.reverse().then(
-            (value) {
-              widget.filterViewModel.setFilterUIState();
-            },
-          );
-        },
+      child: ViewConstraint(
+        child: FilterView(
+          filterViewModel: widget.filterViewModel,
+          onClose: () {
+            _circleRevealAnimationController.reverse().then(
+              (value) {
+                widget.filterViewModel.setFilterUIState();
+              },
+            );
+          },
+        ),
       ),
     );
   }

@@ -4,6 +4,7 @@ import 'package:package_info/package_info.dart';
 import '../../api/models/api_response.dart';
 import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
+import '../../extensions/media_query_context_extension.dart';
 import '../../extensions/string_extension.dart';
 import '../../flavors.dart';
 import '../../services/launch_service.dart';
@@ -38,6 +39,9 @@ class ErrorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: ViewConstraint(
+        constraints: const BoxConstraints(
+          maxWidth: kMaxScreenWidth / 2
+        ),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(

@@ -6,7 +6,6 @@ import '../../ads/list_banner_ad.dart';
 import '../../ads/view_models/google_ads_view_model.dart';
 import '../../api/models/api_response.dart';
 import '../../api/models/pokemon/pokemon.dart';
-import '../../api/models/pokemon/pokemon_request.dart';
 import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../theme/base_theme.dart';
@@ -41,7 +40,7 @@ class _PokemonListViewState extends State<PokemonListView> {
   @override
   void initState() {
     super.initState();
-    _addTextListener();
+    _addSearchTextListener();
     _addSearchListener();
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
@@ -56,11 +55,7 @@ class _PokemonListViewState extends State<PokemonListView> {
       (selectedTypes) {
         Future.delayed(duration).then(
           (value) {
-            _pokemonViewModel.updateQuery(
-              PokemonRequest(
-                (b) => b..pokemonTypes.replace(selectedTypes),
-              ),
-            );
+            _pokemonViewModel.setSelectedTypes(selectedTypes);
             if (_filterViewModel.scrollController.hasClients) {
               _filterViewModel.scrollController.animateTo(
                 _filterViewModel.scrollController.position.maxScrollExtent,
@@ -77,23 +72,17 @@ class _PokemonListViewState extends State<PokemonListView> {
   void _addSearchListener() {
     _pokemonViewModel.searchText
         .debounce(
-      (_) => TimerStream(
-        true,
-        const Duration(milliseconds: 700),
-      ),
-    )
-        .listen(
-      (search) {
-        _pokemonViewModel.updateQuery(
-          PokemonRequest(
-            (b) => b..search = search,
+          (_) => TimerStream(
+            true,
+            const Duration(milliseconds: 700),
           ),
+        )
+        .listen(
+          _pokemonViewModel.setSearch,
         );
-      },
-    );
   }
 
-  void _addTextListener() {
+  void _addSearchTextListener() {
     _textController.addListener(
       () {
         if (_textController.text != previousSearch) {
