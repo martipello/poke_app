@@ -3,7 +3,6 @@ import 'package:sliver_tools/sliver_tools.dart';
 
 import '../../../api/models/pokemon/pokemon.dart';
 import '../../../extensions/pokemon_extension.dart';
-import '../shared_widgets/poke_divider.dart';
 import 'form_tile.dart';
 
 class PokemonFormsWidget extends StatelessWidget {
@@ -40,20 +39,8 @@ class PokemonFormsWidget extends StatelessWidget {
             },
           ),
         ),
-        SliverToBoxAdapter(
-          child: _buildDivider(),
-        ),
       ],
     );
   }
 
-  Widget _buildDivider() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 12.0,
-        horizontal: 8,
-      ),
-      child: PokeDivider(),
-    );
-  }
 }

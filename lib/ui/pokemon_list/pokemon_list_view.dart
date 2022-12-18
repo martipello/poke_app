@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../ads/list_banner_ad.dart';
+import '../../ads/view_models/google_ads_view_model.dart';
 import '../../api/models/api_response.dart';
 import '../../api/models/pokemon/pokemon.dart';
-import '../../api/models/pokemon/pokemon_request.dart';
 import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../theme/base_theme.dart';
@@ -29,6 +30,7 @@ class PokemonListView extends StatefulWidget {
 
 class _PokemonListViewState extends State<PokemonListView> {
   final _pokemonViewModel = getIt.get<PokemonListViewModel>();
+  final _googleAdsViewModel = getIt.get<GoogleAdsViewModel>();
   final _filterViewModel = getIt.get<FilterViewModel>();
 
   final _textController = TextEditingController();
@@ -38,7 +40,7 @@ class _PokemonListViewState extends State<PokemonListView> {
   @override
   void initState() {
     super.initState();
-    _addTextListener();
+    _addSearchTextListener();
     _addSearchListener();
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
@@ -53,11 +55,7 @@ class _PokemonListViewState extends State<PokemonListView> {
       (selectedTypes) {
         Future.delayed(duration).then(
           (value) {
-            _pokemonViewModel.updateQuery(
-              PokemonRequest(
-                (b) => b..pokemonTypes.replace(selectedTypes),
-              ),
-            );
+            _pokemonViewModel.setSelectedTypes(selectedTypes);
             if (_filterViewModel.scrollController.hasClients) {
               _filterViewModel.scrollController.animateTo(
                 _filterViewModel.scrollController.position.maxScrollExtent,
@@ -74,23 +72,17 @@ class _PokemonListViewState extends State<PokemonListView> {
   void _addSearchListener() {
     _pokemonViewModel.searchText
         .debounce(
-      (_) => TimerStream(
-        true,
-        const Duration(milliseconds: 700),
-      ),
-    )
-        .listen(
-      (search) {
-        _pokemonViewModel.updateQuery(
-          PokemonRequest(
-            (b) => b..search = search,
+          (_) => TimerStream(
+            true,
+            const Duration(milliseconds: 700),
           ),
+        )
+        .listen(
+          _pokemonViewModel.setSearch,
         );
-      },
-    );
   }
 
-  void _addTextListener() {
+  void _addSearchTextListener() {
     _textController.addListener(
       () {
         if (_textController.text != previousSearch) {
@@ -106,6 +98,7 @@ class _PokemonListViewState extends State<PokemonListView> {
     _textController.dispose();
     _pokemonViewModel.dispose();
     _filterViewModel.dispose();
+    _googleAdsViewModel.dispose();
     super.dispose();
   }
 
@@ -157,6 +150,7 @@ class _PokemonListViewState extends State<PokemonListView> {
           builderDelegate: PagedChildBuilderDelegate<Pokemon>(
             itemBuilder: (context, pokemon, index) => _buildPokemonTile(
               pokemon: pokemon,
+              showAd: _googleAdsViewModel.showAdAtIndex(index) && index != 0,
             ),
             firstPageErrorIndicatorBuilder: (context) => _buildErrorWidget(),
             noItemsFoundIndicatorBuilder: (context) => _emptyListIndicator(),
@@ -164,7 +158,10 @@ class _PokemonListViewState extends State<PokemonListView> {
                 _errorListItemWidget(onTryAgain: _pokemonViewModel.retryLastRequest),
             firstPageProgressIndicatorBuilder: (context) => const Center(
               child: PokeballLoadingWidget(
-                size: Size(80, 80),
+                size: Size(
+                  kPokemonTileImageHeight,
+                  kPokemonTileImageHeight,
+                ),
               ),
             ),
             newPageProgressIndicatorBuilder: (context) => _loadingListItemWidget(),
@@ -248,9 +245,17 @@ class _PokemonListViewState extends State<PokemonListView> {
 
   Widget _buildPokemonTile({
     required Pokemon pokemon,
+    bool showAd = false,
   }) {
-    return PokemonTile(
-      pokemon: pokemon,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (showAd) ListBannerAd(),
+        PokemonTile(
+          pokemon: pokemon,
+        ),
+      ],
     );
   }
 }

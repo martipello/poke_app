@@ -43,6 +43,42 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:182864126022:android:6cad61fa15358c073b6a47",
+        "android_client_info": {
+          "package_name": "com.sealstudios.pokeapp.paid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "182864126022-8st2s8lfdh2g77h834cnsj5nfm4avaom.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCLRDB5rSO5k5zfeFkx2m3eJfayHQ4e-s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "182864126022-8st2s8lfdh2g77h834cnsj5nfm4avaom.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "182864126022-31so311j0hardjjoocd46et9i7qij61l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.sealstudios.pokeapp.dev"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:182864126022:android:541728bf5fd600a83b6a47",
         "android_client_info": {
           "package_name": "com.sealstudios.pokeapp.prod"

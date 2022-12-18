@@ -6,11 +6,13 @@ import 'package:sliver_tools/sliver_tools.dart';
 import '../../api/models/pokemon/pokemon_type.dart';
 import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
+import '../../extensions/media_query_context_extension.dart';
 import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import '../settings/settings.dart';
 import '../shared_widgets/chip_group.dart';
 import '../shared_widgets/type_chip.dart';
+import '../shared_widgets/view_constraint.dart';
 import 'view_models/filter_view_model.dart';
 import 'view_models/search_app_bar_view_model.dart';
 
@@ -260,9 +262,12 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
         collapseMode: CollapseMode.parallax,
         background: Padding(
           padding: const EdgeInsets.only(top: 32),
-          child: Image.asset(
-            'assets/images/pokemon_hero.png',
-            fit: BoxFit.cover,
+          child: ViewConstraint(
+            child: Image.asset(
+              'assets/images/pokemon_hero.png',
+              fit: BoxFit.cover,
+              width: MediaQuery.of(context).fullSizeImageScreenWidth,
+            ),
           ),
         ),
       ),

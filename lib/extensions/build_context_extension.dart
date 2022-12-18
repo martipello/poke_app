@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'media_query_context_extension.dart';
+
+
 extension BuildContextExt on BuildContext {
   double get statusBarHeight => MediaQuery.of(this).viewPadding.top;
 
@@ -9,6 +12,8 @@ extension BuildContextExt on BuildContext {
   double get screenHeight => MediaQuery.of(this).size.height;
 
   double get scaleFactor => MediaQuery.of(this).textScaleFactor;
+
+  double get fullSizeImageScreenWidth => MediaQuery.of(this).fullSizeImageScreenWidth;
 
   NavigatorState get navigator => Navigator.of(this);
 

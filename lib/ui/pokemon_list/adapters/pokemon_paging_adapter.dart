@@ -115,7 +115,7 @@ class PokemonPagingAdapter {
     return count < limit;
   }
 
-  void _handleError(Object error) {
+  void _handleError(Object? error) {
     final handledError = errorHandler.handleError(
       error,
     );

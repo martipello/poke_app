@@ -50,22 +50,14 @@ class PokemonMoveTile extends StatelessWidget {
           description,
         ),
       _buildLargeMargin(),
-      _buildLearnMethodSection(context),
-      Padding(
-        padding: const EdgeInsets.all(16),
-        child: PokeDivider(),
+      _buildLearnMethodSection(
+        context,
       ),
-      _buildTMSection(context),
-      Padding(
-        padding: const EdgeInsets.all(16),
-        child: PokeDivider(),
+      _buildTMSection(
+        context,
       ),
       _buildMoveDetailsTable(
         context,
-      ),
-      Padding(
-        padding: const EdgeInsets.all(16),
-        child: PokeDivider(),
       ),
       _buildMoveMetumTable(
         context,
@@ -157,10 +149,20 @@ class PokemonMoveTile extends StatelessWidget {
         learnMethodsByVersionGroup.keys.firstOrNull().capitalize(),
         value: context.strings.allGenerations,
       );
-      return _buildLearnMethodTable(
-        context,
-        [
-          pokemonMoveLearnTableRow,
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildLearnMethodTable(
+            context,
+            [
+              pokemonMoveLearnTableRow,
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: PokeDivider(),
+          ),
         ],
       );
     } else {
@@ -231,9 +233,19 @@ class PokemonMoveTile extends StatelessWidget {
             ),
           )
           .toList();
-      return _buildTMTable(
-        context,
-        tmTableRows,
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildTMTable(
+            context,
+            tmTableRows,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: PokeDivider(),
+          ),
+        ],
       );
     }
     return const SizedBox();
@@ -258,27 +270,37 @@ class PokemonMoveTile extends StatelessWidget {
     final power = (pokemonMove.pokemon_v2_move?.power ?? '').toString();
     final accuracyText = accuracy != null ? '$accuracy%' : '-';
     final pp = (pokemonMove.pokemon_v2_move?.pp ?? '').toString();
-    return PokemonTable(
-      tableTitle: context.strings.moveDetails,
-      padding: const EdgeInsets.only(
-        bottom: 8,
-      ),
-      pokemonTableRowInfoList: [
-        PokemonTableRowInfo(
-          context.strings.generation,
-          value: generation,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        PokemonTable(
+          tableTitle: context.strings.moveDetails,
+          padding: const EdgeInsets.only(
+            bottom: 8,
+          ),
+          pokemonTableRowInfoList: [
+            PokemonTableRowInfo(
+              context.strings.generation,
+              value: generation,
+            ),
+            PokemonTableRowInfo(
+              context.strings.power,
+              value: power,
+            ),
+            PokemonTableRowInfo(
+              context.strings.accuracy,
+              value: accuracyText,
+            ),
+            PokemonTableRowInfo(
+              context.strings.pp,
+              value: pp,
+            ),
+          ],
         ),
-        PokemonTableRowInfo(
-          context.strings.power,
-          value: power,
-        ),
-        PokemonTableRowInfo(
-          context.strings.accuracy,
-          value: accuracyText,
-        ),
-        PokemonTableRowInfo(
-          context.strings.pp,
-          value: pp,
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: PokeDivider(),
         ),
       ],
     );

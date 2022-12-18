@@ -8,7 +8,7 @@ import 'models/error_response.dart';
 
 class ErrorHandler {
   ApiResponse<T> handleError<T>(
-    Object error, {
+    Object? error, {
     String? errorHandlerMessage,
   }) {
     log('ERROR').d('error: ${error.toString()} \nerrorHandlerMessage: $errorHandlerMessage');

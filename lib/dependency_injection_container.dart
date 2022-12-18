@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'ads/view_models/google_ads_view_model.dart';
 import 'api/api_client.dart';
 import 'api/error_handler.dart';
 import 'api/graph_ql/graph_ql_client.dart';
@@ -44,6 +45,7 @@ Future<void> init() async {
   getIt.registerFactory(() => PokemonListViewModel(getIt()));
   getIt.registerFactory(() => PokemonInfoViewModel(getIt(), getIt(), getIt()));
   getIt.registerFactory(PokemonEncounterViewModel.new);
+  getIt.registerFactory(GoogleAdsViewModel.new);
   getIt.registerFactory(() => PokemonMovesViewModel(getIt()));
   getIt.registerFactory(() => PokemonFormsViewModel(getIt(), getIt(), getIt()));
   getIt.registerFactory(() => PokemonEvolutionViewModel(getIt(), getIt(), getIt()));

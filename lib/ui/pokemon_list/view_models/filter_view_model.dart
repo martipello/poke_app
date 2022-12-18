@@ -7,8 +7,6 @@ class FilterViewModel {
   final isFilterBottomSheetShownStream = BehaviorSubject<bool>.seeded(false);
   final selectedFiltersStream = BehaviorSubject<List<PokemonType>>.seeded([]);
 
-  double get filterHeight => 360.0;
-
   ScrollController get scrollController =>  _scrollController ??= ScrollController();
   ScrollController? _scrollController;
 

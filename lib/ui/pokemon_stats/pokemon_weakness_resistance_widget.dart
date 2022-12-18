@@ -36,7 +36,6 @@ class PokemonWeaknessResistanceWidget extends StatelessWidget {
             context,
             weaknesses,
           ),
-          PokeDivider(),
         ],
       ),
     );

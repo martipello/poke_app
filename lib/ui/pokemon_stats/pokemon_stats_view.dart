@@ -10,6 +10,7 @@ import '../../../extensions/iterable_extension.dart';
 import '../shared_widgets/error_widget.dart' as ew;
 import '../shared_widgets/pokeball_loading_widget.dart';
 import '../shared_widgets/sliver_refresh_indicator.dart';
+import '../shared_widgets/view_constraint.dart';
 import 'pokemon_stats_widget.dart';
 import 'pokemon_weakness_resistance_widget.dart';
 import 'view_models/pokemon_stats_weakness_resistance_view_model.dart';
@@ -56,11 +57,13 @@ class _PokemonStatsViewState extends State<PokemonStatsView> with AutomaticKeepA
     return StreamBuilder<ApiResponse<PokemonResponse>>(
       stream: _pokemonInfoViewModel.pokemonStatsWeaknessAndResistanceStream,
       builder: (context, snapshot) {
-        return SliverRefreshIndicator(
-          onRefresh: () {
-            _pokemonInfoViewModel.getPokemonStats(widget.pokemonId);
-          },
-          sliver: _buildLayoutForState(snapshot),
+        return ViewConstraint(
+          child: SliverRefreshIndicator(
+            onRefresh: () {
+              _pokemonInfoViewModel.getPokemonStats(widget.pokemonId);
+            },
+            sliver: _buildLayoutForState(snapshot),
+          ),
         );
       },
     );

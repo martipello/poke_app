@@ -3,7 +3,6 @@ import 'package:sliver_tools/sliver_tools.dart';
 
 import '../../../api/models/pokemon/evolution_holder.dart';
 import '../../../extensions/evolution_extension.dart';
-import '../shared_widgets/poke_divider.dart';
 import 'evolution_tile.dart';
 
 class PokemonEvolutionWidget extends StatelessWidget {
@@ -39,20 +38,8 @@ class PokemonEvolutionWidget extends StatelessWidget {
             },
           ),
         ),
-        SliverToBoxAdapter(
-          child: _buildDivider(),
-        ),
       ],
     );
   }
 
-  Widget _buildDivider() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 12.0,
-        horizontal: 8,
-      ),
-      child: PokeDivider(),
-    );
-  }
 }

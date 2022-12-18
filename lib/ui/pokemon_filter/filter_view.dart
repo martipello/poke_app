@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../api/models/pokemon/pokemon_type.dart';
 import '../../extensions/build_context_extension.dart';
+import '../../extensions/media_query_context_extension.dart';
 import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import '../pokemon_list/view_models/filter_view_model.dart';
@@ -31,7 +32,7 @@ class _FilterViewState extends State<FilterView> {
       ),
       child: Card(
         child: SizedBox(
-          height: widget.filterViewModel.filterHeight,
+          height: MediaQuery.of(context).filterBottomSheetHeight,
           width: double.infinity,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -53,6 +54,9 @@ class _FilterViewState extends State<FilterView> {
   }
 
   Widget _buildFilterChipsHolder() {
+    final pokemonTypes = PokemonType.values.toList();
+    pokemonTypes.remove(PokemonType.shadow);
+    pokemonTypes.remove(PokemonType.unknown);
     return StreamBuilder<List<PokemonType>>(
       initialData: [],
       stream: widget.filterViewModel.selectedFiltersStream,
@@ -62,7 +66,7 @@ class _FilterViewState extends State<FilterView> {
             horizontal: 16,
             vertical: 8,
           ),
-          chips: PokemonType.values
+          chips: pokemonTypes
               .map(
                 (type) => TypeChip(
                   chipType: ChipType.filter,
