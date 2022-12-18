@@ -46,6 +46,7 @@
     "baby" : "Baby",
     "generation" : "Generation",
     "unknownPokemon" : "Unknown Pokemon",
+    "unknownVersion" : "Unknown Version",
     "effect" : "Effect",
     "version" : "Version",
     "mainSeries" : "Main series",
@@ -89,6 +90,10 @@
     "maxTurns" : "Max turns :",
     "minLevel" : "Min level :",
     "maxLevel" : "Max level :",
+
+    "rarity" : "Rarity",
+    "method" : "Method",
+    "location" : "Location",
 
     "megaForm" : "Mega",
     "defaultForm" : "Default",
