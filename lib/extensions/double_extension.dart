@@ -1,4 +1,4 @@
-
+import '../ui/locations/map_page.dart';
 
 extension DoubleExtension on double? {
   String removeTrailingZero() {
@@ -14,4 +14,11 @@ extension DoubleExtension on double? {
       return (damageFactor / 10000).removeTrailingZero();
     }
   }
+
+  int scaleToZoom() {
+    final scale = this ?? 1.0;
+    final zoom = scale * 100;
+    return zoom.clamp(kMinZoom, kMaxZoom).toInt();
+  }
+
 }

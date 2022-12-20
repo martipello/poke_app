@@ -67,6 +67,7 @@
     "levelLabel" : "Level :",
     "itemLabel" : "Item :",
     "locationLabel" : "Location :",
+    "openLocationButtonLabel" : "Open location",
     "trueLabel" : "true",
 
     "generation" : "Generation :",

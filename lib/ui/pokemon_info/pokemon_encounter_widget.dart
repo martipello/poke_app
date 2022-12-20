@@ -11,6 +11,7 @@ import '../../api/models/pokemon/encounter.dart';
 import '../../api/models/pokemon/encounter_slot.dart';
 import '../../dependency_injection_container.dart';
 import '../../extensions/pokemon_resource_extension.dart';
+import '../locations/open_location_button.dart';
 import '../shared_widgets/poke_divider.dart';
 import '../shared_widgets/pokeball_loading_widget.dart';
 import '../shared_widgets/pokemon_expansion_tile.dart';
@@ -21,9 +22,13 @@ class PokemonEncounterWidget extends StatefulWidget {
   const PokemonEncounterWidget({
     Key? key,
     required this.pokemon,
+    this.primaryColor,
+    this.secondaryColor,
   }) : super(key: key);
 
   final Pokemon pokemon;
+  final Color? primaryColor;
+  final Color? secondaryColor;
 
   @override
   State<PokemonEncounterWidget> createState() => _PokemonEncounterWidgetState();
@@ -148,7 +153,7 @@ class _PokemonEncounterWidgetState extends State<PokemonEncounterWidget> {
               context,
               encounterSlot,
               encounterLocation,
-              index != encounterSlotsAndLocations.values.length - 1,
+              index == encounterSlotsAndLocations.values.length - 1,
             );
           },
         ),
@@ -184,11 +189,29 @@ class _PokemonEncounterWidgetState extends State<PokemonEncounterWidget> {
             ),
           ],
         ),
-        if (isLast)
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            _buildOpenLocationButton(
+              encounterLocation.version_id ?? 0,
+            ),
+          ],
+        ),
+        if (!isLast)
           _buildDivider(
             hasThinDivider: true,
           )
       ],
+    );
+  }
+
+  Widget _buildOpenLocationButton(
+    int generationId,
+  ) {
+    return OpenLocationButton(
+      generationId: generationId,
+      primaryColor: widget.primaryColor,
+      secondaryColor: widget.secondaryColor,
     );
   }
 

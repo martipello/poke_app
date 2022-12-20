@@ -140,7 +140,7 @@ class BaseThemeColors {
     this.textOnPrimary = const Color(0xFFFFFFFF),
     this.textOnSecondary = const Color(0xFFFFFFFF),
     this.textOnForeground = const Color(0xFF2e2e2e),
-    this.link = const Color(0xFF3965FF),
+    this.link = const Color(0xFF88A2FF),
     this.positive = const Color(0xFF26A626),
     this.error = const Color(0xFFBA2F00),
     this.warning = const Color(0xFFFD9726),
