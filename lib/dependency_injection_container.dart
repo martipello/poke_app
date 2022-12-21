@@ -11,6 +11,7 @@ import 'services/language_service.dart';
 import 'services/launch_service.dart';
 import 'services/shared_preferences_service.dart';
 import 'services/theme_service.dart';
+import 'ui/locations/view_models/map_zoom_control_view_model.dart';
 import 'ui/pokemon_evolutions/view_models/pokemon_evolution_view_model.dart';
 import 'ui/pokemon_forms/view_models/pokemon_forms_view_model.dart';
 import 'ui/pokemon_info/view_models/pokemon_encounter_view_model.dart';
@@ -52,6 +53,7 @@ Future<void> init() async {
   getIt.registerFactory(() => PokemonStatsWeaknessResistanceViewModel(getIt(), getIt(), getIt()));
   getIt.registerFactory(FilterViewModel.new);
   getIt.registerFactory(SearchAppBarViewModel.new);
+  getIt.registerFactory(MapZoomControlViewModel.new);
   getIt.registerFactory(SplashViewModel.new);
   getIt.registerFactory(ExpansionCardStateViewModel.new);
   getIt.registerFactory(PokeballLoadingViewModel.new);

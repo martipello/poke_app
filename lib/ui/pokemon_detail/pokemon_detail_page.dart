@@ -41,25 +41,17 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
 
   Color get primaryColor =>
       pokemonDetailArguments.mainImagePaletteGenerator?.lightVibrantColor?.color ??
-          PokemonType
-              .getTypeForId(pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes
-              .firstOrNull()
-              ?.pokemon_v2_type
-              ?.id ?? 0)
-              .color;
+      PokemonType.getTypeForId(
+              pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes.firstOrNull()?.pokemon_v2_type?.id ?? 0)
+          .color;
 
   Color get secondaryColor =>
       pokemonDetailArguments.mainImagePaletteGenerator?.dominantColor?.color ??
-
-          PokemonType
-              .getTypeForId(pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes
-              .secondOrNull()
-              ?.pokemon_v2_type
-              ?.id ?? pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes
-              .firstOrNull()
-              ?.pokemon_v2_type
-              ?.id ?? 0)
-              .color;
+      PokemonType.getTypeForId(
+              pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes.secondOrNull()?.pokemon_v2_type?.id ??
+                  pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes.firstOrNull()?.pokemon_v2_type?.id ??
+                  0)
+          .color;
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +97,9 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
 
   Widget _buildTabBarView() {
     return DecoratedBox(
-      decoration: BoxDecoration(color: colors(context).foreground),
+      decoration: BoxDecoration(
+        color: colors(context).foreground,
+      ),
       child: TabBarView(
         controller: _tabBarController,
         children: [

@@ -17,8 +17,14 @@ extension DoubleExtension on double? {
 
   int scaleToZoom() {
     final scale = this ?? 1.0;
-    final zoom = scale * 100;
+    final zoom = scale * 10;
     return zoom.clamp(kMinZoom, kMaxZoom).toInt();
+  }
+
+  double zoomToScale() {
+    final zoom = this ?? 1.0;
+    final scale = zoom / 10;
+    return scale.clamp(kMinScale, kMaxScale).toDouble();
   }
 
 }

@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:stepper_counter_swipe/stepper_counter_swipe.dart';
 
+import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../extensions/double_extension.dart';
-import '../../extensions/int_extension.dart';
 import '../../theme/base_theme.dart';
-import '../../utils/console_output.dart';
+import '../../theme/poke_app_text.dart';
 import '../shared_widgets/clipped_app_bar.dart';
 import '../shared_widgets/pokeball_loading_widget.dart';
+import 'view_models/map_zoom_control_view_model.dart';
 
-const kMaxZoom = 100;
-const kMinZoom = 0;
+const kMaxZoom = 10;
+const kMinZoom = 1;
 
-const kMinScale = 0.00;
+const kMinScale = 0.1;
 const kDefaultScale = 0.1;
 const kMaxScale = 1.0;
 
@@ -38,6 +38,8 @@ class LocationMapPage extends StatefulWidget {
 }
 
 class _LocationMapPageState extends State<LocationMapPage> {
+  final mapZoomControlViewModel = getIt.get<MapZoomControlViewModel>();
+
   LocationMapPageArguments get locationMapArguments => context.routeArguments as LocationMapPageArguments;
 
   Color? get primaryColor => locationMapArguments.primaryColor;
@@ -47,8 +49,21 @@ class _LocationMapPageState extends State<LocationMapPage> {
   final photoViewController = PhotoViewController();
 
   @override
+  void initState() {
+    super.initState();
+    photoViewController.outputStateStream.listen(
+      (event) {
+        mapZoomControlViewModel.zoomStream.add(
+          event.scale.scaleToZoom().toDouble(),
+        );
+      },
+    );
+  }
+
+  @override
   void dispose() {
     photoViewController.dispose();
+    mapZoomControlViewModel.dispose();
     super.dispose();
   }
 
@@ -69,7 +84,7 @@ class _LocationMapPageState extends State<LocationMapPage> {
               _buildAppBar(context),
               Align(
                 alignment: Alignment.bottomRight,
-                child: _buildMapControl(),
+                child: _buildMapControls(),
               ),
             ],
           ),
@@ -102,7 +117,6 @@ class _LocationMapPageState extends State<LocationMapPage> {
         initialScale: kDefaultScale,
         minScale: kMinScale,
         maxScale: kMaxScale,
-        enablePanAlways: true,
         controller: photoViewController,
         imageProvider: const AssetImage(
           'assets/images/kanto_region_map.webp',
@@ -114,55 +128,91 @@ class _LocationMapPageState extends State<LocationMapPage> {
     );
   }
 
-  Widget _buildMapControl() {
-    return StreamBuilder<PhotoViewControllerValue>(
-      stream: photoViewController.outputStateStream,
+  Widget _buildMapControls() {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: _buildZoomControl(),
+    );
+  }
+
+  Widget _buildZoomControl() {
+    return StreamBuilder<double?>(
+      stream: mapZoomControlViewModel.zoomStream,
       builder: (context, snapshot) {
-        final photoViewControllerValue = snapshot.data;
-        log('tag').d('value ${photoViewControllerValue?.scale}');
-        return Padding(
-          padding: const EdgeInsets.all(16),
-          child: SizedBox(
-            width: 80,
-            child: StepperSwipe(
-              maxValue: kMaxZoom,
-              minValue: kMinZoom,
-              initialValue: 0,
-              stepperValue: photoViewControllerValue?.scale?.scaleToZoom() ?? 1,
-              speedTransitionLimitCount: 3,
-              firstIncrementDuration: const Duration(
-                milliseconds: 150,
+        final currentZoom = snapshot.data ?? 0;
+        return Container(
+          decoration: BoxDecoration(
+            color: colors(context).white.withOpacity(0.4),
+            borderRadius: BorderRadius.circular(90),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              _buildIncreaseZoomButton(
+                currentZoom,
               ),
-              secondIncrementDuration: const Duration(
-                milliseconds: 50,
+              _buildZoomLabel(currentZoom),
+              _buildDecreaseZoomButton(
+                currentZoom,
               ),
-              direction: Axis.vertical,
-              dragButtonColor: primaryColor ?? Colors.red,
-              withPlusMinus: true,
-              withFastCount: true,
-              onChanged: (value) {
-                final difference = ((value - (photoViewController.scale.scaleToZoom())).floor());
-                final differenceNormalized = difference.abs().round();
-                if (value.zoomToScale() > (photoViewController.scale ?? kDefaultScale)) {
-                  increaseZoom(differenceNormalized);
-                } else {
-                  decreaseZoom(differenceNormalized);
-                }
-              },
-            ),
+            ],
           ),
         );
       },
     );
   }
 
-  void increaseZoom(int increaseBy) {
-    final newValue = (photoViewController.scale ?? kDefaultScale).scaleToZoom() + (increaseBy * 10);
-    photoViewController.scale = newValue.zoomToScale();
+  Widget _buildZoomLabel(
+    double currentZoom,
+  ) {
+    return Container(
+      height: 60,
+      width: 60,
+      decoration: BoxDecoration(
+        color: primaryColor,
+        borderRadius: BorderRadius.circular(360),
+      ),
+      child: Center(
+        child: Text(
+          currentZoom.removeTrailingZero(),
+          style: PokeAppText.subtitle2Style.copyWith(
+            color: colors(context).white,
+          ),
+        ),
+      ),
+    );
   }
 
-  void decreaseZoom(int decreaseBy) {
-    final newValue = (photoViewController.scale ?? kDefaultScale).scaleToZoom() - (decreaseBy * 10);
-    photoViewController.scale = newValue.zoomToScale();
+  Widget _buildIncreaseZoomButton(
+    double currentZoom,
+  ) {
+    return IconButton(
+      onPressed: currentZoom < kMaxZoom
+          ? () {
+              photoViewController.scale = (currentZoom + 1).zoomToScale();
+            }
+          : null,
+      icon: Icon(
+        Icons.add,
+        color: colors(context).white,
+      ),
+    );
+  }
+
+  Widget _buildDecreaseZoomButton(
+    double currentZoom,
+  ) {
+    return IconButton(
+      onPressed: currentZoom > kMinZoom
+          ? () {
+              photoViewController.scale = (currentZoom - 1).zoomToScale();
+            }
+          : null,
+      icon: Icon(
+        Icons.remove,
+        color: colors(context).white,
+      ),
+    );
   }
 }

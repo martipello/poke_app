@@ -9,10 +9,4 @@ extension IntExtension on int? {
       return '';
     }
   }
-
-  double zoomToScale() {
-    final zoom = this ?? 1.0;
-    final scale = zoom / 100;
-    return scale.clamp(kMinScale, kMaxScale).toDouble();
-  }
 }
