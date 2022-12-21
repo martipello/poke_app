@@ -40,7 +40,6 @@ class _LocationMapPageState extends State<LocationMapPage> {
   LocationMapPageArguments get locationMapArguments => context.routeArguments as LocationMapPageArguments;
 
   Color? get primaryColor => locationMapArguments.primaryColor;
-
   Color? get secondaryColor => locationMapArguments.secondaryColor;
 
   final photoViewController = PhotoViewController();
