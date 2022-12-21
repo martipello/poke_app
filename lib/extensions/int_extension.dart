@@ -1,5 +1,3 @@
-import '../ui/locations/map_page.dart';
-
 extension IntExtension on int? {
   String toPercentageDisplayName() {
     final number = this;

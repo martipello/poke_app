@@ -1,4 +1,5 @@
 import '../ui/locations/map_page.dart';
+import '../ui/locations/view_models/map_zoom_control_view_model.dart';
 
 extension DoubleExtension on double? {
   String removeTrailingZero() {

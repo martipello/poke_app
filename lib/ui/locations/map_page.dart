@@ -11,9 +11,6 @@ import '../shared_widgets/clipped_app_bar.dart';
 import '../shared_widgets/pokeball_loading_widget.dart';
 import 'view_models/map_zoom_control_view_model.dart';
 
-const kMaxZoom = 10;
-const kMinZoom = 1;
-
 const kMinScale = 0.1;
 const kDefaultScale = 0.1;
 const kMaxScale = 1.0;
