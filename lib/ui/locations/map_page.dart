@@ -7,6 +7,7 @@ import '../../extensions/build_context_extension.dart';
 import '../../extensions/double_extension.dart';
 import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
+import '../../utils/console_output.dart';
 import '../shared_widgets/clipped_app_bar.dart';
 import '../shared_widgets/pokeball_loading_widget.dart';
 import 'view_models/map_zoom_control_view_model.dart';
@@ -17,12 +18,12 @@ const kMaxScale = 1.0;
 
 class LocationMapPageArguments {
   LocationMapPageArguments({
-    required this.generationId,
+    required this.generationName,
     this.primaryColor,
     this.secondaryColor,
   });
 
-  final int generationId;
+  final String generationName;
   final Color? primaryColor;
   final Color? secondaryColor;
 }
@@ -40,6 +41,7 @@ class _LocationMapPageState extends State<LocationMapPage> {
   LocationMapPageArguments get locationMapArguments => context.routeArguments as LocationMapPageArguments;
 
   Color? get primaryColor => locationMapArguments.primaryColor;
+
   Color? get secondaryColor => locationMapArguments.secondaryColor;
 
   final photoViewController = PhotoViewController();
@@ -114,8 +116,10 @@ class _LocationMapPageState extends State<LocationMapPage> {
         minScale: kMinScale,
         maxScale: kMaxScale,
         controller: photoViewController,
-        imageProvider: const AssetImage(
-          'assets/images/kanto_region_map.webp',
+        imageProvider: AssetImage(
+          _mapForGenerationId(
+            locationMapArguments.generationName,
+          ),
         ),
         loadingBuilder: (context, chunk) {
           return const PokeballLoadingWidget();
@@ -210,5 +214,61 @@ class _LocationMapPageState extends State<LocationMapPage> {
         color: colors(context).white,
       ),
     );
+  }
+
+  String _mapForGenerationId(String generationName) {
+    switch (generationName) {
+      case 'red':
+      case 'blue':
+      case 'yellow':
+      case 'firered':
+      case 'leafgreen':
+      case 'letsgopikachu':
+      case 'letsgoeevee':
+        //return KANTO
+        return 'assets/images/kanto_region.webp';
+      case 'gold':
+      case 'silver':
+      case 'crystal':
+      case 'heartgold':
+      case 'soulsilver':
+      //return JHOTO KANTO
+      case 'ruby':
+      case 'sapphire':
+      case 'omegaruby':
+      case 'alphasapphire':
+      case 'emerald':
+        return 'assets/images/hoen_region.webp';
+      case 'diamond':
+      case 'pearl':
+      case 'brilliantdiamond':
+      case 'shiningpearl':
+      case 'platinum':
+      //return SINNOH
+      case 'black':
+      case 'white':
+      case 'black2':
+      case 'white2':
+      //return UNOVA
+      case 'x':
+      case 'y':
+        //return KALOS
+        return 'assets/images/kalos_region.webp';
+      case 'sun':
+      case 'moon':
+      case 'ultrasun':
+      case 'ultramoon':
+        //return ALOLA
+        return 'assets/images/alola_region.jpg';
+      case 'swordandshield':
+      //return GALAR
+      case 'arceus':
+      //return HISUI
+      case 'scarlet':
+      case 'violet':
+      //return PALDEA
+      default:
+        return 'assets/images/kanto_region.webp';
+    }
   }
 }

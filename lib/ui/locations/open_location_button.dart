@@ -8,12 +8,12 @@ import 'map_page.dart';
 class OpenLocationButton extends StatelessWidget {
   const OpenLocationButton({
     super.key,
-    required this.generationId,
+    required this.generationName,
     this.primaryColor,
     this.secondaryColor,
   });
 
-  final int generationId;
+  final String generationName;
   final Color? primaryColor;
   final Color? secondaryColor;
 
@@ -29,7 +29,7 @@ class OpenLocationButton extends StatelessWidget {
             Navigator.of(context).pushNamed(
               LocationMapPage.routeName,
               arguments: LocationMapPageArguments(
-                generationId: generationId,
+                generationName: generationName,
                 primaryColor: primaryColor,
                 secondaryColor: secondaryColor,
               ),

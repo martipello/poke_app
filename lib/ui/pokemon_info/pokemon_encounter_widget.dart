@@ -153,6 +153,7 @@ class _PokemonEncounterWidgetState extends State<PokemonEncounterWidget> {
               context,
               encounterSlot,
               encounterLocation,
+              encounter.pokemon_v2_version?.name ?? '',
               index == encounterSlotsAndLocations.values.length - 1,
             );
           },
@@ -165,6 +166,7 @@ class _PokemonEncounterWidgetState extends State<PokemonEncounterWidget> {
     BuildContext context,
     EncounterSlot encounterSlot,
     PokemonResource encounterLocation,
+    String encounterRegionName,
     bool isLast,
   ) {
     final encounterMethod =
@@ -193,7 +195,7 @@ class _PokemonEncounterWidgetState extends State<PokemonEncounterWidget> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             _buildOpenLocationButton(
-              encounterLocation.version_id ?? 0,
+              encounterRegionName,
             ),
           ],
         ),
@@ -206,10 +208,10 @@ class _PokemonEncounterWidgetState extends State<PokemonEncounterWidget> {
   }
 
   Widget _buildOpenLocationButton(
-    int generationId,
+    String generationName,
   ) {
     return OpenLocationButton(
-      generationId: generationId,
+      generationName: generationName,
       primaryColor: widget.primaryColor,
       secondaryColor: widget.secondaryColor,
     );
