@@ -46,6 +46,7 @@
     "baby" : "Baby",
     "generation" : "Generation",
     "unknownPokemon" : "Unknown Pokemon",
+    "unknownVersion" : "Unknown Version",
     "effect" : "Effect",
     "version" : "Version",
     "mainSeries" : "Main series",
@@ -66,6 +67,7 @@
     "levelLabel" : "Level :",
     "itemLabel" : "Item :",
     "locationLabel" : "Location :",
+    "openLocationButtonLabel" : "Open location",
     "trueLabel" : "true",
 
     "generation" : "Generation :",
@@ -89,6 +91,10 @@
     "maxTurns" : "Max turns :",
     "minLevel" : "Min level :",
     "maxLevel" : "Max level :",
+
+    "rarity" : "Rarity",
+    "method" : "Method",
+    "location" : "Location",
 
     "megaForm" : "Mega",
     "defaultForm" : "Default",

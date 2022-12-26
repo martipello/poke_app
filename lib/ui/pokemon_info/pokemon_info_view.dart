@@ -25,9 +25,13 @@ class PokemonInfoView extends StatefulWidget {
   PokemonInfoView({
     Key? key,
     required this.pokemonId,
+    this.primaryColor,
+    this.secondaryColor,
   }) : super(key: key);
 
   final int pokemonId;
+  final Color? primaryColor;
+  final Color? secondaryColor;
 
   @override
   State<PokemonInfoView> createState() => _PokemonInfoViewState();
@@ -145,6 +149,8 @@ class _PokemonInfoViewState extends State<PokemonInfoView> with AutomaticKeepAli
   Widget _buildPokemonEncounter(Pokemon _pokemon) {
     return PokemonEncounterWidget(
       pokemon: _pokemon,
+      primaryColor: widget.primaryColor,
+      secondaryColor: widget.secondaryColor,
     );
   }
 }

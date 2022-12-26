@@ -8,8 +8,10 @@ import '../../../extensions/iterable_extension.dart';
 import '../../../theme/base_theme.dart';
 import '../../../theme/poke_app_text.dart';
 import '../../api/models/pokemon/encounter.dart';
+import '../../api/models/pokemon/encounter_slot.dart';
 import '../../dependency_injection_container.dart';
 import '../../extensions/pokemon_resource_extension.dart';
+import '../locations/open_location_button.dart';
 import '../shared_widgets/poke_divider.dart';
 import '../shared_widgets/pokeball_loading_widget.dart';
 import '../shared_widgets/pokemon_expansion_tile.dart';
@@ -20,9 +22,13 @@ class PokemonEncounterWidget extends StatefulWidget {
   const PokemonEncounterWidget({
     Key? key,
     required this.pokemon,
+    this.primaryColor,
+    this.secondaryColor,
   }) : super(key: key);
 
   final Pokemon pokemon;
+  final Color? primaryColor;
+  final Color? secondaryColor;
 
   @override
   State<PokemonEncounterWidget> createState() => _PokemonEncounterWidgetState();
@@ -59,7 +65,7 @@ class _PokemonEncounterWidgetState extends State<PokemonEncounterWidget> {
                 childCount: encountersByVersion.length,
                 (context, index) {
                   final encounterWithVersion = encountersByVersion.entries.get(index);
-                  if(encounterWithVersion.value.encounterSlotAndLocations.isEmpty) {
+                  if (encounterWithVersion.value.encounterSlotAndLocations.isEmpty) {
                     return const SizedBox();
                   }
                   return Column(
@@ -118,7 +124,7 @@ class _PokemonEncounterWidgetState extends State<PokemonEncounterWidget> {
   ) {
     final encounterLabel = encounter.pokemon_v2_version.normalizeName();
     return Text(
-      encounterLabel.isNotEmpty ? encounterLabel : 'Unknown version',
+      encounterLabel.isNotEmpty ? encounterLabel : context.strings.unknownVersion,
       style: PokeAppText.subtitle4Style.copyWith(
         color: colors(context).textOnForeground,
       ),
@@ -130,75 +136,121 @@ class _PokemonEncounterWidgetState extends State<PokemonEncounterWidget> {
     Encounter encounter,
   ) {
     final encounterSlotsAndLocations = encounter.encounterSlotAndLocations;
-    final minLevel = (encounter.min_level ?? 0).toString();
-    final maxLevel = (encounter.max_level ?? 0).toString();
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _buildMinMaxLevel(
+          context,
+          encounter,
+        ),
+        _buildEncounterTitle(context),
+        ...encounterSlotsAndLocations.entries.mapIndexed(
+          (p0, index) {
+            final encounterSlot = p0.value;
+            final encounterLocation = p0.key;
+            return _buildEncounterDetail(
+              context,
+              encounterSlot,
+              encounterLocation,
+              encounter.pokemon_v2_version?.name ?? '',
+              index == encounterSlotsAndLocations.values.length - 1,
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildEncounterDetail(
+    BuildContext context,
+    EncounterSlot encounterSlot,
+    PokemonResource encounterLocation,
+    String encounterRegionName,
+    bool isLast,
+  ) {
+    final encounterMethod =
+        encounterSlot.pokemon_v2_encountermethod?.pokemon_v2_encountermethodnames.firstOrNull().normalizeName() ?? '';
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         PokemonTable(
-          padding: const EdgeInsets.only(bottom: 8),
           pokemonTableRowInfoList: [
-            if (minLevel.isNotEmpty)
-              PokemonTableRowInfo(
-                context.strings.minLevel,
-                value: minLevel,
-              ),
-            if (maxLevel.isNotEmpty)
-              PokemonTableRowInfo(
-                context.strings.maxLevel,
-                value: maxLevel,
-              ),
+            PokemonTableRowInfo(
+              context.strings.location,
+              value: encounterLocation.normalizeName(),
+            ),
+            PokemonTableRowInfo(
+              context.strings.method,
+              value: encounterMethod,
+            ),
+            PokemonTableRowInfo(
+              context.strings.rarity,
+              value: (encounterSlot.rarity ?? 0).toString(),
+            ),
           ],
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: 16,
-          ),
-          child: Text(
-            'Encounters',
-            style: PokeAppText.subtitle4Style.copyWith(
-              color: colors(context).textOnForeground,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            _buildOpenLocationButton(
+              encounterRegionName,
             ),
-          ),
+          ],
         ),
-        ...encounterSlotsAndLocations.entries.mapIndexed(
-          (p0, index) {
+        if (!isLast)
+          _buildDivider(
+            hasThinDivider: true,
+          )
+      ],
+    );
+  }
 
-            final encounterLocation = p0.key.normalizeName();
-            final encounterSlot = p0.value;
-            final encounterMethod = encounterSlot.pokemon_v2_encountermethod?.pokemon_v2_encountermethodnames
-                    .firstOrNull()
-                    .normalizeName() ??
-                '';
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                PokemonTable(
-                  pokemonTableRowInfoList: [
-                    PokemonTableRowInfo(
-                      'Location',
-                      value: encounterLocation,
-                    ),
-                    PokemonTableRowInfo(
-                      'Method',
-                      value: encounterMethod,
-                    ),
-                    PokemonTableRowInfo(
-                      'Rarity',
-                      value: (encounterSlot.rarity ?? 0).toString(),
-                    ),
-                  ],
-                ),
-                if(index != encounterSlotsAndLocations.values.length - 1)
-                _buildDivider(
-                  hasThinDivider: true,
-                )
-              ],
-            );
-          },
+  Widget _buildOpenLocationButton(
+    String generationName,
+  ) {
+    return OpenLocationButton(
+      generationName: generationName,
+      primaryColor: widget.primaryColor,
+      secondaryColor: widget.secondaryColor,
+    );
+  }
+
+  Padding _buildEncounterTitle(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 16,
+      ),
+      child: Text(
+        context.strings.encounters,
+        style: PokeAppText.subtitle4Style.copyWith(
+          color: colors(context).textOnForeground,
         ),
+      ),
+    );
+  }
+
+  Widget _buildMinMaxLevel(
+    BuildContext context,
+    Encounter encounter,
+  ) {
+    final minLevel = (encounter.min_level ?? 0).toString();
+    final maxLevel = (encounter.max_level ?? 0).toString();
+
+    return PokemonTable(
+      padding: const EdgeInsets.only(bottom: 8),
+      pokemonTableRowInfoList: [
+        if (minLevel.isNotEmpty)
+          PokemonTableRowInfo(
+            context.strings.minLevel,
+            value: minLevel,
+          ),
+        if (maxLevel.isNotEmpty)
+          PokemonTableRowInfo(
+            context.strings.maxLevel,
+            value: maxLevel,
+          ),
       ],
     );
   }

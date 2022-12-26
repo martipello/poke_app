@@ -8,7 +8,6 @@ import '../../../extensions/iterable_extension.dart';
 import '../../../extensions/pokemon_species_holder_extension.dart';
 import '../../../theme/base_theme.dart';
 import '../../../theme/poke_app_text.dart';
-import '../../utils/console_output.dart';
 import '../shared_widgets/poke_divider.dart';
 import '../shared_widgets/pokemon_expansion_tile.dart';
 import '../shared_widgets/pokemon_table.dart';
@@ -72,7 +71,6 @@ class PokemonSpeciesWidget extends StatelessWidget {
   ) {
     final shape = speciesHolder.shape();
     final habitat = speciesHolder.habitat();
-    log('speciesHolder').d('speciesHolder $speciesHolder shape $shape');
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
