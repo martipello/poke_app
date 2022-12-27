@@ -17,7 +17,7 @@ class PokemonRepositoryGraphQl {
     PokemonRequest pokemonRequest,
   ) async {
     //TODO this should be calling fetch more
-    final _graphQlClient = graphQlClient.getClient();
+    final _graphQlClient = await graphQlClient.getClient();
     final _pokemonDocument = _createGetPokemonDocument(pokemonRequest);
     final options = QueryOptions(
       document: gql(
@@ -31,7 +31,7 @@ class PokemonRepositoryGraphQl {
   Future<QueryResult<dynamic>> getPokemonInfo(
     PokemonRequest pokemonRequest,
   ) async {
-    final _graphQlClient = graphQlClient.getClient();
+    final _graphQlClient = await graphQlClient.getClient();
     final pokemonInfoDocument = _createPokemonInfoDocument(pokemonRequest);
     final options = QueryOptions(
       document: gql(pokemonInfoDocument),
@@ -43,7 +43,7 @@ class PokemonRepositoryGraphQl {
   Future<QueryResult<dynamic>> getPokemonStatsWeaknessAndResistance(
     PokemonRequest pokemonRequest,
   ) async {
-    final _graphQlClient = graphQlClient.getClient();
+    final _graphQlClient = await graphQlClient.getClient();
     final pokemonStatsWeaknessAndResistanceDocument = _createPokemonStatsWeaknessAndResistanceDocument(pokemonRequest);
     final options = QueryOptions(
       document: gql(pokemonStatsWeaknessAndResistanceDocument),
@@ -55,7 +55,7 @@ class PokemonRepositoryGraphQl {
   Future<QueryResult<dynamic>> getPokemonEvolutions(
     PokemonRequest pokemonRequest,
   ) async {
-    final _graphQlClient = graphQlClient.getClient();
+    final _graphQlClient = await graphQlClient.getClient();
     final pokemonEvolutionsDocument = _createPokemonEvolutionsDocument(pokemonRequest);
     final options = QueryOptions(
       document: gql(pokemonEvolutionsDocument),
@@ -67,7 +67,7 @@ class PokemonRepositoryGraphQl {
   Future<QueryResult<dynamic>> getPokemonForms(
     PokemonRequest pokemonRequest,
   ) async {
-    final _graphQlClient = graphQlClient.getClient();
+    final _graphQlClient = await graphQlClient.getClient();
     final pokemonFormsDocument = _createPokemonFormsDocument(pokemonRequest);
     final options = QueryOptions(
       document: gql(pokemonFormsDocument),
@@ -79,7 +79,7 @@ class PokemonRepositoryGraphQl {
   Future<QueryResult<dynamic>> getPokemonMoves(
     PokemonRequest pokemonRequest,
   ) async {
-    final _graphQlClient = graphQlClient.getClient();
+    final _graphQlClient = await graphQlClient.getClient();
     final pokemonMoveDocument = _createPokemonMoveDocument(pokemonRequest);
     final options = QueryOptions(
       document: gql(
@@ -93,8 +93,9 @@ class PokemonRepositoryGraphQl {
   Future<QueryResult<Object?>> fetchMore(
     QueryOptions originalOptions,
     QueryResult previousResult,
-  ) {
-    return graphQlClient.getClient().fetchMore(
+  ) async {
+    final _graphQlClient = await graphQlClient.getClient();
+    return _graphQlClient.fetchMore(
           fetchMoreOptions,
           originalOptions: originalOptions,
           previousResult: previousResult,

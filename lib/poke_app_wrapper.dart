@@ -5,8 +5,6 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart';
 
 import 'dependency_injection_container.dart' as di;
 import 'dependency_injection_container.dart';
@@ -28,8 +26,6 @@ class PokeAppWrapper {
           options: DefaultFirebaseOptions.currentPlatform,
         );
         if (!kIsWeb) {
-          final appDocumentDir = await getApplicationDocumentsDirectory();
-          Hive.init(appDocumentDir.path);
           FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
           if (kDebugMode) {
             await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
