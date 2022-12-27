@@ -37,8 +37,8 @@ Future<void> init() async {
   getIt.registerLazySingleton(SharedPreferencesService.new);
   getIt.registerLazySingleton(() => LanguageService(getIt()));
   getIt.registerLazySingleton(() => ThemeService(getIt()));
+  getIt.registerLazySingleton(GraphQlClient.new);
   getIt.registerFactory(LaunchService.new);
-  getIt.registerFactory(GraphQlClient.new);
   getIt.registerFactory(ErrorHandler.new);
   getIt.registerFactory(() => PokemonRepositoryGraphQl(getIt()));
   getIt.registerFactory(() => PokemonPagingAdapter(getIt(), getIt(), getIt()));
