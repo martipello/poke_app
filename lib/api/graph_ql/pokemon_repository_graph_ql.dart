@@ -1,6 +1,7 @@
 import 'package:graphql/client.dart';
 
 import '../../utils/console_output.dart';
+import '../models/pokemon/damage_type.dart';
 import '../models/pokemon/pokemon_request.dart';
 import '../models/pokemon/pokemon_response.dart';
 import '../models/pokemon/pokemon_type.dart';
@@ -96,10 +97,10 @@ class PokemonRepositoryGraphQl {
   ) async {
     final _graphQlClient = await graphQlClient.getClient();
     return _graphQlClient.fetchMore(
-          fetchMoreOptions,
-          originalOptions: originalOptions,
-          previousResult: previousResult,
-        );
+      fetchMoreOptions,
+      originalOptions: originalOptions,
+      previousResult: previousResult,
+    );
   }
 
   FetchMoreOptions get fetchMoreOptions => FetchMoreOptions.partial(
@@ -486,11 +487,25 @@ pokemon_v2_pokemon(where: {id: {_eq: ${pokemonRequest.pokemonId}}}) {
   }
 
   String _createPokemonMoveDocument(PokemonRequest pokemonRequest) {
+    final typeIds = pokemonRequest.pokemonTypes.isNotEmpty
+        ? pokemonRequest.pokemonTypes.map(
+            (p0) => p0.id,
+          )
+        : PokemonType.values.map(
+            (e) => e.id,
+          );
+    final damageTypeIds = pokemonRequest.damageTypes.isNotEmpty
+        ? pokemonRequest.damageTypes.map(
+            (p0) => p0.id,
+          )
+        : DamageType.values.map(
+            (e) => e.id,
+          );
     return '''
 query MyQuery {
 pokemon_v2_pokemon(where: {id: {_eq: ${pokemonRequest.pokemonId}}}) {
   id
-  pokemon_v2_pokemonmoves(limit: ${pokemonRequest.limit}, offset: ${pokemonRequest.skip}, distinct_on: move_id) {
+  pokemon_v2_pokemonmoves(limit: ${pokemonRequest.limit}, offset: ${pokemonRequest.skip}, distinct_on: move_id, where: {pokemon_v2_move: {name: {_like: "%${pokemonRequest.search ?? ''}%"}, pokemon_v2_type: {id: {_in: ${typeIds.toList()}}, pokemon_v2_movedamageclass: {id: {_in: ${damageTypeIds.toList()}}}}}}) {
     id
     level
     pokemon_v2_movelearnmethod {
