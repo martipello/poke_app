@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
+import '../../api/models/pokemon/damage_type.dart';
 import '../../api/models/pokemon/pokemon_type.dart';
 import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
@@ -60,68 +61,96 @@ class _SearchWidgetState extends State<SearchWidget> with TickerProviderStateMix
   ) {
     return StreamBuilder<List<PokemonType>>(
       initialData: [],
-      stream: widget.filterViewModel.selectedFiltersStream,
-      builder: (context, snapshot) {
-        final selectedFilters = snapshot.data ?? [];
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            ViewConstraint(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: _buildSearchView(),
+      stream: widget.filterViewModel.selectedTypeFiltersStream,
+      builder: (context, selectedTypeFilterSnapshot) {
+        return StreamBuilder<List<DamageType>>(
+          initialData: [],
+          stream: widget.filterViewModel.selectedDamageTypeFiltersStream,
+          builder: (context, selectedDamageTypeFilterSnapshot) {
+            final selectedTypeFilters = selectedTypeFilterSnapshot.data ?? [];
+            final selectedDamageTypeFilters = selectedDamageTypeFilterSnapshot.data ?? [];
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                ViewConstraint(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: _buildSearchView(),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-            ViewConstraint(
-              child: _buildSelectedFiltersHolder(
-                selectedFilters,
-              ),
-            )
-          ],
+                ),
+                ViewConstraint(
+                  child: _buildSelectedTypeFiltersHolder(
+                    selectedTypeFilters,
+                    selectedDamageTypeFilters,
+                  ),
+                )
+              ],
+            );
+          },
         );
       },
     );
   }
 
-  Widget _buildSelectedFiltersHolder(
-    List<PokemonType> selectedFilters,
+  Widget _buildSelectedTypeFiltersHolder(
+    List<PokemonType> selectedTypeFilters,
+    List<DamageType> selectedDamageTypeFilters,
   ) {
-    const chipPadding = 12.0;
     const clearFilterHeight = 48.0;
 
-    final totalHeight =
-        selectedFilters.length > 1 ? (kChipHeight + chipPadding) + clearFilterHeight : kChipHeight + chipPadding;
+    final totalHeight = _calculateHeight(
+      selectedTypeFilters,
+      selectedDamageTypeFilters,
+      clearFilterHeight,
+    );
 
-    return selectedFilters.isNotEmpty
-        ? SizedBox(
-            height: totalHeight,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildSelectedFilters(
-                        selectedFilters,
-                      ),
+    if (selectedTypeFilters.isNotEmpty || selectedDamageTypeFilters.isNotEmpty) {
+      return SizedBox(
+        height: totalHeight,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (selectedTypeFilters.isNotEmpty)
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildSelectedTypeFilters(
+                      selectedTypeFilters,
                     ),
-                  ],
-                ),
-                if (selectedFilters.length > 1)
-                  _buildClearAllFiltersButton(
-                    clearFilterHeight,
                   ),
-                _buildSmallMargin,
-              ],
-            ),
-          )
-        : const SizedBox();
+                ],
+              ),
+            if (selectedTypeFilters.isNotEmpty && selectedDamageTypeFilters.isNotEmpty)
+              const SizedBox(
+                height: 8,
+              ),
+            if (selectedDamageTypeFilters.isNotEmpty)
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildSelectedDamageTypeFilters(
+                      selectedDamageTypeFilters,
+                    ),
+                  ),
+                ],
+              ),
+            if ((selectedTypeFilters.length + selectedDamageTypeFilters.length) > 1)
+              _buildClearAllFiltersButton(
+                clearFilterHeight,
+              ),
+            _buildSmallMargin,
+          ],
+        ),
+      );
+    } else {
+      return const SizedBox();
+    }
   }
 
   Widget _buildClearAllFiltersButton(
@@ -155,7 +184,7 @@ class _SearchWidgetState extends State<SearchWidget> with TickerProviderStateMix
     );
   }
 
-  Widget _buildSelectedFilters(
+  Widget _buildSelectedTypeFilters(
     List<PokemonType> selectedFilters,
   ) {
     return ChipGroup(
@@ -169,7 +198,33 @@ class _SearchWidgetState extends State<SearchWidget> with TickerProviderStateMix
               pokemonType: type,
               isSelected: true,
               onDelete: () {
-                widget.filterViewModel.selectFilter(type);
+                widget.filterViewModel.selectTypeFilter(
+                  type,
+                );
+              },
+            ),
+          )
+          .toList(),
+    );
+  }
+
+  Widget _buildSelectedDamageTypeFilters(
+    List<DamageType> selectedFilters,
+  ) {
+    return ChipGroup(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      scrollDirection: Axis.horizontal,
+      scrollController: widget.filterViewModel.scrollController,
+      chips: selectedFilters
+          .map(
+            (type) => TypeChip(
+              chipType: ChipType.normal,
+              damageType: type,
+              isSelected: true,
+              onDelete: () {
+                widget.filterViewModel.selectDamageTypeFilter(
+                  type,
+                );
               },
             ),
           )
@@ -189,10 +244,7 @@ class _SearchWidgetState extends State<SearchWidget> with TickerProviderStateMix
         focusNode: focusNode,
         controller: widget.searchTextController,
         maxLines: 1,
-        style: PokeAppText.body1Style.copyWith(
-          color: colors(context).textOnForeground,
-          height: 1.6
-        ),
+        style: PokeAppText.body1Style.copyWith(color: colors(context).textOnForeground, height: 1.6),
         decoration: _buildSearchInputDecoration(),
       ),
     );
@@ -201,10 +253,7 @@ class _SearchWidgetState extends State<SearchWidget> with TickerProviderStateMix
   InputDecoration _buildSearchInputDecoration() {
     return InputDecoration(
       labelText: context.strings.searchByMoveName,
-      labelStyle: PokeAppText.body2Style.copyWith(
-        color: colors(context).textOnForeground,
-        height: 1
-      ),
+      labelStyle: PokeAppText.body2Style.copyWith(color: colors(context).textOnForeground, height: 1),
       border: InputBorder.none,
       focusedBorder: InputBorder.none,
       enabledBorder: InputBorder.none,
@@ -226,4 +275,25 @@ class _SearchWidgetState extends State<SearchWidget> with TickerProviderStateMix
   }
 
   SizedBox get _buildSmallMargin => const SizedBox(height: 8);
+
+  double _calculateHeight(
+    List<PokemonType> selectedTypeFilters,
+    List<DamageType> selectedDamageTypeFilters,
+    double clearFilterHeight,
+  ) {
+    const chipPadding = 12.0;
+    if(selectedTypeFilters.isNotEmpty && selectedDamageTypeFilters.isNotEmpty) {
+      if (selectedTypeFilters.length + selectedDamageTypeFilters.length > 1) {
+        return ((kChipHeight + chipPadding) * 2) + clearFilterHeight;
+      } else {
+        return ((kChipHeight + chipPadding) * 2);
+      }
+    }
+    if(selectedTypeFilters.isNotEmpty || selectedDamageTypeFilters.isNotEmpty) {
+      if (selectedTypeFilters.length + selectedDamageTypeFilters.length > 1) {
+        return (kChipHeight + chipPadding) + clearFilterHeight;
+      }
+    }
+    return kChipHeight + chipPadding;
+  }
 }

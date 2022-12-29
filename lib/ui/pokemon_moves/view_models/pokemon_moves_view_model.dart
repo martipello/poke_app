@@ -3,6 +3,7 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../../../api/models/pokemon/pokemon_move_holder.dart';
 import '../../../../api/models/pokemon/pokemon_request.dart';
+import '../../../api/models/pokemon/damage_type.dart';
 import '../../../api/models/pokemon/pokemon_type.dart';
 import '../adapters/moves_paging_adapter.dart';
 
@@ -42,6 +43,23 @@ class PokemonMovesViewModel {
         PokemonRequest(
           (b) => b
             ..pokemonTypes.replace(
+              selectedTypes,
+            ),
+        );
+    pokemonRequest = _pokemonRequest;
+    updateQuery(_pokemonRequest);
+  }
+
+  void setSelectedDamageTypes(List<DamageType> selectedTypes) {
+    final _pokemonRequest = pokemonRequest?.rebuild(
+          (b) => b
+            ..damageTypes.replace(
+              selectedTypes,
+            ),
+        ) ??
+        PokemonRequest(
+          (b) => b
+            ..damageTypes.replace(
               selectedTypes,
             ),
         );

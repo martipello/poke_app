@@ -7,6 +7,8 @@
     "species" : "Species",
     "forms" : "Forms",
     "filters" : "Filters",
+    "types" : "Types",
+    "damageTypes" : "Damage types",
     "retry" : "Retry",
     "stats" : "Stats",
     "moves" : "Moves",

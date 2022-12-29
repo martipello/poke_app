@@ -61,28 +61,48 @@ class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepA
     WidgetsBinding.instance.addPostFrameCallback(
           (_) {
         _addSelectedFilterListener();
+        _addSelectedDamageTypeFilterListener();
       },
     );
+  }
 
-    /*
-    TODO scroll layout if keyboard opens (search is focuseed)
-    key.currentState?.outerController.animateTo(
-                    2000,
-                    curve: Curves.linear,
-                    duration: Duration(
-                      milliseconds: 10,
-                    ),
-                  );
-     */
+  void collapseNestedScrollViewHeader(){
+    widget.nestedScrollViewOuterController?.animateTo(
+      2000,
+      curve: Curves.fastOutSlowIn,
+      duration: const Duration(
+        milliseconds: 10,
+      ),
+    );
   }
 
   void _addSelectedFilterListener() {
     const duration = Duration(milliseconds: 200);
-    _filterViewModel.selectedFiltersStream.listen(
+    _filterViewModel.selectedTypeFiltersStream.listen(
           (selectedTypes) {
         Future.delayed(duration).then(
               (value) {
                 _pokemonMovesViewModel.setSelectedTypes(selectedTypes);
+            if (_filterViewModel.scrollController.hasClients) {
+              _filterViewModel.scrollController.animateTo(
+                _filterViewModel.scrollController.position.maxScrollExtent,
+                duration: duration,
+                curve: Curves.fastOutSlowIn,
+              );
+            }
+          },
+        );
+      },
+    );
+  }
+
+  void _addSelectedDamageTypeFilterListener() {
+    const duration = Duration(milliseconds: 200);
+    _filterViewModel.selectedDamageTypeFiltersStream.listen(
+          (selectedDamageTypes) {
+        Future.delayed(duration).then(
+              (value) {
+                _pokemonMovesViewModel.setSelectedDamageTypes(selectedDamageTypes);
             if (_filterViewModel.scrollController.hasClients) {
               _filterViewModel.scrollController.animateTo(
                 _filterViewModel.scrollController.position.maxScrollExtent,
@@ -141,7 +161,9 @@ class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepA
         Align(
           alignment: Alignment.bottomCenter,
           child: FilterViewHolder(
+            onFilterButtonPressed: collapseNestedScrollViewHeader,
             filterViewModel: _filterViewModel,
+            showDamageTypeFilters: true,
           ),
         ),
       ],

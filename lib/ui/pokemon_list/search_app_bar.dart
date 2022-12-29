@@ -69,7 +69,7 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
   ) {
     return StreamBuilder<List<PokemonType>>(
       initialData: [],
-      stream: widget.filterViewModel.selectedFiltersStream,
+      stream: widget.filterViewModel.selectedTypeFiltersStream,
       builder: (context, snapshot) {
         final selectedFilters = snapshot.data ?? [];
         return SliverAppBar(
@@ -196,7 +196,7 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
               pokemonType: type,
               isSelected: true,
               onDelete: () {
-                widget.filterViewModel.selectFilter(type);
+                widget.filterViewModel.selectTypeFilter(type);
               },
             ),
           )
