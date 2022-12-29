@@ -23,6 +23,7 @@ import 'ui/pokemon_list/view_models/search_view_model.dart';
 import 'ui/pokemon_moves/adapters/moves_paging_adapter.dart';
 import 'ui/pokemon_moves/view_models/pokemon_moves_view_model.dart';
 import 'ui/pokemon_stats/view_models/pokemon_stats_weakness_resistance_view_model.dart';
+import 'ui/shared_widgets/view_models/current_index_view_model.dart';
 import 'ui/shared_widgets/view_models/expansion_card_state_view_model.dart';
 import 'ui/shared_widgets/view_models/image_color_view_model.dart';
 import 'ui/shared_widgets/view_models/pokeball_loading_view_model.dart';
@@ -53,6 +54,7 @@ Future<void> init() async {
   getIt.registerFactory(() => PokemonStatsWeaknessResistanceViewModel(getIt(), getIt(), getIt()));
   getIt.registerFactory(FilterViewModel.new);
   getIt.registerFactory(SearchViewModel.new);
+  getIt.registerFactory(CurrentIndexViewModel.new);
   getIt.registerFactory(MapZoomControlViewModel.new);
   getIt.registerFactory(SplashViewModel.new);
   getIt.registerFactory(ExpansionCardStateViewModel.new);

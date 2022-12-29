@@ -11,7 +11,6 @@ import '../../../theme/base_theme.dart';
 import '../../../theme/poke_app_text.dart';
 import '../../ads/list_banner_ad.dart';
 import '../../ads/view_models/google_ads_view_model.dart';
-import '../pokemon_filter/filter_view_holder.dart';
 import '../pokemon_list/view_models/filter_view_model.dart';
 import '../shared_widgets/error_widget.dart' as ew;
 import '../shared_widgets/no_results.dart';
@@ -27,11 +26,11 @@ class PokemonMovesView extends StatefulWidget {
   const PokemonMovesView({
     Key? key,
     required this.pokemonId,
-    this.nestedScrollViewOuterController,
+    required this.filterViewModel,
   }) : super(key: key);
 
   final int pokemonId;
-  final ScrollController? nestedScrollViewOuterController;
+  final FilterViewModel filterViewModel;
 
   @override
   State<PokemonMovesView> createState() => _PokemonMovesViewState();
@@ -39,7 +38,6 @@ class PokemonMovesView extends StatefulWidget {
 
 class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepAliveClientMixin<PokemonMovesView> {
   final _pokemonMovesViewModel = getIt.get<PokemonMovesViewModel>();
-  final _filterViewModel = getIt.get<FilterViewModel>();
   final _googleAdsViewModel = getIt.get<GoogleAdsViewModel>();
   final scrollController = ScrollController();
   final _searchTextController = TextEditingController();
@@ -59,33 +57,23 @@ class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepA
     _addSearchTextListener();
     _addSearchListener();
     WidgetsBinding.instance.addPostFrameCallback(
-          (_) {
+      (_) {
         _addSelectedFilterListener();
         _addSelectedDamageTypeFilterListener();
       },
     );
   }
 
-  void collapseNestedScrollViewHeader(){
-    widget.nestedScrollViewOuterController?.animateTo(
-      2000,
-      curve: Curves.fastOutSlowIn,
-      duration: const Duration(
-        milliseconds: 10,
-      ),
-    );
-  }
-
   void _addSelectedFilterListener() {
     const duration = Duration(milliseconds: 200);
-    _filterViewModel.selectedTypeFiltersStream.listen(
-          (selectedTypes) {
+    widget.filterViewModel.selectedTypeFiltersStream.listen(
+      (selectedTypes) {
         Future.delayed(duration).then(
-              (value) {
-                _pokemonMovesViewModel.setSelectedTypes(selectedTypes);
-            if (_filterViewModel.scrollController.hasClients) {
-              _filterViewModel.scrollController.animateTo(
-                _filterViewModel.scrollController.position.maxScrollExtent,
+          (value) {
+            _pokemonMovesViewModel.setSelectedTypes(selectedTypes);
+            if (widget.filterViewModel.scrollController.hasClients) {
+              widget.filterViewModel.scrollController.animateTo(
+                widget.filterViewModel.scrollController.position.maxScrollExtent,
                 duration: duration,
                 curve: Curves.fastOutSlowIn,
               );
@@ -98,14 +86,14 @@ class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepA
 
   void _addSelectedDamageTypeFilterListener() {
     const duration = Duration(milliseconds: 200);
-    _filterViewModel.selectedDamageTypeFiltersStream.listen(
-          (selectedDamageTypes) {
+    widget.filterViewModel.selectedDamageTypeFiltersStream.listen(
+      (selectedDamageTypes) {
         Future.delayed(duration).then(
-              (value) {
-                _pokemonMovesViewModel.setSelectedDamageTypes(selectedDamageTypes);
-            if (_filterViewModel.scrollController.hasClients) {
-              _filterViewModel.scrollController.animateTo(
-                _filterViewModel.scrollController.position.maxScrollExtent,
+          (value) {
+            _pokemonMovesViewModel.setSelectedDamageTypes(selectedDamageTypes);
+            if (widget.filterViewModel.scrollController.hasClients) {
+              widget.filterViewModel.scrollController.animateTo(
+                widget.filterViewModel.scrollController.position.maxScrollExtent,
                 duration: duration,
                 curve: Curves.fastOutSlowIn,
               );
@@ -120,18 +108,18 @@ class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepA
     _pokemonMovesViewModel.searchText
         .debounce(
           (_) => TimerStream(
-        true,
-        const Duration(milliseconds: 700),
-      ),
-    )
+            true,
+            const Duration(milliseconds: 700),
+          ),
+        )
         .listen(
-      _pokemonMovesViewModel.setSearch,
-    );
+          _pokemonMovesViewModel.setSearch,
+        );
   }
 
   void _addSearchTextListener() {
     _searchTextController.addListener(
-          () {
+      () {
         if (_searchTextController.text != previousSearch) {
           previousSearch = _searchTextController.text;
           _pokemonMovesViewModel.searchText.add(_searchTextController.text);
@@ -143,7 +131,6 @@ class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepA
   @override
   void dispose() {
     _pokemonMovesViewModel.dispose();
-    _filterViewModel.dispose();
     _searchTextController.dispose();
     scrollController.dispose();
     _googleAdsViewModel.dispose();
@@ -153,21 +140,7 @@ class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepA
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Stack(
-      children: [
-        Positioned.fill(
-          child: _buildPokemonList(),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: FilterViewHolder(
-            onFilterButtonPressed: collapseNestedScrollViewHeader,
-            filterViewModel: _filterViewModel,
-            showDamageTypeFilters: true,
-          ),
-        ),
-      ],
-    );
+    return _buildPokemonList();
   }
 
   Widget _buildPokemonList() {
@@ -240,7 +213,7 @@ class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepA
         elevation: isDummy ? 0 : 4,
         child: SearchWidget(
           searchTextController: _searchTextController,
-          filterViewModel: _filterViewModel,
+          filterViewModel: widget.filterViewModel,
         ),
       ),
     );

@@ -1,20 +1,27 @@
 import 'package:graphql/client.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../flavors.dart';
+
 class GraphQlClient {
   Future<GraphQLClient> getClient() async {
     final _link = HttpLink(
       'https://beta.pokeapi.co/graphql/v1beta',
     );
-    final appDocumentDir = await getApplicationDocumentsDirectory();
-    final store = await HiveStore.open(
-      path: appDocumentDir.path,
+    final hiveStore = await _getHiveStore();
+    final graphQlCache = GraphQLCache(
+      store: hiveStore,
     );
     return GraphQLClient(
-      cache: GraphQLCache(
-        store: store,
-      ),
+      cache: F.appFlavor == Flavor.paid ? graphQlCache : GraphQLCache(),
       link: _link,
+    );
+  }
+
+  Future<HiveStore> _getHiveStore() async {
+    final appDocumentDir = await getApplicationDocumentsDirectory();
+    return HiveStore.open(
+      path: appDocumentDir.path,
     );
   }
 }

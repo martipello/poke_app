@@ -29,13 +29,6 @@ class SearchWidget extends StatefulWidget {
 
 class _SearchWidgetState extends State<SearchWidget> with TickerProviderStateMixin {
   final searchAppBarViewModel = getIt.get<SearchViewModel>();
-  final focusNode = FocusNode();
-
-  @override
-  void dispose() {
-    super.dispose();
-    focusNode.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -240,8 +233,6 @@ class _SearchWidgetState extends State<SearchWidget> with TickerProviderStateMix
         bottom: 8,
       ),
       child: TextField(
-        autofocus: true,
-        focusNode: focusNode,
         controller: widget.searchTextController,
         maxLines: 1,
         style: PokeAppText.body1Style.copyWith(color: colors(context).textOnForeground, height: 1.6),
