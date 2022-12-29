@@ -38,6 +38,7 @@ class MovesPagingAdapter {
       _pokemonRequest = _pokemonRequest?.rebuild(
         (b) => b
           ..search = pokemonRequest.search
+          ..damageTypes.replace(pokemonRequest.damageTypes)
           ..pokemonTypes.replace(pokemonRequest.pokemonTypes)
           ..sort = pokemonRequest.sort,
       );

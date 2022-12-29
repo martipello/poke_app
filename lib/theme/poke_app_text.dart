@@ -56,6 +56,9 @@ class PokeAppText {
 
   static const body6Style = TextStyle(fontSize: 13, fontWeight: FontWeight.bold, height: 1.375);
 
+  static const body7Style =
+  TextStyle(fontSize: 16, fontWeight: FontWeight.w300, height: 1.375);
+
   // Caption
 
   static const captionStyle =

@@ -159,10 +159,7 @@ class PokemonMoveTile extends StatelessWidget {
               pokemonMoveLearnTableRow,
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: PokeDivider(),
-          ),
+          _buildDivider(),
         ],
       );
     } else {
@@ -213,9 +210,16 @@ class PokemonMoveTile extends StatelessWidget {
           ),
           value: context.strings.allGenerations,
         );
-        return _buildTMTable(
-          context,
-          [tmTableRow],
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildTMTable(
+              context,
+              [tmTableRow],
+            ),
+            _buildDivider(),
+          ],
         );
       }
     } else if (tmList.isNotEmpty) {
@@ -241,14 +245,18 @@ class PokemonMoveTile extends StatelessWidget {
             context,
             tmTableRows,
           ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: PokeDivider(),
-          ),
+          _buildDivider(),
         ],
       );
     }
     return const SizedBox();
+  }
+
+  Padding _buildDivider() {
+    return Padding(
+            padding: const EdgeInsets.all(16),
+            child: PokeDivider(),
+          );
   }
 
   Widget _buildTMTable(
@@ -298,10 +306,7 @@ class PokemonMoveTile extends StatelessWidget {
             ),
           ],
         ),
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: PokeDivider(),
-        ),
+        _buildDivider(),
       ],
     );
   }

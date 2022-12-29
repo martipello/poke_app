@@ -115,6 +115,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(PokemonType)]),
           () => new ListBuilder<PokemonType>())
       ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(DamageType)]),
+          () => new ListBuilder<DamageType>())
+      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(SpriteResponse)]),
           () => new ListBuilder<SpriteResponse>())
       ..addBuilderFactory(
