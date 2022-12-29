@@ -38,6 +38,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
   PokemonDetailPageArguments get pokemonDetailArguments => context.routeArguments as PokemonDetailPageArguments;
 
   late final _tabBarController = TabController(length: 5, vsync: this);
+  final key = GlobalKey<NestedScrollViewState>();
 
   Color get primaryColor =>
       pokemonDetailArguments.mainImagePaletteGenerator?.lightVibrantColor?.color ??
@@ -57,6 +58,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
   Widget build(BuildContext context) {
     return Scaffold(
       body: NestedScrollView(
+        key: key,
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
             PokemonDetailAppBar(
@@ -121,6 +123,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
           ),
           PokemonMovesView(
             pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
+            nestedScrollViewOuterController: key.currentState?.outerController,
           ),
         ],
       ),

@@ -1,5 +1,5 @@
 import 'package:rxdart/rxdart.dart';
 
-class SearchAppBarViewModel {
+class SearchViewModel {
   final isSearching = BehaviorSubject<bool>();
 }

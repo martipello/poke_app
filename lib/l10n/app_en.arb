@@ -2,6 +2,7 @@
     "app_name" : "PokéApp",
     "pokedex" : "Pokédex",
     "searchByName" : "Search by name",
+    "searchByMoveName" : "Search by move name...",
     "abilities" : "Abilities",
     "species" : "Species",
     "forms" : "Forms",

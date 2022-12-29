@@ -19,7 +19,7 @@ import 'ui/pokemon_info/view_models/pokemon_info_view_model.dart';
 import 'ui/pokemon_list/adapters/pokemon_paging_adapter.dart';
 import 'ui/pokemon_list/view_models/filter_view_model.dart';
 import 'ui/pokemon_list/view_models/pokemon_list_view_model.dart';
-import 'ui/pokemon_list/view_models/search_app_bar_view_model.dart';
+import 'ui/pokemon_list/view_models/search_view_model.dart';
 import 'ui/pokemon_moves/adapters/moves_paging_adapter.dart';
 import 'ui/pokemon_moves/view_models/pokemon_moves_view_model.dart';
 import 'ui/pokemon_stats/view_models/pokemon_stats_weakness_resistance_view_model.dart';
@@ -52,7 +52,7 @@ Future<void> init() async {
   getIt.registerFactory(() => PokemonEvolutionViewModel(getIt(), getIt(), getIt()));
   getIt.registerFactory(() => PokemonStatsWeaknessResistanceViewModel(getIt(), getIt(), getIt()));
   getIt.registerFactory(FilterViewModel.new);
-  getIt.registerFactory(SearchAppBarViewModel.new);
+  getIt.registerFactory(SearchViewModel.new);
   getIt.registerFactory(MapZoomControlViewModel.new);
   getIt.registerFactory(SplashViewModel.new);
   getIt.registerFactory(ExpansionCardStateViewModel.new);

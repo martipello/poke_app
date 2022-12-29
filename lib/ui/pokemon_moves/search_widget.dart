@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
-import 'package:sliver_tools/sliver_tools.dart';
 
 import '../../api/models/pokemon/pokemon_type.dart';
 import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
-import '../../extensions/media_query_context_extension.dart';
 import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
-import '../settings/settings.dart';
+import '../pokemon_list/view_models/filter_view_model.dart';
+import '../pokemon_list/view_models/search_view_model.dart';
 import '../shared_widgets/chip_group.dart';
 import '../shared_widgets/type_chip.dart';
 import '../shared_widgets/view_constraint.dart';
-import 'view_models/filter_view_model.dart';
-import 'view_models/search_view_model.dart';
 
-class SearchAppBar extends StatefulWidget {
-  const SearchAppBar({
+class SearchWidget extends StatefulWidget {
+  const SearchWidget({
     Key? key,
     required this.searchTextController,
     required this.filterViewModel,
@@ -27,10 +23,10 @@ class SearchAppBar extends StatefulWidget {
   final FilterViewModel filterViewModel;
 
   @override
-  State<SearchAppBar> createState() => _SearchAppBarState();
+  State<SearchWidget> createState() => _SearchWidgetState();
 }
 
-class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMixin {
+class _SearchWidgetState extends State<SearchWidget> with TickerProviderStateMixin {
   final searchAppBarViewModel = getIt.get<SearchViewModel>();
   final focusNode = FocusNode();
 
@@ -48,14 +44,9 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
           stream: searchAppBarViewModel.isSearching,
           builder: (context, isSearchingSnapshot) {
             final isSearching = isSearchingSnapshot.data == true;
-            return MultiSliver(
-              children: [
-                _buildHeroImageAppBar(),
-                _buildSearchAppBar(
-                  isSearching,
-                  isKeyboardVisible,
-                ),
-              ],
+            return _buildSearchAndFilterHolder(
+              isSearching,
+              isKeyboardVisible,
             );
           },
         );
@@ -63,7 +54,7 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
     );
   }
 
-  Widget _buildSearchAppBar(
+  Widget _buildSearchAndFilterHolder(
     bool isSearching,
     bool isKeyboardVisible,
   ) {
@@ -72,49 +63,32 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
       stream: widget.filterViewModel.selectedFiltersStream,
       builder: (context, snapshot) {
         final selectedFilters = snapshot.data ?? [];
-        return SliverAppBar(
-          pinned: false,
-          snap: true,
-          floating: true,
-          backgroundColor: Colors.black,
-          systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarColor: Colors.black,
-          ),
-          leading: isSearching
-              ? _buildBackButton(
-                  isKeyboardVisible,
-                )
-              : null,
-          actions: [
-            if (!isSearching) _buildSearchAction(),
-            _buildMenuAction(),
-            const SizedBox(
-              width: 16,
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ViewConstraint(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: _buildSearchView(),
+                  ),
+                ],
+              ),
+            ),
+            ViewConstraint(
+              child: _buildSelectedFiltersHolder(
+                selectedFilters,
+              ),
             )
           ],
-          title: isSearching
-              ? _buildSearchView()
-              : Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 16,
-                    horizontal: 16,
-                  ),
-                  child: Text(
-                    context.strings.app_name,
-                    style: PokeAppText.subtitle2Style.copyWith(
-                      height: 1,
-                    ),
-                  ),
-                ),
-          bottom: _buildSelectedFiltersHolder(
-            selectedFilters,
-          ),
         );
       },
     );
   }
 
-  PreferredSize? _buildSelectedFiltersHolder(
+  Widget _buildSelectedFiltersHolder(
     List<PokemonType> selectedFilters,
   ) {
     const chipPadding = 12.0;
@@ -124,13 +98,11 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
         selectedFilters.length > 1 ? (kChipHeight + chipPadding) + clearFilterHeight : kChipHeight + chipPadding;
 
     return selectedFilters.isNotEmpty
-        ? PreferredSize(
-            preferredSize: Size(
-              double.infinity,
-              totalHeight,
-            ),
+        ? SizedBox(
+            height: totalHeight,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Row(
                   children: [
@@ -149,7 +121,7 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
               ],
             ),
           )
-        : null;
+        : const SizedBox();
   }
 
   Widget _buildClearAllFiltersButton(
@@ -159,8 +131,9 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
       height: clearFilterHeight,
       padding: const EdgeInsets.symmetric(
         vertical: 8,
-        horizontal: 16,
       ),
+      clipBehavior: Clip.hardEdge,
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
       child: Material(
         type: MaterialType.transparency,
         child: InkWell(
@@ -173,7 +146,7 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
             child: Text(
               context.strings.clearFilters,
               style: PokeAppText.body3Style.copyWith(
-                color: Colors.white,
+                color: colors(context).textOnForeground,
               ),
             ),
           ),
@@ -186,7 +159,7 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
     List<PokemonType> selectedFilters,
   ) {
     return ChipGroup(
-      padding: const EdgeInsets.symmetric(horizontal: 32),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       scrollDirection: Axis.horizontal,
       scrollController: widget.filterViewModel.scrollController,
       chips: selectedFilters
@@ -204,95 +177,33 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
     );
   }
 
-  Widget _buildBackButton(bool isKeyboardVisible) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 16.0),
-      child: IconButton(
-        onPressed: () {
-          if (isKeyboardVisible && widget.searchTextController.text.isNotEmpty) {
-            context.closeKeyBoard();
-          } else {
-            widget.searchTextController.clear();
-            searchAppBarViewModel.isSearching.add(
-              false,
-            );
-          }
-        },
-        icon: Icon(
-          Icons.arrow_back,
-          size: 24,
-          color: colors(context).textOnPrimary,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMenuAction() {
-    return IconButton(
-      onPressed: () {
-        Navigator.of(context).pushNamed(Settings.routeName);
-      },
-      icon: Icon(
-        Icons.more_vert_rounded,
-        color: colors(context).textOnPrimary,
-      ),
-    );
-  }
-
-  Widget _buildSearchAction() {
-    return IconButton(
-      onPressed: () {
-        searchAppBarViewModel.isSearching.add(
-          true,
-        );
-      },
-      icon: Icon(
-        Icons.search,
-        color: colors(context).textOnPrimary,
-      ),
-    );
-  }
-
-  Widget _buildHeroImageAppBar() {
-    return SliverAppBar(
-      pinned: false,
-      floating: false,
-      expandedHeight: 150,
-      flexibleSpace: FlexibleSpaceBar(
-        collapseMode: CollapseMode.parallax,
-        background: Padding(
-          padding: const EdgeInsets.only(top: 32),
-          child: ViewConstraint(
-            child: Image.asset(
-              'assets/images/pokemon_hero.png',
-              fit: BoxFit.cover,
-              width: MediaQuery.of(context).fullSizeImageScreenWidth,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _buildSearchView() {
-    return TextField(
-      autofocus: true,
-      focusNode: focusNode,
-      controller: widget.searchTextController,
-      maxLines: 1,
-      style: PokeAppText.body4Style.copyWith(
-        color: colors(context).textOnPrimary,
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 16,
+        right: 16,
+        bottom: 8,
       ),
-      decoration: _buildSearchInputDecoration(),
+      child: TextField(
+        autofocus: true,
+        focusNode: focusNode,
+        controller: widget.searchTextController,
+        maxLines: 1,
+        style: PokeAppText.body1Style.copyWith(
+          color: colors(context).textOnForeground,
+          height: 1.6
+        ),
+        decoration: _buildSearchInputDecoration(),
+      ),
     );
   }
 
   InputDecoration _buildSearchInputDecoration() {
     return InputDecoration(
-      contentPadding: EdgeInsets.zero,
-      labelText: context.strings.searchByName,
-      labelStyle: PokeAppText.subtitle2Style.copyWith(
-        color: colors(context).textOnPrimary,
+      labelText: context.strings.searchByMoveName,
+      labelStyle: PokeAppText.body2Style.copyWith(
+        color: colors(context).textOnForeground,
+        height: 1
       ),
       border: InputBorder.none,
       focusedBorder: InputBorder.none,
@@ -304,7 +215,7 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
               icon: Icon(
                 Icons.close,
                 size: 20,
-                color: colors(context).textOnPrimary,
+                color: colors(context).textOnForeground,
               ),
               onPressed: () {
                 widget.searchTextController.clear();
