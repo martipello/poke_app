@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:palette_generator/palette_generator.dart';
 
+import '../../ads/view_models/google_ads_view_model.dart';
 import '../../api/models/pokemon/pokemon.dart';
 import '../../api/models/pokemon/pokemon_type.dart';
 import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../extensions/iterable_extension.dart';
 import '../../extensions/media_query_context_extension.dart';
+import '../../flavors.dart';
 import '../../theme/base_theme.dart';
 import '../pokemon_evolutions/pokemon_evolution_view.dart';
 import '../pokemon_filter/filter_view_holder.dart';
@@ -16,6 +18,7 @@ import '../pokemon_list/view_models/filter_view_model.dart';
 import '../pokemon_moves/pokemon_moves_view.dart';
 import '../pokemon_stats/pokemon_stats_view.dart';
 import '../shared_widgets/view_models/current_index_view_model.dart';
+import '../shared_widgets/view_models/open_pokemon_count_view_model.dart';
 import 'pokemon_detail_app_bar.dart';
 
 class PokemonDetailPageArguments {
@@ -42,7 +45,9 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
   PokemonDetailPageArguments get pokemonDetailArguments => context.routeArguments as PokemonDetailPageArguments;
 
   final _filterViewModel = getIt.get<FilterViewModel>();
+  final _googleAdsViewModel = getIt.get<GoogleAdsViewModel>();
   final _currentIndexViewModel = getIt.get<CurrentIndexViewModel>();
+  final _openPokemonCountViewModel = getIt.get<OpenPokemonCountViewModel>();
 
   late final _tabBarController = TabController(length: 5, vsync: this);
   final key = GlobalKey<NestedScrollViewState>();
@@ -64,8 +69,21 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
   @override
   void initState() {
     super.initState();
+    _openPokemonCountViewModel.increment();
     _tabBarController.addListener(
       _tabBarListener,
+    );
+    _openPokemonCountViewModel.openPokemonCountStream.listen(
+      (openedCount) {
+        if (openedCount == 1 && F.appFlavor != Flavor.paid) {
+          //We do this as without it first ad always fails
+          _googleAdsViewModel.createInterstitialAd();
+        }
+        if (openedCount % 3 == 0 && F.appFlavor != Flavor.paid) {
+          _googleAdsViewModel.createInterstitialAd();
+          _googleAdsViewModel.showInterstitialAd();
+        }
+      },
     );
   }
 
@@ -98,27 +116,30 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
             ),
           ];
         },
-        body: StreamBuilder<double>(
-            stream: _currentIndexViewModel.currentIndexStream,
-            builder: (context, snapshot) {
-              final _currentTabIndex = snapshot.data ?? 0;
-              return Stack(
-                children: [
-                  Positioned.fill(
-                    child: _buildPokemonDetailBody(),
-                  ),
-                  if (_currentTabIndex == 4)
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: FilterViewHolder(
-                        onFilterButtonPressed: collapseNestedScrollViewHeader,
-                        filterViewModel: _filterViewModel,
-                        showDamageTypeFilters: true,
-                      ),
+        body: Stack(
+          children: [
+            Positioned.fill(
+              child: _buildPokemonDetailBody(),
+            ),
+            StreamBuilder<double>(
+              stream: _currentIndexViewModel.currentIndexStream,
+              builder: (context, snapshot) {
+                final _currentTabIndex = snapshot.data ?? 0;
+                if (_currentTabIndex == 4) {
+                  return Align(
+                    alignment: Alignment.bottomCenter,
+                    child: FilterViewHolder(
+                      onFilterButtonPressed: collapseNestedScrollViewHeader,
+                      filterViewModel: _filterViewModel,
+                      showDamageTypeFilters: true,
                     ),
-                ],
-              );
-            }),
+                  );
+                }
+                return const SizedBox();
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
