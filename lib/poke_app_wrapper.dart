@@ -5,7 +5,9 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 
+import 'ads/view_models/google_ads_view_model.dart';
 import 'dependency_injection_container.dart' as di;
 import 'dependency_injection_container.dart';
 import 'firebase_options.dart';
@@ -13,6 +15,7 @@ import 'poke_app.dart';
 import 'services/theme_service.dart';
 import 'theme/base_theme.dart';
 import 'theme/poke_app_theme.dart';
+import 'utils/console_output.dart';
 
 // ignore_for_file: avoid_classes_with_only_static_members
 class PokeAppWrapper {
@@ -32,20 +35,28 @@ class PokeAppWrapper {
           }
         }
         final themeService = getIt.get<ThemeService>();
+        final _inAppPurchase = InAppPurchase.instance;
+        _inAppPurchase.queryProductDetails({kDebugAdUnitId});
         runApp(
-          StreamBuilder<bool?>(
-            stream: themeService.isDarkModeStream,
-            builder: (context, snapshot) {
-              final isDarkMode = snapshot.data == true;
-              return BaseTheme(
-                appTheme: isDarkMode ? pokeAppDarkTheme : pokeAppTheme,
-                child: Builder(
-                  builder: (context) {
-                    return PokeApp(
-                      theme: BaseTheme.of(context),
-                    );
-                  },
-                ),
+          StreamBuilder<List<PurchaseDetails>>(
+            stream: _inAppPurchase.purchaseStream,
+            builder: (context, purchaseUpdatedSnapshot) {
+              log('tag').d('purchaseUpdatedSnapshot $purchaseUpdatedSnapshot');
+              return StreamBuilder<bool?>(
+                stream: themeService.isDarkModeStream,
+                builder: (context, snapshot) {
+                  final isDarkMode = snapshot.data == true;
+                  return BaseTheme(
+                    appTheme: isDarkMode ? pokeAppDarkTheme : pokeAppTheme,
+                    child: Builder(
+                      builder: (context) {
+                        return PokeApp(
+                          theme: BaseTheme.of(context),
+                        );
+                      },
+                    ),
+                  );
+                },
               );
             },
           ),

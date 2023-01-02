@@ -90,6 +90,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
   @override
   void dispose() {
     _filterViewModel.dispose();
+    _googleAdsViewModel.dispose();
     _tabBarController.removeListener(
       _tabBarListener,
     );

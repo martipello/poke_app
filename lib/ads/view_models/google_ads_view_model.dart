@@ -79,5 +79,6 @@ class GoogleAdsViewModel {
 
   void dispose() {
     _bannerAd?.dispose();
+    _interstitialAd?.dispose();
   }
 }
