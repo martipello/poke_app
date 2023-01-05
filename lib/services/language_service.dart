@@ -7,7 +7,7 @@ import 'pokemon_service.dart';
 import 'shared_preferences_service.dart';
 
 enum SupportedLanguage {
-  france(4, 'france', Locale('fr')),
+  france(5, 'france', Locale('fr')),
   german(6, 'german', Locale('ge')),
   spanish(7, 'spanish', Locale('es')),
   italian(8, 'italian', Locale('it')),

@@ -17,6 +17,8 @@ import 'theme/base_theme.dart';
 import 'theme/poke_app_theme.dart';
 import 'utils/console_output.dart';
 
+const kPremium = 'premium';
+
 // ignore_for_file: avoid_classes_with_only_static_members
 class PokeAppWrapper {
   static void init() async {
@@ -36,7 +38,7 @@ class PokeAppWrapper {
         }
         final themeService = getIt.get<ThemeService>();
         final _inAppPurchase = InAppPurchase.instance;
-        _inAppPurchase.queryProductDetails({kDebugAdUnitId});
+        _inAppPurchase.queryProductDetails({kPremium});
         runApp(
           StreamBuilder<List<PurchaseDetails>>(
             stream: _inAppPurchase.purchaseStream,
