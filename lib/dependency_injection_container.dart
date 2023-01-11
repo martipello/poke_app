@@ -7,6 +7,7 @@ import 'api/api_client.dart';
 import 'api/error_handler.dart';
 import 'api/graph_ql/graph_ql_client.dart';
 import 'api/graph_ql/pokemon_repository_graph_ql.dart';
+import 'in_app_purchases/viiew_models/in_app_purchase_view_model.dart';
 import 'services/language_service.dart';
 import 'services/launch_service.dart';
 import 'services/shared_preferences_service.dart';
@@ -40,6 +41,7 @@ Future<void> init() async {
   getIt.registerLazySingleton(SharedPreferencesService.new);
   getIt.registerLazySingleton(() => LanguageService(getIt()));
   getIt.registerLazySingleton(() => ThemeService(getIt()));
+  getIt.registerLazySingleton(InAppPurchaseViewModel.new);
   getIt.registerLazySingleton(GraphQlClient.new);
   getIt.registerFactory(LaunchService.new);
   getIt.registerFactory(ErrorHandler.new);

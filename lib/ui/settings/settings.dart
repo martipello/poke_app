@@ -1,18 +1,22 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
+import '../../extensions/purchase_details_extension.dart';
 import '../../extensions/string_extension.dart';
+import '../../in_app_purchases/viiew_models/in_app_purchase_view_model.dart';
 import '../../services/language_service.dart';
 import '../../services/launch_service.dart';
 import '../../services/theme_service.dart';
 import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
+import '../../utils/console_output.dart';
 import '../../utils/constants.dart';
 import '../shared_widgets/poke_dialog.dart';
 import 'about.dart';
@@ -25,44 +29,111 @@ class Settings extends StatelessWidget {
   final _languageService = getIt.get<LanguageService>();
   final _themeService = getIt.get<ThemeService>();
   final _launchService = getIt.get<LaunchService>();
+  final _inAppPurchaseViewModel = getIt.get<InAppPurchaseViewModel>();
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<SupportedLanguage>(
-      initialData: SupportedLanguage.english,
-      stream: _languageService.languageStream,
-      builder: (context, languageSnapshot) {
-        return StreamBuilder<bool?>(
-          stream: _themeService.isDarkModeStream,
-          builder: (context, isDarkModeSnapshot) {
-            final _language = languageSnapshot.data;
-            final _isDarkMode = isDarkModeSnapshot.data == true;
-            return Scaffold(
-              appBar: _buildSettingsAppBar(context),
-              body: SettingsList(
-                sections: [
-                  SettingsSection(
-                    tiles: <SettingsTile>[
-                      _buildLanguageSettingsTile(
-                        context,
-                        _language,
-                      ),
-                      _buildDarkModeSettingsTile(
-                        context,
-                        _isDarkMode,
-                      ),
-                      _buildReviewSettingsTile(context),
-                      _buildShareSettingsTile(context),
-                      _buildFeedbackSettingsTile(context),
-                      _buildAboutSettingsTile(context),
-                    ],
-                  ),
-                ],
-              ),
+    return _buildPurchaseState();
+  }
+
+  FutureBuilder<ProductDetailsResponse> _buildPurchaseState() {
+    //TODO doesnt work for restoring purchases
+    return FutureBuilder<ProductDetailsResponse>(
+      future: _inAppPurchaseViewModel.productDetailsResponse(),
+      builder: (context, productResponse) {
+        log('SETTING').d('productResponse $productResponse');
+        return StreamBuilder<List<PurchaseDetails>>(
+          stream: _inAppPurchaseViewModel.purchaseStream,
+          builder: (context, purchaseUpdatedSnapshot) {
+            final purchases = purchaseUpdatedSnapshot.data ?? [];
+            final products = productResponse.data;
+            return _buildSelectedLanguageState(
+              products,
+              purchases,
             );
           },
         );
       },
+    );
+  }
+
+  StreamBuilder<SupportedLanguage> _buildSelectedLanguageState(
+    ProductDetailsResponse? products,
+    List<PurchaseDetails> purchases,
+  ) {
+    return StreamBuilder<SupportedLanguage>(
+      initialData: SupportedLanguage.english,
+      stream: _languageService.languageStream,
+      builder: (context, languageSnapshot) {
+        final _language = languageSnapshot.data;
+        return _buildThemeState(
+          _language,
+          products,
+          purchases,
+        );
+      },
+    );
+  }
+
+  StreamBuilder<bool?> _buildThemeState(
+    SupportedLanguage? _language,
+    ProductDetailsResponse? products,
+    List<PurchaseDetails> purchases,
+  ) {
+    return StreamBuilder<bool?>(
+      stream: _themeService.isDarkModeStream,
+      builder: (context, isDarkModeSnapshot) {
+        final _isDarkMode = isDarkModeSnapshot.data == true;
+        return _buildSettingsScaffold(
+          context,
+          _language,
+          _isDarkMode,
+          products,
+          purchases,
+        );
+      },
+    );
+  }
+
+  Widget _buildSettingsScaffold(
+    BuildContext context,
+    SupportedLanguage? _language,
+    bool _isDarkMode,
+    ProductDetailsResponse? products,
+    List<PurchaseDetails> purchases,
+  ) {
+    return Scaffold(
+      appBar: _buildSettingsAppBar(context),
+      body: SettingsList(
+        sections: [
+          SettingsSection(
+            tiles: <SettingsTile>[
+              _buildLanguageSettingsTile(
+                context,
+                _language,
+              ),
+              _buildDarkModeSettingsTile(
+                context,
+                _isDarkMode,
+              ),
+              ...products?.productDetails
+                      .map(
+                        (product) => _buildInAppPurchase(
+                          context,
+                          product,
+                          purchases,
+                        ),
+                      )
+                      .toList() ??
+                  [],
+              _buildReviewSettingsTile(context),
+              _buildShareSettingsTile(context),
+              _buildFeedbackSettingsTile(context),
+              _buildAboutSettingsTile(context),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -239,6 +310,33 @@ class Settings extends StatelessWidget {
       },
       title: Text(
         context.strings.darkMode,
+      ),
+    );
+  }
+
+  SettingsTile _buildInAppPurchase(
+    BuildContext context,
+    ProductDetails productDetail,
+    List<PurchaseDetails> purchases,
+  ) {
+    final _hasPurchasedPremium = purchases.hasPurchasedPremium(
+      productDetail,
+    );
+    return SettingsTile.switchTile(
+      leading: const Icon(
+        Icons.monetization_on,
+      ),
+      initialValue: _hasPurchasedPremium,
+      onToggle: (toggle) {
+        final purchaseParam = PurchaseParam(
+          productDetails: productDetail,
+        );
+        InAppPurchase.instance.buyConsumable(
+          purchaseParam: purchaseParam,
+        );
+      },
+      title: Text(
+        context.strings.premium,
       ),
     );
   }

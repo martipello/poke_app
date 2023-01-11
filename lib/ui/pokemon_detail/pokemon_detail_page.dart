@@ -17,6 +17,7 @@ import '../pokemon_info/pokemon_info_view.dart';
 import '../pokemon_list/view_models/filter_view_model.dart';
 import '../pokemon_moves/pokemon_moves_view.dart';
 import '../pokemon_stats/pokemon_stats_view.dart';
+import '../shared_widgets/view_constraint.dart';
 import '../shared_widgets/view_models/current_index_view_model.dart';
 import '../shared_widgets/view_models/open_pokemon_count_view_model.dart';
 import 'pokemon_detail_app_bar.dart';
@@ -117,29 +118,32 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
             ),
           ];
         },
-        body: Stack(
-          children: [
-            Positioned.fill(
-              child: _buildPokemonDetailBody(),
-            ),
-            StreamBuilder<double>(
-              stream: _currentIndexViewModel.currentIndexStream,
-              builder: (context, snapshot) {
-                final _currentTabIndex = snapshot.data ?? 0;
-                if (_currentTabIndex == 4) {
-                  return Align(
-                    alignment: Alignment.bottomCenter,
-                    child: FilterViewHolder(
-                      onFilterButtonPressed: collapseNestedScrollViewHeader,
-                      filterViewModel: _filterViewModel,
-                      showDamageTypeFilters: true,
-                    ),
-                  );
-                }
-                return const SizedBox();
-              },
-            ),
-          ],
+        body: Container(
+          color: secondaryColor,
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: _buildPokemonDetailBody(),
+              ),
+              StreamBuilder<double>(
+                stream: _currentIndexViewModel.currentIndexStream,
+                builder: (context, snapshot) {
+                  final _currentTabIndex = snapshot.data ?? 0;
+                  if (_currentTabIndex == 4) {
+                    return Align(
+                      alignment: Alignment.bottomCenter,
+                      child: FilterViewHolder(
+                        onFilterButtonPressed: collapseNestedScrollViewHeader,
+                        filterViewModel: _filterViewModel,
+                        showDamageTypeFilters: true,
+                      ),
+                    );
+                  }
+                  return const SizedBox();
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -147,24 +151,27 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
 
   Widget _buildPokemonDetailBody() {
     final tabBarTopPadding = 16 + context.statusBarHeight;
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: colors(context).cardBackground,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(
-              top: tabBarTopPadding,
-              bottom: 16,
+    return ViewConstraint(
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: colors(context).cardBackground,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                top: tabBarTopPadding,
+                bottom: 16,
+              ),
+              child: _buildTabBar(context),
             ),
-            child: _buildTabBar(context),
-          ),
-          Expanded(
-            child: _buildTabBarView(),
-          ),
-        ],
+            Expanded(
+              child: _buildTabBarView(),
+            ),
+          ],
+        ),
       ),
     );
   }

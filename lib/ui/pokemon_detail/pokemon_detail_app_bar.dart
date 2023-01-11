@@ -7,6 +7,7 @@ import '../../theme/base_theme.dart';
 import '../settings/settings.dart';
 import '../shared_widgets/clipped_app_bar.dart';
 import '../shared_widgets/type_chip.dart';
+import '../shared_widgets/view_constraint.dart';
 import 'pokemon_detail_header.dart';
 
 class PokemonDetailAppBar extends StatefulWidget {
@@ -124,16 +125,18 @@ class _PokemonDetailAppBarState extends State<PokemonDetailAppBar> with TickerPr
             ),
           ),
         ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Theme(
-            data: ThemeData(
-              cardTheme: _buildCardTheme(),
-            ),
-            child: const Card(
-              child: SizedBox(
-                height: kDetailAppBarCardBackgroundHeight,
-                width: double.infinity,
+        ViewConstraint(
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Theme(
+              data: ThemeData(
+                cardTheme: _buildCardTheme(),
+              ),
+              child: const Card(
+                child: SizedBox(
+                  height: kDetailAppBarCardBackgroundHeight,
+                  width: double.infinity,
+                ),
               ),
             ),
           ),

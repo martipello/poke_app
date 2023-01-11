@@ -7,7 +7,6 @@ import '../../extensions/build_context_extension.dart';
 import '../../extensions/double_extension.dart';
 import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
-import '../../utils/console_output.dart';
 import '../shared_widgets/clipped_app_bar.dart';
 import '../shared_widgets/pokeball_loading_widget.dart';
 import 'view_models/map_zoom_control_view_model.dart';
