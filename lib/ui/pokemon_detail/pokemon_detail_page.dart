@@ -3,15 +3,19 @@ import 'package:palette_generator/palette_generator.dart';
 
 import '../../api/models/pokemon/pokemon.dart';
 import '../../api/models/pokemon/pokemon_type.dart';
+import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../extensions/iterable_extension.dart';
 import '../../extensions/media_query_context_extension.dart';
 import '../../theme/base_theme.dart';
 import '../pokemon_evolutions/pokemon_evolution_view.dart';
+import '../pokemon_filter/filter_view_holder.dart';
 import '../pokemon_forms/pokemon_forms_view.dart';
 import '../pokemon_info/pokemon_info_view.dart';
+import '../pokemon_list/view_models/filter_view_model.dart';
 import '../pokemon_moves/pokemon_moves_view.dart';
 import '../pokemon_stats/pokemon_stats_view.dart';
+import '../shared_widgets/view_models/current_index_view_model.dart';
 import 'pokemon_detail_app_bar.dart';
 
 class PokemonDetailPageArguments {
@@ -37,34 +41,54 @@ class PokemonDetailPage extends StatefulWidget {
 class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProviderStateMixin {
   PokemonDetailPageArguments get pokemonDetailArguments => context.routeArguments as PokemonDetailPageArguments;
 
+  final _filterViewModel = getIt.get<FilterViewModel>();
+  final _currentIndexViewModel = getIt.get<CurrentIndexViewModel>();
+
   late final _tabBarController = TabController(length: 5, vsync: this);
+  final key = GlobalKey<NestedScrollViewState>();
 
   Color get primaryColor =>
       pokemonDetailArguments.mainImagePaletteGenerator?.lightVibrantColor?.color ??
-          PokemonType
-              .getTypeForId(pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes
-              .firstOrNull()
-              ?.pokemon_v2_type
-              ?.id ?? 0)
-              .color;
+      PokemonType.getTypeForId(
+              pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes.firstOrNull()?.pokemon_v2_type?.id ?? 0)
+          .color;
 
   Color get secondaryColor =>
       pokemonDetailArguments.mainImagePaletteGenerator?.dominantColor?.color ??
+      PokemonType.getTypeForId(
+              pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes.secondOrNull()?.pokemon_v2_type?.id ??
+                  pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes.firstOrNull()?.pokemon_v2_type?.id ??
+                  0)
+          .color;
 
-          PokemonType
-              .getTypeForId(pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes
-              .secondOrNull()
-              ?.pokemon_v2_type
-              ?.id ?? pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes
-              .firstOrNull()
-              ?.pokemon_v2_type
-              ?.id ?? 0)
-              .color;
+  @override
+  void initState() {
+    super.initState();
+    _tabBarController.addListener(
+      _tabBarListener,
+    );
+  }
+
+  @override
+  void dispose() {
+    _filterViewModel.dispose();
+    _tabBarController.removeListener(
+      _tabBarListener,
+    );
+    super.dispose();
+  }
+
+  void _tabBarListener() {
+    _currentIndexViewModel.currentIndexStream.add(
+      _tabBarController.index.toDouble(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: NestedScrollView(
+        key: key,
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
             PokemonDetailAppBar(
@@ -74,7 +98,27 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
             ),
           ];
         },
-        body: _buildPokemonDetailBody(),
+        body: StreamBuilder<double>(
+            stream: _currentIndexViewModel.currentIndexStream,
+            builder: (context, snapshot) {
+              final _currentTabIndex = snapshot.data ?? 0;
+              return Stack(
+                children: [
+                  Positioned.fill(
+                    child: _buildPokemonDetailBody(),
+                  ),
+                  if (_currentTabIndex == 4)
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: FilterViewHolder(
+                        onFilterButtonPressed: collapseNestedScrollViewHeader,
+                        filterViewModel: _filterViewModel,
+                        showDamageTypeFilters: true,
+                      ),
+                    ),
+                ],
+              );
+            }),
       ),
     );
   }
@@ -105,12 +149,16 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
 
   Widget _buildTabBarView() {
     return DecoratedBox(
-      decoration: BoxDecoration(color: colors(context).foreground),
+      decoration: BoxDecoration(
+        color: colors(context).foreground,
+      ),
       child: TabBarView(
         controller: _tabBarController,
         children: [
           PokemonInfoView(
             pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
+            primaryColor: primaryColor,
+            secondaryColor: secondaryColor,
           ),
           PokemonStatsView(
             pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
@@ -125,6 +173,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
           ),
           PokemonMovesView(
             pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
+            filterViewModel: _filterViewModel,
           ),
         ],
       ),
@@ -170,6 +219,16 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
             )
           ],
         ),
+      ),
+    );
+  }
+
+  void collapseNestedScrollViewHeader() {
+    key.currentState?.outerController.animateTo(
+      2000,
+      curve: Curves.fastOutSlowIn,
+      duration: const Duration(
+        milliseconds: 10,
       ),
     );
   }

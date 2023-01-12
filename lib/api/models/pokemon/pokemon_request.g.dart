@@ -24,6 +24,10 @@ class _$PokemonRequestSerializer
       serializers.serialize(object.pokemonTypes,
           specifiedType:
               const FullType(BuiltList, const [const FullType(PokemonType)])),
+      'damageTypes',
+      serializers.serialize(object.damageTypes,
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(DamageType)])),
     ];
     Object? value;
     value = object.pagination;
@@ -116,6 +120,12 @@ class _$PokemonRequestSerializer
                       BuiltList, const [const FullType(PokemonType)]))!
               as BuiltList<Object?>);
           break;
+        case 'damageTypes':
+          result.damageTypes.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(DamageType)]))!
+              as BuiltList<Object?>);
+          break;
         case 'sort':
           result.sort = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
@@ -143,6 +153,8 @@ class _$PokemonRequest extends PokemonRequest {
   @override
   final BuiltList<PokemonType> pokemonTypes;
   @override
+  final BuiltList<DamageType> damageTypes;
+  @override
   final String? sort;
 
   factory _$PokemonRequest([void Function(PokemonRequestBuilder)? updates]) =>
@@ -156,10 +168,13 @@ class _$PokemonRequest extends PokemonRequest {
       this.pokemonId,
       this.languageId,
       required this.pokemonTypes,
+      required this.damageTypes,
       this.sort})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         pokemonTypes, r'PokemonRequest', 'pokemonTypes');
+    BuiltValueNullFieldError.checkNotNull(
+        damageTypes, r'PokemonRequest', 'damageTypes');
   }
 
   @override
@@ -181,6 +196,7 @@ class _$PokemonRequest extends PokemonRequest {
         pokemonId == other.pokemonId &&
         languageId == other.languageId &&
         pokemonTypes == other.pokemonTypes &&
+        damageTypes == other.damageTypes &&
         sort == other.sort;
   }
 
@@ -191,12 +207,16 @@ class _$PokemonRequest extends PokemonRequest {
             $jc(
                 $jc(
                     $jc(
-                        $jc($jc($jc(0, pagination.hashCode), limit.hashCode),
-                            skip.hashCode),
-                        search.hashCode),
-                    pokemonId.hashCode),
-                languageId.hashCode),
-            pokemonTypes.hashCode),
+                        $jc(
+                            $jc(
+                                $jc($jc(0, pagination.hashCode),
+                                    limit.hashCode),
+                                skip.hashCode),
+                            search.hashCode),
+                        pokemonId.hashCode),
+                    languageId.hashCode),
+                pokemonTypes.hashCode),
+            damageTypes.hashCode),
         sort.hashCode));
   }
 
@@ -210,6 +230,7 @@ class _$PokemonRequest extends PokemonRequest {
           ..add('pokemonId', pokemonId)
           ..add('languageId', languageId)
           ..add('pokemonTypes', pokemonTypes)
+          ..add('damageTypes', damageTypes)
           ..add('sort', sort))
         .toString();
   }
@@ -249,6 +270,12 @@ class PokemonRequestBuilder
   set pokemonTypes(ListBuilder<PokemonType>? pokemonTypes) =>
       _$this._pokemonTypes = pokemonTypes;
 
+  ListBuilder<DamageType>? _damageTypes;
+  ListBuilder<DamageType> get damageTypes =>
+      _$this._damageTypes ??= new ListBuilder<DamageType>();
+  set damageTypes(ListBuilder<DamageType>? damageTypes) =>
+      _$this._damageTypes = damageTypes;
+
   String? _sort;
   String? get sort => _$this._sort;
   set sort(String? sort) => _$this._sort = sort;
@@ -265,6 +292,7 @@ class PokemonRequestBuilder
       _pokemonId = $v.pokemonId;
       _languageId = $v.languageId;
       _pokemonTypes = $v.pokemonTypes.toBuilder();
+      _damageTypes = $v.damageTypes.toBuilder();
       _sort = $v.sort;
       _$v = null;
     }
@@ -297,12 +325,15 @@ class PokemonRequestBuilder
               pokemonId: pokemonId,
               languageId: languageId,
               pokemonTypes: pokemonTypes.build(),
+              damageTypes: damageTypes.build(),
               sort: sort);
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'pokemonTypes';
         pokemonTypes.build();
+        _$failedField = 'damageTypes';
+        damageTypes.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'PokemonRequest', _$failedField, e.toString());

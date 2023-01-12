@@ -10,10 +10,12 @@ class ChipGroup extends StatefulWidget {
     this.scrollDirection = Axis.vertical,
     this.scrollController,
     this.padding,
+    this.scrollPhysics,
   });
 
   final List<Widget> chips;
   final Axis scrollDirection;
+  final ScrollPhysics? scrollPhysics;
   final EdgeInsets? padding;
   final WrapAlignment? wrapAlignment;
   final WrapCrossAlignment? wrapCrossAlignment;
@@ -24,6 +26,9 @@ class ChipGroup extends StatefulWidget {
 }
 
 class _ChipGroupState extends State<ChipGroup> {
+
+  final scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return widget.scrollDirection == Axis.horizontal ? _buildHorizontalChipList() : _buildVerticalChipList();
@@ -33,7 +38,8 @@ class _ChipGroupState extends State<ChipGroup> {
     return Flexible(
       child: SingleChildScrollView(
         padding: widget.padding,
-        controller: ScrollController(),
+        physics: widget.scrollPhysics,
+        controller: widget.scrollController ?? scrollController,
         child: Wrap(
           alignment: widget.wrapAlignment ?? WrapAlignment.start,
           crossAxisAlignment: widget.wrapCrossAlignment ?? WrapCrossAlignment.start,
@@ -49,9 +55,10 @@ class _ChipGroupState extends State<ChipGroup> {
     return SizedBox(
       height: kChipHeight,
       child: ListView.builder(
-        controller: widget.scrollController,
+        controller: widget.scrollController ?? scrollController,
         scrollDirection: Axis.horizontal,
         shrinkWrap: true,
+        physics: widget.scrollPhysics,
         padding: widget.padding ??
             const EdgeInsets.only(
               left: 16,

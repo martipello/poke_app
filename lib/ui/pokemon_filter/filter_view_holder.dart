@@ -12,9 +12,13 @@ class FilterViewHolder extends StatefulWidget {
   const FilterViewHolder({
     super.key,
     required this.filterViewModel,
+    this.showDamageTypeFilters = false,
+    this.onFilterButtonPressed,
   });
 
   final FilterViewModel filterViewModel;
+  final VoidCallback? onFilterButtonPressed;
+  final bool showDamageTypeFilters;
 
   @override
   State<FilterViewHolder> createState() => _FilterViewHolderState();
@@ -35,7 +39,6 @@ class _FilterViewHolderState extends State<FilterViewHolder> with SingleTickerPr
 
   @override
   void dispose() {
-    widget.filterViewModel.dispose();
     _circleRevealAnimationController.dispose();
     super.dispose();
   }
@@ -50,16 +53,18 @@ class _FilterViewHolderState extends State<FilterViewHolder> with SingleTickerPr
         builder: (context, snapshot) {
           final _isFilterBottomSheetShown = snapshot.data == true;
           return SizedBox(
-            height: MediaQuery.of(context).filterBottomSheetHeight,
+            height: widget.showDamageTypeFilters
+                ? MediaQuery.of(context).filterBottomSheetHeight
+                : MediaQuery.of(context).singleFilterBottomSheetHeight,
             width: double.infinity,
             child: Stack(
               children: [
-                  Align(
-                    alignment: _isFilterBottomSheetShown ? Alignment.center : Alignment.bottomRight,
-                    child: _buildFilterButton(
-                      _isFilterBottomSheetShown,
-                    ),
+                Align(
+                  alignment: _isFilterBottomSheetShown ? Alignment.center : Alignment.bottomRight,
+                  child: _buildFilterButton(
+                    _isFilterBottomSheetShown,
                   ),
+                ),
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: _buildFilterViewHolder(
@@ -79,6 +84,7 @@ class _FilterViewHolderState extends State<FilterViewHolder> with SingleTickerPr
   ) {
     return FilterButton(
       onTap: () {
+        widget.onFilterButtonPressed?.call();
         widget.filterViewModel.setFilterUIState();
       },
       onAnimationEnd: () {
@@ -97,6 +103,7 @@ class _FilterViewHolderState extends State<FilterViewHolder> with SingleTickerPr
       child: ViewConstraint(
         child: FilterView(
           filterViewModel: widget.filterViewModel,
+          showDamageTypeFilters: widget.showDamageTypeFilters,
           onClose: () {
             _circleRevealAnimationController.reverse().then(
               (value) {

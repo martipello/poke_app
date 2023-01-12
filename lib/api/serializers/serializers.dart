@@ -3,6 +3,7 @@ import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
 
 import '../models/error_response.dart';
+import '../models/pokemon/damage_type.dart';
 import '../models/pokemon/encounter.dart';
 import '../models/pokemon/encounter_method.dart';
 import '../models/pokemon/encounter_slot.dart';
@@ -38,6 +39,7 @@ import 'date_time_serializer.dart';
 part 'serializers.g.dart';
 
 @SerializersFor([
+  DamageType,
   Encounter,
   EncounterMethod,
   EncounterSlot,

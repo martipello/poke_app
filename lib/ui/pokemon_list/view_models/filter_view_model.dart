@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../../api/models/pokemon/damage_type.dart';
 import '../../../api/models/pokemon/pokemon_type.dart';
 
 class FilterViewModel {
   final isFilterBottomSheetShownStream = BehaviorSubject<bool>.seeded(false);
-  final selectedFiltersStream = BehaviorSubject<List<PokemonType>>.seeded([]);
+  final selectedTypeFiltersStream = BehaviorSubject<List<PokemonType>>.seeded([]);
+  final selectedDamageTypeFiltersStream = BehaviorSubject<List<DamageType>>.seeded([]);
 
   ScrollController get scrollController =>  _scrollController ??= ScrollController();
   ScrollController? _scrollController;
@@ -19,23 +21,42 @@ class FilterViewModel {
     }
   }
 
-  void selectFilter(PokemonType type){
-    final _selectedFilters = selectedFiltersStream.value;
+  void selectTypeFilter(PokemonType type){
+    final _selectedFilters = selectedTypeFiltersStream.value;
     if(_selectedFilters.any((selectedType) => selectedType == type)){
       _selectedFilters.remove(type);
     } else {
       _selectedFilters.add(type);
     }
-    selectedFiltersStream.add(_selectedFilters);
+    selectedTypeFiltersStream.add(_selectedFilters);
+  }
+
+  void selectDamageTypeFilter(DamageType type){
+    final _selectedFilters = selectedDamageTypeFiltersStream.value;
+    if(_selectedFilters.any((selectedType) => selectedType == type)){
+      _selectedFilters.remove(type);
+    } else {
+      _selectedFilters.add(type);
+    }
+    selectedDamageTypeFiltersStream.add(_selectedFilters);
+  }
+
+  void clearTypeFilters(){
+    selectedTypeFiltersStream.add([]);
+  }
+
+  void clearDamageTypeFilters(){
+    selectedDamageTypeFiltersStream.add([]);
   }
 
   void clearFilters(){
-    selectedFiltersStream.add([]);
+    clearTypeFilters();
+    clearDamageTypeFilters();
   }
 
   void dispose() {
     isFilterBottomSheetShownStream.close();
-    selectedFiltersStream.close();
+    selectedTypeFiltersStream.close();
     _scrollController?.dispose();
   }
 }

@@ -120,7 +120,9 @@ class PokedexInfoWidget extends StatelessWidget {
         vertical: 12.0,
         horizontal: horizontalPadding,
       ),
-      child: PokeDivider(),
+      child: PokeDivider(
+        thickness: horizontalPadding == 16 ? kThicknessThin : kThicknessThick,
+      ),
     );
   }
 

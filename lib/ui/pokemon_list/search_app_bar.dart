@@ -14,7 +14,7 @@ import '../shared_widgets/chip_group.dart';
 import '../shared_widgets/type_chip.dart';
 import '../shared_widgets/view_constraint.dart';
 import 'view_models/filter_view_model.dart';
-import 'view_models/search_app_bar_view_model.dart';
+import 'view_models/search_view_model.dart';
 
 class SearchAppBar extends StatefulWidget {
   const SearchAppBar({
@@ -31,7 +31,7 @@ class SearchAppBar extends StatefulWidget {
 }
 
 class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMixin {
-  final searchAppBarViewModel = getIt.get<SearchAppBarViewModel>();
+  final searchAppBarViewModel = getIt.get<SearchViewModel>();
   final focusNode = FocusNode();
 
   @override
@@ -69,7 +69,7 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
   ) {
     return StreamBuilder<List<PokemonType>>(
       initialData: [],
-      stream: widget.filterViewModel.selectedFiltersStream,
+      stream: widget.filterViewModel.selectedTypeFiltersStream,
       builder: (context, snapshot) {
         final selectedFilters = snapshot.data ?? [];
         return SliverAppBar(
@@ -196,7 +196,7 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
               pokemonType: type,
               isSelected: true,
               onDelete: () {
-                widget.filterViewModel.selectFilter(type);
+                widget.filterViewModel.selectTypeFilter(type);
               },
             ),
           )

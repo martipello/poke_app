@@ -6,6 +6,7 @@ import 'dependency_injection_container.dart';
 import 'services/language_service.dart';
 import 'theme/base_theme.dart';
 import 'ui/app_shell.dart';
+import 'ui/locations/map_page.dart';
 import 'ui/pokemon_detail/pokemon_detail_page.dart';
 import 'ui/settings/about.dart';
 import 'ui/settings/settings.dart';
@@ -65,6 +66,7 @@ class _PokeAppState extends State<PokeApp> {
             AppShell.routeName: (context) => AppShell(),
             SplashPage.routeName: (context) => const SplashPage(),
             PokemonDetailPage.routeName: (context) => const PokemonDetailPage(),
+            LocationMapPage.routeName: (context) => LocationMapPage(),
             Settings.routeName: (context) => Settings(),
             About.routeName: (context) => About(),
           },
