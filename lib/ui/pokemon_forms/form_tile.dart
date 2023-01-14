@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:palette_generator/palette_generator.dart';
 
 import '../../../api/models/pokemon/pokemon.dart';
 import '../../../api/models/pokemon/pokemon_ability_holder.dart';
@@ -39,7 +38,6 @@ class FormTile extends StatefulWidget {
 
 class _FormTileState extends State<FormTile> {
   final mainImageColorViewModel = getIt.get<ImageColorViewModel>();
-  final spriteImageColorViewModel = getIt.get<ImageColorViewModel>();
 
   PokemonFormWithVersionGroup get pokemonFormWithVersionGroup => widget.pokemonFormWithVersionGroup;
 
@@ -57,39 +55,31 @@ class _FormTileState extends State<FormTile> {
   @override
   void dispose() {
     mainImageColorViewModel.dispose();
-    spriteImageColorViewModel.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<PaletteGenerator>(
-      stream: mainImageColorViewModel.paletteGeneratorStream,
-      builder: (context, mainImagePaletteGeneratorSnapshot) {
-        return StreamBuilder<PaletteGenerator>(
-          stream: spriteImageColorViewModel.paletteGeneratorStream,
-          builder: (context, spriteImagePaletteGeneratorSnapshot) {
-            final spriteImagePaletteGenerator = spriteImagePaletteGeneratorSnapshot.data;
-            final mainImagePaletteGenerator = mainImagePaletteGeneratorSnapshot.data;
-            return ExpansionCard(
-              titleWidget: _buildPokemonCardBody(),
-              expandedChildren: [
-                _buildPokemonAbilities(),
-                const SizedBox(
-                  height: 16,
-                ),
-              ],
-              onTap: () {
-                _navigateToDetailPage(
-                  context,
-                  spriteImagePaletteGenerator,
-                  mainImagePaletteGenerator,
-                );
-              },
-              bottomWidgetBuilder: (_) {
-                return _buildPokemonTypesHolder();
-              },
+    return StreamBuilder<List<int>>(
+      stream: mainImageColorViewModel.colorListStream,
+      builder: (context, colorListSnapshot) {
+        final colorList = colorListSnapshot.data ?? [];
+        return ExpansionCard(
+          titleWidget: _buildPokemonCardBody(),
+          expandedChildren: [
+            _buildPokemonAbilities(),
+            const SizedBox(
+              height: 16,
+            ),
+          ],
+          onTap: () {
+            _navigateToDetailPage(
+              context,
+              colorList,
             );
+          },
+          bottomWidgetBuilder: (_) {
+            return _buildPokemonTypesHolder();
           },
         );
       },
@@ -222,7 +212,7 @@ class _FormTileState extends State<FormTile> {
           kPokemonTileImageHeight,
         ),
         forceSpriteImage: true,
-        imageColorCallback: mainImageColorViewModel.paletteGeneratorStream.add,
+        imageColorCallback: mainImageColorViewModel.colorListStream.add,
       );
     } else {
       return const SizedBox();
@@ -244,8 +234,7 @@ class _FormTileState extends State<FormTile> {
 
   void _navigateToDetailPage(
     BuildContext context,
-    PaletteGenerator? spriteImagePaletteGenerator,
-    PaletteGenerator? mainImagePaletteGenerator,
+    List<int> colorList,
   ) {
     final _pokemon = pokemon;
     if (_pokemon != null) {
@@ -267,7 +256,7 @@ class _FormTileState extends State<FormTile> {
                     ),
                   ),
           ),
-          mainImagePaletteGenerator: mainImagePaletteGenerator,
+          colorList: colorList,
         ),
       );
     }

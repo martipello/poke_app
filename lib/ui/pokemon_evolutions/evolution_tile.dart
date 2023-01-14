@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:palette_generator/palette_generator.dart';
 
 import '../../../api/models/pokemon/pokemon.dart';
 import '../../../api/models/pokemon/pokemon_species_holder.dart';
@@ -49,10 +48,10 @@ class _EvolutionTileState extends State<EvolutionTile> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<PaletteGenerator>(
-      stream: mainImageColorViewModel.paletteGeneratorStream,
-      builder: (context, mainImagePaletteGeneratorSnapshot) {
-        final mainImagePaletteGenerator = mainImagePaletteGeneratorSnapshot.data;
+    return StreamBuilder<List<int>>(
+      stream: mainImageColorViewModel.colorListStream,
+      builder: (context, colorListSnapshot) {
+        final colorList = colorListSnapshot.data ?? [];
         return ExpansionCard(
           titleWidget: _buildPokemonCardBody(),
           expandedChildren: _buildPokemonEvolutionTable(),
@@ -65,7 +64,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
                   pokemon: _pokemon.rebuild(
                         (p) => p..pokemon_v2_pokemonspecy = widget.speciesHolder.toBuilder(),
                   ),
-                  mainImagePaletteGenerator: mainImagePaletteGenerator,
+                  colorList: colorList,
                 ),
               );
             }
@@ -407,7 +406,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
           kPokemonTileImageHeight,
           kPokemonTileImageHeight,
         ),
-        imageColorCallback: mainImageColorViewModel.paletteGeneratorStream.add,
+        imageColorCallback: mainImageColorViewModel.colorListStream.add,
       );
     } else {
       return const SizedBox();

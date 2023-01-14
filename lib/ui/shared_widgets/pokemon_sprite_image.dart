@@ -1,7 +1,7 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:palette_generator/palette_generator.dart';
 
 import '../../api/models/pokemon/pokemon.dart';
 import '../../api/models/pokemon/sprite.dart';
@@ -33,18 +33,23 @@ class PokemonSpriteImage extends StatefulWidget {
 class _PokemonSpriteImageState extends State<PokemonSpriteImage> {
   final spriteImageColorViewModel = getIt.get<ImageColorViewModel>();
 
-  late final NetworkImage spriteImageProvider;
+  late final CachedNetworkImageProvider spriteImageProvider;
 
   @override
   void initState() {
     super.initState();
-    spriteImageProvider = NetworkImage(
+    spriteImageProvider = CachedNetworkImageProvider(
       _createSpriteImageUrl(),
     );
-    spriteImageColorViewModel.updatePalette(spriteImageProvider);
-    spriteImageColorViewModel.paletteGeneratorStream.listen((value) {
-      widget.spriteImageColorCallback?.call(value);
-    });
+    spriteImageColorViewModel.updatePalette(
+      context,
+      spriteImageProvider,
+    );
+    spriteImageColorViewModel.colorListStream.listen(
+      (value) {
+        widget.spriteImageColorCallback?.call(value);
+      },
+    );
   }
 
   @override
@@ -61,8 +66,8 @@ class _PokemonSpriteImageState extends State<PokemonSpriteImage> {
         context,
         false,
         spriteImageProvider,
-        spriteImageColorViewModel.paletteGeneratorStream,
-            (context, _, __) => _buildEmptyImage(),
+        spriteImageColorViewModel.colorListStream,
+        (context, _, __) => _buildEmptyImage(),
       ),
     );
   }
@@ -71,13 +76,13 @@ class _PokemonSpriteImageState extends State<PokemonSpriteImage> {
     BuildContext context,
     bool buildHeroWidget,
     ImageProvider imageProvider,
-    Stream<PaletteGenerator> paletteGeneratorStream,
+    Stream<List<int>> paletteGeneratorStream,
     ImageErrorBuilder imageErrorBuilder,
   ) {
-    return StreamBuilder<PaletteGenerator>(
+    return StreamBuilder<List<int>>(
       stream: paletteGeneratorStream,
       builder: (context, snapshot) {
-        final palette = snapshot.data;
+        final palette = snapshot.data ?? [];
         return Stack(
           children: [
             _buildOuterCircle(
@@ -106,21 +111,27 @@ class _PokemonSpriteImageState extends State<PokemonSpriteImage> {
 
   Widget _buildOuterCircle(
     ImageErrorBuilder imageErrorBuilder,
-    PaletteGenerator? palette,
+    List<int> palette,
   ) {
-    final dominantColor = palette?.dominantColor?.color;
-    final lightVibrantColor = palette?.lightVibrantColor?.color;
+    final primaryColor = palette.firstOrNull() != null
+        ? Color(palette.first)
+        : Colors.white;
+
+    final secondaryColor = palette.lastOrNull() != null
+        ? Color(palette.last)
+        : Colors.white;
+
     return ClipRRect(
       clipBehavior: widget.clipBehavior,
       borderRadius: _buildBorderRadius(),
       child: Container(
         decoration: BoxDecoration(
-          color: widget.color ?? lightVibrantColor,
+          color: widget.color ?? primaryColor,
         ),
         padding: const EdgeInsets.all(6),
         child: Center(
           child: _buildCenterCircle(
-            dominantColor,
+            secondaryColor,
             imageErrorBuilder,
           ),
         ),
@@ -215,15 +226,15 @@ class _PokemonSpriteImageState extends State<PokemonSpriteImage> {
       'assets/images/pokeball_outline.png',
       gaplessPlayback: true,
     );
-        // .animate(
-        //   onPlay: (controller) => controller.repeat(),
-        // )
-        // .shimmer(
-        //   duration: 1200.ms,
-        //   color: const Color(
-        //     0xFF80DDFF,
-        //   ),
-        // );
+    // .animate(
+    //   onPlay: (controller) => controller.repeat(),
+    // )
+    // .shimmer(
+    //   duration: 1200.ms,
+    //   color: const Color(
+    //     0xFF80DDFF,
+    //   ),
+    // );
   }
 
   BorderRadius _buildBorderRadius() => BorderRadius.circular(180);
