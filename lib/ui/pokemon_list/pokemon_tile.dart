@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:palette_generator/palette_generator.dart';
 
 import '../../api/models/pokemon/pokemon.dart';
 import '../../api/models/pokemon/pokemon_type.dart';
@@ -42,10 +41,10 @@ class _PokemonTileState extends State<PokemonTile> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<PaletteGenerator>(
-      stream: mainImageColorViewModel.paletteGeneratorStream,
-      builder: (context, mainImagePaletteGeneratorSnapshot) {
-        final mainImagePaletteGenerator = mainImagePaletteGeneratorSnapshot.data;
+    return StreamBuilder<List<int>>(
+      stream: mainImageColorViewModel.colorListStream,
+      builder: (context, colorListSnapshot) {
+        final colorList = colorListSnapshot.data ?? [];
         const kCardPadding = 32;
         return ViewConstraint(
           child: SizedBox(
@@ -57,7 +56,7 @@ class _PokemonTileState extends State<PokemonTile> {
                   PokemonDetailPage.routeName,
                   arguments: PokemonDetailPageArguments(
                     pokemon: widget.pokemon,
-                    mainImagePaletteGenerator: mainImagePaletteGenerator,
+                    colorList: colorList,
                   ),
                 );
               },
@@ -158,7 +157,7 @@ class _PokemonTileState extends State<PokemonTile> {
         kPokemonTileImageHeight,
         kPokemonTileImageHeight,
       ),
-      imageColorCallback: mainImageColorViewModel.paletteGeneratorStream.add,
+      imageColorCallback: mainImageColorViewModel.colorListStream.add,
     );
   }
 }

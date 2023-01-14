@@ -1,17 +1,18 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/animate.dart';
 import 'package:flutter_animate/effects/effects.dart';
 import 'package:flutter_animate/extensions/extensions.dart';
-import 'package:palette_generator/palette_generator.dart';
 
 import '../../api/models/pokemon/pokemon.dart';
 import '../../dependency_injection_container.dart';
+import '../../extensions/iterable_extension.dart';
 import '../../theme/base_theme.dart';
 import 'pokemon_sprite_image.dart';
 import 'view_models/image_color_view_model.dart';
 
 typedef ImageErrorBuilder = Widget Function(BuildContext context, Object? object, StackTrace? stacktrace);
-typedef ImageColorCallback = Function(PaletteGenerator palette);
+typedef ImageColorCallback = Function(List<int> palette);
 
 const kDefaultImageHeight = 150.0;
 
@@ -40,18 +41,25 @@ class PokemonImage extends StatefulWidget {
 class _PokemonImageState extends State<PokemonImage> {
   final mainImageColorViewModel = getIt.get<ImageColorViewModel>();
 
-  late final NetworkImage mainImageProvider;
+  late final CachedNetworkImageProvider mainImageProvider;
 
   @override
   void initState() {
     super.initState();
-    mainImageProvider = NetworkImage(
+    mainImageProvider = CachedNetworkImageProvider(
       _createImageUrl(),
     );
-    mainImageColorViewModel.updatePalette(mainImageProvider);
-    mainImageColorViewModel.paletteGeneratorStream.listen((value) {
+    mainImageColorViewModel.colorListStream.listen((value) {
       widget.imageColorCallback?.call(value);
     });
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        mainImageColorViewModel.updatePalette(
+          context,
+          mainImageProvider,
+        );
+      },
+    );
   }
 
   @override
@@ -68,7 +76,7 @@ class _PokemonImageState extends State<PokemonImage> {
         context,
         true,
         mainImageProvider,
-        mainImageColorViewModel.paletteGeneratorStream,
+        mainImageColorViewModel.colorListStream,
         (context, _, __) => PokemonSpriteImage(
           pokemon: widget.pokemon,
           spriteImageColorCallback: widget.imageColorCallback,
@@ -84,13 +92,13 @@ class _PokemonImageState extends State<PokemonImage> {
     BuildContext context,
     bool buildHeroWidget,
     ImageProvider imageProvider,
-    Stream<PaletteGenerator> paletteGeneratorStream,
+    Stream<List<int>> paletteGeneratorStream,
     ImageErrorBuilder imageErrorBuilder,
   ) {
-    return StreamBuilder<PaletteGenerator>(
+    return StreamBuilder<List<int>>(
       stream: paletteGeneratorStream,
       builder: (context, snapshot) {
-        final palette = snapshot.data;
+        final palette = snapshot.data ?? [];
         return Stack(
           children: [
             _buildOuterCircle(
@@ -119,22 +127,24 @@ class _PokemonImageState extends State<PokemonImage> {
 
   Widget _buildOuterCircle(
     ImageErrorBuilder imageErrorBuilder,
-    PaletteGenerator? palette,
+    List<int> palette,
   ) {
-    final dominantColor = palette?.dominantColor?.color;
-    final lightVibrantColor = palette?.lightVibrantColor?.color;
+    final primaryColor = palette.firstOrNull() != null ? Color(palette.first) : Colors.white;
+
+    final secondaryColor = palette.lastOrNull() != null ? Color(palette.last) : Colors.white;
+
     return ClipRRect(
       clipBehavior: widget.clipBehavior,
       borderRadius: _buildBorderRadius(),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         decoration: BoxDecoration(
-          color: widget.color ?? lightVibrantColor,
+          color: widget.color ?? primaryColor,
         ),
         padding: const EdgeInsets.all(6),
         child: Center(
           child: _buildCenterCircle(
-            dominantColor,
+            secondaryColor,
           ),
         ),
       ),
@@ -227,13 +237,13 @@ class _PokemonImageState extends State<PokemonImage> {
       'assets/images/pokeball_outline.png',
       gaplessPlayback: true,
     )
-    .animate(
-      onPlay: (controller) => controller.repeat(),
-    )
-    .shimmer(
-      duration: 1200.ms,
-      color: colors(context).textOnForeground,
-    );
+        .animate(
+          onPlay: (controller) => controller.repeat(),
+        )
+        .shimmer(
+          duration: 1200.ms,
+          color: colors(context).textOnForeground,
+        );
   }
 
   BorderRadius _buildBorderRadius() => BorderRadius.circular(180);
@@ -244,5 +254,4 @@ class _PokemonImageState extends State<PokemonImage> {
     }
     return 'https://firebasestorage.googleapis.com/v0/b/pokeapp-86eec.appspot.com/o/pokemon_image_${widget.pokemon.id}.png?alt=media';
   }
-
 }
