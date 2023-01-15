@@ -23,7 +23,7 @@ extension TypeListExtension on BuiltList<TypeDataHolder> {
           (e) => e.pokemon_v2_type?.name == typeEfficacy.pokemon_v2_type?.name,
         );
         final existingDamageFactor = (existingTypeEfficacy.damage_factor ?? 0);
-        final newDamageFactor = typeEfficacy.damage_factor ?? 0;
+        final newDamageFactor = (typeEfficacy.damage_factor ?? 0) * 100;
 
         myTypeEfficacies.remove(existingTypeEfficacy);
         myTypeEfficacies.add(
@@ -32,7 +32,7 @@ extension TypeListExtension on BuiltList<TypeDataHolder> {
           ),
         );
       } else {
-        final damageFactor = typeEfficacy.damage_factor ?? 0;
+        final damageFactor = (typeEfficacy.damage_factor ?? 0) * 100;
         myTypeEfficacies.add(
           typeEfficacy.rebuild(
             (p0) => p0..damage_factor = damageFactor,
@@ -40,7 +40,13 @@ extension TypeListExtension on BuiltList<TypeDataHolder> {
         );
       }
     }
-    myTypeEfficacies.sort((a, b) => b.damage_factor?.compareTo(a.damage_factor ?? 0) ?? 0);
+    myTypeEfficacies.sort(
+      (a, b) =>
+          b.damage_factor?.compareTo(
+            a.damage_factor ?? 0,
+          ) ??
+          0,
+    );
     return myTypeEfficacies.toList();
   }
 }

@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:photo_view/photo_view.dart';
 
+import '../../api/models/region/region.dart';
 import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../extensions/double_extension.dart';
 import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import '../shared_widgets/clipped_app_bar.dart';
+import '../shared_widgets/no_results.dart';
 import '../shared_widgets/pokeball_loading_widget.dart';
 import 'view_models/map_zoom_control_view_model.dart';
 
@@ -115,13 +117,19 @@ class _LocationMapPageState extends State<LocationMapPage> {
         minScale: kMinScale,
         maxScale: kMaxScale,
         controller: photoViewController,
-        imageProvider: AssetImage(
+        imageProvider: NetworkImage(
           _mapForGenerationId(
             locationMapArguments.generationName,
           ),
+          scale: 1
         ),
         loadingBuilder: (context, chunk) {
           return const PokeballLoadingWidget();
+        },
+        errorBuilder: (context, error, stacktrace) {
+          return NoResults(
+            emptyMessage: context.strings.couldntFindMap,
+          );
         },
       ),
     );
@@ -141,7 +149,7 @@ class _LocationMapPageState extends State<LocationMapPage> {
         final currentZoom = snapshot.data ?? 0;
         return Container(
           decoration: BoxDecoration(
-            color: colors(context).white.withOpacity(0.4),
+            color: colors(context).textOnForeground.withOpacity(0.4),
             borderRadius: BorderRadius.circular(90),
           ),
           child: Column(
@@ -176,7 +184,7 @@ class _LocationMapPageState extends State<LocationMapPage> {
         child: Text(
           currentZoom.removeTrailingZero(),
           style: PokeAppText.subtitle2Style.copyWith(
-            color: colors(context).white,
+            color: colors(context).textOnPrimary,
           ),
         ),
       ),
@@ -194,7 +202,7 @@ class _LocationMapPageState extends State<LocationMapPage> {
           : null,
       icon: Icon(
         Icons.add,
-        color: colors(context).white,
+        color: colors(context).textOnPrimary,
       ),
     );
   }
@@ -210,12 +218,14 @@ class _LocationMapPageState extends State<LocationMapPage> {
           : null,
       icon: Icon(
         Icons.remove,
-        color: colors(context).white,
+        color: colors(context).textOnPrimary,
       ),
     );
   }
 
-  String _mapForGenerationId(String generationName) {
+  String _mapForGenerationId(
+    String generationName,
+  ) {
     switch (generationName) {
       case 'red':
       case 'blue':
@@ -225,13 +235,14 @@ class _LocationMapPageState extends State<LocationMapPage> {
       case 'letsgopikachu':
       case 'letsgoeevee':
         //return KANTO
-        return 'assets/images/kanto_region.webp';
+        return Region.kanto.mapUrl;
       case 'gold':
       case 'silver':
       case 'crystal':
       case 'heartgold':
       case 'soulsilver':
-      //return JHOTO KANTO
+        //return JHOTO (KANTO)
+        return Region.johto.mapUrl;
       case 'ruby':
       case 'sapphire':
       case 'omegaruby':
@@ -243,31 +254,36 @@ class _LocationMapPageState extends State<LocationMapPage> {
       case 'brilliantdiamond':
       case 'shiningpearl':
       case 'platinum':
-      //return SINNOH
+        //return SINNOH
+        return Region.sinnoh.mapUrl;
       case 'black':
       case 'white':
       case 'black2':
       case 'white2':
-      //return UNOVA
+        //return UNOVA
+        return Region.unova.mapUrl;
       case 'x':
       case 'y':
         //return KALOS
-        return 'assets/images/kalos_region.webp';
+        return Region.kalos.mapUrl;
       case 'sun':
       case 'moon':
       case 'ultrasun':
       case 'ultramoon':
         //return ALOLA
-        return 'assets/images/alola_region.jpg';
+        return Region.alola.mapUrl;
       case 'swordandshield':
-      //return GALAR
+        //return GALAR
+        return Region.galor.mapUrl;
       case 'arceus':
-      //return HISUI
+        //return HISUI
+        return Region.hisui.mapUrl;
       case 'scarlet':
       case 'violet':
-      //return PALDEA
+        //return PALDEA
+        return Region.paldea.mapUrl;
       default:
-        return 'assets/images/kanto_region.webp';
+        return 'assets/images/unknown_map.webp';
     }
   }
 }
