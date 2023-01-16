@@ -17,6 +17,7 @@
     "info" : "Info",
     "encounters" : "Encounters",
     "allGenerations" : "All generations",
+    "couldntFindMap" : "Couldn't find map for region.",
 
     "tmTitle" : "TMs",
 

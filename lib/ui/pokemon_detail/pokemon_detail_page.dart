@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:palette_generator/palette_generator.dart';
 
 import '../../ads/view_models/google_ads_view_model.dart';
 import '../../api/models/pokemon/pokemon.dart';
@@ -25,11 +24,11 @@ import 'pokemon_detail_app_bar.dart';
 class PokemonDetailPageArguments {
   PokemonDetailPageArguments({
     required this.pokemon,
-    this.mainImagePaletteGenerator,
+    required this.colorList,
   });
 
   final Pokemon pokemon;
-  final PaletteGenerator? mainImagePaletteGenerator;
+  final List<int> colorList;
 }
 
 class PokemonDetailPage extends StatefulWidget {
@@ -53,15 +52,15 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
   late final _tabBarController = TabController(length: 5, vsync: this);
   final key = GlobalKey<NestedScrollViewState>();
 
-  Color get primaryColor =>
-      pokemonDetailArguments.mainImagePaletteGenerator?.lightVibrantColor?.color ??
-      PokemonType.getTypeForId(
+  Color get primaryColor => pokemonDetailArguments.colorList.firstOrNull() != null
+      ? Color(pokemonDetailArguments.colorList.first)
+      : PokemonType.getTypeForId(
               pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes.firstOrNull()?.pokemon_v2_type?.id ?? 0)
           .color;
 
-  Color get secondaryColor =>
-      pokemonDetailArguments.mainImagePaletteGenerator?.dominantColor?.color ??
-      PokemonType.getTypeForId(
+  Color get secondaryColor => pokemonDetailArguments.colorList.lastOrNull() != null
+      ? Color(pokemonDetailArguments.colorList.last)
+      : PokemonType.getTypeForId(
               pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes.secondOrNull()?.pokemon_v2_type?.id ??
                   pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes.firstOrNull()?.pokemon_v2_type?.id ??
                   0)

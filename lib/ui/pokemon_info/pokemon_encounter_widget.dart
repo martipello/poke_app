@@ -45,7 +45,7 @@ class _PokemonEncounterWidgetState extends State<PokemonEncounterWidget> {
       ),
       builder: (context, snapshot) {
         final encountersByVersion = snapshot.data ?? {};
-        if (snapshot.connectionState == ConnectionState.waiting || encountersByVersion.values.isEmpty) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return SliverToBoxAdapter(
             child: _loadingWidget(),
           );
@@ -68,32 +68,10 @@ class _PokemonEncounterWidgetState extends State<PokemonEncounterWidget> {
                   if (encounterWithVersion.value.encounterSlotAndLocations.isEmpty) {
                     return const SizedBox();
                   }
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (index != 0)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                          ),
-                          child: _buildDivider(
-                            hasThinDivider: true,
-                          ),
-                        ),
-                      PokemonExpansionTile(
-                        canExpand: true,
-                        title: _buildEncounterTileTitle(
-                          context,
-                          encounterWithVersion.value,
-                        ),
-                        children: [
-                          _buildEncounterDetails(
-                            context,
-                            encounterWithVersion.value,
-                          ),
-                        ],
-                      ),
-                    ],
+                  return _buildEncounter(
+                    context,
+                    index,
+                    encounterWithVersion,
                   );
                 },
               ),
@@ -101,6 +79,50 @@ class _PokemonEncounterWidgetState extends State<PokemonEncounterWidget> {
           ],
         );
       },
+    );
+  }
+
+  Widget _buildEncounter(
+    BuildContext context,
+    int index,
+    MapEntry<PokemonResource, Encounter> encounterWithVersion,
+  ) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (index != 0)
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+            ),
+            child: _buildDivider(
+              hasThinDivider: true,
+            ),
+          ),
+        _buildEncounterTile(
+          context,
+          encounterWithVersion,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildEncounterTile(
+    BuildContext context,
+    MapEntry<PokemonResource, Encounter> encounterWithVersion,
+  ) {
+    return PokemonExpansionTile(
+      canExpand: true,
+      title: _buildEncounterTileTitle(
+        context,
+        encounterWithVersion.value,
+      ),
+      children: [
+        _buildEncounterDetails(
+          context,
+          encounterWithVersion.value,
+        ),
+      ],
     );
   }
 

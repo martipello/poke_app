@@ -22,6 +22,12 @@ class PokeAppWrapper {
         WidgetsFlutterBinding.ensureInitialized();
         await di.init();
         MobileAds.instance.initialize();
+        final requestConfiguration = RequestConfiguration(
+          maxAdContentRating: MaxAdContentRating.g,
+        );
+        MobileAds.instance.updateRequestConfiguration(
+          requestConfiguration,
+        );
         await Firebase.initializeApp(
           options: DefaultFirebaseOptions.currentPlatform,
         );
