@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../dependency_injection_container.dart';
-import '../in_app_purchases/viiew_models/in_app_purchase_view_model.dart';
+import '../in_app_purchases/view_models/in_app_purchase_view_model.dart';
 import 'pokemon_list/pokemon_list_view.dart';
 
 class AppShell extends StatefulWidget {

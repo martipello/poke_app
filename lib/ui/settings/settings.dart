@@ -10,7 +10,7 @@ import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../extensions/purchase_details_extension.dart';
 import '../../extensions/string_extension.dart';
-import '../../in_app_purchases/viiew_models/in_app_purchase_view_model.dart';
+import '../../in_app_purchases/view_models/in_app_purchase_view_model.dart';
 import '../../services/language_service.dart';
 import '../../services/launch_service.dart';
 import '../../services/theme_service.dart';
