@@ -17,7 +17,14 @@ class InAppPurchaseViewModel {
   bool hasPurchasedPremium = false;
 
   Future<void> restorePurchases() async {
-    return _inAppPurchase.restorePurchases();
+    //ARTIFICIAL DELAY BECAUSE THE PLUGIN SUCKS
+    Future.delayed(
+      const Duration(milliseconds: 200),
+    ).then(
+      (_) {
+        return _inAppPurchase.restorePurchases();
+      },
+    );
   }
 
   final _inAppPurchase = InAppPurchase.instance;
@@ -32,7 +39,7 @@ class InAppPurchaseViewModel {
     final purchaseParam = PurchaseParam(
       productDetails: productDetail,
     );
-   InAppPurchase.instance.buyNonConsumable(
+    InAppPurchase.instance.buyNonConsumable(
       purchaseParam: purchaseParam,
     );
   }
