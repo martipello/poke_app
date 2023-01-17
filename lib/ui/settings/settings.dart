@@ -8,7 +8,6 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
-import '../../extensions/purchase_details_extension.dart';
 import '../../extensions/string_extension.dart';
 import '../../in_app_purchases/view_models/in_app_purchase_view_model.dart';
 import '../../services/language_service.dart';
@@ -16,7 +15,6 @@ import '../../services/launch_service.dart';
 import '../../services/theme_service.dart';
 import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
-import '../../utils/console_output.dart';
 import '../../utils/constants.dart';
 import '../shared_widgets/poke_dialog.dart';
 import 'about.dart';
@@ -29,6 +27,7 @@ class Settings extends StatelessWidget {
   final _languageService = getIt.get<LanguageService>();
   final _themeService = getIt.get<ThemeService>();
   final _launchService = getIt.get<LaunchService>();
+
   final _inAppPurchaseViewModel = getIt.get<InAppPurchaseViewModel>();
 
   @override
@@ -37,21 +36,12 @@ class Settings extends StatelessWidget {
   }
 
   FutureBuilder<ProductDetailsResponse> _buildPurchaseState() {
-    //TODO doesnt work for restoring purchases
     return FutureBuilder<ProductDetailsResponse>(
       future: _inAppPurchaseViewModel.productDetailsResponse(),
       builder: (context, productResponse) {
-        log('SETTING').d('productResponse $productResponse');
-        return StreamBuilder<List<PurchaseDetails>>(
-          stream: _inAppPurchaseViewModel.purchaseStream,
-          builder: (context, purchaseUpdatedSnapshot) {
-            final purchases = purchaseUpdatedSnapshot.data ?? [];
-            final products = productResponse.data;
-            return _buildSelectedLanguageState(
-              products,
-              purchases,
-            );
-          },
+        final products = productResponse.data;
+        return _buildSelectedLanguageState(
+          products,
         );
       },
     );
@@ -59,7 +49,6 @@ class Settings extends StatelessWidget {
 
   StreamBuilder<SupportedLanguage> _buildSelectedLanguageState(
     ProductDetailsResponse? products,
-    List<PurchaseDetails> purchases,
   ) {
     return StreamBuilder<SupportedLanguage>(
       initialData: SupportedLanguage.english,
@@ -69,7 +58,6 @@ class Settings extends StatelessWidget {
         return _buildThemeState(
           _language,
           products,
-          purchases,
         );
       },
     );
@@ -78,7 +66,6 @@ class Settings extends StatelessWidget {
   StreamBuilder<bool?> _buildThemeState(
     SupportedLanguage? _language,
     ProductDetailsResponse? products,
-    List<PurchaseDetails> purchases,
   ) {
     return StreamBuilder<bool?>(
       stream: _themeService.isDarkModeStream,
@@ -89,7 +76,6 @@ class Settings extends StatelessWidget {
           _language,
           _isDarkMode,
           products,
-          purchases,
         );
       },
     );
@@ -100,7 +86,6 @@ class Settings extends StatelessWidget {
     SupportedLanguage? _language,
     bool _isDarkMode,
     ProductDetailsResponse? products,
-    List<PurchaseDetails> purchases,
   ) {
     return Scaffold(
       appBar: _buildSettingsAppBar(context),
@@ -121,7 +106,6 @@ class Settings extends StatelessWidget {
                         (product) => _buildInAppPurchase(
                           context,
                           product,
-                          purchases,
                         ),
                       )
                       .toList() ??
@@ -317,23 +301,17 @@ class Settings extends StatelessWidget {
   SettingsTile _buildInAppPurchase(
     BuildContext context,
     ProductDetails productDetail,
-    List<PurchaseDetails> purchases,
   ) {
-    final _hasPurchasedPremium = purchases.hasPurchasedPremium(
-      productDetail,
-    );
+    final _hasPurchasedPremium = _inAppPurchaseViewModel.hasPurchasedPremium;
     return SettingsTile.switchTile(
       leading: const Icon(
         Icons.monetization_on,
       ),
       initialValue: _hasPurchasedPremium,
       onToggle: (toggle) {
-        final purchaseParam = PurchaseParam(
-          productDetails: productDetail,
-        );
-        InAppPurchase.instance.buyConsumable(
-          purchaseParam: purchaseParam,
-        );
+        if(!_hasPurchasedPremium) {
+          _inAppPurchaseViewModel.buyPremium(productDetail);
+        }
       },
       title: Text(
         context.strings.premium,

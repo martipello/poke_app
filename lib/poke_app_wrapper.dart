@@ -9,6 +9,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'dependency_injection_container.dart' as di;
 import 'dependency_injection_container.dart';
 import 'firebase_options.dart';
+import 'in_app_purchases/view_models/in_app_purchase_view_model.dart';
 import 'poke_app.dart';
 import 'services/theme_service.dart';
 import 'theme/base_theme.dart';
@@ -24,6 +25,7 @@ class PokeAppWrapper {
         MobileAds.instance.initialize();
         final requestConfiguration = RequestConfiguration(
           maxAdContentRating: MaxAdContentRating.g,
+          tagForChildDirectedTreatment: TagForChildDirectedTreatment.yes
         );
         MobileAds.instance.updateRequestConfiguration(
           requestConfiguration,
@@ -38,6 +40,9 @@ class PokeAppWrapper {
           }
         }
         final themeService = getIt.get<ThemeService>();
+        final _inAppPurchaseViewModel = getIt.get<InAppPurchaseViewModel>();
+        _inAppPurchaseViewModel.restorePurchases();
+
         runApp(
           StreamBuilder<bool?>(
             stream: themeService.isDarkModeStream,

@@ -28,7 +28,9 @@ class GoogleAdsViewModel {
             : Platform.isIOS
                 ? kIOSAdUnitId
                 : kAndroidAdUnitId,
-        request: const AdRequest(),
+        request: const AdRequest(
+          nonPersonalizedAds: true,
+        ),
         listener: const BannerAdListener(),
       )..load(),
     );
@@ -47,7 +49,7 @@ class GoogleAdsViewModel {
           _interstitialAd = ad;
           _interstitialAd!.setImmersiveMode(true);
         },
-        onAdFailedToLoad: ( error) {
+        onAdFailedToLoad: (error) {
           _interstitialAd = null;
         },
       ),
