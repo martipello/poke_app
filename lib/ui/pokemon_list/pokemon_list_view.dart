@@ -16,6 +16,7 @@ import '../shared_widgets/no_results.dart';
 import '../shared_widgets/pokeball_loading_widget.dart';
 import '../shared_widgets/rounded_button.dart';
 import '../shared_widgets/sliver_refresh_indicator.dart';
+import '../shared_widgets/view_constraint.dart';
 import 'pokemon_tile.dart';
 import 'search_app_bar.dart';
 import 'view_models/filter_view_model.dart';
@@ -186,10 +187,15 @@ class _PokemonListViewState extends State<PokemonListView> {
 
   Widget _buildErrorWidget() {
     final error = _pokemonViewModel.getPagingController().error as ApiResponse;
-    return ew.ErrorWidget(
-      showImage: true,
-      error: error,
-      onTryAgain: () => _pokemonViewModel.getPagingController().refresh(),
+    return ViewConstraint(
+      constraints: const BoxConstraints(
+        maxWidth: 280,
+      ),
+      child: ew.ErrorWidget(
+        showImage: true,
+        error: error,
+        onTryAgain: () => _pokemonViewModel.getPagingController().refresh(),
+      ),
     );
   }
 

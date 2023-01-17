@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'dependency_injection_container.dart';
+import 'in_app_purchases/view_models/in_app_purchase_view_model.dart';
 import 'services/language_service.dart';
 import 'theme/base_theme.dart';
 import 'ui/app_shell.dart';
@@ -27,6 +28,14 @@ class PokeApp extends StatefulWidget {
 class _PokeAppState extends State<PokeApp> {
 
   final languageService = getIt.get<LanguageService>();
+  final _inAppPurchaseViewModel = getIt.get<InAppPurchaseViewModel>();
+
+  @override
+  void dispose() {
+    _inAppPurchaseViewModel.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
