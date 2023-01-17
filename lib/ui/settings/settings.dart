@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:share_plus/share_plus.dart';
@@ -8,6 +9,7 @@ import 'package:share_plus/share_plus.dart';
 import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../extensions/string_extension.dart';
+import '../../in_app_purchases/view_models/in_app_purchase_view_model.dart';
 import '../../services/language_service.dart';
 import '../../services/launch_service.dart';
 import '../../services/theme_service.dart';
@@ -26,43 +28,96 @@ class Settings extends StatelessWidget {
   final _themeService = getIt.get<ThemeService>();
   final _launchService = getIt.get<LaunchService>();
 
+  final _inAppPurchaseViewModel = getIt.get<InAppPurchaseViewModel>();
+
   @override
   Widget build(BuildContext context) {
+    return _buildPurchaseState();
+  }
+
+  FutureBuilder<ProductDetailsResponse> _buildPurchaseState() {
+    return FutureBuilder<ProductDetailsResponse>(
+      future: _inAppPurchaseViewModel.productDetailsResponse(),
+      builder: (context, productResponse) {
+        final products = productResponse.data;
+        return _buildSelectedLanguageState(
+          products,
+        );
+      },
+    );
+  }
+
+  StreamBuilder<SupportedLanguage> _buildSelectedLanguageState(
+    ProductDetailsResponse? products,
+  ) {
     return StreamBuilder<SupportedLanguage>(
       initialData: SupportedLanguage.english,
       stream: _languageService.languageStream,
       builder: (context, languageSnapshot) {
-        return StreamBuilder<bool?>(
-          stream: _themeService.isDarkModeStream,
-          builder: (context, isDarkModeSnapshot) {
-            final _language = languageSnapshot.data;
-            final _isDarkMode = isDarkModeSnapshot.data == true;
-            return Scaffold(
-              appBar: _buildSettingsAppBar(context),
-              body: SettingsList(
-                sections: [
-                  SettingsSection(
-                    tiles: <SettingsTile>[
-                      _buildLanguageSettingsTile(
-                        context,
-                        _language,
-                      ),
-                      _buildDarkModeSettingsTile(
-                        context,
-                        _isDarkMode,
-                      ),
-                      _buildReviewSettingsTile(context),
-                      _buildShareSettingsTile(context),
-                      _buildFeedbackSettingsTile(context),
-                      _buildAboutSettingsTile(context),
-                    ],
-                  ),
-                ],
-              ),
-            );
-          },
+        final _language = languageSnapshot.data;
+        return _buildThemeState(
+          _language,
+          products,
         );
       },
+    );
+  }
+
+  StreamBuilder<bool?> _buildThemeState(
+    SupportedLanguage? _language,
+    ProductDetailsResponse? products,
+  ) {
+    return StreamBuilder<bool?>(
+      stream: _themeService.isDarkModeStream,
+      builder: (context, isDarkModeSnapshot) {
+        final _isDarkMode = isDarkModeSnapshot.data == true;
+        return _buildSettingsScaffold(
+          context,
+          _language,
+          _isDarkMode,
+          products,
+        );
+      },
+    );
+  }
+
+  Widget _buildSettingsScaffold(
+    BuildContext context,
+    SupportedLanguage? _language,
+    bool _isDarkMode,
+    ProductDetailsResponse? products,
+  ) {
+    return Scaffold(
+      appBar: _buildSettingsAppBar(context),
+      body: SettingsList(
+        sections: [
+          SettingsSection(
+            tiles: <SettingsTile>[
+              _buildLanguageSettingsTile(
+                context,
+                _language,
+              ),
+              _buildDarkModeSettingsTile(
+                context,
+                _isDarkMode,
+              ),
+              ...products?.productDetails
+                      .map(
+                        (product) => _buildInAppPurchase(
+                          context,
+                          product,
+                        ),
+                      )
+                      .toList() ??
+                  [],
+              _buildReviewSettingsTile(context),
+              _buildShareSettingsTile(context),
+              _buildFeedbackSettingsTile(context),
+              _buildAboutSettingsTile(context),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -239,6 +294,27 @@ class Settings extends StatelessWidget {
       },
       title: Text(
         context.strings.darkMode,
+      ),
+    );
+  }
+
+  SettingsTile _buildInAppPurchase(
+    BuildContext context,
+    ProductDetails productDetail,
+  ) {
+    final _hasPurchasedPremium = _inAppPurchaseViewModel.hasPurchasedPremium;
+    return SettingsTile.switchTile(
+      leading: const Icon(
+        Icons.monetization_on,
+      ),
+      initialValue: _hasPurchasedPremium,
+      onToggle: (toggle) {
+        if(!_hasPurchasedPremium) {
+          _inAppPurchaseViewModel.buyPremium(productDetail);
+        }
+      },
+      title: Text(
+        context.strings.premium,
       ),
     );
   }

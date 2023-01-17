@@ -22,8 +22,8 @@ class PokemonWeaknessResistanceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final weaknesses = pokemon.pokemon_v2_pokemontypes.calculateTypeEfficacies();
-    if (weaknesses.isEmpty) {
+    final typeEfficacies = pokemon.pokemon_v2_pokemontypes.calculateTypeEfficacies();
+    if (typeEfficacies.isEmpty) {
       return const SizedBox.shrink();
     }
     return Padding(
@@ -34,7 +34,7 @@ class PokemonWeaknessResistanceWidget extends StatelessWidget {
         children: [
           ..._buildTypeEffectiveness(
             context,
-            weaknesses,
+            typeEfficacies,
           ),
         ],
       ),

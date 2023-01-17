@@ -11,6 +11,7 @@ import '../../theme/poke_app_text.dart';
 import '../shared_widgets/chip_group.dart';
 import '../shared_widgets/pokemon_image.dart';
 import '../shared_widgets/type_chip.dart';
+import '../shared_widgets/view_constraint.dart';
 
 const kPokemonDetailImageHeight = 200.0;
 
@@ -32,39 +33,41 @@ class PokemonDetailHeader extends StatelessWidget {
   Widget _buildPokemonDetailHeaderBody(
     BuildContext context,
   ) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _buildExtraLargeMargin,
-          _buildPokemonImage(),
-          _buildMediumMargin,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildTitle(context),
-              _buildPokemonId(context),
-            ],
-          ),
-          _buildSmallMargin,
-          _buildSpeciesName(context),
-          _buildSmallMargin,
-          _buildPokemonTypes(),
-          _buildSmallMargin,
-          _buildGeneration(context),
-          _buildSmallMargin,
-          Row(
-            children: [
-              _buildHeight(context),
-              _buildMediumMargin,
-              _buildWeight(context),
-            ],
-          ),
-        ],
+    return ViewConstraint(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildExtraLargeMargin,
+            _buildPokemonImage(),
+            _buildMediumMargin,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildTitle(context),
+                _buildPokemonId(context),
+              ],
+            ),
+            _buildSmallMargin,
+            _buildSpeciesName(context),
+            _buildSmallMargin,
+            _buildPokemonTypes(),
+            _buildSmallMargin,
+            _buildGeneration(context),
+            _buildSmallMargin,
+            Row(
+              children: [
+                _buildHeight(context),
+                _buildMediumMargin,
+                _buildWeight(context),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
