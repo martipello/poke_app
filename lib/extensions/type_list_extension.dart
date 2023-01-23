@@ -22,17 +22,17 @@ extension TypeListExtension on BuiltList<TypeDataHolder> {
         final existingTypeEfficacy = myTypeEfficacies.firstWhere(
           (e) => e.pokemon_v2_type?.name == typeEfficacy.pokemon_v2_type?.name,
         );
-        final existingDamageFactor = (existingTypeEfficacy.damage_factor ?? 0);
-        final newDamageFactor = (typeEfficacy.damage_factor ?? 0) * 100;
+        final existingDamageFactor = _normalizeDamageFactor(existingTypeEfficacy.damage_factor ?? 0);
+        final newDamageFactor = _normalizeDamageFactor(typeEfficacy.damage_factor ?? 0);
 
         myTypeEfficacies.remove(existingTypeEfficacy);
         myTypeEfficacies.add(
           existingTypeEfficacy.rebuild(
-            (p0) => p0..damage_factor = (existingDamageFactor * newDamageFactor),
+            (p0) => p0..damage_factor = _normalizeDamageFactor(existingDamageFactor * newDamageFactor),
           ),
         );
       } else {
-        final damageFactor = (typeEfficacy.damage_factor ?? 0) * 100;
+        final damageFactor = _normalizeDamageFactor(typeEfficacy.damage_factor ?? 0);
         myTypeEfficacies.add(
           typeEfficacy.rebuild(
             (p0) => p0..damage_factor = damageFactor,
@@ -48,5 +48,20 @@ extension TypeListExtension on BuiltList<TypeDataHolder> {
           0,
     );
     return myTypeEfficacies.toList();
+  }
+
+  double _normalizeDamageFactor(double damageFactor) {
+    final damageFactorString = damageFactor.toString();
+    if (damageFactorString.contains('25')) {
+      return 25;
+    } else if (damageFactorString.contains('50')) {
+      return 50;
+    } else if (damageFactorString.contains('1')) {
+      return 100;
+    } else if (damageFactorString.contains('2')) {
+      return 200;
+    } else {
+      return 100;
+    }
   }
 }

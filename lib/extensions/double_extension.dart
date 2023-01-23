@@ -12,7 +12,7 @@ extension DoubleExtension on double? {
     if (damageFactor == 0) {
       return '0';
     } else {
-      return (damageFactor / 10000).removeTrailingZero();
+      return (damageFactor / 100).removeTrailingZero();
     }
   }
 
