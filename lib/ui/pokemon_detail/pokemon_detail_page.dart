@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../ads/ad_warning.dart';
 import '../../ads/view_models/google_ads_view_model.dart';
 import '../../api/models/pokemon/pokemon.dart';
 import '../../api/models/pokemon/pokemon_type.dart';
@@ -75,13 +76,12 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
     );
     _openPokemonCountViewModel.openPokemonCountStream.listen(
       (openedCount) {
-        if (openedCount == 1 && F.appFlavor != Flavor.paid) {
+        if (openedCount == 1 || openedCount % 3 == 0 && F.appFlavor != Flavor.paid) {
           //We do this as without it first ad always fails
           _googleAdsViewModel.createInterstitialAd();
-        }
-        if (openedCount % 3 == 0 && F.appFlavor != Flavor.paid) {
-          _googleAdsViewModel.createInterstitialAd();
-          _googleAdsViewModel.showInterstitialAd();
+          if (openedCount % kDefaultListAdFrequency == 0) {
+            _googleAdsViewModel.showInterstitialAd();
+          }
         }
       },
     );
@@ -106,45 +106,69 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: NestedScrollView(
-        key: key,
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
-          return [
-            PokemonDetailAppBar(
-              pokemon: pokemonDetailArguments.pokemon,
-              primaryColor: primaryColor,
-              secondaryColor: secondaryColor,
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: NestedScrollView(
+              key: key,
+              headerSliverBuilder: (context, innerBoxIsScrolled) {
+                return [
+                  _buildPokemonDetailAppBar(),
+                ];
+              },
+              body: Container(
+                color: secondaryColor,
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: _buildPokemonDetailBody(),
+                    ),
+                    _buildFilterViewHolderState(),
+                  ],
+                ),
+              ),
             ),
-          ];
-        },
-        body: Container(
-          color: secondaryColor,
-          child: Stack(
-            children: [
-              Positioned.fill(
-                child: _buildPokemonDetailBody(),
-              ),
-              StreamBuilder<double>(
-                stream: _currentIndexViewModel.currentIndexStream,
-                builder: (context, snapshot) {
-                  final _currentTabIndex = snapshot.data ?? 0;
-                  if (_currentTabIndex == 4) {
-                    return Align(
-                      alignment: Alignment.bottomCenter,
-                      child: FilterViewHolder(
-                        onFilterButtonPressed: collapseNestedScrollViewHeader,
-                        filterViewModel: _filterViewModel,
-                        showDamageTypeFilters: true,
-                      ),
-                    );
-                  }
-                  return const SizedBox();
-                },
-              ),
-            ],
           ),
-        ),
+          if (F.appFlavor != Flavor.paid)
+            Align(
+              alignment: Alignment.topRight,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  top: kToolbarHeight + 32,
+                ),
+                child: AdWarning(),
+              ),
+            ),
+        ],
       ),
+    );
+  }
+
+  Widget _buildPokemonDetailAppBar() {
+    return PokemonDetailAppBar(
+      pokemon: pokemonDetailArguments.pokemon,
+      primaryColor: primaryColor,
+      secondaryColor: secondaryColor,
+    );
+  }
+
+  Widget _buildFilterViewHolderState() {
+    return StreamBuilder<double>(
+      stream: _currentIndexViewModel.currentIndexStream,
+      builder: (context, snapshot) {
+        final _currentTabIndex = snapshot.data ?? 0;
+        if (_currentTabIndex == 4) {
+          return Align(
+            alignment: Alignment.bottomCenter,
+            child: FilterViewHolder(
+              onFilterButtonPressed: collapseNestedScrollViewHeader,
+              filterViewModel: _filterViewModel,
+              showDamageTypeFilters: true,
+            ),
+          );
+        }
+        return const SizedBox();
+      },
     );
   }
 

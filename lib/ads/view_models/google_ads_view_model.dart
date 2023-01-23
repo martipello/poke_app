@@ -14,6 +14,7 @@ const kAndroidAdUnitId = 'ca-app-pub-1989939591379723/6308378199';
 const kDebugAdUnitId = 'ca-app-pub-3940256099942544/6300978111';
 
 const kDefaultListAdFrequency = 6;
+const kInterstitialAdFrequency = 6;
 
 class GoogleAdsViewModel {
   BannerAd? _bannerAd;
@@ -43,11 +44,13 @@ class GoogleAdsViewModel {
           : Platform.isIOS
               ? kIOSInterstitialAdUnitId
               : kAndroidInterstitialAdUnitId,
-      request: const AdRequest(),
+      request: const AdRequest(
+        nonPersonalizedAds: true,
+      ),
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) {
           _interstitialAd = ad;
-          _interstitialAd!.setImmersiveMode(true);
+          _interstitialAd!.setImmersiveMode(false);
         },
         onAdFailedToLoad: (error) {
           _interstitialAd = null;

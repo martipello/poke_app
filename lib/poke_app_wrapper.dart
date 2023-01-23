@@ -24,8 +24,8 @@ class PokeAppWrapper {
         await di.init();
         MobileAds.instance.initialize();
         final requestConfiguration = RequestConfiguration(
-          maxAdContentRating: MaxAdContentRating.g,
-          tagForChildDirectedTreatment: TagForChildDirectedTreatment.yes
+          tagForChildDirectedTreatment: TagForChildDirectedTreatment.yes,
+          maxAdContentRating: MaxAdContentRating.g
         );
         MobileAds.instance.updateRequestConfiguration(
           requestConfiguration,
