@@ -1,16 +1,15 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 
 import '../../../api/models/pokemon/pokemon.dart';
 import '../../../api/models/pokemon/pokemon_stat.dart';
 import '../../../extensions/build_context_extension.dart';
 import '../../../extensions/iterable_extension.dart';
 import '../../../extensions/stat_extension.dart';
-import '../../../theme/base_theme.dart';
 import '../../../theme/poke_app_text.dart';
 import '../shared_widgets/poke_divider.dart';
 import '../shared_widgets/pokemon_table.dart';
+import 'stat_bar.dart';
 
 class PokemonStatsWidget extends StatelessWidget {
   const PokemonStatsWidget({
@@ -72,50 +71,11 @@ class PokemonStatsWidget extends StatelessWidget {
   ) {
     return PokemonTableRowInfo(
       pokemonStat.displayName(),
-      child: _buildStatBarDelay(
-        index,
-        pokemonStat,
-      ),
-    );
-  }
-
-  Widget _buildStatBarDelay(
-    int index,
-    PokemonStat pokemonStat,
-  ) {
-    return FutureBuilder<dynamic>(
-      future: Future<dynamic>.delayed(
-        Duration(
-          milliseconds: index * 50,
-        ),
-      ),
-      builder: (context, snapshot) {
-        final value = snapshot.connectionState == ConnectionState.waiting ? 0 : pokemonStat.base_stat;
-        return _buildStatBar(
-          context,
-          value?.toDouble() ?? 0,
-        );
-      },
-    );
-  }
-
-  Widget _buildStatBar(
-    BuildContext context,
-    double value,
-  ) {
-    return FAProgressBar(
-      displayText: '',
-      displayTextStyle: PokeAppText.body3Style.copyWith(
-        color: colors(context).textOnPrimary,
-      ),
-      currentValue: value.toDouble(),
-      size: 22,
-      backgroundColor: secondaryColor,
-      progressGradient: LinearGradient(
-        colors: [
-          colors(context).cardBackground.withOpacity(0.8),
-          primaryColor,
-        ],
+      child: StatBar(
+        primaryColor: primaryColor,
+        secondaryColor: secondaryColor,
+        index: index,
+        pokemonStat: pokemonStat,
       ),
     );
   }

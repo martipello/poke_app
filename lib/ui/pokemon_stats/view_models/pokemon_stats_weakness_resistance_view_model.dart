@@ -19,6 +19,7 @@ class PokemonStatsWeaknessResistanceViewModel {
   final ErrorHandler errorHandler;
 
   final pokemonStatsWeaknessAndResistanceStream = BehaviorSubject<ApiResponse<PokemonResponse>>();
+  final pokemonStatsDelay = BehaviorSubject<int>();
 
   void getPokemonStats(int pokemonId) async {
     try {
@@ -50,6 +51,10 @@ class PokemonStatsWeaknessResistanceViewModel {
         ..languageId = languageId
         ..pokemonId = pokemonId,
     );
+  }
+
+  void setDelay(int delay){
+    pokemonStatsDelay.add(delay);
   }
 
   void dispose() {

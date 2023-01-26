@@ -1,68 +1,112 @@
 import 'package:flutter/material.dart';
 
 import '../dependency_injection_container.dart';
-import '../extensions/build_context_extension.dart';
 import '../theme/base_theme.dart';
 import '../theme/poke_app_text.dart';
 import '../ui/shared_widgets/view_models/open_pokemon_count_view_model.dart';
-import 'view_models/ad_warning_view_model.dart';
 import 'view_models/google_ads_view_model.dart';
 
-class AdWarning extends StatelessWidget {
+const kAdWarningLabelMaxSize = 120.0;
+
+class AdWarning extends StatefulWidget {
+  @override
+  State<AdWarning> createState() => _AdWarningState();
+}
+
+class _AdWarningState extends State<AdWarning> with TickerProviderStateMixin {
   final _openPokemonCountViewModel = getIt.get<OpenPokemonCountViewModel>();
-  final _adWarningAnimationViewModel = getIt.get<AdWarningViewModel>();
+
+  late final _positionAnimationController = AnimationController(
+    vsync: this,
+    duration: _animationDuration,
+  );
+
+  late final _positionAnimation = Tween<Offset>(
+    begin: const Offset(kAdWarningLabelMaxSize, 0.0),
+    end: Offset.zero,
+  ).animate(
+    CurvedAnimation(
+      parent: _positionAnimationController,
+      curve: Curves.linearToEaseOut,
+    ),
+  );
+
+  late final _rotationAnimationController = AnimationController(
+    vsync: this,
+    duration: _animationDuration,
+  );
+
+  late final _rotationAnimation = Tween<double>(
+    begin: 4000,
+    end: -4000,
+  ).animate(
+    CurvedAnimation(
+      parent: _rotationAnimationController,
+      curve: Curves.linearToEaseOut,
+    ),
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    _runWithDelay(
+      _positionAnimationController.forward,
+      voidCallback2: _rotationAnimationController.forward,
+    );
+    _positionAnimationController.addListener(
+      () {
+        if (_positionAnimationController.isCompleted) {
+          _runWithDelay(
+            _positionAnimationController.reverse,
+            voidCallback2: _rotationAnimationController.reverse,
+          );
+        }
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _positionAnimationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return _buildAdWarning(context);
-  }
-
-  Widget _buildAdWarning(BuildContext context) {
     return StreamBuilder<int>(
-      stream: _adWarningAnimationViewModel.warningPositionStream,
-      builder: (context, warningPositionSnapshot) {
-        final position = warningPositionSnapshot.data ?? 0;
-        final turns = (warningPositionSnapshot.data ?? 0) == 0 ? 0 : 4;
-        return StreamBuilder<int>(
-          stream: _openPokemonCountViewModel.openPokemonCountStream,
-          builder: (context, snapshot) {
-            final openPokemonCount = snapshot.data ?? 0;
-            return Stack(
-              children: [
-                AnimatedPositioned(
-                  duration: _animationDuration,
-                  left: context.screenWidth - position,
-                  curve: Curves.linearToEaseOut,
-                  child: Container(
-                    width: kAdWarningLabelMaxSize.toDouble(),
-                    decoration: _adWarningBoxDecoration(),
-                    padding: const EdgeInsets.all(4),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        _buildAnimatedPokeball(turns),
-                        _mediumHorizontalMargin(),
-                        _buildWarningLabel(
-                          context,
-                          openPokemonCount,
-                        ),
-                      ],
+      stream: _openPokemonCountViewModel.openPokemonCountStream,
+      builder: (context, snapshot) {
+        final openPokemonCount = snapshot.data ?? 0;
+        return Stack(
+          children: [
+            SlideTransition(
+              position: _positionAnimation,
+              child: Container(
+                width: kAdWarningLabelMaxSize.toDouble(),
+                decoration: _adWarningBoxDecoration(),
+                padding: const EdgeInsets.all(4),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _buildAnimatedPokeball(4),
+                    _mediumHorizontalMargin(),
+                    _buildWarningLabel(
+                      context,
+                      openPokemonCount,
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            );
-          },
+              ),
+            ),
+          ],
         );
       },
     );
   }
 
   Widget _buildAnimatedPokeball(int turns) {
-    return AnimatedRotation(
-      curve: Curves.linearToEaseOut,
-      duration: _animationDuration,
-      turns: -turns.toDouble(),
+    return RotationTransition(
+      turns: _rotationAnimation,
       child: Image.asset(
         'assets/images/pokeball.png',
         height: 24,
@@ -108,7 +152,22 @@ class AdWarning extends StatelessWidget {
   }
 
   Duration get _animationDuration => const Duration(
-    milliseconds: 500,
-  );
+        milliseconds: 1500,
+      );
 
+  void _runWithDelay(
+    VoidCallback voidCallback, {
+    VoidCallback? voidCallback2,
+  }) {
+    Future.delayed(
+      const Duration(
+        seconds: 3,
+      ),
+    ).then(
+      (value) {
+        voidCallback.call();
+        voidCallback2?.call();
+      },
+    );
+  }
 }
