@@ -2,7 +2,6 @@ import 'package:get_it/get_it.dart';
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'ads/view_models/ad_warning_view_model.dart';
 import 'ads/view_models/google_ads_view_model.dart';
 import 'api/api_client.dart';
 import 'api/error_handler.dart';
@@ -64,7 +63,6 @@ Future<void> init() async {
   getIt.registerFactory(SplashViewModel.new);
   getIt.registerFactory(ExpansionCardStateViewModel.new);
   getIt.registerFactory(PokeballLoadingViewModel.new);
-  getIt.registerFactory(AdWarningViewModel.new);
   getIt.registerFactory(ImageColorViewModel.new);
   await _initServices();
 }
