@@ -139,52 +139,7 @@ class _AboutState extends State<About> {
         _buildSmallMargin(),
         _buildSectionBody(
           context,
-          context.strings.fairUseDisclaimer,
-        ),
-        _buildSmallMargin(),
-        _buildSectionBody(
-          context,
-          context.strings.fairUseDisclaimer,
-        ),
-        _buildSmallMargin(),
-        _buildSectionBody(
-          context,
-          context.strings.fairUseDisclaimer,
-        ),
-        _buildSmallMargin(),
-        _buildSectionBody(
-          context,
-          context.strings.fairUseDisclaimer,
-        ),
-        _buildSmallMargin(),
-        _buildSectionBody(
-          context,
-          context.strings.fairUseDisclaimer,
-        ),
-        _buildSmallMargin(),
-        _buildSectionBody(
-          context,
-          context.strings.fairUseDisclaimer,
-        ),
-        _buildSmallMargin(),
-        _buildSectionBody(
-          context,
-          context.strings.fairUseDisclaimer,
-        ),
-        _buildSmallMargin(),
-        _buildSectionBody(
-          context,
-          context.strings.fairUseDisclaimer,
-        ),
-        _buildSmallMargin(),
-        _buildSectionBody(
-          context,
-          context.strings.fairUseDisclaimer,
-        ),
-        _buildSmallMargin(),
-        _buildSectionBody(
-          context,
-          context.strings.fairUseDisclaimer,
+          'Coming soon...',
         ),
         _buildSectionDivider(),
       ],
