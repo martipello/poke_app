@@ -74,7 +74,7 @@ class PokeballScrollThumb extends StatelessWidget {
 
     final percentage = (thumbMainAxisOffset / ((screenHeight) - (kToolbarHeight + statusBarHeight + 100))).clamp(
       0.1,
-      1,
+      0.5,
     );
     final offsetY = (thumbMainAxisSize * percentage)
         .clamp(
