@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import '../dependency_injection_container.dart';
+import '../extensions/build_context_extension.dart';
 import 'view_models/google_ads_view_model.dart';
 
 class ListBannerAd extends StatefulWidget {
@@ -12,12 +13,21 @@ class ListBannerAd extends StatefulWidget {
 class _ListBannerAdState extends State<ListBannerAd> {
   final _googleAdsViewModel = getIt.get<GoogleAdsViewModel>();
 
-  late AdWidget bannerAd;
+  AdWidget? bannerAd;
+
+  double get _adWidth => context.screenWidth - (2 * 16);
 
   @override
   void initState() {
     super.initState();
-    bannerAd = _googleAdsViewModel.bannerAdWidget();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        final adSize = AdSize.getCurrentOrientationInlineAdaptiveBannerAdSize(
+          _adWidth.truncate(),
+        );
+        bannerAd = _googleAdsViewModel.bannerAdWidget(adSize);
+      },
+    );
   }
 
   @override
@@ -32,12 +42,17 @@ class _ListBannerAdState extends State<ListBannerAd> {
       padding: const EdgeInsets.symmetric(
         vertical: 8,
       ),
-      child: Container(
-        alignment: Alignment.center,
-        width: double.infinity,
-        height: AdSize.banner.height.toDouble(),
-        child: bannerAd,
-      ),
+      child: StreamBuilder<AdSize>(
+          stream: _googleAdsViewModel.inlineAdaptiveBannerSize,
+          builder: (context, snapshot) {
+            final _adSize = snapshot.data;
+            return Container(
+              alignment: Alignment.center,
+              width: _adWidth,
+              height: _adSize?.height.toDouble(),
+              child: bannerAd,
+            );
+          }),
     );
   }
 }
