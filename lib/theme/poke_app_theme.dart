@@ -113,7 +113,7 @@ final pokeAppDarkTheme = AppTheme(
     black: Color(0xFF000000),
     white: Color(0xFFFFFFFF),
     foreground: Color(0xFF303030),
-    background: Color(0xFFEEEEEE),
+    background: Color(0xFF303030),
     cardBackground: Color(0xFF272727),
   ),
   colorScheme: const BaseColorScheme(
@@ -121,7 +121,7 @@ final pokeAppDarkTheme = AppTheme(
       primary: primary,
       secondary: secondary,
       surface: Color(0xFFEEEEEE),
-      background: Color(0xFFEEEEEE),
+      background: Color(0xFF303030),
       error: Color(0xFFFF654B),
       onPrimary: textOnPrimary,
       onSecondary: textOnForeground,

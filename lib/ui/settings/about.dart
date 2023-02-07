@@ -213,7 +213,9 @@ class _AboutState extends State<About> {
         ),
         Text(
           licenceText,
-          style: PokeAppText.captionStyle,
+          style: PokeAppText.captionStyle.copyWith(
+            color: colors(context).textOnForeground,
+          ),
         ),
         const SizedBox(
           height: 16,

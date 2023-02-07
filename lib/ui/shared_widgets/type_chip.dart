@@ -53,6 +53,11 @@ class TypeChip extends StatelessWidget {
     return SizedBox(
       height: kChipHeight + 16,
       child: Chip(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            360,
+          ),
+        ),
         avatar: Image.asset(
           image!,
           height: kChipHeight - 6,
