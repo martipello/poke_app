@@ -14,7 +14,7 @@ const kIOSAdUnitId = 'ca-app-pub-1989939591379723/7840951715';
 const kAndroidAdUnitId = 'ca-app-pub-1989939591379723/6308378199';
 const kDebugAdUnitId = 'ca-app-pub-3940256099942544/6300978111';
 
-const kDefaultListAdFrequency = 6;
+const kDefaultListAdFrequency = 8;
 const kInterstitialAdFrequency = 6;
 
 class GoogleAdsViewModel {
