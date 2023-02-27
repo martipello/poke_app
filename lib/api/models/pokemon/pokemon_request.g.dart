@@ -28,6 +28,10 @@ class _$PokemonRequestSerializer
       serializers.serialize(object.damageTypes,
           specifiedType:
               const FullType(BuiltList, const [const FullType(DamageType)])),
+      'versions',
+      serializers.serialize(object.versions,
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(Version)])),
     ];
     Object? value;
     value = object.pagination;
@@ -126,6 +130,12 @@ class _$PokemonRequestSerializer
                       BuiltList, const [const FullType(DamageType)]))!
               as BuiltList<Object?>);
           break;
+        case 'versions':
+          result.versions.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(Version)]))!
+              as BuiltList<Object?>);
+          break;
         case 'sort':
           result.sort = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
@@ -155,6 +165,8 @@ class _$PokemonRequest extends PokemonRequest {
   @override
   final BuiltList<DamageType> damageTypes;
   @override
+  final BuiltList<Version> versions;
+  @override
   final String? sort;
 
   factory _$PokemonRequest([void Function(PokemonRequestBuilder)? updates]) =>
@@ -169,12 +181,15 @@ class _$PokemonRequest extends PokemonRequest {
       this.languageId,
       required this.pokemonTypes,
       required this.damageTypes,
+      required this.versions,
       this.sort})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         pokemonTypes, r'PokemonRequest', 'pokemonTypes');
     BuiltValueNullFieldError.checkNotNull(
         damageTypes, r'PokemonRequest', 'damageTypes');
+    BuiltValueNullFieldError.checkNotNull(
+        versions, r'PokemonRequest', 'versions');
   }
 
   @override
@@ -197,27 +212,25 @@ class _$PokemonRequest extends PokemonRequest {
         languageId == other.languageId &&
         pokemonTypes == other.pokemonTypes &&
         damageTypes == other.damageTypes &&
+        versions == other.versions &&
         sort == other.sort;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(
-        $jc(
-            $jc(
-                $jc(
-                    $jc(
-                        $jc(
-                            $jc(
-                                $jc($jc(0, pagination.hashCode),
-                                    limit.hashCode),
-                                skip.hashCode),
-                            search.hashCode),
-                        pokemonId.hashCode),
-                    languageId.hashCode),
-                pokemonTypes.hashCode),
-            damageTypes.hashCode),
-        sort.hashCode));
+    var _$hash = 0;
+    _$hash = $jc(_$hash, pagination.hashCode);
+    _$hash = $jc(_$hash, limit.hashCode);
+    _$hash = $jc(_$hash, skip.hashCode);
+    _$hash = $jc(_$hash, search.hashCode);
+    _$hash = $jc(_$hash, pokemonId.hashCode);
+    _$hash = $jc(_$hash, languageId.hashCode);
+    _$hash = $jc(_$hash, pokemonTypes.hashCode);
+    _$hash = $jc(_$hash, damageTypes.hashCode);
+    _$hash = $jc(_$hash, versions.hashCode);
+    _$hash = $jc(_$hash, sort.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
   }
 
   @override
@@ -231,6 +244,7 @@ class _$PokemonRequest extends PokemonRequest {
           ..add('languageId', languageId)
           ..add('pokemonTypes', pokemonTypes)
           ..add('damageTypes', damageTypes)
+          ..add('versions', versions)
           ..add('sort', sort))
         .toString();
   }
@@ -276,6 +290,11 @@ class PokemonRequestBuilder
   set damageTypes(ListBuilder<DamageType>? damageTypes) =>
       _$this._damageTypes = damageTypes;
 
+  ListBuilder<Version>? _versions;
+  ListBuilder<Version> get versions =>
+      _$this._versions ??= new ListBuilder<Version>();
+  set versions(ListBuilder<Version>? versions) => _$this._versions = versions;
+
   String? _sort;
   String? get sort => _$this._sort;
   set sort(String? sort) => _$this._sort = sort;
@@ -293,6 +312,7 @@ class PokemonRequestBuilder
       _languageId = $v.languageId;
       _pokemonTypes = $v.pokemonTypes.toBuilder();
       _damageTypes = $v.damageTypes.toBuilder();
+      _versions = $v.versions.toBuilder();
       _sort = $v.sort;
       _$v = null;
     }
@@ -326,6 +346,7 @@ class PokemonRequestBuilder
               languageId: languageId,
               pokemonTypes: pokemonTypes.build(),
               damageTypes: damageTypes.build(),
+              versions: versions.build(),
               sort: sort);
     } catch (_) {
       late String _$failedField;
@@ -334,6 +355,8 @@ class PokemonRequestBuilder
         pokemonTypes.build();
         _$failedField = 'damageTypes';
         damageTypes.build();
+        _$failedField = 'versions';
+        versions.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'PokemonRequest', _$failedField, e.toString());
@@ -345,4 +368,4 @@ class PokemonRequestBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas
+// ignore_for_file: deprecated_member_use_from_same_package,type=lint

@@ -34,6 +34,7 @@ import '../models/pokemon/stat.dart';
 import '../models/pokemon/type_data.dart';
 import '../models/pokemon/type_data_holder.dart';
 import '../models/pokemon/type_efficacies.dart';
+import '../models/pokemon/version.dart';
 import 'date_time_serializer.dart';
 
 part 'serializers.g.dart';
@@ -71,6 +72,7 @@ part 'serializers.g.dart';
   TypeDataHolder,
   TypeData,
   TypeEfficacies,
+  Version,
 ])
 final Serializers serializers = (_$serializers.toBuilder()
       ..add(DateTimeSerializer())

@@ -4,6 +4,7 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 import '../../api/models/pokemon/pokemon_type.dart';
+import '../../api/models/pokemon/version.dart';
 import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../extensions/media_query_context_extension.dart';
@@ -70,45 +71,53 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
     return StreamBuilder<List<PokemonType>>(
       initialData: [],
       stream: widget.filterViewModel.selectedTypeFiltersStream,
-      builder: (context, snapshot) {
-        final selectedFilters = snapshot.data ?? [];
-        return SliverAppBar(
-          pinned: false,
-          snap: true,
-          floating: true,
-          backgroundColor: Colors.black,
-          systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarColor: Colors.black,
-          ),
-          leading: isSearching
-              ? _buildBackButton(
-                  isKeyboardVisible,
+      builder: (context, selectedFiltersSnapshot) {
+        return StreamBuilder<List<Version>>(
+            initialData: [],
+            stream: widget.filterViewModel.selectedVersionFiltersStream,
+          builder: (context, selectedVersionsSnapshot) {
+            final selectedFilters = selectedFiltersSnapshot.data ?? [];
+            final selectedVersions = selectedVersionsSnapshot.data ?? [];
+            return SliverAppBar(
+              pinned: false,
+              snap: true,
+              floating: true,
+              backgroundColor: Colors.black,
+              systemOverlayStyle: const SystemUiOverlayStyle(
+                statusBarColor: Colors.black,
+              ),
+              leading: isSearching
+                  ? _buildBackButton(
+                      isKeyboardVisible,
+                    )
+                  : null,
+              actions: [
+                if (!isSearching) _buildSearchAction(),
+                _buildMenuAction(),
+                const SizedBox(
+                  width: 16,
                 )
-              : null,
-          actions: [
-            if (!isSearching) _buildSearchAction(),
-            _buildMenuAction(),
-            const SizedBox(
-              width: 16,
-            )
-          ],
-          title: isSearching
-              ? _buildSearchView()
-              : Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 16,
-                    horizontal: 16,
-                  ),
-                  child: Text(
-                    context.strings.app_name,
-                    style: PokeAppText.subtitle2Style.copyWith(
-                      height: 1,
+              ],
+              title: isSearching
+                  ? _buildSearchView()
+                  : Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 16,
+                        horizontal: 16,
+                      ),
+                      child: Text(
+                        context.strings.app_name,
+                        style: PokeAppText.subtitle2Style.copyWith(
+                          height: 1,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-          bottom: _buildSelectedFiltersHolder(
-            selectedFilters,
-          ),
+              bottom: _buildSelectedFiltersHolder(
+                selectedFilters,
+                selectedVersions,
+              ),
+            );
+          }
         );
       },
     );
@@ -116,14 +125,17 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
 
   PreferredSize? _buildSelectedFiltersHolder(
     List<PokemonType> selectedFilters,
+    List<Version> selectedVersions,
   ) {
-    const chipPadding = 12.0;
     const clearFilterHeight = 48.0;
 
-    final totalHeight =
-        selectedFilters.length > 1 ? (kChipHeight + chipPadding) + clearFilterHeight : kChipHeight + chipPadding;
+    final totalHeight = _calculateHeight(
+      selectedFilters,
+      selectedVersions,
+      clearFilterHeight,
+    );
 
-    return selectedFilters.isNotEmpty
+    return selectedFilters.isNotEmpty || selectedVersions.isNotEmpty
         ? PreferredSize(
             preferredSize: Size(
               double.infinity,
@@ -131,7 +143,9 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
+                if (selectedFilters.isNotEmpty)
                 Row(
                   children: [
                     Expanded(
@@ -141,7 +155,21 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
                     ),
                   ],
                 ),
-                if (selectedFilters.length > 1)
+                if (selectedFilters.isNotEmpty && selectedVersions.isNotEmpty)
+                  const SizedBox(
+                    height: 8,
+                  ),
+                if (selectedVersions.isNotEmpty)
+                Row(
+                  children: [
+                    Expanded(
+                      child: _buildSelectedVersions(
+                        selectedVersions,
+                      ),
+                    ),
+                  ],
+                ),
+                if ((selectedFilters.length + selectedVersions.length) > 1)
                   _buildClearAllFiltersButton(
                     clearFilterHeight,
                   ),
@@ -197,6 +225,28 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
               isSelected: true,
               onDelete: () {
                 widget.filterViewModel.selectTypeFilter(type);
+              },
+            ),
+          )
+          .toList(),
+    );
+  }
+
+  Widget _buildSelectedVersions(
+    List<Version> selectedVersions,
+  ) {
+    return ChipGroup(
+      padding: const EdgeInsets.symmetric(horizontal: 32),
+      scrollDirection: Axis.horizontal,
+      scrollController: widget.filterViewModel.scrollController,
+      chips: selectedVersions
+          .map(
+            (type) => TypeChip(
+              chipType: ChipType.normal,
+              version: type,
+              isSelected: true,
+              onDelete: () {
+                widget.filterViewModel.selectVersionFilter(type);
               },
             ),
           )
@@ -315,4 +365,25 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
   }
 
   SizedBox get _buildSmallMargin => const SizedBox(height: 8);
+
+  double _calculateHeight(
+      List<PokemonType> selectedTypeFilters,
+      List<Version> selectedVersionFilters,
+      double clearFilterHeight,
+      ) {
+    const chipPadding = 12.0;
+    if(selectedTypeFilters.isNotEmpty && selectedVersionFilters.isNotEmpty) {
+      if (selectedTypeFilters.length + selectedVersionFilters.length > 1) {
+        return ((kChipHeight + chipPadding) * 2) + clearFilterHeight;
+      } else {
+        return ((kChipHeight + chipPadding) * 2);
+      }
+    }
+    if(selectedTypeFilters.isNotEmpty || selectedVersionFilters.isNotEmpty) {
+      if (selectedTypeFilters.length + selectedVersionFilters.length > 1) {
+        return (kChipHeight + chipPadding) + clearFilterHeight;
+      }
+    }
+    return kChipHeight + chipPadding;
+  }
 }

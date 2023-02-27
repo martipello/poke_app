@@ -131,6 +131,9 @@ class PokemonRepositoryGraphQl {
         : PokemonType.values.map(
             (e) => e.id,
           );
+    final versions = pokemonRequest.versions.map(
+          (p0) => p0.versionId,
+    );
     final id = pokemonRequest.search?.replaceAll(RegExp(r'[^0-9]'),'');
     final isIdSearch = id?.isNotEmpty == true;
     final search = isIdSearch ? 'id: {_eq: $id}' : 'name: {_like: "%${pokemonRequest.search ?? ''}%"}';

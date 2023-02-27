@@ -3,11 +3,14 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../../api/models/pokemon/damage_type.dart';
 import '../../../api/models/pokemon/pokemon_type.dart';
+import '../../../api/models/pokemon/version.dart';
 
 class FilterViewModel {
   final isFilterBottomSheetShownStream = BehaviorSubject<bool>.seeded(false);
+
   final selectedTypeFiltersStream = BehaviorSubject<List<PokemonType>>.seeded([]);
   final selectedDamageTypeFiltersStream = BehaviorSubject<List<DamageType>>.seeded([]);
+  final selectedVersionFiltersStream = BehaviorSubject<List<Version>>.seeded([]);
 
   ScrollController get scrollController =>  _scrollController ??= ScrollController();
   ScrollController? _scrollController;
@@ -41,6 +44,16 @@ class FilterViewModel {
     selectedDamageTypeFiltersStream.add(_selectedFilters);
   }
 
+  void selectVersionFilter(Version version){
+    final _selectedFilters = selectedVersionFiltersStream.value;
+    if(_selectedFilters.any((selectedVersion) => selectedVersion == version)){
+      _selectedFilters.remove(version);
+    } else {
+      _selectedFilters.add(version);
+    }
+    selectedVersionFiltersStream.add(_selectedFilters);
+  }
+
   void clearTypeFilters(){
     selectedTypeFiltersStream.add([]);
   }
@@ -49,14 +62,20 @@ class FilterViewModel {
     selectedDamageTypeFiltersStream.add([]);
   }
 
+  void clearVersionFilters(){
+    selectedVersionFiltersStream.add([]);
+  }
+
   void clearFilters(){
     clearTypeFilters();
     clearDamageTypeFilters();
+    clearVersionFilters();
   }
 
   void dispose() {
     isFilterBottomSheetShownStream.close();
     selectedTypeFiltersStream.close();
+    selectedVersionFiltersStream.close();
     _scrollController?.dispose();
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+//TODO(MS) this, version and type all share the same fields try to make them inherit a generic model
 enum PokemonType {
   normal(1, 'normal', Color(0xFFA8A878), 'assets/images/normal_type_icon.png'),
   fighting(2, 'fighting', Color(0xFFC13128), 'assets/images/fighting_type_icon.png'),

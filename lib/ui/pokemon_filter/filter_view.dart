@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../api/models/pokemon/damage_type.dart';
 import '../../api/models/pokemon/pokemon_type.dart';
+import '../../api/models/pokemon/version.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../extensions/media_query_context_extension.dart';
 import '../../theme/base_theme.dart';
@@ -16,11 +17,13 @@ class FilterView extends StatefulWidget {
     required this.filterViewModel,
     required this.onClose,
     this.showDamageTypeFilters = false,
+    this.showVersionFilters = false,
   }) : super(key: key);
 
   final FilterViewModel filterViewModel;
   final VoidCallback onClose;
   final bool showDamageTypeFilters;
+  final bool showVersionFilters;
 
   @override
   State<FilterView> createState() => _FilterViewState();
@@ -66,7 +69,7 @@ class _FilterViewState extends State<FilterView> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (widget.showDamageTypeFilters)
+            if (widget.showDamageTypeFilters || widget.showVersionFilters)
               _buildSubtitle(
                 context.strings.types,
               ),
@@ -76,6 +79,11 @@ class _FilterViewState extends State<FilterView> {
                 context.strings.damageTypes,
               ),
             if (widget.showDamageTypeFilters) _buildDamageTypeFilterChipsHolder(),
+            if (widget.showVersionFilters)
+              _buildSubtitle(
+                context.strings.versions,
+              ),
+            if (widget.showVersionFilters) _buildVersionFilterChipsHolder(),
           ],
         ),
       ),
@@ -90,30 +98,40 @@ class _FilterViewState extends State<FilterView> {
       initialData: [],
       stream: widget.filterViewModel.selectedTypeFiltersStream,
       builder: (context, snapshot) {
-        return ChipGroup(
-          scrollPhysics: widget.showDamageTypeFilters ? const NeverScrollableScrollPhysics() : null,
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 8,
-          ),
-          chips: pokemonTypes
-              .map(
-                (type) => TypeChip(
-                  chipType: ChipType.filter,
-                  pokemonType: type,
-                  isSelected: snapshot.data?.any(
-                        (selectedType) => selectedType == type,
-                      ) ==
-                      true,
-                  onSelected: (isSelected) {
-                    widget.filterViewModel.selectTypeFilter(
-                      type,
-                    );
-                  },
-                ),
-              )
-              .toList(),
-        );
+        final typeChips = pokemonTypes
+            .map(
+              (type) => _buildTypeChip(
+                pokemonType: type,
+                isSelected: snapshot.data?.any(
+                      (selectedType) => selectedType == type,
+                    ) ==
+                    true,
+              ),
+            )
+            .toList();
+        return _buildTypeChipGroup(typeChips);
+      },
+    );
+  }
+
+  Widget _buildVersionFilterChipsHolder() {
+    final versions = Version.values.toList();
+    return StreamBuilder<List<Version>>(
+      initialData: [],
+      stream: widget.filterViewModel.selectedVersionFiltersStream,
+      builder: (context, snapshot) {
+        final typeChips = versions
+            .map(
+              (version) => _buildTypeChip(
+                version: version,
+                isSelected: snapshot.data?.any(
+                      (selectedVersion) => selectedVersion == version,
+                    ) ==
+                    true,
+              ),
+            )
+            .toList();
+        return _buildTypeChipGroup(typeChips);
       },
     );
   }
@@ -125,30 +143,64 @@ class _FilterViewState extends State<FilterView> {
       initialData: [],
       stream: widget.filterViewModel.selectedDamageTypeFiltersStream,
       builder: (context, snapshot) {
-        return ChipGroup(
-          scrollPhysics: widget.showDamageTypeFilters ? const NeverScrollableScrollPhysics() : null,
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 8,
-          ),
-          chips: damageTypes
-              .map(
-                (type) => TypeChip(
-                  chipType: ChipType.filter,
-                  damageType: type,
-                  isSelected: snapshot.data?.any(
-                        (selectedType) => selectedType == type,
-                      ) ==
-                      true,
-                  onSelected: (isSelected) {
-                    widget.filterViewModel.selectDamageTypeFilter(
-                      type,
-                    );
-                  },
-                ),
-              )
-              .toList(),
-        );
+        final typeChips = damageTypes
+            .map(
+              (type) => _buildTypeChip(
+                damageType: type,
+                isSelected: snapshot.data?.any(
+                      (selectedType) => selectedType == type,
+                    ) ==
+                    true,
+              ),
+            )
+            .toList();
+        return _buildTypeChipGroup(typeChips);
+      },
+    );
+  }
+
+  Widget _buildTypeChipGroup(List<Widget> typeChips) {
+    return ChipGroup(
+      scrollPhysics: widget.showDamageTypeFilters ? const NeverScrollableScrollPhysics() : null,
+      padding: const EdgeInsets.symmetric(
+        horizontal: 16,
+        vertical: 8,
+      ),
+      chips: typeChips,
+    );
+  }
+
+  Widget _buildTypeChip({
+    DamageType? damageType,
+    PokemonType? pokemonType,
+    Version? version,
+    bool isSelected = false,
+  }) {
+    if (damageType == null && pokemonType == null && version == null) {
+      return const SizedBox();
+    }
+    return TypeChip(
+      chipType: ChipType.filter,
+      pokemonType: pokemonType,
+      damageType: damageType,
+      version: version,
+      isSelected: isSelected,
+      onSelected: (isSelected) {
+        if (damageType != null) {
+          widget.filterViewModel.selectDamageTypeFilter(
+            damageType,
+          );
+        }
+        if (pokemonType != null) {
+          widget.filterViewModel.selectTypeFilter(
+            pokemonType,
+          );
+        }
+        if (version != null) {
+          widget.filterViewModel.selectVersionFilter(
+            version,
+          );
+        }
       },
     );
   }

@@ -175,6 +175,7 @@ class _PokemonListViewState extends State<PokemonListView> {
   Widget _buildFilter() {
     return FilterViewHolder(
       filterViewModel: _filterViewModel,
+      showVersionFilters: true,
     );
   }
 

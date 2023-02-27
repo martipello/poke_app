@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../api/models/pokemon/damage_type.dart';
 import '../../api/models/pokemon/pokemon_type.dart';
+import '../../api/models/pokemon/version.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../extensions/string_extension.dart';
 import '../../theme/base_theme.dart';
@@ -23,11 +24,18 @@ class TypeChip extends StatelessWidget {
     this.damageType,
     this.labelSuffix = '',
     this.isExpanded,
-  }) : assert(pokemonType != null || damageType != null || (chipType == ChipType.expansion && isExpanded != null));
+    this.version,
+  }) : assert(
+          pokemonType != null ||
+              damageType != null ||
+              version != null ||
+              (chipType == ChipType.expansion && isExpanded != null),
+        );
 
   final ChipType chipType;
   final PokemonType? pokemonType;
   final DamageType? damageType;
+  final Version? version;
   final bool isSelected;
   final bool? isExpanded;
   final OnSelected? onSelected;
@@ -47,9 +55,9 @@ class TypeChip extends StatelessWidget {
   }
 
   Widget _buildChip(BuildContext context) {
-    final label = damageType?.name ?? pokemonType?.name;
-    final color = damageType?.color ?? pokemonType?.color;
-    final image = damageType?.image ?? pokemonType?.image;
+    final label = damageType?.name ?? pokemonType?.name ?? version?.displayName;
+    final color = damageType?.color ?? pokemonType?.color ?? version?.color;
+    final image = damageType?.image ?? pokemonType?.image ?? version?.image;
     return SizedBox(
       height: kChipHeight + 16,
       child: Chip(
@@ -91,9 +99,9 @@ class TypeChip extends StatelessWidget {
   }
 
   Widget _buildFilterChip(BuildContext context) {
-    final label = damageType?.name ?? pokemonType?.name;
-    final color = damageType?.color ?? pokemonType?.color;
-    final image = damageType?.image ?? pokemonType?.image;
+    final label = damageType?.name ?? pokemonType?.name ?? version?.displayName;
+    final color = damageType?.color ?? pokemonType?.color ?? version?.color;
+    final image = damageType?.image ?? pokemonType?.image ?? version?.image;
     return SizedBox(
       height: kChipHeight,
       child: FilterChip(
@@ -139,9 +147,9 @@ class TypeChip extends StatelessWidget {
   }
 
   Widget _buildExpansionChip(BuildContext context) {
-    final label = damageType?.name ?? pokemonType?.name;
-    final color = damageType?.color ?? pokemonType?.color;
-    final image = damageType?.image ?? pokemonType?.image;
+    final label = damageType?.name ?? pokemonType?.name ?? version?.displayName;
+    final color = damageType?.color ?? pokemonType?.color ?? version?.color;
+    final image = damageType?.image ?? pokemonType?.image ?? version?.image;
     return Container(
       height: kChipHeight,
       decoration: BoxDecoration(

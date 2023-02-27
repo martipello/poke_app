@@ -11,14 +11,16 @@ import 'filter_view.dart';
 class FilterViewHolder extends StatefulWidget {
   const FilterViewHolder({
     super.key,
+    this.onFilterButtonPressed,
     required this.filterViewModel,
     this.showDamageTypeFilters = false,
-    this.onFilterButtonPressed,
+    this.showVersionFilters = false,
   });
 
-  final FilterViewModel filterViewModel;
   final VoidCallback? onFilterButtonPressed;
+  final FilterViewModel filterViewModel;
   final bool showDamageTypeFilters;
+  final bool showVersionFilters;
 
   @override
   State<FilterViewHolder> createState() => _FilterViewHolderState();
@@ -104,6 +106,7 @@ class _FilterViewHolderState extends State<FilterViewHolder> with SingleTickerPr
         child: FilterView(
           filterViewModel: widget.filterViewModel,
           showDamageTypeFilters: widget.showDamageTypeFilters,
+          showVersionFilters: widget.showVersionFilters,
           onClose: () {
             _circleRevealAnimationController.reverse().then(
               (value) {

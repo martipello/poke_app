@@ -1,6 +1,7 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:poke_app/api/models/pokemon/version.dart';
 
 import '../../serializers/serializers.dart';
 import 'damage_type.dart';
@@ -28,6 +29,8 @@ abstract class PokemonRequest implements Built<PokemonRequest, PokemonRequestBui
   BuiltList<PokemonType> get pokemonTypes;
 
   BuiltList<DamageType> get damageTypes;
+
+  BuiltList<Version> get versions;
 
   String? get sort;
 

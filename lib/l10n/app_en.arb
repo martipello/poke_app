@@ -55,6 +55,7 @@
     "unknownVersion" : "Unknown Version",
     "effect" : "Effect",
     "version" : "Version",
+    "versions" : "Versions",
     "mainSeries" : "Main series",
     "hidden" : "(Hidden)",
     "baseStats" : "Base stats",
