@@ -5,6 +5,7 @@ import '../models/pokemon/damage_type.dart';
 import '../models/pokemon/pokemon_request.dart';
 import '../models/pokemon/pokemon_response.dart';
 import '../models/pokemon/pokemon_type.dart';
+import '../models/pokemon/version.dart';
 import 'graph_ql_client.dart';
 
 class PokemonRepositoryGraphQl {
@@ -124,17 +125,9 @@ class PokemonRepositoryGraphQl {
       );
 
   String _createGetPokemonDocument(PokemonRequest pokemonRequest) {
-    final typeIds = pokemonRequest.pokemonTypes.isNotEmpty
-        ? pokemonRequest.pokemonTypes.map(
-            (p0) => p0.id,
-          )
-        : PokemonType.values.map(
-            (e) => e.id,
-          );
-    final versions = pokemonRequest.versions.map(
-          (p0) => p0.versionId,
-    );
-    final id = pokemonRequest.search?.replaceAll(RegExp(r'[^0-9]'),'');
+    final typeIds = _pokemonTypeIds(pokemonRequest);
+    final encounters = _pokemonVersionEnquiry(pokemonRequest);
+    final id = pokemonRequest.search?.replaceAll(RegExp(r'[^0-9]'), '');
     final isIdSearch = id?.isNotEmpty == true;
     final search = isIdSearch ? 'id: {_eq: $id}' : 'name: {_like: "%${pokemonRequest.search ?? ''}%"}';
     return '''
@@ -147,36 +140,37 @@ class PokemonRepositoryGraphQl {
             pokemon_v2_pokemon: {
                 $search
               }
-            }
+            },
+            $encounters,
           }, order_by: {
               id: asc
-            }, 
-            limit: ${pokemonRequest.limit ?? 0}, 
-            offset: ${pokemonRequest.skip ?? 0},
+             }, 
+             limit: ${pokemonRequest.limit ?? 0}, 
+             offset: ${pokemonRequest.skip ?? 0},
           ) {
-            id
-            name
-            pokemon_v2_pokemontypes {
-              type_id
-              pokemon_v2_type {
-                id
-                name
-              }
-            }
-            pokemon_v2_pokemonspecy {
-              evolution_chain_id
-            }
-            pokemon_v2_pokemonsprites {
-              sprites
-            }
-            pokemon_v2_pokemonspecy {
-              pokemon_v2_pokemonspeciesnames(
-                where: {
-                  language_id: {
-                    _eq: ${pokemonRequest.languageId}
-                  }
+              id
+              name
+              pokemon_v2_pokemontypes {
+                type_id
+                pokemon_v2_type {
+                  id
+                  name
                 }
-              ) {
+              }
+              pokemon_v2_pokemonspecy {
+                evolution_chain_id
+              }
+              pokemon_v2_pokemonsprites {
+                sprites
+              }
+              pokemon_v2_pokemonspecy {
+                pokemon_v2_pokemonspeciesnames(
+                  where: {
+                    language_id: {
+                      _eq: ${pokemonRequest.languageId}
+                    }
+                  }
+                ) {
                   genus
                 }
                 generation_id
@@ -184,7 +178,7 @@ class PokemonRepositoryGraphQl {
               height
               weight
             }
-        }
+          }
     ''';
   }
 
@@ -492,13 +486,7 @@ pokemon_v2_pokemon(where: {id: {_eq: ${pokemonRequest.pokemonId}}}) {
   }
 
   String _createPokemonMoveDocument(PokemonRequest pokemonRequest) {
-    final typeIds = pokemonRequest.pokemonTypes.isNotEmpty
-        ? pokemonRequest.pokemonTypes.map(
-            (p0) => p0.id,
-          )
-        : PokemonType.values.map(
-            (e) => e.id,
-          );
+    final typeIds = _pokemonTypeIds(pokemonRequest);
     final damageTypeIds = pokemonRequest.damageTypes.isNotEmpty
         ? pokemonRequest.damageTypes.map(
             (p0) => p0.id,
@@ -578,5 +566,32 @@ pokemon_v2_pokemon(where: {id: {_eq: ${pokemonRequest.pokemonId}}}) {
 }
 }
       ''';
+  }
+
+  Iterable<int> _pokemonTypeIds(PokemonRequest pokemonRequest) {
+    return pokemonRequest.pokemonTypes.isNotEmpty
+        ? pokemonRequest.pokemonTypes.map(
+            (p0) => p0.id,
+          )
+        : PokemonType.values.map(
+            (e) => e.id,
+          );
+  }
+
+  String _pokemonVersionEnquiry(PokemonRequest pokemonRequest) {
+    final selectedVersionIds = pokemonRequest.versions.map(
+      (p0) => p0.versionId,
+    );
+    if (pokemonRequest.versions.isNotEmpty) {
+      return '''
+      pokemon_v2_encounters: {
+              version_id: {
+                _in: ${selectedVersionIds.toList()}
+              }
+            }
+      ''';
+    } else {
+      return '';
+    }
   }
 }

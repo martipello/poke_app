@@ -9,10 +9,11 @@ class FilterViewModel {
   final isFilterBottomSheetShownStream = BehaviorSubject<bool>.seeded(false);
 
   final selectedTypeFiltersStream = BehaviorSubject<List<PokemonType>>.seeded([]);
-  final selectedDamageTypeFiltersStream = BehaviorSubject<List<DamageType>>.seeded([]);
   final selectedVersionFiltersStream = BehaviorSubject<List<Version>>.seeded([]);
 
-  ScrollController get scrollController =>  _scrollController ??= ScrollController();
+  final selectedDamageTypeFiltersStream = BehaviorSubject<List<DamageType>>.seeded([]);
+
+  ScrollController get scrollController => _scrollController ??= ScrollController();
   ScrollController? _scrollController;
 
   void setFilterUIState() {
@@ -24,9 +25,9 @@ class FilterViewModel {
     }
   }
 
-  void selectTypeFilter(PokemonType type){
+  void selectTypeFilter(PokemonType type) {
     final _selectedFilters = selectedTypeFiltersStream.value;
-    if(_selectedFilters.any((selectedType) => selectedType == type)){
+    if (_selectedFilters.any((selectedType) => selectedType == type)) {
       _selectedFilters.remove(type);
     } else {
       _selectedFilters.add(type);
@@ -34,9 +35,9 @@ class FilterViewModel {
     selectedTypeFiltersStream.add(_selectedFilters);
   }
 
-  void selectDamageTypeFilter(DamageType type){
+  void selectDamageTypeFilter(DamageType type) {
     final _selectedFilters = selectedDamageTypeFiltersStream.value;
-    if(_selectedFilters.any((selectedType) => selectedType == type)){
+    if (_selectedFilters.any((selectedType) => selectedType == type)) {
       _selectedFilters.remove(type);
     } else {
       _selectedFilters.add(type);
@@ -44,9 +45,9 @@ class FilterViewModel {
     selectedDamageTypeFiltersStream.add(_selectedFilters);
   }
 
-  void selectVersionFilter(Version version){
+  void selectVersionFilter(Version version) {
     final _selectedFilters = selectedVersionFiltersStream.value;
-    if(_selectedFilters.any((selectedVersion) => selectedVersion == version)){
+    if (_selectedFilters.any((selectedVersion) => selectedVersion == version)) {
       _selectedFilters.remove(version);
     } else {
       _selectedFilters.add(version);
@@ -54,19 +55,19 @@ class FilterViewModel {
     selectedVersionFiltersStream.add(_selectedFilters);
   }
 
-  void clearTypeFilters(){
+  void clearTypeFilters() {
     selectedTypeFiltersStream.add([]);
   }
 
-  void clearDamageTypeFilters(){
+  void clearDamageTypeFilters() {
     selectedDamageTypeFiltersStream.add([]);
   }
 
-  void clearVersionFilters(){
+  void clearVersionFilters() {
     selectedVersionFiltersStream.add([]);
   }
 
-  void clearFilters(){
+  void clearFilters() {
     clearTypeFilters();
     clearDamageTypeFilters();
     clearVersionFilters();

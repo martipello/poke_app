@@ -37,6 +37,7 @@ class _PokemonListViewState extends State<PokemonListView> {
   final _textController = TextEditingController();
 
   String previousSearch = '';
+  final scrollAnimationDuration = const Duration(milliseconds: 200);
 
   @override
   void initState() {
@@ -45,28 +46,47 @@ class _PokemonListViewState extends State<PokemonListView> {
     _addSearchListener();
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
-        _addSelectedFilterListener();
+        _addSelectedTypeFiltersStreamListener();
+        _addSelectedVersionFilterStreamListener();
       },
     );
   }
 
-  void _addSelectedFilterListener() {
-    const duration = Duration(milliseconds: 200);
+  void _addSelectedTypeFiltersStreamListener() {
     _filterViewModel.selectedTypeFiltersStream.listen(
       (selectedTypes) {
-        Future.delayed(duration).then(
+        Future.delayed(scrollAnimationDuration).then(
           (value) {
             _pokemonViewModel.setSelectedTypes(selectedTypes);
             if (_filterViewModel.scrollController.hasClients) {
-              _filterViewModel.scrollController.animateTo(
-                _filterViewModel.scrollController.position.maxScrollExtent,
-                duration: duration,
-                curve: Curves.fastOutSlowIn,
-              );
+              animateTo();
             }
           },
         );
       },
+    );
+  }
+
+  void _addSelectedVersionFilterStreamListener() {
+    _filterViewModel.selectedVersionFiltersStream.listen(
+      (selectedVersions) {
+        Future.delayed(scrollAnimationDuration).then(
+          (value) {
+            _pokemonViewModel.setSelectedVersion(selectedVersions);
+            if (_filterViewModel.scrollController.hasClients) {
+              animateTo();
+            }
+          },
+        );
+      },
+    );
+  }
+
+  void animateTo() {
+    _filterViewModel.scrollController.animateTo(
+      _filterViewModel.scrollController.position.maxScrollExtent,
+      duration: scrollAnimationDuration,
+      curve: Curves.fastOutSlowIn,
     );
   }
 
@@ -108,7 +128,6 @@ class _PokemonListViewState extends State<PokemonListView> {
     return WillPopScope(
       onWillPop: () async {
         //TODO if filters open close filters.
-
         return true;
       },
       child: Scaffold(

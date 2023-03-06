@@ -4,6 +4,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../../api/models/pokemon/pokemon.dart';
 import '../../../api/models/pokemon/pokemon_request.dart';
 import '../../../api/models/pokemon/pokemon_type.dart';
+import '../../../api/models/pokemon/version.dart';
 import '../adapters/pokemon_paging_adapter.dart';
 
 class PokemonListViewModel {
@@ -49,6 +50,23 @@ class PokemonListViewModel {
           (b) => b
             ..pokemonTypes.replace(
               selectedTypes,
+            ),
+        );
+    pokemonRequest = _pokemonRequest;
+    _updateQuery(_pokemonRequest);
+  }
+
+  void setSelectedVersion(List<Version> selectedVersions) {
+    final _pokemonRequest = pokemonRequest?.rebuild(
+          (b) => b
+            ..versions.replace(
+              selectedVersions,
+            ),
+        ) ??
+        PokemonRequest(
+          (b) => b
+            ..versions.replace(
+              selectedVersions,
             ),
         );
     pokemonRequest = _pokemonRequest;
