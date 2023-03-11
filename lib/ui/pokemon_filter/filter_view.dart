@@ -30,6 +30,9 @@ class FilterView extends StatefulWidget {
 }
 
 class _FilterViewState extends State<FilterView> {
+  final filterHeaderHeight = kToolbarHeight;
+  final filterGradientHeight = 32.0;
+
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -42,18 +45,11 @@ class _FilterViewState extends State<FilterView> {
               ? MediaQuery.of(context).filterBottomSheetHeight
               : MediaQuery.of(context).singleFilterBottomSheetHeight,
           width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+          child: Stack(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 16,
-                  right: 16,
-                  top: 16,
-                ),
-                child: _buildFilterHeader(),
-              ),
               _buildFilters(),
+              _buildFilterHeaderGradient(),
+              _buildFilterHeader(),
             ],
           ),
         ),
@@ -61,30 +57,64 @@ class _FilterViewState extends State<FilterView> {
     );
   }
 
+  Widget _buildFilterHeaderGradient() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          color: colors(context).cardBackground,
+          height: filterHeaderHeight - filterGradientHeight,
+        ),
+        Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.center,
+              end: Alignment.bottomCenter,
+              colors: [
+                colors(context).cardBackground,
+                colors(context).cardBackground.withOpacity(0.7),
+              ],
+            ),
+          ),
+          height: filterGradientHeight,
+        ),
+      ],
+    );
+  }
+
   Widget _buildFilters() {
-    return Expanded(
-      child: SingleChildScrollView(
-        controller: ScrollController(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (widget.showDamageTypeFilters || widget.showVersionFilters)
-              _buildSubtitle(
-                context.strings.types,
+    return Padding(
+      padding: EdgeInsets.only(
+        top: filterHeaderHeight - filterGradientHeight,
+      ),
+      child: Expanded(
+        child: SingleChildScrollView(
+          controller: ScrollController(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                height: filterGradientHeight,
               ),
-            _buildTypeFilterChipsHolder(),
-            if (widget.showDamageTypeFilters)
-              _buildSubtitle(
-                context.strings.damageTypes,
-              ),
-            if (widget.showDamageTypeFilters) _buildDamageTypeFilterChipsHolder(),
-            if (widget.showVersionFilters)
-              _buildSubtitle(
-                context.strings.versions,
-              ),
-            if (widget.showVersionFilters) _buildVersionFilterChipsHolder(),
-          ],
+              if (widget.showDamageTypeFilters || widget.showVersionFilters)
+                _buildSubtitle(
+                  context.strings.types,
+                ),
+              _buildTypeFilterChipsHolder(),
+              if (widget.showDamageTypeFilters)
+                _buildSubtitle(
+                  context.strings.damageTypes,
+                ),
+              if (widget.showDamageTypeFilters) _buildDamageTypeFilterChipsHolder(),
+              if (widget.showVersionFilters)
+                _buildSubtitle(
+                  context.strings.versions,
+                ),
+              if (widget.showVersionFilters) _buildVersionFilterChipsHolder(),
+            ],
+          ),
         ),
       ),
     );
@@ -206,13 +236,21 @@ class _FilterViewState extends State<FilterView> {
   }
 
   Widget _buildFilterHeader() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildTitle(),
-        _buildCloseButton(),
-      ],
+    return Container(
+      height: filterHeaderHeight,
+      padding: const EdgeInsets.only(
+        left: 16,
+        right: 16,
+        top: 16,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _buildTitle(),
+          _buildCloseButton(),
+        ],
+      ),
     );
   }
 
