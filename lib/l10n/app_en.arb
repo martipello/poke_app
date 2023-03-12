@@ -139,6 +139,7 @@
     "resistantLabel" : "Resistant to :",
     "neutralLabel" : "Neutral to :",
     "unknownDamageLabel" : "Unknown damage",
-    "normalDamageLabel" : "Normal damage :"
+    "normalDamageLabel" : "Normal damage :",
+    "whoDatPokemon" : "Who's that Pokémon"
 
 }

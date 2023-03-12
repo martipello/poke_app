@@ -105,6 +105,7 @@ flutter:
   generate: true
   assets:
     - assets/
+    - assets/icons/
     - assets/images/
     - assets/animations/
   uses-material-design: true
