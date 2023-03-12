@@ -45,7 +45,7 @@ class PokemonImage extends StatefulWidget {
 class _PokemonImageState extends State<PokemonImage> {
   final mainImageColorViewModel = getIt.get<ImageColorViewModel>();
 
-  late final CachedNetworkImageProvider mainImageProvider;
+  CachedNetworkImageProvider? mainImageProvider;
 
   @override
   void initState() {
@@ -60,7 +60,7 @@ class _PokemonImageState extends State<PokemonImage> {
       (timeStamp) {
         mainImageColorViewModel.updatePalette(
           context,
-          mainImageProvider,
+          mainImageProvider!,
         );
       },
     );
@@ -74,12 +74,15 @@ class _PokemonImageState extends State<PokemonImage> {
 
   @override
   Widget build(BuildContext context) {
+    if (mainImageProvider == null) {
+      return const SizedBox();
+    }
     return Material(
       type: MaterialType.transparency,
       child: _buildImageHolder(
         context,
         true,
-        mainImageProvider,
+        mainImageProvider!,
         mainImageColorViewModel.colorListStream,
         (context, _, __) => PokemonSpriteImage(
           pokemon: widget.pokemon,
@@ -255,9 +258,20 @@ class _PokemonImageState extends State<PokemonImage> {
   BorderRadius _buildBorderRadius() => BorderRadius.circular(180);
 
   String _createImageUrl() {
+    print('_createImageUrl ${widget.pokemon.id}');
     if (widget.forceSpriteImage == true) {
       return '';
     }
     return 'https://firebasestorage.googleapis.com/v0/b/pokeapp-86eec.appspot.com/o/pokemon_image_${widget.pokemon.id}.png?alt=media';
+  }
+
+  @override
+  void didUpdateWidget(covariant PokemonImage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.pokemon.id != oldWidget.pokemon.id) {
+      mainImageProvider = CachedNetworkImageProvider(
+        _createImageUrl(),
+      );
+    }
   }
 }
