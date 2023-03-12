@@ -1,6 +1,7 @@
 {
     "app_name" : "PokéApp",
     "pokedex" : "Pokédex",
+    "pokemon" : "PoKéMoN",
     "searchByName" : "Search by name or ID",
     "searchByMoveName" : "Search by move name...",
     "abilities" : "Abilities",

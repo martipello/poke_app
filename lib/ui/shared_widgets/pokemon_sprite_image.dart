@@ -18,6 +18,7 @@ class PokemonSpriteImage extends StatefulWidget {
     this.clipBehavior = Clip.none,
     this.spriteImageColorCallback,
     this.color,
+    this.maskColor,
   });
 
   final Pokemon pokemon;
@@ -25,6 +26,7 @@ class PokemonSpriteImage extends StatefulWidget {
   final ImageColorCallback? spriteImageColorCallback;
   final Clip clipBehavior;
   final Size? size;
+  final Color? maskColor;
 
   @override
   State<PokemonSpriteImage> createState() => _PokemonSpriteImageState();
@@ -113,13 +115,9 @@ class _PokemonSpriteImageState extends State<PokemonSpriteImage> {
     ImageErrorBuilder imageErrorBuilder,
     List<int> palette,
   ) {
-    final primaryColor = palette.firstOrNull() != null
-        ? Color(palette.first)
-        : Colors.white;
+    final primaryColor = palette.firstOrNull() != null ? Color(palette.first) : Colors.white;
 
-    final secondaryColor = palette.lastOrNull() != null
-        ? Color(palette.last)
-        : Colors.white;
+    final secondaryColor = palette.lastOrNull() != null ? Color(palette.last) : Colors.white;
 
     return ClipRRect(
       clipBehavior: widget.clipBehavior,
@@ -180,6 +178,7 @@ class _PokemonSpriteImageState extends State<PokemonSpriteImage> {
       image: imageProvider,
       fit: BoxFit.cover,
       gaplessPlayback: true,
+      color: widget.maskColor,
       height: widget.size?.height ?? kDefaultImageHeight,
       width: widget.size?.width ?? kDefaultImageHeight,
       loadingBuilder: (context, child, chunk) {

@@ -25,6 +25,15 @@ class PokeAppText {
   static const title4Style =
   TextStyle(fontSize: 20, fontWeight: FontWeight.normal, height: 1.2);
 
+  static const pokeFontMegaTitle1 =
+  TextStyle(fontSize: 96, fontWeight: FontWeight.normal, height: 1.2, fontFamily: 'PokemonSolid');
+
+  static const pokeFontMegaTitle2 =
+  TextStyle(fontSize: 72, fontWeight: FontWeight.normal, height: 1.2, fontFamily: 'PokemonSolid');
+
+  static const pokeFontTitle1 =
+  TextStyle(fontSize: 48, fontWeight: FontWeight.normal, height: 1.2, fontFamily: 'PokemonSolid');
+
   // Subtitle
 
   static const subtitle1Style =

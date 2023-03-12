@@ -25,6 +25,8 @@ class PokemonImage extends StatefulWidget {
     this.imageColorCallback,
     this.color,
     this.forceSpriteImage,
+    this.maskPokemon,
+    this.maskColor,
   });
 
   final Pokemon pokemon;
@@ -33,6 +35,8 @@ class PokemonImage extends StatefulWidget {
   final Clip clipBehavior;
   final Size? size;
   final bool? forceSpriteImage;
+  final bool? maskPokemon;
+  final Color? maskColor;
 
   @override
   State<PokemonImage> createState() => _PokemonImageState();
@@ -83,6 +87,7 @@ class _PokemonImageState extends State<PokemonImage> {
           size: widget.size,
           color: widget.color,
           clipBehavior: widget.clipBehavior,
+          maskColor: widget.maskColor,
         ),
       ),
     );
@@ -191,6 +196,7 @@ class _PokemonImageState extends State<PokemonImage> {
       image: imageProvider,
       fit: BoxFit.cover,
       gaplessPlayback: true,
+      color: widget.maskColor,
       height: widget.size?.height ?? kDefaultImageHeight,
       width: widget.size?.width ?? kDefaultImageHeight,
       loadingBuilder: (context, child, chunk) {
