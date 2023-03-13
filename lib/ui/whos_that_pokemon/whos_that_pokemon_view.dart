@@ -1,5 +1,5 @@
-import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:rive/rive.dart';
 
@@ -7,10 +7,15 @@ import '../../api/models/api_response.dart';
 import '../../api/models/pokemon/pokemon.dart';
 import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
+import '../../extensions/string_extension.dart';
 import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
+import '../../utils/console_output.dart';
+import '../settings/settings.dart';
+import '../shared_widgets/clipped_app_bar.dart';
 import '../shared_widgets/pokemon_image.dart';
 import '../shared_widgets/rounded_button.dart';
+import '../shared_widgets/three_d_text.dart';
 import 'view_models/whos_that_pokemon_view_model.dart';
 
 class WhosThatPokemonView extends StatefulWidget {
@@ -38,92 +43,15 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
         return StreamBuilder<ApiResponse<Pokemon?>>(
           stream: whosThatPokemonViewModel.randomPokemonStream,
           builder: (context, snapshot) {
-            final isLoading = snapshot.data?.status == Status.LOADING;
-            final hasError = snapshot.data?.status == Status.ERROR;
-            final hasData = snapshot.data?.status == Status.COMPLETED;
             final pokemon = snapshot.data?.data;
-            return Scaffold(
-              body: Stack(
-                children: [
-                  _buildRedSimmerBackground(),
-                  Positioned.fill(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const SizedBox(
-                            height: 32,
-                          ),
-                          SizedBox(
-                            height: 370,
-                            width: 370,
-                            child: Stack(
-                              children: [
-                                _buildWhosThatPokemonBackgroundAnimation(),
-                                Center(
-                                  child: _buildPokemonImage(
-                                    pokemon,
-                                    isRevealed ? null : Colors.blue[900],
-                                  ),
-                                ),
-                                if(!isRevealed)
-                                  Center(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 8.0,
-                                        bottom: 8.0,
-                                      ),
-                                      child: _buildPokemonImage(
-                                        pokemon,
-                                        Colors.blue.shade700,
-                                      ),
-                                    ),
-                                  ),
-                              ],
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: SizedBox(
-                              height: 155,
-                              width: 220,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  right: 16.0,
-                                ),
-                                child: _buildPokemonTexts(context),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+            return AnnotatedRegion(
+              value: const SystemUiOverlayStyle(
+                statusBarColor: Colors.red,
               ),
-              bottomNavigationBar: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: RoundedButton(
-                        label: 'Regenerate',
-                        onPressed: whosThatPokemonViewModel.generateRandomPokemon,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 16,
-                    ),
-                    Expanded(
-                      child: RoundedButton(
-                        label: 'Reveal',
-                        onPressed: (){
-                          whosThatPokemonViewModel.setIsRevealed(isRevealed: true);
-                        },
-                      ),
-                    ),
-                  ],
+              child: Scaffold(
+                body: _buildWhosThatPokemonViewBody(
+                  pokemon,
+                  isRevealed,
                 ),
               ),
             );
@@ -133,114 +61,169 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
     );
   }
 
-  Widget _buildPokemonTexts(BuildContext context) {
+  Widget _buildWhosThatPokemonViewBody(
+    Pokemon? pokemon,
+    bool isRevealed,
+  ) {
     return Stack(
       children: [
-        Positioned(
-          bottom: 1,
-          left: 1,
-          child: _buildPokemonTextBackground(context),
+        _buildRedSimmerBackground(),
+        Positioned.fill(
+          child: _buildWhosThatPokemonScrollView(
+            pokemon,
+            isRevealed,
+          ),
         ),
-        Positioned(
-          bottom: 2,
-          left: 2,
-          child: _buildPokemonTextBackground(context),
-        ),
-        Positioned(
-          bottom: 3,
-          left: 3,
-          child: _buildPokemonTextBackground(context),
-        ),
-        Positioned(
-          bottom: 4,
-          left: 4,
-          child: _buildPokemonTextBackground(context),
-        ),
-        Positioned(
-          bottom: 5,
-          left: 5,
-          child: _buildPokemonTextBackground(context),
-        ),
-        Positioned(
-          bottom: 6,
-          left: 6,
-          child: _buildPokemonTextBackground(context),
-        ),
-        Positioned(
-          bottom: 7,
-          left: 7,
-          child: _buildPokemonTextBackground(context),
-        ),
-        Positioned(
-          bottom: 8,
-          left: 8,
-          child: _buildPokemonTextBackground(context),
-        ),
-        Positioned(
-          bottom: 8,
-          left: 8,
-          child: _buildPokemonTextWithBorder(context),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: _buildButtonBar(isRevealed),
         )
       ],
     );
   }
 
-  Widget _buildPokemonTextWithBorder(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        BorderedText(
-          strokeWidth: 6.0,
-          strokeColor: Colors.blue.shade700,
-          child: Text(
-            '?',
-            textAlign: TextAlign.end,
-            style: PokeAppText.pokeFontMegaTitle2.copyWith(
-              color: Colors.yellow,
-            ),
+  Widget _buildWhosThatPokemonScrollView(
+    Pokemon? pokemon,
+    bool isRevealed,
+  ) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            height: context.statusBarHeight,
           ),
-        ),
-        BorderedText(
-          strokeWidth: 6.0,
-          strokeColor: Colors.blue.shade700,
-          child: Text(
-            context.strings.pokemon,
-            textAlign: TextAlign.end,
-            style: PokeAppText.pokeFontTitle1.copyWith(
-              color: Colors.yellow,
-            ),
+          ClippedAppBar(
+            menuButton: _buildMenuButton(),
           ),
-        ),
-      ],
+          _buildWhosThatPokemonImageWithBackground(
+            pokemon,
+            isRevealed,
+          ),
+          _buildWhosThatPokemonText(
+            pokemon?.name,
+            isRevealed,
+          ),
+        ],
+      ),
     );
   }
 
-  Widget _buildPokemonTextBackground(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          '?',
-          textAlign: TextAlign.end,
-          style: PokeAppText.pokeFontMegaTitle2.copyWith(
-            color: Colors.blue.shade900,
-          ),
-        ),
-        Text(
-          context.strings.pokemon,
-          textAlign: TextAlign.end,
-          style: PokeAppText.pokeFontTitle1.copyWith(
-            fontSize: 49,
-            color: Colors.blue.shade900,
-          ),
-        ),
-      ],
+  IconButton _buildMenuButton() {
+    return IconButton(
+      icon: Icon(
+        Icons.more_vert_rounded,
+        color: colors(context).cardBackground,
+      ),
+      onPressed: () {
+        Navigator.of(context).pushNamed(
+          Settings.routeName,
+        );
+      },
     );
   }
 
-  RiveAnimation _buildWhosThatPokemonBackgroundAnimation() {
+  Widget _buildWhosThatPokemonImageWithBackground(
+    Pokemon? pokemon,
+    bool isRevealed,
+  ) {
+    log('tag').d('_buildPokemonImage');
+    return SizedBox(
+      height: context.shortestSide,
+      width: context.shortestSide,
+      child: Stack(
+        children: [
+          _buildWhosThatPokemonImageBackground(),
+          Center(
+            child: _buildPokemonImage(
+              pokemon,
+              isRevealed ? null : Colors.blue[900],
+            ),
+          ),
+          if (!isRevealed)
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: 8.0,
+                  bottom: 8.0,
+                ),
+                child: _buildPokemonImage(
+                  pokemon,
+                  Colors.blue.shade700,
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildWhosThatPokemonText(
+    String? pokemonName,
+    bool isRevealed,
+  ) {
+    final _pokemonName = pokemonName ?? context.strings.unknownPokemon;
+    return _buildThreeDText(
+      isRevealed ? 'It\'s ${_pokemonName.capitalize()}' : context.strings.whoDatPokemon,
+    );
+  }
+
+  Widget _buildThreeDText(String text) {
+    return ThreeDText(
+      text: text,
+      textAlign: TextAlign.center,
+      strokeColor: Colors.blue.shade700,
+      style: PokeAppText.pokeFontTitle1.copyWith(
+        color: Colors.yellow,
+      ),
+      backgroundStyle: PokeAppText.pokeFontTitle1.copyWith(
+        fontSize: 43,
+        color: Colors.blue.shade900,
+      ),
+    );
+  }
+
+  Widget _buildButtonBar(bool isRevealed) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: _buildRegenerateButton(),
+          ),
+          const SizedBox(
+            width: 16,
+          ),
+          Expanded(
+            child: _buildRevealButton(isRevealed),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRevealButton(bool isRevealed) {
+    return RoundedButton(
+      fillColor: Colors.yellow,
+      label: isRevealed ? 'Hide' : 'Reveal',
+      onPressed: () {
+        whosThatPokemonViewModel.setIsRevealed(
+          isRevealed: !isRevealed,
+        );
+      },
+    );
+  }
+
+  Widget _buildRegenerateButton() {
+    return RoundedButton(
+      label: 'Regenerate',
+      fillColor: Colors.blue.shade700,
+      onPressed: whosThatPokemonViewModel.generateRandomPokemon,
+    );
+  }
+
+  RiveAnimation _buildWhosThatPokemonImageBackground() {
     return RiveAnimation.asset(
       whosThatPokemonViewModel.animationDirectory,
       controllers: [whosThatPokemonViewModel.controller],
@@ -255,50 +238,55 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
         height: double.infinity,
       )
           .animate(
-        onPlay: (controller) => controller.repeat(),
-      )
+            onPlay: (controller) => controller.repeat(),
+          )
           .shimmer(
-        angle: 2,
-        duration: 800.ms,
-        color: Colors.white.withOpacity(0.2),
-        size: 0.2,
-      )
+            angle: 2,
+            duration: 800.ms,
+            color: Colors.white.withOpacity(0.2),
+            size: 0.2,
+          )
           .animate(
-        onPlay: (controller) => controller.repeat(),
-      )
+            onPlay: (controller) => controller.repeat(),
+          )
           .shimmer(
-        angle: 2,
-        duration: 1600.ms,
-        color: Colors.white.withOpacity(0.2),
-        size: 0.4,
-      )
+            angle: 2,
+            duration: 1600.ms,
+            color: Colors.white.withOpacity(0.2),
+            size: 0.4,
+          )
           .animate(
-        onPlay: (controller) => controller.repeat(),
-      )
+            onPlay: (controller) => controller.repeat(),
+          )
           .shimmer(
-        angle: 2,
-        duration: 2400.ms,
-        color: Colors.yellow.withOpacity(0.2),
-        size: 0.6,
-      )
+            angle: 2,
+            duration: 2400.ms,
+            color: Colors.yellow.withOpacity(0.2),
+            size: 0.6,
+          )
           .animate(
-        onPlay: (controller) => controller.repeat(),
-      )
+            onPlay: (controller) => controller.repeat(),
+          )
           .shimmer(
-        angle: 2,
-        duration: 3200.ms,
-        color: Colors.yellow.withOpacity(0.2),
-        size: 0.8,
-      ),
+            angle: 2,
+            duration: 3200.ms,
+            color: Colors.yellow.withOpacity(0.2),
+            size: 0.8,
+          ),
     );
   }
 
-  Widget _buildPokemonImage(Pokemon? pokemon,
-      Color? maskColor,) {
+  Widget _buildPokemonImage(
+    Pokemon? pokemon,
+    Color? maskColor,
+  ) {
     if (pokemon != null) {
+      final imageHeight = context.shortestSide / 1.8;
       return PokemonImage(
         maskColor: maskColor,
+        includeHero: false,
         pokemon: pokemon,
+        size: Size(imageHeight, imageHeight),
         color: Colors.transparent,
       );
     }
@@ -311,11 +299,11 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
       gaplessPlayback: true,
     )
         .animate(
-      onPlay: (controller) => controller.repeat(),
-    )
+          onPlay: (controller) => controller.repeat(),
+        )
         .shimmer(
-      duration: 1200.ms,
-      color: colors(context).textOnForeground,
-    );
+          duration: 1200.ms,
+          color: colors(context).textOnForeground,
+        );
   }
 }

@@ -37,7 +37,7 @@ class _AppShellState extends State<AppShell> {
         ),
         _buildBottomNavigationBarItem(
           context.strings.whoDatPokemon,
-          'assets/icons/pikachu_face_outline.png',
+          'assets/icons/whos_that_pokemon.png',
           1,
         ),
       ],
@@ -60,8 +60,10 @@ class _AppShellState extends State<AppShell> {
     return BottomNavigationBarItem(
       icon: Image.asset(
         imagePath,
-        height: currentIndex == index ? 42 : 36,
-        color: colors(context).black.withOpacity(currentIndex == index ? 1.0 : 0.5),
+        height: currentIndex == index ? 42 : 38,
+        color: colors(context).textOnForeground.withOpacity(
+              currentIndex == index ? 1.0 : 0.5,
+            ),
         fit: BoxFit.fitHeight,
       ),
       label: label,

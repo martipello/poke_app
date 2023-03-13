@@ -10,12 +10,12 @@ class ClippedAppBar extends StatelessWidget {
     Key? key,
     this.clipColor,
     this.menuButton,
-    required this.onBackTap,
+    this.onBackTap,
   }) : super(key: key);
 
   final Color? clipColor;
   final Widget? menuButton;
-  final VoidCallback onBackTap;
+  final VoidCallback? onBackTap;
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +49,9 @@ class ClippedAppBar extends StatelessWidget {
   Widget _buildAppBarBackButton(
     BuildContext context,
   ) {
+    if(onBackTap == null) {
+      return const SizedBox();
+    }
     return Align(
       alignment: Alignment.centerLeft,
       child: IconButton(

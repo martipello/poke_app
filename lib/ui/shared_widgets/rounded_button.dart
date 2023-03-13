@@ -78,7 +78,7 @@ class RoundedButton extends StatelessWidget {
   }
 
   Widget _buildButtonContent(BuildContext context) {
-    var textStyle = _getTextStyle(context);
+    final textStyle = _getTextStyle(context);
     return Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,

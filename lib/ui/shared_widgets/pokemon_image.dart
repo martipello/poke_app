@@ -27,6 +27,7 @@ class PokemonImage extends StatefulWidget {
     this.forceSpriteImage,
     this.maskPokemon,
     this.maskColor,
+    this.includeHero = true,
   });
 
   final Pokemon pokemon;
@@ -35,6 +36,7 @@ class PokemonImage extends StatefulWidget {
   final Clip clipBehavior;
   final Size? size;
   final bool? forceSpriteImage;
+  final bool includeHero;
   final bool? maskPokemon;
   final Color? maskColor;
 
@@ -58,10 +60,12 @@ class _PokemonImageState extends State<PokemonImage> {
     });
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
-        mainImageColorViewModel.updatePalette(
-          context,
-          mainImageProvider!,
-        );
+        if (widget.imageColorCallback != null) {
+          mainImageColorViewModel.updatePalette(
+            context,
+            mainImageProvider!,
+          );
+        }
       },
     );
   }
@@ -81,7 +85,7 @@ class _PokemonImageState extends State<PokemonImage> {
       type: MaterialType.transparency,
       child: _buildImageHolder(
         context,
-        true,
+        widget.includeHero,
         mainImageProvider!,
         mainImageColorViewModel.colorListStream,
         (context, _, __) => PokemonSpriteImage(
@@ -258,7 +262,6 @@ class _PokemonImageState extends State<PokemonImage> {
   BorderRadius _buildBorderRadius() => BorderRadius.circular(180);
 
   String _createImageUrl() {
-    print('_createImageUrl ${widget.pokemon.id}');
     if (widget.forceSpriteImage == true) {
       return '';
     }

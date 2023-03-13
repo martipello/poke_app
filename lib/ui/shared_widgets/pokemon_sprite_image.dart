@@ -35,7 +35,7 @@ class PokemonSpriteImage extends StatefulWidget {
 class _PokemonSpriteImageState extends State<PokemonSpriteImage> {
   final spriteImageColorViewModel = getIt.get<ImageColorViewModel>();
 
-  late final CachedNetworkImageProvider spriteImageProvider;
+  late final CachedNetworkImageProvider? spriteImageProvider;
 
   @override
   void initState() {
@@ -43,13 +43,21 @@ class _PokemonSpriteImageState extends State<PokemonSpriteImage> {
     spriteImageProvider = CachedNetworkImageProvider(
       _createSpriteImageUrl(),
     );
-    spriteImageColorViewModel.updatePalette(
-      context,
-      spriteImageProvider,
-    );
+
     spriteImageColorViewModel.colorListStream.listen(
       (value) {
         widget.spriteImageColorCallback?.call(value);
+      },
+    );
+
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        if (widget.spriteImageColorCallback != null) {
+          spriteImageColorViewModel.updatePalette(
+            context,
+            spriteImageProvider!,
+          );
+        }
       },
     );
   }
@@ -62,12 +70,15 @@ class _PokemonSpriteImageState extends State<PokemonSpriteImage> {
 
   @override
   Widget build(BuildContext context) {
+    if (spriteImageProvider == null) {
+      return const SizedBox();
+    }
     return Material(
       type: MaterialType.transparency,
       child: _buildImageHolder(
         context,
         false,
-        spriteImageProvider,
+        spriteImageProvider!,
         spriteImageColorViewModel.colorListStream,
         (context, _, __) => _buildEmptyImage(),
       ),
@@ -245,6 +256,16 @@ class _PokemonSpriteImageState extends State<PokemonSpriteImage> {
       return sprite.front_default ?? '';
     } catch (_) {
       return '';
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant PokemonSpriteImage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.pokemon.id != oldWidget.pokemon.id) {
+      spriteImageProvider = CachedNetworkImageProvider(
+        _createSpriteImageUrl(),
+      );
     }
   }
 }
