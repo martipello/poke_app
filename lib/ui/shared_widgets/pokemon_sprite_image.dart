@@ -35,7 +35,7 @@ class PokemonSpriteImage extends StatefulWidget {
 class _PokemonSpriteImageState extends State<PokemonSpriteImage> {
   final spriteImageColorViewModel = getIt.get<ImageColorViewModel>();
 
-  late final CachedNetworkImageProvider? spriteImageProvider;
+  CachedNetworkImageProvider? spriteImageProvider;
 
   @override
   void initState() {
