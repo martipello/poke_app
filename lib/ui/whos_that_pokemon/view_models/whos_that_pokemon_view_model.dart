@@ -28,35 +28,46 @@ class WhosThatPokemonViewModel {
         autoplay: true,
       );
 
-  final randomPokemonStream = BehaviorSubject<ApiResponse<Pokemon?>>();
+  final pokemonOptionsStream = BehaviorSubject<ApiResponse<PokemonResponse>>();
+  final selectedPokemonStream = BehaviorSubject<Pokemon?>();
   final isRevealedStream = BehaviorSubject<bool>.seeded(false);
 
   SimpleAnimation? _controller;
 
   Future<void> generateRandomPokemon() async {
-    randomPokemonStream.add(ApiResponse.loading(null));
+    pokemonOptionsStream.add(ApiResponse.loading(null));
     try {
       setIsRevealed(isRevealed: false);
-      final random = math.Random().nextInt(1015);
+      const limit = 30;
+      const pokemonTotal = 1015 - limit;
+      final offset = math.Random().nextInt(pokemonTotal);
       final language = await languageService.getLanguage();
       final response = await pokemonRepositoryGraphQl.getPokemon(
         PokemonRequest(
           (b) => b
-            ..search = '$random'
-            ..limit = 1
-            ..skip = 0
+            ..limit = limit
+            ..skip = offset
             ..languageId = language.id
             ..pagination = false,
         ),
       );
       final pokemonResponse = PokemonResponse.fromJson(response.data!);
-      final pokemon = pokemonResponse.pokemon_v2_pokemon.firstOrNull();
-      randomPokemonStream.add(ApiResponse.completed(pokemon));
+      print(pokemonResponse);
+      final pokemon = pokemonResponse.pokemon_v2_pokemon.randomNonRepeating(3);
+      print(pokemon);
+      pokemonOptionsStream.add(
+        ApiResponse.completed(
+          pokemonResponse.rebuild(
+                (p0) => p0..pokemon_v2_pokemon.replace(pokemon),
+          ),
+        ),
+      );
+      selectedPokemonStream.add(pokemon.randomNonRepeating(1).firstOrNull());
     } catch (e) {
-      final errorResponse = errorHandler.handleError<Pokemon>(
+      final errorResponse = errorHandler.handleError<PokemonResponse>(
         e,
       );
-      randomPokemonStream.add(errorResponse);
+      pokemonOptionsStream.add(errorResponse);
     }
   }
 
@@ -66,7 +77,8 @@ class WhosThatPokemonViewModel {
 
   void dispose() {
     _controller?.dispose();
-    randomPokemonStream.close();
+    pokemonOptionsStream.close();
+    selectedPokemonStream.close();
   }
 
   String get animationDirectory => 'assets/animations/whos_that_pokemon.riv';

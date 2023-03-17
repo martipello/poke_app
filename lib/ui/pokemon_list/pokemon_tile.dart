@@ -22,9 +22,17 @@ class PokemonTile extends StatefulWidget {
   PokemonTile({
     Key? key,
     required this.pokemon,
+    this.maskColor,
+    this.onTap,
+    this.showImage = true,
+    this.showTypes = true,
   }) : super(key: key);
 
   final Pokemon pokemon;
+  final VoidCallback? onTap;
+  final Color? maskColor;
+  final bool showImage;
+  final bool showTypes;
 
   @override
   State<PokemonTile> createState() => _PokemonTileState();
@@ -41,25 +49,28 @@ class _PokemonTileState extends State<PokemonTile> {
 
   @override
   Widget build(BuildContext context) {
+    const kCardPadding = 32;
+    final chipHeight = widget.showTypes ? kChipHeight : 0;
+    final pokemonTileImageHeight = widget.showImage ? kPokemonTileImageHeight : 56.0;
+    final tileHeight = pokemonTileImageHeight + chipHeight + kCardPadding + 16 + 4;
     return StreamBuilder<List<int>>(
       stream: mainImageColorViewModel.colorListStream,
       builder: (context, colorListSnapshot) {
         final colorList = colorListSnapshot.data ?? [];
-        const kCardPadding = 32;
         return ViewConstraint(
           child: SizedBox(
-            height: kPokemonTileImageHeight + kChipHeight + kCardPadding + 16 + 4,
+            height: tileHeight,
             child: RoundedCard(
-              onTap: () {
-                context.closeKeyBoard();
-                Navigator.of(context).pushNamed(
-                  PokemonDetailPage.routeName,
-                  arguments: PokemonDetailPageArguments(
-                    pokemon: widget.pokemon,
-                    colorList: colorList,
-                  ),
-                );
-              },
+              onTap: widget.onTap ?? () {
+                      context.closeKeyBoard();
+                      Navigator.of(context).pushNamed(
+                        PokemonDetailPage.routeName,
+                        arguments: PokemonDetailPageArguments(
+                          pokemon: widget.pokemon,
+                          colorList: colorList,
+                        ),
+                      );
+                    },
               child: _buildPokemonCardBody(),
             ),
           ),
@@ -77,17 +88,19 @@ class _PokemonTileState extends State<PokemonTile> {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            if (widget.showImage)
             _buildPokemonImage(),
+            if (widget.showImage)
             const SizedBox(
               width: 16,
             ),
             Expanded(
               child: _buildPokemonInfo(speciesName),
             ),
-            _buildPokemonId(),
+            if (widget.showTypes) _buildPokemonId(),
           ],
         ),
-        _buildPokemonTypesHolder(),
+        if (widget.showTypes) _buildPokemonTypesHolder(),
       ],
     );
   }
@@ -153,11 +166,12 @@ class _PokemonTileState extends State<PokemonTile> {
     return PokemonImage(
       pokemon: widget.pokemon,
       clipBehavior: Clip.hardEdge,
+      maskColor: widget.maskColor,
       size: const Size(
         kPokemonTileImageHeight,
         kPokemonTileImageHeight,
       ),
-      imageColorCallback: mainImageColorViewModel.colorListStream.add,
+      imageColorCallback: widget.maskColor == null ? mainImageColorViewModel.colorListStream.add : null,
     );
   }
 }

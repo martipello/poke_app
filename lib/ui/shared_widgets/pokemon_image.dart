@@ -25,7 +25,6 @@ class PokemonImage extends StatefulWidget {
     this.imageColorCallback,
     this.color,
     this.forceSpriteImage,
-    this.maskPokemon,
     this.maskColor,
     this.includeHero = true,
   });
@@ -37,7 +36,6 @@ class PokemonImage extends StatefulWidget {
   final Size? size;
   final bool? forceSpriteImage;
   final bool includeHero;
-  final bool? maskPokemon;
   final Color? maskColor;
 
   @override

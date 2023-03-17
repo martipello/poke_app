@@ -1,3 +1,4 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -5,14 +6,14 @@ import 'package:rive/rive.dart';
 
 import '../../api/models/api_response.dart';
 import '../../api/models/pokemon/pokemon.dart';
+import '../../api/models/pokemon/pokemon_response.dart';
 import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../extensions/string_extension.dart';
 import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import '../../utils/console_output.dart';
-import '../settings/settings.dart';
-import '../shared_widgets/clipped_app_bar.dart';
+import '../pokemon_list/pokemon_tile.dart';
 import '../shared_widgets/pokemon_image.dart';
 import '../shared_widgets/rounded_button.dart';
 import '../shared_widgets/three_d_text.dart';
@@ -36,91 +37,78 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
 
   @override
   Widget build(BuildContext context) {
+    return AnnotatedRegion(
+      value: const SystemUiOverlayStyle(
+        statusBarColor: Colors.red,
+      ),
+      child: Scaffold(
+        body: _buildWhosThatPokemonViewBody(),
+      ),
+    );
+  }
+
+  Widget _buildWhosThatPokemonViewBody() {
     return StreamBuilder<bool>(
       stream: whosThatPokemonViewModel.isRevealedStream,
       builder: (context, isRevealedSnapshot) {
         final isRevealed = isRevealedSnapshot.data == true;
-        return StreamBuilder<ApiResponse<Pokemon?>>(
-          stream: whosThatPokemonViewModel.randomPokemonStream,
-          builder: (context, snapshot) {
-            final pokemon = snapshot.data?.data;
-            return AnnotatedRegion(
-              value: const SystemUiOverlayStyle(
-                statusBarColor: Colors.red,
-              ),
-              child: Scaffold(
-                body: _buildWhosThatPokemonViewBody(
-                  pokemon,
-                  isRevealed,
-                ),
-              ),
-            );
-          },
+        return Stack(
+          children: [
+            _buildRedSimmerBackground(),
+            _buildWhosThatPokemonScrollView(
+              isRevealed,
+            ),
+          ],
         );
       },
-    );
-  }
-
-  Widget _buildWhosThatPokemonViewBody(
-    Pokemon? pokemon,
-    bool isRevealed,
-  ) {
-    return Stack(
-      children: [
-        _buildRedSimmerBackground(),
-        Positioned.fill(
-          child: _buildWhosThatPokemonScrollView(
-            pokemon,
-            isRevealed,
-          ),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: _buildButtonBar(isRevealed),
-        )
-      ],
     );
   }
 
   Widget _buildWhosThatPokemonScrollView(
-    Pokemon? pokemon,
     bool isRevealed,
   ) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(
-            height: context.statusBarHeight,
+    return StreamBuilder<Pokemon?>(
+      stream: whosThatPokemonViewModel.selectedPokemonStream,
+      builder: (context, snapshot) {
+        final selectedPokemon = snapshot.data;
+        return SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(
+                height: 32,
+              ),
+              _buildWhosThatPokemonImageWithBackground(
+                selectedPokemon,
+                isRevealed,
+              ),
+              _buildWhosThatPokemonText(
+                selectedPokemon?.name,
+                isRevealed,
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              if (isRevealed) _buildRetryButton(),
+              _buildWhosThatPokemonOptions(
+                isRevealed,
+              )
+            ],
           ),
-          ClippedAppBar(
-            menuButton: _buildMenuButton(),
-          ),
-          _buildWhosThatPokemonImageWithBackground(
-            pokemon,
-            isRevealed,
-          ),
-          _buildWhosThatPokemonText(
-            pokemon?.name,
-            isRevealed,
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
-  IconButton _buildMenuButton() {
-    return IconButton(
-      icon: Icon(
-        Icons.more_vert_rounded,
-        color: colors(context).cardBackground,
+  Widget _buildRetryButton() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16.0),
+      child: RoundedButton(
+        label: 'Retry',
+        onPressed: whosThatPokemonViewModel.generateRandomPokemon,
       ),
-      onPressed: () {
-        Navigator.of(context).pushNamed(
-          Settings.routeName,
-        );
-      },
     );
   }
 
@@ -184,42 +172,44 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
     );
   }
 
-  Widget _buildButtonBar(bool isRevealed) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
-        children: [
-          Expanded(
-            child: _buildRegenerateButton(),
-          ),
-          const SizedBox(
-            width: 16,
-          ),
-          Expanded(
-            child: _buildRevealButton(isRevealed),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildRevealButton(bool isRevealed) {
-    return RoundedButton(
-      fillColor: Colors.yellow,
-      label: isRevealed ? 'Hide' : 'Reveal',
-      onPressed: () {
-        whosThatPokemonViewModel.setIsRevealed(
-          isRevealed: !isRevealed,
+  Widget _buildWhosThatPokemonOptions(
+    bool isRevealed,
+  ) {
+    return StreamBuilder<ApiResponse<PokemonResponse>>(
+      stream: whosThatPokemonViewModel.pokemonOptionsStream,
+      builder: (context, snapshot) {
+        final pokemonOptions = snapshot.data?.data?.pokemon_v2_pokemon ?? BuiltList<Pokemon>.of([]);
+        return Column(
+          children: pokemonOptions
+              .map(
+                (pokemon) => _buildPokemonOption(
+                  pokemon,
+                  isRevealed,
+                ),
+              )
+              .toList(),
         );
       },
     );
   }
 
-  Widget _buildRegenerateButton() {
-    return RoundedButton(
-      label: 'Regenerate',
-      fillColor: Colors.blue.shade700,
-      onPressed: whosThatPokemonViewModel.generateRandomPokemon,
+  Widget _buildPokemonOption(
+    Pokemon pokemon,
+    bool isRevealed,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: PokemonTile(
+        pokemon: pokemon,
+        maskColor: isRevealed ? null : Colors.blue.shade700,
+        showImage: false,
+        showTypes: false,
+        onTap: () {
+          whosThatPokemonViewModel.setIsRevealed(
+            isRevealed: !isRevealed,
+          );
+        },
+      ),
     );
   }
 
