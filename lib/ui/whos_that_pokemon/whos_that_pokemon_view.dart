@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:rive/rive.dart';
+import 'package:tuple/tuple.dart';
 
 import '../../api/models/api_response.dart';
 import '../../api/models/pokemon/pokemon.dart';
@@ -12,11 +13,11 @@ import '../../extensions/build_context_extension.dart';
 import '../../extensions/string_extension.dart';
 import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
-import '../../utils/console_output.dart';
 import '../pokemon_list/pokemon_tile.dart';
 import '../shared_widgets/pokemon_image.dart';
 import '../shared_widgets/rounded_button.dart';
 import '../shared_widgets/three_d_text.dart';
+import 'view_models/score_view_model.dart';
 import 'view_models/whos_that_pokemon_view_model.dart';
 
 class WhosThatPokemonView extends StatefulWidget {
@@ -28,11 +29,21 @@ class WhosThatPokemonView extends StatefulWidget {
 
 class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
   final whosThatPokemonViewModel = getIt.get<WhosThatPokemonViewModel>();
+  final scoreViewModel = getIt.get<ScoreViewModel>();
 
   @override
   void initState() {
     super.initState();
     whosThatPokemonViewModel.generateRandomPokemon();
+    whosThatPokemonViewModel.revealResultStream.listen(
+      (value) {
+        if (value.item1 == RevealResult.correct) {
+          scoreViewModel.addWin();
+        } else if (value.item2 == RevealResult.incorrect) {
+          scoreViewModel.addLoss();
+        }
+      },
+    );
   }
 
   @override
@@ -48,15 +59,22 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
   }
 
   Widget _buildWhosThatPokemonViewBody() {
-    return StreamBuilder<bool>(
-      stream: whosThatPokemonViewModel.isRevealedStream,
+    return StreamBuilder<Tuple2<RevealResult, bool>>(
+      stream: whosThatPokemonViewModel.revealResultStream,
       builder: (context, isRevealedSnapshot) {
-        final isRevealed = isRevealedSnapshot.data == true;
+        final revealResult = isRevealedSnapshot.data?.item1 ?? RevealResult.none;
+        final isRevealed = isRevealedSnapshot.data?.item2 == true;
         return Stack(
           children: [
             _buildRedSimmerBackground(),
             _buildWhosThatPokemonScrollView(
+              revealResult,
               isRevealed,
+            ),
+            Positioned(
+              right: 0,
+              top: 32,
+              child: _buildScore(),
             ),
           ],
         );
@@ -64,11 +82,33 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
     );
   }
 
+  Widget _buildScore() {
+    return StreamBuilder<Tuple2<int, int>>(
+      stream: scoreViewModel.winsAndLossesStream,
+      builder: (context, snapshot) {
+        final wins = snapshot.data?.item1 ?? 0;
+        final losses = snapshot.data?.item2 ?? 0;
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildThreeDScoreText(
+              'Correct $wins',
+            ),
+            _buildThreeDScoreText(
+              'Incorrect $losses',
+            ),
+          ],
+        );
+      }
+    );
+  }
+
   Widget _buildWhosThatPokemonScrollView(
+    RevealResult revealResult,
     bool isRevealed,
   ) {
     return StreamBuilder<Pokemon?>(
-      stream: whosThatPokemonViewModel.selectedPokemonStream,
+      stream: whosThatPokemonViewModel.concealedPokemonStream,
       builder: (context, snapshot) {
         final selectedPokemon = snapshot.data;
         return SingleChildScrollView(
@@ -86,6 +126,7 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
               ),
               _buildWhosThatPokemonText(
                 selectedPokemon?.name,
+                revealResult,
                 isRevealed,
               ),
               const SizedBox(
@@ -116,7 +157,6 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
     Pokemon? pokemon,
     bool isRevealed,
   ) {
-    log('tag').d('_buildPokemonImage');
     return SizedBox(
       height: context.shortestSide,
       width: context.shortestSide,
@@ -149,11 +189,26 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
 
   Widget _buildWhosThatPokemonText(
     String? pokemonName,
+    RevealResult revealResult,
     bool isRevealed,
   ) {
     final _pokemonName = pokemonName ?? context.strings.unknownPokemon;
-    return _buildThreeDText(
-      isRevealed ? 'It\'s ${_pokemonName.capitalize()}' : context.strings.whoDatPokemon,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if(revealResult == RevealResult.correct)
+          _buildThreeDText(
+            'Correct',
+          ),
+        if(revealResult == RevealResult.incorrect)
+          _buildThreeDText(
+            'Incorrect',
+          ),
+        _buildThreeDText(
+          isRevealed ? 'It\'s ${_pokemonName.capitalize()}' : context.strings.whoDatPokemon,
+        ),
+      ],
     );
   }
 
@@ -172,6 +227,22 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
     );
   }
 
+  Widget _buildThreeDScoreText(String text) {
+    return ThreeDText(
+      text: text,
+      textAlign: TextAlign.center,
+      strokeColor: Colors.blue.shade700,
+      style: PokeAppText.pokeFontTitle1.copyWith(
+        fontSize: 20,
+        color: Colors.yellow,
+      ),
+      backgroundStyle: PokeAppText.pokeFontTitle1.copyWith(
+        fontSize: 21,
+        color: Colors.blue.shade900,
+      ),
+    );
+  }
+
   Widget _buildWhosThatPokemonOptions(
     bool isRevealed,
   ) {
@@ -180,6 +251,8 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
       builder: (context, snapshot) {
         final pokemonOptions = snapshot.data?.data?.pokemon_v2_pokemon ?? BuiltList<Pokemon>.of([]);
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
           children: pokemonOptions
               .map(
                 (pokemon) => _buildPokemonOption(
@@ -204,11 +277,14 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
         maskColor: isRevealed ? null : Colors.blue.shade700,
         showImage: false,
         showTypes: false,
-        onTap: () {
-          whosThatPokemonViewModel.setIsRevealed(
-            isRevealed: !isRevealed,
-          );
-        },
+        onTap: isRevealed
+            ? () {}
+            : () {
+                whosThatPokemonViewModel.setRevealResult(
+                  pokemon.id!,
+                  isRevealed: true,
+                );
+              },
       ),
     );
   }

@@ -30,6 +30,7 @@ import 'ui/shared_widgets/view_models/image_color_view_model.dart';
 import 'ui/shared_widgets/view_models/open_pokemon_count_view_model.dart';
 import 'ui/shared_widgets/view_models/pokeball_loading_view_model.dart';
 import 'ui/shared_widgets/view_models/spash_view_model.dart';
+import 'ui/whos_that_pokemon/view_models/score_view_model.dart';
 import 'ui/whos_that_pokemon/view_models/whos_that_pokemon_view_model.dart';
 
 final getIt = GetIt.instance;
@@ -63,6 +64,7 @@ Future<void> init() async {
   getIt.registerFactory(MapZoomControlViewModel.new);
   getIt.registerFactory(SplashViewModel.new);
   getIt.registerFactory(() => WhosThatPokemonViewModel(getIt(), getIt(), getIt()));
+  getIt.registerFactory(ScoreViewModel.new);
   getIt.registerFactory(ExpansionCardStateViewModel.new);
   getIt.registerFactory(PokeballLoadingViewModel.new);
   getIt.registerFactory(ImageColorViewModel.new);

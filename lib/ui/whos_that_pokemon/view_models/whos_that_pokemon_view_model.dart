@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:rive/rive.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:tuple/tuple.dart';
 
 import '../../../api/error_handler.dart';
 import '../../../api/graph_ql/pokemon_repository_graph_ql.dart';
@@ -11,6 +12,12 @@ import '../../../api/models/pokemon/pokemon_request.dart';
 import '../../../api/models/pokemon/pokemon_response.dart';
 import '../../../extensions/iterable_extension.dart';
 import '../../../services/language_service.dart';
+
+enum RevealResult {
+  correct,
+  incorrect,
+  none,
+}
 
 class WhosThatPokemonViewModel {
   WhosThatPokemonViewModel(
@@ -29,15 +36,15 @@ class WhosThatPokemonViewModel {
       );
 
   final pokemonOptionsStream = BehaviorSubject<ApiResponse<PokemonResponse>>();
-  final selectedPokemonStream = BehaviorSubject<Pokemon?>();
-  final isRevealedStream = BehaviorSubject<bool>.seeded(false);
+  final concealedPokemonStream = BehaviorSubject<Pokemon?>();
+  final revealResultStream = BehaviorSubject<Tuple2<RevealResult, bool>>();
 
   SimpleAnimation? _controller;
 
   Future<void> generateRandomPokemon() async {
     pokemonOptionsStream.add(ApiResponse.loading(null));
     try {
-      setIsRevealed(isRevealed: false);
+      setRevealResult(0, isRevealed: false);
       const limit = 30;
       const pokemonTotal = 1015 - limit;
       final offset = math.Random().nextInt(pokemonTotal);
@@ -58,11 +65,11 @@ class WhosThatPokemonViewModel {
       pokemonOptionsStream.add(
         ApiResponse.completed(
           pokemonResponse.rebuild(
-                (p0) => p0..pokemon_v2_pokemon.replace(pokemon),
+            (p0) => p0..pokemon_v2_pokemon.replace(pokemon),
           ),
         ),
       );
-      selectedPokemonStream.add(pokemon.randomNonRepeating(1).firstOrNull());
+      concealedPokemonStream.add(pokemon.randomNonRepeating(1).firstOrNull());
     } catch (e) {
       final errorResponse = errorHandler.handleError<PokemonResponse>(
         e,
@@ -71,14 +78,21 @@ class WhosThatPokemonViewModel {
     }
   }
 
-  void setIsRevealed({required bool isRevealed}) {
-    isRevealedStream.add(isRevealed);
+  void setRevealResult(int pokemonId, {required bool isRevealed}) {
+    final concealedPokemon = concealedPokemonStream.valueOrNull;
+    if(pokemonId == 0) {
+      revealResultStream.add(const Tuple2(RevealResult.none, false));
+    } else if (pokemonId == concealedPokemon?.id) {
+      revealResultStream.add(const Tuple2(RevealResult.correct, true));
+    } else {
+      revealResultStream.add(const Tuple2(RevealResult.incorrect, true));
+    }
   }
 
   void dispose() {
     _controller?.dispose();
     pokemonOptionsStream.close();
-    selectedPokemonStream.close();
+    concealedPokemonStream.close();
   }
 
   String get animationDirectory => 'assets/animations/whos_that_pokemon.riv';
