@@ -14,6 +14,7 @@ import '../../extensions/string_extension.dart';
 import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import '../pokemon_list/pokemon_tile.dart';
+import '../shared_widgets/pokeball_loading_widget.dart';
 import '../shared_widgets/pokemon_image.dart';
 import '../shared_widgets/rounded_button.dart';
 import '../shared_widgets/three_d_text.dart';
@@ -71,7 +72,7 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
           child: Stack(
             children: [
               _buildRedSimmerBackground(),
-              _buildWhosThatPokemonScrollView(
+              _buildWhosThatPokemonState(
                 revealResult,
                 isRevealed,
               ),
@@ -89,50 +90,78 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
     );
   }
 
-  Widget _buildWhosThatPokemonScrollView(
+  Widget _buildWhosThatPokemonState(
     RevealResult revealResult,
     bool isRevealed,
   ) {
-    return StreamBuilder<Pokemon?>(
-      stream: whosThatPokemonViewModel.concealedPokemonStream,
-      builder: (context, snapshot) {
-        final selectedPokemon = snapshot.data;
-        return SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(
-                height: 32,
-              ),
-              _buildWhosThatPokemonImageWithBackground(
-                selectedPokemon,
-                isRevealed,
-              ),
-              _buildWhosThatPokemonText(
-                selectedPokemon?.name,
-                revealResult,
-                isRevealed,
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              if (isRevealed) _buildRetryButton(),
-              _buildWhosThatPokemonOptions(
-                selectedPokemon,
-                isRevealed,
-              ),
-            ],
-          ),
+    return StreamBuilder<ApiResponse<PokemonResponse>>(
+      stream: whosThatPokemonViewModel.pokemonOptionsStream,
+      builder: (context, pokemonOptionsSnapshot) {
+        return StreamBuilder<Pokemon?>(
+          stream: whosThatPokemonViewModel.concealedPokemonStream,
+          builder: (context, snapshot) {
+            final pokemonOptions = pokemonOptionsSnapshot.data?.data?.pokemon_v2_pokemon ?? BuiltList<Pokemon>.of([]);
+            final selectedPokemon = snapshot.data;
+            if (pokemonOptionsSnapshot.data?.status == Status.LOADING) {
+              return const PokeballLoadingWidget();
+            }
+            return _buildWhosThatPokemonScrollView(
+              pokemonOptions,
+              selectedPokemon,
+              revealResult,
+              isRevealed,
+            );
+          },
         );
       },
     );
   }
 
+  Widget _buildWhosThatPokemonScrollView(
+    BuiltList<Pokemon> pokemonOptions,
+    Pokemon? selectedPokemon,
+    RevealResult revealResult,
+    bool isRevealed,
+  ) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(
+            height: 32,
+          ),
+          _buildWhosThatPokemonImageWithBackground(
+            selectedPokemon,
+            isRevealed,
+          ),
+          _buildWhosThatPokemonText(
+            selectedPokemon?.name,
+            revealResult,
+            isRevealed,
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          if (isRevealed) _buildRetryButton(),
+          _buildWhosThatPokemonOptions(
+            pokemonOptions,
+            selectedPokemon,
+            isRevealed,
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildRetryButton() {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
+      padding: const EdgeInsets.only(
+        bottom: 32.0,
+        left: 4,
+        right: 4,
+      ),
       child: RoundedButton(
         label: 'Retry',
         onPressed: whosThatPokemonViewModel.generateRandomPokemon,
@@ -214,27 +243,22 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
   }
 
   Widget _buildWhosThatPokemonOptions(
+    BuiltList<Pokemon> pokemonOptions,
     Pokemon? selectedPokemon,
     bool isRevealed,
   ) {
-    return StreamBuilder<ApiResponse<PokemonResponse>>(
-      stream: whosThatPokemonViewModel.pokemonOptionsStream,
-      builder: (context, snapshot) {
-        final pokemonOptions = snapshot.data?.data?.pokemon_v2_pokemon ?? BuiltList<Pokemon>.of([]);
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: pokemonOptions
-              .map(
-                (pokemon) => _buildPokemonOption(
-                  selectedPokemon,
-                  pokemon,
-                  isRevealed,
-                ),
-              )
-              .toList(),
-        );
-      },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: pokemonOptions
+          .map(
+            (pokemon) => _buildPokemonOption(
+              selectedPokemon,
+              pokemon,
+              isRevealed,
+            ),
+          )
+          .toList(),
     );
   }
 
