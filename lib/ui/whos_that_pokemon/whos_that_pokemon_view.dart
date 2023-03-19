@@ -17,6 +17,8 @@ import '../pokemon_list/pokemon_tile.dart';
 import '../shared_widgets/pokemon_image.dart';
 import '../shared_widgets/rounded_button.dart';
 import '../shared_widgets/three_d_text.dart';
+import 'red_shimmer_background.dart';
+import 'score_widget.dart';
 import 'view_models/score_view_model.dart';
 import 'view_models/whos_that_pokemon_view_model.dart';
 
@@ -64,42 +66,26 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
       builder: (context, isRevealedSnapshot) {
         final revealResult = isRevealedSnapshot.data?.item1 ?? RevealResult.none;
         final isRevealed = isRevealedSnapshot.data?.item2 == true;
-        return Stack(
-          children: [
-            _buildRedSimmerBackground(),
-            _buildWhosThatPokemonScrollView(
-              revealResult,
-              isRevealed,
-            ),
-            Positioned(
-              right: 0,
-              top: 32,
-              child: _buildScore(),
-            ),
-          ],
+        return SizedBox(
+          height: double.infinity,
+          child: Stack(
+            children: [
+              _buildRedSimmerBackground(),
+              _buildWhosThatPokemonScrollView(
+                revealResult,
+                isRevealed,
+              ),
+              Positioned(
+                right: 0,
+                top: 32,
+                child: ScoreWidget(
+                  scoreViewModel: scoreViewModel,
+                ),
+              ),
+            ],
+          ),
         );
       },
-    );
-  }
-
-  Widget _buildScore() {
-    return StreamBuilder<Tuple2<int, int>>(
-      stream: scoreViewModel.winsAndLossesStream,
-      builder: (context, snapshot) {
-        final wins = snapshot.data?.item1 ?? 0;
-        final losses = snapshot.data?.item2 ?? 0;
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _buildThreeDScoreText(
-              'Correct $wins',
-            ),
-            _buildThreeDScoreText(
-              'Incorrect $losses',
-            ),
-          ],
-        );
-      }
     );
   }
 
@@ -134,8 +120,9 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
               ),
               if (isRevealed) _buildRetryButton(),
               _buildWhosThatPokemonOptions(
+                selectedPokemon,
                 isRevealed,
-              )
+              ),
             ],
           ),
         );
@@ -197,11 +184,11 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if(revealResult == RevealResult.correct)
+        if (revealResult == RevealResult.correct)
           _buildThreeDText(
             'Correct',
           ),
-        if(revealResult == RevealResult.incorrect)
+        if (revealResult == RevealResult.incorrect)
           _buildThreeDText(
             'Incorrect',
           ),
@@ -221,29 +208,13 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
         color: Colors.yellow,
       ),
       backgroundStyle: PokeAppText.pokeFontTitle1.copyWith(
-        fontSize: 43,
-        color: Colors.blue.shade900,
-      ),
-    );
-  }
-
-  Widget _buildThreeDScoreText(String text) {
-    return ThreeDText(
-      text: text,
-      textAlign: TextAlign.center,
-      strokeColor: Colors.blue.shade700,
-      style: PokeAppText.pokeFontTitle1.copyWith(
-        fontSize: 20,
-        color: Colors.yellow,
-      ),
-      backgroundStyle: PokeAppText.pokeFontTitle1.copyWith(
-        fontSize: 21,
         color: Colors.blue.shade900,
       ),
     );
   }
 
   Widget _buildWhosThatPokemonOptions(
+    Pokemon? selectedPokemon,
     bool isRevealed,
   ) {
     return StreamBuilder<ApiResponse<PokemonResponse>>(
@@ -256,6 +227,7 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
           children: pokemonOptions
               .map(
                 (pokemon) => _buildPokemonOption(
+                  selectedPokemon,
                   pokemon,
                   isRevealed,
                 ),
@@ -267,25 +239,41 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
   }
 
   Widget _buildPokemonOption(
+    Pokemon? concealedPokemon,
     Pokemon pokemon,
     bool isRevealed,
   ) {
+    final isConcealedPokemon = concealedPokemon?.id == pokemon.id;
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
-      child: PokemonTile(
-        pokemon: pokemon,
-        maskColor: isRevealed ? null : Colors.blue.shade700,
-        showImage: false,
-        showTypes: false,
-        onTap: isRevealed
-            ? () {}
-            : () {
-                whosThatPokemonViewModel.setRevealResult(
-                  pokemon.id!,
-                  isRevealed: true,
-                );
-              },
+      child: _buildPokemonOptionTile(
+        pokemon,
+        isConcealedPokemon,
+        isRevealed,
       ),
+    );
+  }
+
+  Widget _buildPokemonOptionTile(
+    Pokemon pokemon,
+    bool isConcealedPokemon,
+    bool isRevealed,
+  ) {
+    final borderColor = isRevealed && isConcealedPokemon ? Colors.green.shade300 : Colors.red.shade700;
+    return PokemonTile(
+      pokemon: pokemon,
+      maskColor: isRevealed ? null : Colors.blue.shade700,
+      showImage: isRevealed,
+      borderColor: isRevealed ? borderColor : null,
+      showTypes: false,
+      onTap: isRevealed
+          ? null
+          : () {
+              whosThatPokemonViewModel.setRevealResult(
+                pokemon.id!,
+                isRevealed: true,
+              );
+            },
     );
   }
 
@@ -298,47 +286,8 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
   }
 
   Widget _buildRedSimmerBackground() {
-    return Positioned.fill(
-      child: Container(
-        color: Colors.red,
-        height: double.infinity,
-      )
-          .animate(
-            onPlay: (controller) => controller.repeat(),
-          )
-          .shimmer(
-            angle: 2,
-            duration: 800.ms,
-            color: Colors.white.withOpacity(0.2),
-            size: 0.2,
-          )
-          .animate(
-            onPlay: (controller) => controller.repeat(),
-          )
-          .shimmer(
-            angle: 2,
-            duration: 1600.ms,
-            color: Colors.white.withOpacity(0.2),
-            size: 0.4,
-          )
-          .animate(
-            onPlay: (controller) => controller.repeat(),
-          )
-          .shimmer(
-            angle: 2,
-            duration: 2400.ms,
-            color: Colors.yellow.withOpacity(0.2),
-            size: 0.6,
-          )
-          .animate(
-            onPlay: (controller) => controller.repeat(),
-          )
-          .shimmer(
-            angle: 2,
-            duration: 3200.ms,
-            color: Colors.yellow.withOpacity(0.2),
-            size: 0.8,
-          ),
+    return const Positioned.fill(
+      child: RedShimmerBackground(),
     );
   }
 

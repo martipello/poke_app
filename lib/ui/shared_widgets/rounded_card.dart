@@ -7,9 +7,11 @@ class RoundedCard extends StatelessWidget {
     Key? key,
     required this.child,
     this.onTap,
+    this.borderColor,
   }) : super(key: key);
 
   final Widget child;
+  final Color? borderColor;
   final VoidCallback? onTap;
 
   @override
@@ -22,6 +24,12 @@ class RoundedCard extends StatelessWidget {
         elevation: 3,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
+          side: borderColor == null
+              ? BorderSide.none
+              : BorderSide(
+                  color: borderColor!,
+                  width: 2,
+                ),
         ),
         clipBehavior: Clip.hardEdge,
         child: Material(
