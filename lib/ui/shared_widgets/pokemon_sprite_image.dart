@@ -2,11 +2,15 @@ import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/animate.dart';
+import 'package:flutter_animate/effects/effects.dart';
+import 'package:flutter_animate/extensions/extensions.dart';
 
 import '../../api/models/pokemon/pokemon.dart';
 import '../../api/models/pokemon/sprite.dart';
 import '../../dependency_injection_container.dart';
 import '../../extensions/iterable_extension.dart';
+import '../../theme/base_theme.dart';
 import 'pokemon_image.dart';
 import 'view_models/image_color_view_model.dart';
 
@@ -43,13 +47,11 @@ class _PokemonSpriteImageState extends State<PokemonSpriteImage> {
     spriteImageProvider = CachedNetworkImageProvider(
       _createSpriteImageUrl(),
     );
-
     spriteImageColorViewModel.colorListStream.listen(
       (value) {
         widget.spriteImageColorCallback?.call(value);
       },
     );
-
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
         if (widget.spriteImageColorCallback != null) {
@@ -235,16 +237,14 @@ class _PokemonSpriteImageState extends State<PokemonSpriteImage> {
     return Image.asset(
       'assets/images/pokeball_outline.png',
       gaplessPlayback: true,
+    )
+        .animate(
+      onPlay: (controller) => controller.repeat(),
+    )
+        .shimmer(
+      duration: 1200.ms,
+      color: colors(context).textOnForeground,
     );
-    // .animate(
-    //   onPlay: (controller) => controller.repeat(),
-    // )
-    // .shimmer(
-    //   duration: 1200.ms,
-    //   color: const Color(
-    //     0xFF80DDFF,
-    //   ),
-    // );
   }
 
   BorderRadius _buildBorderRadius() => BorderRadius.circular(180);

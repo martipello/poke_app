@@ -53,9 +53,11 @@ class _PokemonImageState extends State<PokemonImage> {
     mainImageProvider = CachedNetworkImageProvider(
       _createImageUrl(),
     );
-    mainImageColorViewModel.colorListStream.listen((value) {
-      widget.imageColorCallback?.call(value);
-    });
+    mainImageColorViewModel.colorListStream.listen(
+      (value) {
+        widget.imageColorCallback?.call(value);
+      },
+    );
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
         if (widget.imageColorCallback != null) {

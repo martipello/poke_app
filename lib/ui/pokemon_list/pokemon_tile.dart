@@ -173,6 +173,7 @@ class _PokemonTileState extends State<PokemonTile> {
       pokemon: widget.pokemon,
       clipBehavior: Clip.hardEdge,
       maskColor: widget.maskColor,
+      forceSpriteImage: false,
       size: const Size(
         kPokemonTileImageHeight,
         kPokemonTileImageHeight,

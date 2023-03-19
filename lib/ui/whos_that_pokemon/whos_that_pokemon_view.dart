@@ -327,6 +327,7 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
         pokemon: pokemon,
         size: Size(imageHeight, imageHeight),
         color: Colors.transparent,
+        forceSpriteImage: true,
       );
     }
     return _buildLoadingImage();
