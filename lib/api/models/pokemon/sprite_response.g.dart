@@ -6,11 +6,9 @@ part of 'sprite_response.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<SpriteResponse> _$spriteResponseSerializer =
-    new _$SpriteResponseSerializer();
+Serializer<SpriteResponse> _$spriteResponseSerializer = new _$SpriteResponseSerializer();
 
-class _$SpriteResponseSerializer
-    implements StructuredSerializer<SpriteResponse> {
+class _$SpriteResponseSerializer implements StructuredSerializer<SpriteResponse> {
   @override
   final Iterable<Type> types = const [SpriteResponse, _$SpriteResponse];
   @override
@@ -25,15 +23,13 @@ class _$SpriteResponseSerializer
     if (value != null) {
       result
         ..add('sprites')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(String)));
     }
     return result;
   }
 
   @override
-  SpriteResponse deserialize(
-      Serializers serializers, Iterable<Object?> serialized,
+  SpriteResponse deserialize(Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new SpriteResponseBuilder();
 
@@ -44,8 +40,7 @@ class _$SpriteResponseSerializer
       final Object? value = iterator.current;
       switch (key) {
         case 'sprites':
-          result.sprites = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+          result.sprites = serializers.deserialize(value, specifiedType: const FullType(String)) as String?;
           break;
       }
     }
@@ -64,12 +59,10 @@ class _$SpriteResponse extends SpriteResponse {
   _$SpriteResponse._({this.sprites}) : super._();
 
   @override
-  SpriteResponse rebuild(void Function(SpriteResponseBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+  SpriteResponse rebuild(void Function(SpriteResponseBuilder) updates) => (toBuilder()..update(updates)).build();
 
   @override
-  SpriteResponseBuilder toBuilder() =>
-      new SpriteResponseBuilder()..replace(this);
+  SpriteResponseBuilder toBuilder() => new SpriteResponseBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -79,19 +72,19 @@ class _$SpriteResponse extends SpriteResponse {
 
   @override
   int get hashCode {
-    return $jf($jc(0, sprites.hashCode));
+    var _$hash = 0;
+    _$hash = $jc(_$hash, sprites.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'SpriteResponse')
-          ..add('sprites', sprites))
-        .toString();
+    return (newBuiltValueToStringHelper(r'SpriteResponse')..add('sprites', sprites)).toString();
   }
 }
 
-class SpriteResponseBuilder
-    implements Builder<SpriteResponse, SpriteResponseBuilder> {
+class SpriteResponseBuilder implements Builder<SpriteResponse, SpriteResponseBuilder> {
   _$SpriteResponse? _$v;
 
   String? _sprites;
@@ -130,4 +123,4 @@ class SpriteResponseBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas
+// ignore_for_file: deprecated_member_use_from_same_package,type=lint

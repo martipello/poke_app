@@ -14,7 +14,6 @@ class PokeballLoadingWidget extends StatefulWidget {
 }
 
 class _PokeballLoadingWidgetState extends State<PokeballLoadingWidget> {
-
   final _pokeballLoadingViewModel = getIt.get<PokeballLoadingViewModel>();
 
   @override

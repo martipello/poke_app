@@ -25,7 +25,6 @@ class StatBar extends StatefulWidget {
 }
 
 class _StatBarState extends State<StatBar> {
-
   late Future delay;
 
   @override

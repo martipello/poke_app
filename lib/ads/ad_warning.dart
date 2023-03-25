@@ -16,49 +16,62 @@ class AdWarning extends StatefulWidget {
 class _AdWarningState extends State<AdWarning> with TickerProviderStateMixin {
   final _openPokemonCountViewModel = getIt.get<OpenPokemonCountViewModel>();
 
-  late final _positionAnimationController = AnimationController(
-    vsync: this,
-    duration: _animationDuration,
-  );
+  AnimationController? _positionAnimationController;
+  AnimationController? _rotationAnimationController;
+  Animation<Offset>? _positionAnimation;
+  Animation<double>? _rotationAnimation;
 
-  late final _positionAnimation = Tween<Offset>(
-    begin: const Offset(kAdWarningLabelMaxSize, 0.0),
-    end: Offset.zero,
-  ).animate(
-    CurvedAnimation(
-      parent: _positionAnimationController,
-      curve: Curves.linearToEaseOut,
-    ),
-  );
+  void setPositionAnimation() {
+    _positionAnimationController = AnimationController(
+      vsync: this,
+      duration: _animationDuration,
+    );
+    if (_positionAnimationController != null) {
+      _positionAnimation = Tween<Offset>(
+        begin: const Offset(kAdWarningLabelMaxSize, 0.0),
+        end: Offset.zero,
+      ).animate(
+        CurvedAnimation(
+          parent: _positionAnimationController!,
+          curve: Curves.linearToEaseOut,
+        ),
+      );
+    }
+  }
 
-  late final _rotationAnimationController = AnimationController(
-    vsync: this,
-    duration: _animationDuration,
-  );
-
-  late final _rotationAnimation = Tween<double>(
-    begin: 4000,
-    end: -4000,
-  ).animate(
-    CurvedAnimation(
-      parent: _rotationAnimationController,
-      curve: Curves.linearToEaseOut,
-    ),
-  );
+  void setRotationAnimation() {
+    _rotationAnimationController = AnimationController(
+      vsync: this,
+      duration: _animationDuration,
+    );
+    if (_rotationAnimationController != null) {
+      _rotationAnimation = Tween<double>(
+        begin: 4000,
+        end: -4000,
+      ).animate(
+        CurvedAnimation(
+          parent: _rotationAnimationController!,
+          curve: Curves.linearToEaseOut,
+        ),
+      );
+    }
+  }
 
   @override
   void initState() {
     super.initState();
+    setPositionAnimation();
+    setRotationAnimation();
     _runWithDelay(
-      _positionAnimationController.forward,
-      voidCallback2: _rotationAnimationController.forward,
+      voidCallback1: _positionAnimationController?.forward,
+      voidCallback2: _rotationAnimationController?.forward,
     );
-    _positionAnimationController.addListener(
+    _positionAnimationController?.addListener(
       () {
-        if (_positionAnimationController.isCompleted) {
+        if (_positionAnimationController?.isCompleted == true) {
           _runWithDelay(
-            _positionAnimationController.reverse,
-            voidCallback2: _rotationAnimationController.reverse,
+            voidCallback1: _positionAnimationController?.reverse,
+            voidCallback2: _rotationAnimationController?.reverse,
           );
         }
       },
@@ -67,7 +80,8 @@ class _AdWarningState extends State<AdWarning> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    _positionAnimationController.dispose();
+    _positionAnimationController?.dispose();
+    _rotationAnimationController?.dispose();
     super.dispose();
   }
 
@@ -77,42 +91,52 @@ class _AdWarningState extends State<AdWarning> with TickerProviderStateMixin {
       stream: _openPokemonCountViewModel.openPokemonCountStream,
       builder: (context, snapshot) {
         final openPokemonCount = snapshot.data ?? 0;
-        return Stack(
-          children: [
-            SlideTransition(
-              position: _positionAnimation,
-              child: Container(
-                width: kAdWarningLabelMaxSize.toDouble(),
-                decoration: _adWarningBoxDecoration(),
-                padding: const EdgeInsets.all(4),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    _buildAnimatedPokeball(4),
-                    _mediumHorizontalMargin(),
-                    _buildWarningLabel(
-                      context,
-                      openPokemonCount,
-                    ),
-                  ],
+        final positionAnimation = _positionAnimation;
+        if (positionAnimation != null) {
+          return Stack(
+            children: [
+              SlideTransition(
+                position: positionAnimation,
+                child: Container(
+                  width: kAdWarningLabelMaxSize.toDouble(),
+                  decoration: _adWarningBoxDecoration(),
+                  padding: const EdgeInsets.all(4),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _buildAnimatedPokeball(4),
+                      _mediumHorizontalMargin(),
+                      _buildWarningLabel(
+                        context,
+                        openPokemonCount,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        );
+            ],
+          );
+        } else {
+          return const SizedBox();
+        }
       },
     );
   }
 
   Widget _buildAnimatedPokeball(int turns) {
-    return RotationTransition(
-      turns: _rotationAnimation,
-      child: Image.asset(
-        'assets/images/pokeball.png',
-        height: 24,
-        width: 24,
-      ),
-    );
+    final rotationAnimation = _rotationAnimation;
+    if (rotationAnimation != null) {
+      return RotationTransition(
+        turns: rotationAnimation,
+        child: Image.asset(
+          'assets/images/pokeball.png',
+          height: 24,
+          width: 24,
+        ),
+      );
+    } else {
+      return const SizedBox();
+    }
   }
 
   Widget _buildWarningLabel(
@@ -155,8 +179,8 @@ class _AdWarningState extends State<AdWarning> with TickerProviderStateMixin {
         milliseconds: 1500,
       );
 
-  void _runWithDelay(
-    VoidCallback voidCallback, {
+  void _runWithDelay({
+    VoidCallback? voidCallback1,
     VoidCallback? voidCallback2,
   }) {
     Future.delayed(
@@ -165,7 +189,7 @@ class _AdWarningState extends State<AdWarning> with TickerProviderStateMixin {
       ),
     ).then(
       (value) {
-        voidCallback.call();
+        voidCallback1?.call();
         voidCallback2?.call();
       },
     );

@@ -62,7 +62,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
                 PokemonDetailPage.routeName,
                 arguments: PokemonDetailPageArguments(
                   pokemon: _pokemon.rebuild(
-                        (p) => p..pokemon_v2_pokemonspecy = widget.speciesHolder.toBuilder(),
+                    (p) => p..pokemon_v2_pokemonspecy = widget.speciesHolder.toBuilder(),
                   ),
                   colorList: colorList,
                 ),

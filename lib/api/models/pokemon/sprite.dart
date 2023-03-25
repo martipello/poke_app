@@ -7,7 +7,6 @@ import '../../serializers/serializers.dart';
 part 'sprite.g.dart';
 
 abstract class Sprite implements Built<Sprite, SpriteBuilder> {
-
   factory Sprite([void Function(SpriteBuilder) updates]) = _$Sprite;
   Sprite._();
 

@@ -309,7 +309,7 @@ class Settings extends StatelessWidget {
       ),
       initialValue: _hasPurchasedPremium,
       onToggle: (toggle) {
-        if(!_hasPurchasedPremium) {
+        if (!_hasPurchasedPremium) {
           _inAppPurchaseViewModel.buyPremium(productDetail);
         }
       },

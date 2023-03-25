@@ -9,8 +9,6 @@ import 'pokemon.dart';
 part 'pokemon_response.g.dart';
 
 abstract class PokemonResponse implements Built<PokemonResponse, PokemonResponseBuilder> {
-
-
   factory PokemonResponse([void Function(PokemonResponseBuilder) updates]) = _$PokemonResponse;
 
   PokemonResponse._();

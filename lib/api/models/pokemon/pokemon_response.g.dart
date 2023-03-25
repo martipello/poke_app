@@ -6,11 +6,9 @@ part of 'pokemon_response.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<PokemonResponse> _$pokemonResponseSerializer =
-    new _$PokemonResponseSerializer();
+Serializer<PokemonResponse> _$pokemonResponseSerializer = new _$PokemonResponseSerializer();
 
-class _$PokemonResponseSerializer
-    implements StructuredSerializer<PokemonResponse> {
+class _$PokemonResponseSerializer implements StructuredSerializer<PokemonResponse> {
   @override
   final Iterable<Type> types = const [PokemonResponse, _$PokemonResponse];
   @override
@@ -22,16 +20,14 @@ class _$PokemonResponseSerializer
     final result = <Object?>[
       'pokemon_v2_pokemon',
       serializers.serialize(object.pokemon_v2_pokemon,
-          specifiedType:
-              const FullType(BuiltList, const [const FullType(Pokemon)])),
+          specifiedType: const FullType(BuiltList, const [const FullType(Pokemon)])),
     ];
 
     return result;
   }
 
   @override
-  PokemonResponse deserialize(
-      Serializers serializers, Iterable<Object?> serialized,
+  PokemonResponse deserialize(Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new PokemonResponseBuilder();
 
@@ -43,9 +39,7 @@ class _$PokemonResponseSerializer
       switch (key) {
         case 'pokemon_v2_pokemon':
           result.pokemon_v2_pokemon.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(
-                      BuiltList, const [const FullType(Pokemon)]))!
-              as BuiltList<Object?>);
+              specifiedType: const FullType(BuiltList, const [const FullType(Pokemon)]))! as BuiltList<Object?>);
           break;
       }
     }
@@ -62,47 +56,41 @@ class _$PokemonResponse extends PokemonResponse {
       (new PokemonResponseBuilder()..update(updates))._build();
 
   _$PokemonResponse._({required this.pokemon_v2_pokemon}) : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        pokemon_v2_pokemon, r'PokemonResponse', 'pokemon_v2_pokemon');
+    BuiltValueNullFieldError.checkNotNull(pokemon_v2_pokemon, r'PokemonResponse', 'pokemon_v2_pokemon');
   }
 
   @override
-  PokemonResponse rebuild(void Function(PokemonResponseBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+  PokemonResponse rebuild(void Function(PokemonResponseBuilder) updates) => (toBuilder()..update(updates)).build();
 
   @override
-  PokemonResponseBuilder toBuilder() =>
-      new PokemonResponseBuilder()..replace(this);
+  PokemonResponseBuilder toBuilder() => new PokemonResponseBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is PokemonResponse &&
-        pokemon_v2_pokemon == other.pokemon_v2_pokemon;
+    return other is PokemonResponse && pokemon_v2_pokemon == other.pokemon_v2_pokemon;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(0, pokemon_v2_pokemon.hashCode));
+    var _$hash = 0;
+    _$hash = $jc(_$hash, pokemon_v2_pokemon.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'PokemonResponse')
-          ..add('pokemon_v2_pokemon', pokemon_v2_pokemon))
-        .toString();
+    return (newBuiltValueToStringHelper(r'PokemonResponse')..add('pokemon_v2_pokemon', pokemon_v2_pokemon)).toString();
   }
 }
 
-class PokemonResponseBuilder
-    implements Builder<PokemonResponse, PokemonResponseBuilder> {
+class PokemonResponseBuilder implements Builder<PokemonResponse, PokemonResponseBuilder> {
   _$PokemonResponse? _$v;
 
   ListBuilder<Pokemon>? _pokemon_v2_pokemon;
-  ListBuilder<Pokemon> get pokemon_v2_pokemon =>
-      _$this._pokemon_v2_pokemon ??= new ListBuilder<Pokemon>();
-  set pokemon_v2_pokemon(ListBuilder<Pokemon>? pokemon_v2_pokemon) =>
-      _$this._pokemon_v2_pokemon = pokemon_v2_pokemon;
+  ListBuilder<Pokemon> get pokemon_v2_pokemon => _$this._pokemon_v2_pokemon ??= new ListBuilder<Pokemon>();
+  set pokemon_v2_pokemon(ListBuilder<Pokemon>? pokemon_v2_pokemon) => _$this._pokemon_v2_pokemon = pokemon_v2_pokemon;
 
   PokemonResponseBuilder();
 
@@ -132,17 +120,14 @@ class PokemonResponseBuilder
   _$PokemonResponse _build() {
     _$PokemonResponse _$result;
     try {
-      _$result = _$v ??
-          new _$PokemonResponse._(
-              pokemon_v2_pokemon: pokemon_v2_pokemon.build());
+      _$result = _$v ?? new _$PokemonResponse._(pokemon_v2_pokemon: pokemon_v2_pokemon.build());
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'pokemon_v2_pokemon';
         pokemon_v2_pokemon.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
-            r'PokemonResponse', _$failedField, e.toString());
+        throw new BuiltValueNestedFieldError(r'PokemonResponse', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -151,4 +136,4 @@ class PokemonResponseBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas
+// ignore_for_file: deprecated_member_use_from_same_package,type=lint

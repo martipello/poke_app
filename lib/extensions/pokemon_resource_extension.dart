@@ -2,7 +2,6 @@ import '../api/models/pokemon/pokemon_resource.dart';
 import 'string_extension.dart';
 
 extension PokemonExtension on PokemonResource? {
-
   String normalizeName() {
     return (this?.name ?? '').split(RegExp('-')).join(' ').capitalize();
   }
@@ -15,7 +14,7 @@ extension PokemonExtension on PokemonResource? {
   String generationName() {
     final _versionGroupName = this?.name ?? '';
     final splitString = _versionGroupName.split(RegExp('-'));
-    if(splitString.length > 1){
+    if (splitString.length > 1) {
       splitString[1] = splitString[1].toUpperCase();
     }
     return splitString.join(' ').capitalize();

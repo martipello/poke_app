@@ -18,7 +18,6 @@ const kDefaultListAdFrequency = 8;
 const kInterstitialAdFrequency = 6;
 
 class GoogleAdsViewModel {
-
   final inlineAdaptiveBannerSize = BehaviorSubject<AdSize>();
 
   BannerAd? _bannerAd;

@@ -6,11 +6,9 @@ part of 'move_learn_method.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<MoveLearnMethod> _$moveLearnMethodSerializer =
-    new _$MoveLearnMethodSerializer();
+Serializer<MoveLearnMethod> _$moveLearnMethodSerializer = new _$MoveLearnMethodSerializer();
 
-class _$MoveLearnMethodSerializer
-    implements StructuredSerializer<MoveLearnMethod> {
+class _$MoveLearnMethodSerializer implements StructuredSerializer<MoveLearnMethod> {
   @override
   final Iterable<Type> types = const [MoveLearnMethod, _$MoveLearnMethod];
   @override
@@ -22,27 +20,23 @@ class _$MoveLearnMethodSerializer
     final result = <Object?>[
       'pokemon_v2_versiongroupmovelearnmethods',
       serializers.serialize(object.pokemon_v2_versiongroupmovelearnmethods,
-          specifiedType: const FullType(
-              BuiltList, const [const FullType(PokemonResource)])),
+          specifiedType: const FullType(BuiltList, const [const FullType(PokemonResource)])),
       'pokemon_v2_movelearnmethoddescriptions',
       serializers.serialize(object.pokemon_v2_movelearnmethoddescriptions,
-          specifiedType: const FullType(
-              BuiltList, const [const FullType(PokemonResource)])),
+          specifiedType: const FullType(BuiltList, const [const FullType(PokemonResource)])),
     ];
     Object? value;
     value = object.name;
     if (value != null) {
       result
         ..add('name')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(String)));
     }
     return result;
   }
 
   @override
-  MoveLearnMethod deserialize(
-      Serializers serializers, Iterable<Object?> serialized,
+  MoveLearnMethod deserialize(Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new MoveLearnMethodBuilder();
 
@@ -53,22 +47,17 @@ class _$MoveLearnMethodSerializer
       final Object? value = iterator.current;
       switch (key) {
         case 'name':
-          result.name = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+          result.name = serializers.deserialize(value, specifiedType: const FullType(String)) as String?;
           break;
         case 'pokemon_v2_versiongroupmovelearnmethods':
-          result.pokemon_v2_versiongroupmovelearnmethods.replace(
-              serializers.deserialize(value,
-                      specifiedType: const FullType(
-                          BuiltList, const [const FullType(PokemonResource)]))!
-                  as BuiltList<Object?>);
+          result.pokemon_v2_versiongroupmovelearnmethods.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(BuiltList, const [const FullType(PokemonResource)]))!
+              as BuiltList<Object?>);
           break;
         case 'pokemon_v2_movelearnmethoddescriptions':
-          result.pokemon_v2_movelearnmethoddescriptions.replace(
-              serializers.deserialize(value,
-                      specifiedType: const FullType(
-                          BuiltList, const [const FullType(PokemonResource)]))!
-                  as BuiltList<Object?>);
+          result.pokemon_v2_movelearnmethoddescriptions.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(BuiltList, const [const FullType(PokemonResource)]))!
+              as BuiltList<Object?>);
           break;
       }
     }
@@ -94,56 +83,47 @@ class _$MoveLearnMethod extends MoveLearnMethod {
       required this.pokemon_v2_movelearnmethoddescriptions})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
-        pokemon_v2_versiongroupmovelearnmethods,
-        r'MoveLearnMethod',
-        'pokemon_v2_versiongroupmovelearnmethods');
+        pokemon_v2_versiongroupmovelearnmethods, r'MoveLearnMethod', 'pokemon_v2_versiongroupmovelearnmethods');
     BuiltValueNullFieldError.checkNotNull(
-        pokemon_v2_movelearnmethoddescriptions,
-        r'MoveLearnMethod',
-        'pokemon_v2_movelearnmethoddescriptions');
+        pokemon_v2_movelearnmethoddescriptions, r'MoveLearnMethod', 'pokemon_v2_movelearnmethoddescriptions');
   }
 
   @override
-  MoveLearnMethod rebuild(void Function(MoveLearnMethodBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+  MoveLearnMethod rebuild(void Function(MoveLearnMethodBuilder) updates) => (toBuilder()..update(updates)).build();
 
   @override
-  MoveLearnMethodBuilder toBuilder() =>
-      new MoveLearnMethodBuilder()..replace(this);
+  MoveLearnMethodBuilder toBuilder() => new MoveLearnMethodBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is MoveLearnMethod &&
         name == other.name &&
-        pokemon_v2_versiongroupmovelearnmethods ==
-            other.pokemon_v2_versiongroupmovelearnmethods &&
-        pokemon_v2_movelearnmethoddescriptions ==
-            other.pokemon_v2_movelearnmethoddescriptions;
+        pokemon_v2_versiongroupmovelearnmethods == other.pokemon_v2_versiongroupmovelearnmethods &&
+        pokemon_v2_movelearnmethoddescriptions == other.pokemon_v2_movelearnmethoddescriptions;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(
-        $jc($jc(0, name.hashCode),
-            pokemon_v2_versiongroupmovelearnmethods.hashCode),
-        pokemon_v2_movelearnmethoddescriptions.hashCode));
+    var _$hash = 0;
+    _$hash = $jc(_$hash, name.hashCode);
+    _$hash = $jc(_$hash, pokemon_v2_versiongroupmovelearnmethods.hashCode);
+    _$hash = $jc(_$hash, pokemon_v2_movelearnmethoddescriptions.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'MoveLearnMethod')
           ..add('name', name)
-          ..add('pokemon_v2_versiongroupmovelearnmethods',
-              pokemon_v2_versiongroupmovelearnmethods)
-          ..add('pokemon_v2_movelearnmethoddescriptions',
-              pokemon_v2_movelearnmethoddescriptions))
+          ..add('pokemon_v2_versiongroupmovelearnmethods', pokemon_v2_versiongroupmovelearnmethods)
+          ..add('pokemon_v2_movelearnmethoddescriptions', pokemon_v2_movelearnmethoddescriptions))
         .toString();
   }
 }
 
-class MoveLearnMethodBuilder
-    implements Builder<MoveLearnMethod, MoveLearnMethodBuilder> {
+class MoveLearnMethodBuilder implements Builder<MoveLearnMethod, MoveLearnMethodBuilder> {
   _$MoveLearnMethod? _$v;
 
   String? _name;
@@ -152,23 +132,15 @@ class MoveLearnMethodBuilder
 
   ListBuilder<PokemonResource>? _pokemon_v2_versiongroupmovelearnmethods;
   ListBuilder<PokemonResource> get pokemon_v2_versiongroupmovelearnmethods =>
-      _$this._pokemon_v2_versiongroupmovelearnmethods ??=
-          new ListBuilder<PokemonResource>();
-  set pokemon_v2_versiongroupmovelearnmethods(
-          ListBuilder<PokemonResource>?
-              pokemon_v2_versiongroupmovelearnmethods) =>
-      _$this._pokemon_v2_versiongroupmovelearnmethods =
-          pokemon_v2_versiongroupmovelearnmethods;
+      _$this._pokemon_v2_versiongroupmovelearnmethods ??= new ListBuilder<PokemonResource>();
+  set pokemon_v2_versiongroupmovelearnmethods(ListBuilder<PokemonResource>? pokemon_v2_versiongroupmovelearnmethods) =>
+      _$this._pokemon_v2_versiongroupmovelearnmethods = pokemon_v2_versiongroupmovelearnmethods;
 
   ListBuilder<PokemonResource>? _pokemon_v2_movelearnmethoddescriptions;
   ListBuilder<PokemonResource> get pokemon_v2_movelearnmethoddescriptions =>
-      _$this._pokemon_v2_movelearnmethoddescriptions ??=
-          new ListBuilder<PokemonResource>();
-  set pokemon_v2_movelearnmethoddescriptions(
-          ListBuilder<PokemonResource>?
-              pokemon_v2_movelearnmethoddescriptions) =>
-      _$this._pokemon_v2_movelearnmethoddescriptions =
-          pokemon_v2_movelearnmethoddescriptions;
+      _$this._pokemon_v2_movelearnmethoddescriptions ??= new ListBuilder<PokemonResource>();
+  set pokemon_v2_movelearnmethoddescriptions(ListBuilder<PokemonResource>? pokemon_v2_movelearnmethoddescriptions) =>
+      _$this._pokemon_v2_movelearnmethoddescriptions = pokemon_v2_movelearnmethoddescriptions;
 
   MoveLearnMethodBuilder();
 
@@ -176,10 +148,8 @@ class MoveLearnMethodBuilder
     final $v = _$v;
     if ($v != null) {
       _name = $v.name;
-      _pokemon_v2_versiongroupmovelearnmethods =
-          $v.pokemon_v2_versiongroupmovelearnmethods.toBuilder();
-      _pokemon_v2_movelearnmethoddescriptions =
-          $v.pokemon_v2_movelearnmethoddescriptions.toBuilder();
+      _pokemon_v2_versiongroupmovelearnmethods = $v.pokemon_v2_versiongroupmovelearnmethods.toBuilder();
+      _pokemon_v2_movelearnmethoddescriptions = $v.pokemon_v2_movelearnmethoddescriptions.toBuilder();
       _$v = null;
     }
     return this;
@@ -205,10 +175,8 @@ class MoveLearnMethodBuilder
       _$result = _$v ??
           new _$MoveLearnMethod._(
               name: name,
-              pokemon_v2_versiongroupmovelearnmethods:
-                  pokemon_v2_versiongroupmovelearnmethods.build(),
-              pokemon_v2_movelearnmethoddescriptions:
-                  pokemon_v2_movelearnmethoddescriptions.build());
+              pokemon_v2_versiongroupmovelearnmethods: pokemon_v2_versiongroupmovelearnmethods.build(),
+              pokemon_v2_movelearnmethoddescriptions: pokemon_v2_movelearnmethoddescriptions.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -217,8 +185,7 @@ class MoveLearnMethodBuilder
         _$failedField = 'pokemon_v2_movelearnmethoddescriptions';
         pokemon_v2_movelearnmethoddescriptions.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
-            r'MoveLearnMethod', _$failedField, e.toString());
+        throw new BuiltValueNestedFieldError(r'MoveLearnMethod', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -227,4 +194,4 @@ class MoveLearnMethodBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas
+// ignore_for_file: deprecated_member_use_from_same_package,type=lint

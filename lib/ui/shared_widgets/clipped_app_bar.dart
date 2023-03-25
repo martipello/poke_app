@@ -49,7 +49,7 @@ class ClippedAppBar extends StatelessWidget {
   Widget _buildAppBarBackButton(
     BuildContext context,
   ) {
-    if(onBackTap == null) {
+    if (onBackTap == null) {
       return const SizedBox();
     }
     return Align(

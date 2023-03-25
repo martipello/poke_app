@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:poke_app/ui/whos_that_pokemon/whos_that_pokemon_view.dart';
 
 import '../extensions/build_context_extension.dart';
 import '../theme/base_theme.dart';
 import 'pokemon_list/pokemon_list_view.dart';
+import 'whos_that_pokemon/whos_that_pokemon_view.dart';
 
 class AppShell extends StatefulWidget {
   static const routeName = '/dashboard';

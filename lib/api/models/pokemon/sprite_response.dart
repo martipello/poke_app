@@ -6,7 +6,6 @@ import '../../serializers/serializers.dart';
 part 'sprite_response.g.dart';
 
 abstract class SpriteResponse implements Built<SpriteResponse, SpriteResponseBuilder> {
-
   factory SpriteResponse([void Function(SpriteResponseBuilder) updates]) = _$SpriteResponse;
 
   SpriteResponse._();

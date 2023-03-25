@@ -15,16 +15,14 @@ class _$StatSerializer implements StructuredSerializer<Stat> {
   final String wireName = 'Stat';
 
   @override
-  Iterable<Object?> serialize(Serializers serializers, Stat object,
-      {FullType specifiedType = FullType.unspecified}) {
+  Iterable<Object?> serialize(Serializers serializers, Stat object, {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[];
     Object? value;
     value = object.name;
     if (value != null) {
       result
         ..add('name')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(String)));
     }
     value = object.move_damage_class_id;
     if (value != null) {
@@ -36,8 +34,7 @@ class _$StatSerializer implements StructuredSerializer<Stat> {
     if (value != null) {
       result
         ..add('is_battle_only')
-        ..add(
-            serializers.serialize(value, specifiedType: const FullType(bool)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(bool)));
     }
     value = object.game_index;
     if (value != null) {
@@ -60,20 +57,16 @@ class _$StatSerializer implements StructuredSerializer<Stat> {
       final Object? value = iterator.current;
       switch (key) {
         case 'name':
-          result.name = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+          result.name = serializers.deserialize(value, specifiedType: const FullType(String)) as String?;
           break;
         case 'move_damage_class_id':
-          result.move_damage_class_id = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
+          result.move_damage_class_id = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
           break;
         case 'is_battle_only':
-          result.is_battle_only = serializers.deserialize(value,
-              specifiedType: const FullType(bool)) as bool?;
+          result.is_battle_only = serializers.deserialize(value, specifiedType: const FullType(bool)) as bool?;
           break;
         case 'game_index':
-          result.game_index = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
+          result.game_index = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
           break;
       }
     }
@@ -92,19 +85,12 @@ class _$Stat extends Stat {
   @override
   final int? game_index;
 
-  factory _$Stat([void Function(StatBuilder)? updates]) =>
-      (new StatBuilder()..update(updates))._build();
+  factory _$Stat([void Function(StatBuilder)? updates]) => (new StatBuilder()..update(updates))._build();
 
-  _$Stat._(
-      {this.name,
-      this.move_damage_class_id,
-      this.is_battle_only,
-      this.game_index})
-      : super._();
+  _$Stat._({this.name, this.move_damage_class_id, this.is_battle_only, this.game_index}) : super._();
 
   @override
-  Stat rebuild(void Function(StatBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+  Stat rebuild(void Function(StatBuilder) updates) => (toBuilder()..update(updates)).build();
 
   @override
   StatBuilder toBuilder() => new StatBuilder()..replace(this);
@@ -121,10 +107,13 @@ class _$Stat extends Stat {
 
   @override
   int get hashCode {
-    return $jf($jc(
-        $jc($jc($jc(0, name.hashCode), move_damage_class_id.hashCode),
-            is_battle_only.hashCode),
-        game_index.hashCode));
+    var _$hash = 0;
+    _$hash = $jc(_$hash, name.hashCode);
+    _$hash = $jc(_$hash, move_damage_class_id.hashCode);
+    _$hash = $jc(_$hash, is_battle_only.hashCode);
+    _$hash = $jc(_$hash, game_index.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
   }
 
   @override
@@ -147,13 +136,11 @@ class StatBuilder implements Builder<Stat, StatBuilder> {
 
   int? _move_damage_class_id;
   int? get move_damage_class_id => _$this._move_damage_class_id;
-  set move_damage_class_id(int? move_damage_class_id) =>
-      _$this._move_damage_class_id = move_damage_class_id;
+  set move_damage_class_id(int? move_damage_class_id) => _$this._move_damage_class_id = move_damage_class_id;
 
   bool? _is_battle_only;
   bool? get is_battle_only => _$this._is_battle_only;
-  set is_battle_only(bool? is_battle_only) =>
-      _$this._is_battle_only = is_battle_only;
+  set is_battle_only(bool? is_battle_only) => _$this._is_battle_only = is_battle_only;
 
   int? _game_index;
   int? get game_index => _$this._game_index;
@@ -199,4 +186,4 @@ class StatBuilder implements Builder<Stat, StatBuilder> {
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas
+// ignore_for_file: deprecated_member_use_from_same_package,type=lint

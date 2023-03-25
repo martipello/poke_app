@@ -12,7 +12,6 @@ import 'pokemon_resource.dart';
 part 'pokemon_form.g.dart';
 
 abstract class PokemonForm implements Built<PokemonForm, PokemonFormBuilder> {
-
   factory PokemonForm([void Function(PokemonFormBuilder) updates]) = _$PokemonForm;
   PokemonForm._();
 

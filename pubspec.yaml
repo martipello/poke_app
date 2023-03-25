@@ -67,6 +67,7 @@ dependencies:
   flutter_isolate: ^2.0.4
   in_app_purchase: ^3.1.1
   cached_network_image: ^3.2.3
+  soundpool: ^2.3.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -111,6 +112,7 @@ flutter:
     - assets/icons/
     - assets/images/
     - assets/animations/
+    - assets/audio/
   uses-material-design: true
 
   fonts:

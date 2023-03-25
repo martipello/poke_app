@@ -15,7 +15,6 @@ class FilterButton extends StatefulWidget {
 }
 
 class _FilterButtonState extends State<FilterButton> with SingleTickerProviderStateMixin {
-
   final filterButtonTag = 'filterButtonTag';
 
   @override

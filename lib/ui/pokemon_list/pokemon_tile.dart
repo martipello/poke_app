@@ -13,7 +13,6 @@ import '../shared_widgets/chip_group.dart';
 import '../shared_widgets/pokemon_image.dart';
 import '../shared_widgets/rounded_card.dart';
 import '../shared_widgets/type_chip.dart';
-import '../shared_widgets/view_constraint.dart';
 import '../shared_widgets/view_models/image_color_view_model.dart';
 
 const kPokemonTileImageHeight = 80.0;
@@ -173,7 +172,6 @@ class _PokemonTileState extends State<PokemonTile> {
       pokemon: widget.pokemon,
       clipBehavior: Clip.hardEdge,
       maskColor: widget.maskColor,
-      forceSpriteImage: false,
       size: const Size(
         kPokemonTileImageHeight,
         kPokemonTileImageHeight,

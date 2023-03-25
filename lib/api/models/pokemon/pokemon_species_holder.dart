@@ -13,7 +13,6 @@ import 'pokemon_species.dart';
 part 'pokemon_species_holder.g.dart';
 
 abstract class PokemonSpeciesHolder implements Built<PokemonSpeciesHolder, PokemonSpeciesHolderBuilder> {
-
   factory PokemonSpeciesHolder([void Function(PokemonSpeciesHolderBuilder) updates]) = _$PokemonSpeciesHolder;
   PokemonSpeciesHolder._();
 

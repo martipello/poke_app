@@ -6,8 +6,7 @@ part of 'error_response.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<ErrorResponse> _$errorResponseSerializer =
-    new _$ErrorResponseSerializer();
+Serializer<ErrorResponse> _$errorResponseSerializer = new _$ErrorResponseSerializer();
 
 class _$ErrorResponseSerializer implements StructuredSerializer<ErrorResponse> {
   @override
@@ -20,23 +19,20 @@ class _$ErrorResponseSerializer implements StructuredSerializer<ErrorResponse> {
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[
       'error',
-      serializers.serialize(object.error,
-          specifiedType: const FullType(Object)),
+      serializers.serialize(object.error, specifiedType: const FullType(Object)),
     ];
     Object? value;
     value = object.message;
     if (value != null) {
       result
         ..add('message')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(String)));
     }
     value = object.url;
     if (value != null) {
       result
         ..add('url')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(String)));
     }
     value = object.statusCode;
     if (value != null) {
@@ -54,8 +50,7 @@ class _$ErrorResponseSerializer implements StructuredSerializer<ErrorResponse> {
   }
 
   @override
-  ErrorResponse deserialize(
-      Serializers serializers, Iterable<Object?> serialized,
+  ErrorResponse deserialize(Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new ErrorResponseBuilder();
 
@@ -66,24 +61,19 @@ class _$ErrorResponseSerializer implements StructuredSerializer<ErrorResponse> {
       final Object? value = iterator.current;
       switch (key) {
         case 'message':
-          result.message = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+          result.message = serializers.deserialize(value, specifiedType: const FullType(String)) as String?;
           break;
         case 'error':
-          result.error = serializers.deserialize(value,
-              specifiedType: const FullType(Object));
+          result.error = serializers.deserialize(value, specifiedType: const FullType(Object));
           break;
         case 'url':
-          result.url = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+          result.url = serializers.deserialize(value, specifiedType: const FullType(String)) as String?;
           break;
         case 'statusCode':
-          result.statusCode = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
+          result.statusCode = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
           break;
         case 'attempts_remaining':
-          result.attempts_remaining = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
+          result.attempts_remaining = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
           break;
       }
     }
@@ -107,19 +97,13 @@ class _$ErrorResponse extends ErrorResponse {
   factory _$ErrorResponse([void Function(ErrorResponseBuilder)? updates]) =>
       (new ErrorResponseBuilder()..update(updates))._build();
 
-  _$ErrorResponse._(
-      {this.message,
-      required this.error,
-      this.url,
-      this.statusCode,
-      this.attempts_remaining})
+  _$ErrorResponse._({this.message, required this.error, this.url, this.statusCode, this.attempts_remaining})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(error, r'ErrorResponse', 'error');
   }
 
   @override
-  ErrorResponse rebuild(void Function(ErrorResponseBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+  ErrorResponse rebuild(void Function(ErrorResponseBuilder) updates) => (toBuilder()..update(updates)).build();
 
   @override
   ErrorResponseBuilder toBuilder() => new ErrorResponseBuilder()..replace(this);
@@ -137,10 +121,14 @@ class _$ErrorResponse extends ErrorResponse {
 
   @override
   int get hashCode {
-    return $jf($jc(
-        $jc($jc($jc($jc(0, message.hashCode), error.hashCode), url.hashCode),
-            statusCode.hashCode),
-        attempts_remaining.hashCode));
+    var _$hash = 0;
+    _$hash = $jc(_$hash, message.hashCode);
+    _$hash = $jc(_$hash, error.hashCode);
+    _$hash = $jc(_$hash, url.hashCode);
+    _$hash = $jc(_$hash, statusCode.hashCode);
+    _$hash = $jc(_$hash, attempts_remaining.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
   }
 
   @override
@@ -155,8 +143,7 @@ class _$ErrorResponse extends ErrorResponse {
   }
 }
 
-class ErrorResponseBuilder
-    implements Builder<ErrorResponse, ErrorResponseBuilder> {
+class ErrorResponseBuilder implements Builder<ErrorResponse, ErrorResponseBuilder> {
   _$ErrorResponse? _$v;
 
   String? _message;
@@ -177,8 +164,7 @@ class ErrorResponseBuilder
 
   int? _attempts_remaining;
   int? get attempts_remaining => _$this._attempts_remaining;
-  set attempts_remaining(int? attempts_remaining) =>
-      _$this._attempts_remaining = attempts_remaining;
+  set attempts_remaining(int? attempts_remaining) => _$this._attempts_remaining = attempts_remaining;
 
   ErrorResponseBuilder();
 
@@ -213,8 +199,7 @@ class ErrorResponseBuilder
     final _$result = _$v ??
         new _$ErrorResponse._(
             message: message,
-            error: BuiltValueNullFieldError.checkNotNull(
-                error, r'ErrorResponse', 'error'),
+            error: BuiltValueNullFieldError.checkNotNull(error, r'ErrorResponse', 'error'),
             url: url,
             statusCode: statusCode,
             attempts_remaining: attempts_remaining);
@@ -223,4 +208,4 @@ class ErrorResponseBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas
+// ignore_for_file: deprecated_member_use_from_same_package,type=lint

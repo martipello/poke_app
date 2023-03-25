@@ -16,7 +16,8 @@ extension PokemonExtension on Pokemon? {
   }
 
   String shape() {
-    return this?.pokemon_v2_pokemonspecy?.pokemon_v2_pokemonshape?.pokemon_v2_pokemonshapenames.firstOrNull()?.name ?? '';
+    return this?.pokemon_v2_pokemonspecy?.pokemon_v2_pokemonshape?.pokemon_v2_pokemonshapenames.firstOrNull()?.name ??
+        '';
   }
 
   String pokemonHeight() {

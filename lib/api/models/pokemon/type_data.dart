@@ -10,7 +10,6 @@ import 'type_efficacies.dart';
 part 'type_data.g.dart';
 
 abstract class TypeData implements Built<TypeData, TypeDataBuilder> {
-
   factory TypeData([void Function(TypeDataBuilder) updates]) = _$TypeData;
   TypeData._();
 

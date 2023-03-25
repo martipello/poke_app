@@ -11,7 +11,6 @@ import 'pokemon_ability.dart';
 part 'pokemon_resource.g.dart';
 
 abstract class PokemonResource implements Built<PokemonResource, PokemonResourceBuilder> {
-
   factory PokemonResource([void Function(PokemonResourceBuilder) updates]) = _$PokemonResource;
   PokemonResource._();
 
@@ -50,7 +49,7 @@ abstract class PokemonResource implements Built<PokemonResource, PokemonResource
   BuiltList<PokemonResource> get pokemon_v2_pokemonshapenames;
 
   BuiltList<PokemonResource> get pokemon_v2_pokemonhabitatnames;
-  
+
   BuiltList<PokemonResource> get pokemon_v2_locationnames;
 
   PokemonAbility? get pokemon_v2_ability;

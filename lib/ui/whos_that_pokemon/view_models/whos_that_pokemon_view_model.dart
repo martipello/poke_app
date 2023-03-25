@@ -1,7 +1,9 @@
 import 'dart:math' as math;
 
+import 'package:flutter/services.dart';
 import 'package:rive/rive.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:soundpool/soundpool.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../../api/error_handler.dart';
@@ -24,7 +26,9 @@ class WhosThatPokemonViewModel {
     this.pokemonRepositoryGraphQl,
     this.errorHandler,
     this.languageService,
-  );
+  ) {
+    _initSoundpool();
+  }
 
   final PokemonRepositoryGraphQl pokemonRepositoryGraphQl;
   final ErrorHandler errorHandler;
@@ -40,11 +44,15 @@ class WhosThatPokemonViewModel {
   final revealResultStream = BehaviorSubject<Tuple2<RevealResult, bool>>();
 
   SimpleAnimation? _controller;
+  Soundpool? _soundpool;
+  int? _openingSoundId;
+  int? _closingSoundId;
+  final double _rate = 1.0;
 
   Future<void> generateRandomPokemon() async {
     pokemonOptionsStream.add(ApiResponse.loading(null));
     try {
-      setRevealResult(0, isRevealed: false);
+      setRevealResult(0);
       const limit = 30;
       const pokemonTotal = 1015 - limit;
       final offset = math.Random().nextInt(pokemonTotal);
@@ -59,9 +67,10 @@ class WhosThatPokemonViewModel {
         ),
       );
       final pokemonResponse = PokemonResponse.fromJson(response.data!);
-      print(pokemonResponse);
       final pokemon = pokemonResponse.pokemon_v2_pokemon.randomNonRepeating(3);
-      print(pokemon);
+      if (_openingSoundId != null) {
+        _playSound(_openingSoundId!);
+      }
       pokemonOptionsStream.add(
         ApiResponse.completed(
           pokemonResponse.rebuild(
@@ -78,14 +87,52 @@ class WhosThatPokemonViewModel {
     }
   }
 
-  void setRevealResult(int pokemonId, {required bool isRevealed}) {
+  void setRevealResult(int pokemonId) {
     final concealedPokemon = concealedPokemonStream.valueOrNull;
-    if(pokemonId == 0) {
+    if (pokemonId == 0) {
       revealResultStream.add(const Tuple2(RevealResult.none, false));
-    } else if (pokemonId == concealedPokemon?.id) {
-      revealResultStream.add(const Tuple2(RevealResult.correct, true));
     } else {
-      revealResultStream.add(const Tuple2(RevealResult.incorrect, true));
+      if (pokemonId == concealedPokemon?.id) {
+        revealResultStream.add(const Tuple2(RevealResult.correct, true));
+      } else {
+        revealResultStream.add(const Tuple2(RevealResult.incorrect, true));
+      }
+      if (_closingSoundId != null) {
+        _playSound(_closingSoundId!);
+      }
+    }
+  }
+
+  void _initSoundpool() {
+    _soundpool?.dispose();
+    _soundpool = Soundpool.fromOptions(
+      options: const SoundpoolOptions(),
+    );
+    _loadSounds(_soundpool!);
+  }
+
+  Future<void> _loadSounds(Soundpool soundpool) async {
+    _openingSoundId = await _loadOpeningSound(soundpool);
+    _closingSoundId = await _loadClosingSound(soundpool);
+  }
+
+  Future<int> _loadOpeningSound(Soundpool soundpool) async {
+    var asset = await rootBundle.load('assets/audio/whos_that_pokemon.mp3');
+    return await soundpool.load(asset);
+  }
+
+  Future<int> _loadClosingSound(Soundpool soundpool) async {
+    var asset = await rootBundle.load('assets/audio/whos_that_pokemon_closing.mp3');
+    return await soundpool.load(asset);
+  }
+
+  Future<void> _playSound(int soundId) async {
+    final soundpool = _soundpool;
+    if (soundpool != null) {
+      soundpool.play(
+        soundId,
+        rate: _rate,
+      );
     }
   }
 
@@ -93,6 +140,7 @@ class WhosThatPokemonViewModel {
     _controller?.dispose();
     pokemonOptionsStream.close();
     concealedPokemonStream.close();
+    _soundpool?.dispose();
   }
 
   String get animationDirectory => 'assets/animations/whos_that_pokemon.riv';

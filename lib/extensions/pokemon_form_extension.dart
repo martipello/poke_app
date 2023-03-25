@@ -2,7 +2,7 @@ import '../api/models/pokemon/pokemon_form.dart';
 
 extension PokemonFormExtension on PokemonForm? {
   String title() {
-    if(this?.is_default == true) {
+    if (this?.is_default == true) {
       return 'Default';
     }
     return this?.form_name ?? 'Unknown';

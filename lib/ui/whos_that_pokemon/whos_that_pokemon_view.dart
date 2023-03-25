@@ -5,15 +5,18 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:rive/rive.dart';
 import 'package:tuple/tuple.dart';
 
+import '../../ads/view_models/google_ads_view_model.dart';
 import '../../api/models/api_response.dart';
 import '../../api/models/pokemon/pokemon.dart';
 import '../../api/models/pokemon/pokemon_response.dart';
 import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../extensions/string_extension.dart';
+import '../../flavors.dart';
 import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import '../pokemon_list/pokemon_tile.dart';
+import '../shared_widgets/poke_dialog.dart';
 import '../shared_widgets/pokeball_loading_widget.dart';
 import '../shared_widgets/pokemon_image.dart';
 import '../shared_widgets/rounded_button.dart';
@@ -33,6 +36,8 @@ class WhosThatPokemonView extends StatefulWidget {
 class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
   final whosThatPokemonViewModel = getIt.get<WhosThatPokemonViewModel>();
   final scoreViewModel = getIt.get<ScoreViewModel>();
+  final _googleAdsViewModel = getIt.get<GoogleAdsViewModel>();
+  final scrollController = ScrollController();
 
   @override
   void initState() {
@@ -42,11 +47,30 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
       (value) {
         if (value.item1 == RevealResult.correct) {
           scoreViewModel.addWin();
-        } else if (value.item2 == RevealResult.incorrect) {
+        } else if (value.item1 == RevealResult.incorrect) {
           scoreViewModel.addLoss();
         }
       },
     );
+    scoreViewModel.getWinsAndLosses().asStream().listen(
+      (event) {
+        final count = event.item1 + event.item2;
+        if (count % kDefaultListAdFrequency == 0 && F.appFlavor != Flavor.paid) {
+          //We do this as without it first ad always fails
+          _googleAdsViewModel.createInterstitialAd();
+          if (count % kDefaultListAdFrequency == 0) {
+            _googleAdsViewModel.showInterstitialAd();
+          }
+        }
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    whosThatPokemonViewModel.dispose();
+    _googleAdsViewModel.dispose();
+    super.dispose();
   }
 
   @override
@@ -75,13 +99,6 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
               _buildWhosThatPokemonState(
                 revealResult,
                 isRevealed,
-              ),
-              Positioned(
-                right: 0,
-                top: 32,
-                child: ScoreWidget(
-                  scoreViewModel: scoreViewModel,
-                ),
               ),
             ],
           ),
@@ -125,6 +142,7 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
   ) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
+      controller: scrollController,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
@@ -144,12 +162,13 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
           const SizedBox(
             height: 16,
           ),
-          if (isRevealed) _buildRetryButton(),
           _buildWhosThatPokemonOptions(
             pokemonOptions,
             selectedPokemon,
             isRevealed,
           ),
+          _buildRetryButton(),
+          _buildResetButton(),
         ],
       ),
     );
@@ -158,14 +177,77 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
   Widget _buildRetryButton() {
     return Padding(
       padding: const EdgeInsets.only(
+        left: 4,
+        right: 4,
+        bottom: 12,
+        top: 12,
+      ),
+      child: RoundedButton(
+        label: context.strings.retry.capitalize(),
+        textStyle: PokeAppText.pokeFontBody1.copyWith(
+          color: Colors.blue.shade700,
+        ),
+        outlineColor: Colors.blue.shade700,
+        onPressed: () {
+          scrollToTop();
+          whosThatPokemonViewModel.generateRandomPokemon();
+        },
+      ),
+    );
+  }
+
+  Widget _buildResetButton() {
+    return Padding(
+      padding: const EdgeInsets.only(
         bottom: 32.0,
         left: 4,
         right: 4,
       ),
       child: RoundedButton(
-        label: 'Retry',
-        onPressed: whosThatPokemonViewModel.generateRandomPokemon,
+        label: context.strings.reset.capitalize(),
+        textStyle: PokeAppText.pokeFontBody1.copyWith(
+          color: Colors.blue.shade700,
+        ),
+        outlineColor: Colors.blue.shade700,
+        onPressed: () async {
+          final confirmReset = await _buildResetPokeDialog().show(context);
+          if (confirmReset == true) {
+            scrollToTop();
+            setState(scoreViewModel.resetScores);
+          }
+        },
       ),
+    );
+  }
+
+  PokeDialog _buildResetPokeDialog() {
+    return PokeDialog(
+      title: context.strings.reset,
+      content: Padding(
+        padding: const EdgeInsets.only(
+          top: 8.0,
+        ),
+        child: Text(
+          context.strings.confirmReset,
+          style: PokeAppText.body4Style.copyWith(
+            color: colors(context).textOnForeground,
+          ),
+        ),
+      ),
+      dialogActions: [
+        DialogAction(
+          actionText: context.strings.reset.capitalize(),
+          actionVoidCallback: () {
+            Navigator.of(context).pop(true);
+          },
+        ),
+        DialogAction(
+          actionText: context.strings.cancel.capitalize(),
+          actionVoidCallback: () {
+            Navigator.of(context).pop(false);
+          },
+        )
+      ],
     );
   }
 
@@ -182,7 +264,7 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
           Center(
             child: _buildPokemonImage(
               pokemon,
-              isRevealed ? null : Colors.blue[900],
+              isRevealed ? null : Colors.blue.shade900,
             ),
           ),
           if (!isRevealed)
@@ -198,6 +280,13 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
                 ),
               ),
             ),
+          Positioned(
+            right: 0,
+            top: 0,
+            child: ScoreWidget(
+              scoreViewModel: scoreViewModel,
+            ),
+          ),
         ],
       ),
     );
@@ -215,14 +304,14 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
       children: [
         if (revealResult == RevealResult.correct)
           _buildThreeDText(
-            'Correct',
+            context.strings.correct,
           ),
         if (revealResult == RevealResult.incorrect)
           _buildThreeDText(
-            'Incorrect',
+            context.strings.tooBad,
           ),
         _buildThreeDText(
-          isRevealed ? 'It\'s ${_pokemonName.capitalize()}' : context.strings.whoDatPokemon,
+          isRevealed ? '${context.strings.its} ${_pokemonName.capitalize()}' : context.strings.whoDatPokemon,
         ),
       ],
     );
@@ -293,9 +382,9 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
       onTap: isRevealed
           ? null
           : () {
+              scrollToTop();
               whosThatPokemonViewModel.setRevealResult(
                 pokemon.id!,
-                isRevealed: true,
               );
             },
     );
@@ -327,7 +416,6 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
         pokemon: pokemon,
         size: Size(imageHeight, imageHeight),
         color: Colors.transparent,
-        forceSpriteImage: true,
       );
     }
     return _buildLoadingImage();
@@ -345,5 +433,15 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
           duration: 1200.ms,
           color: colors(context).textOnForeground,
         );
+  }
+
+  void scrollToTop() {
+    if (scrollController.hasClients) {
+      scrollController.animateTo(
+        0.0,
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.fastOutSlowIn,
+      );
+    }
   }
 }

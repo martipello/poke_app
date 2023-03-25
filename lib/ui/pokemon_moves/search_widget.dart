@@ -273,14 +273,14 @@ class _SearchWidgetState extends State<SearchWidget> with TickerProviderStateMix
     double clearFilterHeight,
   ) {
     const chipPadding = 12.0;
-    if(selectedTypeFilters.isNotEmpty && selectedDamageTypeFilters.isNotEmpty) {
+    if (selectedTypeFilters.isNotEmpty && selectedDamageTypeFilters.isNotEmpty) {
       if (selectedTypeFilters.length + selectedDamageTypeFilters.length > 1) {
         return ((kChipHeight + chipPadding) * 2) + clearFilterHeight;
       } else {
         return ((kChipHeight + chipPadding) * 2);
       }
     }
-    if(selectedTypeFilters.isNotEmpty || selectedDamageTypeFilters.isNotEmpty) {
+    if (selectedTypeFilters.isNotEmpty || selectedDamageTypeFilters.isNotEmpty) {
       if (selectedTypeFilters.length + selectedDamageTypeFilters.length > 1) {
         return (kChipHeight + chipPadding) + clearFilterHeight;
       }

@@ -10,7 +10,6 @@ import 'pokemon_resource.dart';
 part 'encounter.g.dart';
 
 abstract class Encounter implements Built<Encounter, EncounterBuilder> {
-
   factory Encounter([void Function(EncounterBuilder) updates]) = _$Encounter;
   Encounter._();
 

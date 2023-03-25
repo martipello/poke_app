@@ -10,7 +10,6 @@ import 'pokemon_form_with_version_group.dart';
 import 'pokemon_move_holder.dart';
 import 'pokemon_species_holder.dart';
 import 'pokemon_stat.dart';
-import 'sprite_response.dart';
 import 'type_data_holder.dart';
 
 part 'pokemon.g.dart';
@@ -31,8 +30,6 @@ abstract class Pokemon implements Built<Pokemon, PokemonBuilder> {
   double? get pokemon_species_id;
 
   double? get base_experience;
-
-  BuiltList<SpriteResponse> get pokemon_v2_pokemonsprites;
 
   BuiltList<TypeDataHolder> get pokemon_v2_pokemontypes;
 

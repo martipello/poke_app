@@ -29,8 +29,7 @@ class _$MachineSerializer implements StructuredSerializer<Machine> {
     if (value != null) {
       result
         ..add('pokemon_v2_versiongroup')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(PokemonResource)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(PokemonResource)));
     }
     return result;
   }
@@ -47,13 +46,11 @@ class _$MachineSerializer implements StructuredSerializer<Machine> {
       final Object? value = iterator.current;
       switch (key) {
         case 'machine_number':
-          result.machine_number = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
+          result.machine_number = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
           break;
         case 'pokemon_v2_versiongroup':
-          result.pokemon_v2_versiongroup.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(PokemonResource))!
-              as PokemonResource);
+          result.pokemon_v2_versiongroup.replace(
+              serializers.deserialize(value, specifiedType: const FullType(PokemonResource))! as PokemonResource);
           break;
       }
     }
@@ -68,14 +65,12 @@ class _$Machine extends Machine {
   @override
   final PokemonResource? pokemon_v2_versiongroup;
 
-  factory _$Machine([void Function(MachineBuilder)? updates]) =>
-      (new MachineBuilder()..update(updates))._build();
+  factory _$Machine([void Function(MachineBuilder)? updates]) => (new MachineBuilder()..update(updates))._build();
 
   _$Machine._({this.machine_number, this.pokemon_v2_versiongroup}) : super._();
 
   @override
-  Machine rebuild(void Function(MachineBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
+  Machine rebuild(void Function(MachineBuilder) updates) => (toBuilder()..update(updates)).build();
 
   @override
   MachineBuilder toBuilder() => new MachineBuilder()..replace(this);
@@ -90,8 +85,11 @@ class _$Machine extends Machine {
 
   @override
   int get hashCode {
-    return $jf(
-        $jc($jc(0, machine_number.hashCode), pokemon_v2_versiongroup.hashCode));
+    var _$hash = 0;
+    _$hash = $jc(_$hash, machine_number.hashCode);
+    _$hash = $jc(_$hash, pokemon_v2_versiongroup.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
   }
 
   @override
@@ -108,14 +106,12 @@ class MachineBuilder implements Builder<Machine, MachineBuilder> {
 
   int? _machine_number;
   int? get machine_number => _$this._machine_number;
-  set machine_number(int? machine_number) =>
-      _$this._machine_number = machine_number;
+  set machine_number(int? machine_number) => _$this._machine_number = machine_number;
 
   PokemonResourceBuilder? _pokemon_v2_versiongroup;
   PokemonResourceBuilder get pokemon_v2_versiongroup =>
       _$this._pokemon_v2_versiongroup ??= new PokemonResourceBuilder();
-  set pokemon_v2_versiongroup(
-          PokemonResourceBuilder? pokemon_v2_versiongroup) =>
+  set pokemon_v2_versiongroup(PokemonResourceBuilder? pokemon_v2_versiongroup) =>
       _$this._pokemon_v2_versiongroup = pokemon_v2_versiongroup;
 
   MachineBuilder();
@@ -148,17 +144,14 @@ class MachineBuilder implements Builder<Machine, MachineBuilder> {
     _$Machine _$result;
     try {
       _$result = _$v ??
-          new _$Machine._(
-              machine_number: machine_number,
-              pokemon_v2_versiongroup: _pokemon_v2_versiongroup?.build());
+          new _$Machine._(machine_number: machine_number, pokemon_v2_versiongroup: _pokemon_v2_versiongroup?.build());
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'pokemon_v2_versiongroup';
         _pokemon_v2_versiongroup?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
-            r'Machine', _$failedField, e.toString());
+        throw new BuiltValueNestedFieldError(r'Machine', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -167,4 +160,4 @@ class MachineBuilder implements Builder<Machine, MachineBuilder> {
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas
+// ignore_for_file: deprecated_member_use_from_same_package,type=lint

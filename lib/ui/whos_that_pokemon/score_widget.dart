@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 
-import '../../dependency_injection_container.dart';
+import '../../extensions/build_context_extension.dart';
 import '../../theme/poke_app_text.dart';
 import '../shared_widgets/three_d_text.dart';
 import 'view_models/score_view_model.dart';
@@ -20,8 +20,8 @@ class ScoreWidget extends StatelessWidget {
   }
 
   Widget _buildScore() {
-    return StreamBuilder<Tuple2<int, int>>(
-      stream: scoreViewModel.winsAndLossesStream,
+    return StreamBuilder<Tuple2<int?, int?>>(
+      stream: scoreViewModel.getWinsAndLosses().asStream(),
       builder: (context, snapshot) {
         final wins = snapshot.data?.item1 ?? 0;
         final losses = snapshot.data?.item2 ?? 0;
@@ -29,10 +29,10 @@ class ScoreWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             _buildThreeDScoreText(
-              'Correct $wins',
+              '${context.strings.correct} $wins',
             ),
             _buildThreeDScoreText(
-              'Incorrect $losses',
+              '${context.strings.incorrect} $losses',
             ),
           ],
         );

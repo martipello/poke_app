@@ -76,7 +76,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
     );
     _openPokemonCountViewModel.openPokemonCountStream.listen(
       (openedCount) {
-        if (openedCount == 1 || openedCount % 3 == 0 && F.appFlavor != Flavor.paid) {
+        if (openedCount == 1 || openedCount % kDefaultListAdFrequency == 0 && F.appFlavor != Flavor.paid) {
           //We do this as without it first ad always fails
           _googleAdsViewModel.createInterstitialAd();
           if (openedCount % kDefaultListAdFrequency == 0) {
