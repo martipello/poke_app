@@ -53,7 +53,7 @@ class PokemonStatsWeaknessResistanceViewModel {
     );
   }
 
-  void setDelay(int delay){
+  void setDelay(int delay) {
     pokemonStatsDelay.add(delay);
   }
 

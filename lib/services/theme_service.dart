@@ -29,5 +29,4 @@ class ThemeService extends PokemonService {
     sharedPreferencesService.setDarkMode(isDarkMode: isDarkMode);
     isDarkModeStream.add(isDarkMode);
   }
-
 }

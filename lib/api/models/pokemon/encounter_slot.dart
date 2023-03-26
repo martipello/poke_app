@@ -10,8 +10,6 @@ import 'encounter_method.dart';
 part 'encounter_slot.g.dart';
 
 abstract class EncounterSlot implements Built<EncounterSlot, EncounterSlotBuilder> {
-
-
   factory EncounterSlot([void Function(EncounterSlotBuilder) updates]) = _$EncounterSlot;
   EncounterSlot._();
 

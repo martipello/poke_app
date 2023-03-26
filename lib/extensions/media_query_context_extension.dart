@@ -14,6 +14,8 @@ extension MediaQueryDataExtension on MediaQueryData {
 
   double get fullSizeImageScreenWidth => math.min(size.width, kLargeScreenWidth) / 1.3;
 
+  double get shortestSide => math.min(size.width, size.height);
+
   double get singleFilterBottomSheetHeight =>
       isTallScreen ? kMediumScreenHeight / 2 : math.min(size.height, kMediumScreenHeight / 2.5) - 32;
 

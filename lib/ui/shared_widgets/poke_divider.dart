@@ -8,7 +8,8 @@ const kThicknessThin = 0.2;
 class PokeDivider extends StatelessWidget {
   PokeDivider({
     super.key,
-    this.indent, this.thickness,
+    this.indent,
+    this.thickness,
   });
 
   final double? indent;

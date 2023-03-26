@@ -6,7 +6,6 @@ import '../../serializers/serializers.dart';
 part 'pokemon_species.g.dart';
 
 abstract class PokemonSpecies implements Built<PokemonSpecies, PokemonSpeciesBuilder> {
-
   factory PokemonSpecies([void Function(PokemonSpeciesBuilder) updates]) = _$PokemonSpecies;
   PokemonSpecies._();
 

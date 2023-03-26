@@ -81,8 +81,12 @@ final pokeAppTheme = AppTheme(
   baseAppBarTheme: BaseAppBarTheme(
     appBarTheme: AppBarTheme(
       color: primary,
-      titleTextStyle: PokeAppText.subtitle1Style.copyWith(color: textOnPrimary),
-      toolbarTextStyle: PokeAppText.subtitle1Style.copyWith(color: textOnPrimary),
+      titleTextStyle: PokeAppText.subtitle1Style.copyWith(
+        color: textOnPrimary,
+      ),
+      toolbarTextStyle: PokeAppText.subtitle1Style.copyWith(
+        color: textOnPrimary,
+      ),
       iconTheme: const IconThemeData(
         color: textOnPrimary,
       ),
@@ -161,8 +165,12 @@ final pokeAppDarkTheme = AppTheme(
   baseAppBarTheme: BaseAppBarTheme(
     appBarTheme: AppBarTheme(
       color: primary,
-      titleTextStyle: PokeAppText.subtitle1Style.copyWith(color: textOnPrimary),
-      toolbarTextStyle: PokeAppText.subtitle1Style.copyWith(color: textOnPrimary),
+      titleTextStyle: PokeAppText.subtitle1Style.copyWith(
+        color: textOnPrimary,
+      ),
+      toolbarTextStyle: PokeAppText.subtitle1Style.copyWith(
+        color: textOnPrimary,
+      ),
       iconTheme: const IconThemeData(
         color: textOnPrimary,
       ),

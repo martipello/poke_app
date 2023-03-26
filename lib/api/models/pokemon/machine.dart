@@ -8,7 +8,6 @@ import 'pokemon_resource.dart';
 part 'machine.g.dart';
 
 abstract class Machine implements Built<Machine, MachineBuilder> {
-
   factory Machine([void Function(MachineBuilder) updates]) = _$Machine;
   Machine._();
 

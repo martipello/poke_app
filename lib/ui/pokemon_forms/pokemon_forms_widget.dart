@@ -42,5 +42,4 @@ class PokemonFormsWidget extends StatelessWidget {
       ],
     );
   }
-
 }

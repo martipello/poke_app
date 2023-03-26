@@ -254,9 +254,9 @@ class PokemonMoveTile extends StatelessWidget {
 
   Padding _buildDivider() {
     return Padding(
-            padding: const EdgeInsets.all(16),
-            child: PokeDivider(),
-          );
+      padding: const EdgeInsets.all(16),
+      child: PokeDivider(),
+    );
   }
 
   Widget _buildTMTable(

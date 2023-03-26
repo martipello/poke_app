@@ -6,44 +6,33 @@ part of 'pokemon_species_holder.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<PokemonSpeciesHolder> _$pokemonSpeciesHolderSerializer =
-    new _$PokemonSpeciesHolderSerializer();
+Serializer<PokemonSpeciesHolder> _$pokemonSpeciesHolderSerializer = new _$PokemonSpeciesHolderSerializer();
 
-class _$PokemonSpeciesHolderSerializer
-    implements StructuredSerializer<PokemonSpeciesHolder> {
+class _$PokemonSpeciesHolderSerializer implements StructuredSerializer<PokemonSpeciesHolder> {
   @override
-  final Iterable<Type> types = const [
-    PokemonSpeciesHolder,
-    _$PokemonSpeciesHolder
-  ];
+  final Iterable<Type> types = const [PokemonSpeciesHolder, _$PokemonSpeciesHolder];
   @override
   final String wireName = 'PokemonSpeciesHolder';
 
   @override
-  Iterable<Object?> serialize(
-      Serializers serializers, PokemonSpeciesHolder object,
+  Iterable<Object?> serialize(Serializers serializers, PokemonSpeciesHolder object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[
       'pokemon_v2_pokemonevolutions',
       serializers.serialize(object.pokemon_v2_pokemonevolutions,
-          specifiedType:
-              const FullType(BuiltList, const [const FullType(Evolution)])),
+          specifiedType: const FullType(BuiltList, const [const FullType(Evolution)])),
       'pokemon_v2_pokemonspeciesnames',
       serializers.serialize(object.pokemon_v2_pokemonspeciesnames,
-          specifiedType: const FullType(
-              BuiltList, const [const FullType(PokemonSpecies)])),
+          specifiedType: const FullType(BuiltList, const [const FullType(PokemonSpecies)])),
       'pokemon_v2_pokemons',
       serializers.serialize(object.pokemon_v2_pokemons,
-          specifiedType:
-              const FullType(BuiltList, const [const FullType(Pokemon)])),
+          specifiedType: const FullType(BuiltList, const [const FullType(Pokemon)])),
       'pokemon_v2_pokemonegggroups',
       serializers.serialize(object.pokemon_v2_pokemonegggroups,
-          specifiedType: const FullType(
-              BuiltList, const [const FullType(PokemonResource)])),
+          specifiedType: const FullType(BuiltList, const [const FullType(PokemonResource)])),
       'pokemon_v2_pokemonspeciesflavortexts',
       serializers.serialize(object.pokemon_v2_pokemonspeciesflavortexts,
-          specifiedType: const FullType(
-              BuiltList, const [const FullType(PokemonResource)])),
+          specifiedType: const FullType(BuiltList, const [const FullType(PokemonResource)])),
     ];
     Object? value;
     value = object.id;
@@ -56,15 +45,13 @@ class _$PokemonSpeciesHolderSerializer
     if (value != null) {
       result
         ..add('name')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(String)));
     }
     value = object.base_happiness;
     if (value != null) {
       result
         ..add('base_happiness')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(double)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(double)));
     }
     value = object.capture_rate;
     if (value != null) {
@@ -88,8 +75,7 @@ class _$PokemonSpeciesHolderSerializer
     if (value != null) {
       result
         ..add('forms_switchable')
-        ..add(
-            serializers.serialize(value, specifiedType: const FullType(bool)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(bool)));
     }
     value = object.generation_id;
     if (value != null) {
@@ -101,64 +87,55 @@ class _$PokemonSpeciesHolderSerializer
     if (value != null) {
       result
         ..add('is_baby')
-        ..add(
-            serializers.serialize(value, specifiedType: const FullType(bool)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(bool)));
     }
     value = object.is_legendary;
     if (value != null) {
       result
         ..add('is_legendary')
-        ..add(
-            serializers.serialize(value, specifiedType: const FullType(bool)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(bool)));
     }
     value = object.is_mythical;
     if (value != null) {
       result
         ..add('is_mythical')
-        ..add(
-            serializers.serialize(value, specifiedType: const FullType(bool)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(bool)));
     }
     value = object.hatch_counter;
     if (value != null) {
       result
         ..add('hatch_counter')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(double)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(double)));
     }
     value = object.pokemon_v2_pokemonshape;
     if (value != null) {
       result
         ..add('pokemon_v2_pokemonshape')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(PokemonResource)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(PokemonResource)));
     }
     value = object.pokemon_v2_pokemonhabitat;
     if (value != null) {
       result
         ..add('pokemon_v2_pokemonhabitat')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(PokemonResource)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(PokemonResource)));
     }
     value = object.gender_rate;
     if (value != null) {
       result
         ..add('gender_rate')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(double)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(double)));
     }
     value = object.pokemon_v2_pokemoncolor;
     if (value != null) {
       result
         ..add('pokemon_v2_pokemoncolor')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(PokemonResource)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(PokemonResource)));
     }
     return result;
   }
 
   @override
-  PokemonSpeciesHolder deserialize(
-      Serializers serializers, Iterable<Object?> serialized,
+  PokemonSpeciesHolder deserialize(Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new PokemonSpeciesHolderBuilder();
 
@@ -169,106 +146,77 @@ class _$PokemonSpeciesHolderSerializer
       final Object? value = iterator.current;
       switch (key) {
         case 'id':
-          result.id = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
+          result.id = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
           break;
         case 'name':
-          result.name = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+          result.name = serializers.deserialize(value, specifiedType: const FullType(String)) as String?;
           break;
         case 'base_happiness':
-          result.base_happiness = serializers.deserialize(value,
-              specifiedType: const FullType(double)) as double?;
+          result.base_happiness = serializers.deserialize(value, specifiedType: const FullType(double)) as double?;
           break;
         case 'capture_rate':
-          result.capture_rate = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
+          result.capture_rate = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
           break;
         case 'evolution_chain_id':
-          result.evolution_chain_id = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
+          result.evolution_chain_id = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
           break;
         case 'evolves_from_species_id':
-          result.evolves_from_species_id = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
+          result.evolves_from_species_id = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
           break;
         case 'forms_switchable':
-          result.forms_switchable = serializers.deserialize(value,
-              specifiedType: const FullType(bool)) as bool?;
+          result.forms_switchable = serializers.deserialize(value, specifiedType: const FullType(bool)) as bool?;
           break;
         case 'generation_id':
-          result.generation_id = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
+          result.generation_id = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
           break;
         case 'is_baby':
-          result.is_baby = serializers.deserialize(value,
-              specifiedType: const FullType(bool)) as bool?;
+          result.is_baby = serializers.deserialize(value, specifiedType: const FullType(bool)) as bool?;
           break;
         case 'is_legendary':
-          result.is_legendary = serializers.deserialize(value,
-              specifiedType: const FullType(bool)) as bool?;
+          result.is_legendary = serializers.deserialize(value, specifiedType: const FullType(bool)) as bool?;
           break;
         case 'is_mythical':
-          result.is_mythical = serializers.deserialize(value,
-              specifiedType: const FullType(bool)) as bool?;
+          result.is_mythical = serializers.deserialize(value, specifiedType: const FullType(bool)) as bool?;
           break;
         case 'pokemon_v2_pokemonevolutions':
-          result.pokemon_v2_pokemonevolutions.replace(serializers.deserialize(
-                  value,
-                  specifiedType: const FullType(
-                      BuiltList, const [const FullType(Evolution)]))!
-              as BuiltList<Object?>);
+          result.pokemon_v2_pokemonevolutions.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltList, const [const FullType(Evolution)]))! as BuiltList<Object?>);
           break;
         case 'pokemon_v2_pokemonspeciesnames':
-          result.pokemon_v2_pokemonspeciesnames.replace(serializers.deserialize(
-                  value,
-                  specifiedType: const FullType(
-                      BuiltList, const [const FullType(PokemonSpecies)]))!
-              as BuiltList<Object?>);
+          result.pokemon_v2_pokemonspeciesnames.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltList, const [const FullType(PokemonSpecies)]))! as BuiltList<Object?>);
           break;
         case 'pokemon_v2_pokemons':
           result.pokemon_v2_pokemons.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(
-                      BuiltList, const [const FullType(Pokemon)]))!
-              as BuiltList<Object?>);
+              specifiedType: const FullType(BuiltList, const [const FullType(Pokemon)]))! as BuiltList<Object?>);
           break;
         case 'hatch_counter':
-          result.hatch_counter = serializers.deserialize(value,
-              specifiedType: const FullType(double)) as double?;
+          result.hatch_counter = serializers.deserialize(value, specifiedType: const FullType(double)) as double?;
           break;
         case 'pokemon_v2_pokemonshape':
-          result.pokemon_v2_pokemonshape.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(PokemonResource))!
-              as PokemonResource);
+          result.pokemon_v2_pokemonshape.replace(
+              serializers.deserialize(value, specifiedType: const FullType(PokemonResource))! as PokemonResource);
           break;
         case 'pokemon_v2_pokemonhabitat':
-          result.pokemon_v2_pokemonhabitat.replace(serializers.deserialize(
-                  value,
-                  specifiedType: const FullType(PokemonResource))!
-              as PokemonResource);
+          result.pokemon_v2_pokemonhabitat.replace(
+              serializers.deserialize(value, specifiedType: const FullType(PokemonResource))! as PokemonResource);
           break;
         case 'gender_rate':
-          result.gender_rate = serializers.deserialize(value,
-              specifiedType: const FullType(double)) as double?;
+          result.gender_rate = serializers.deserialize(value, specifiedType: const FullType(double)) as double?;
           break;
         case 'pokemon_v2_pokemonegggroups':
-          result.pokemon_v2_pokemonegggroups.replace(serializers.deserialize(
-                  value,
-                  specifiedType: const FullType(
-                      BuiltList, const [const FullType(PokemonResource)]))!
+          result.pokemon_v2_pokemonegggroups.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(BuiltList, const [const FullType(PokemonResource)]))!
               as BuiltList<Object?>);
           break;
         case 'pokemon_v2_pokemonspeciesflavortexts':
-          result.pokemon_v2_pokemonspeciesflavortexts.replace(
-              serializers.deserialize(value,
-                      specifiedType: const FullType(
-                          BuiltList, const [const FullType(PokemonResource)]))!
-                  as BuiltList<Object?>);
+          result.pokemon_v2_pokemonspeciesflavortexts.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(BuiltList, const [const FullType(PokemonResource)]))!
+              as BuiltList<Object?>);
           break;
         case 'pokemon_v2_pokemoncolor':
-          result.pokemon_v2_pokemoncolor.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(PokemonResource))!
-              as PokemonResource);
+          result.pokemon_v2_pokemoncolor.replace(
+              serializers.deserialize(value, specifiedType: const FullType(PokemonResource))! as PokemonResource);
           break;
       }
     }
@@ -321,8 +269,7 @@ class _$PokemonSpeciesHolder extends PokemonSpeciesHolder {
   @override
   final PokemonResource? pokemon_v2_pokemoncolor;
 
-  factory _$PokemonSpeciesHolder(
-          [void Function(PokemonSpeciesHolderBuilder)? updates]) =>
+  factory _$PokemonSpeciesHolder([void Function(PokemonSpeciesHolderBuilder)? updates]) =>
       (new PokemonSpeciesHolderBuilder()..update(updates))._build();
 
   _$PokemonSpeciesHolder._(
@@ -348,26 +295,23 @@ class _$PokemonSpeciesHolder extends PokemonSpeciesHolder {
       required this.pokemon_v2_pokemonspeciesflavortexts,
       this.pokemon_v2_pokemoncolor})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(pokemon_v2_pokemonevolutions,
-        r'PokemonSpeciesHolder', 'pokemon_v2_pokemonevolutions');
-    BuiltValueNullFieldError.checkNotNull(pokemon_v2_pokemonspeciesnames,
-        r'PokemonSpeciesHolder', 'pokemon_v2_pokemonspeciesnames');
     BuiltValueNullFieldError.checkNotNull(
-        pokemon_v2_pokemons, r'PokemonSpeciesHolder', 'pokemon_v2_pokemons');
-    BuiltValueNullFieldError.checkNotNull(pokemon_v2_pokemonegggroups,
-        r'PokemonSpeciesHolder', 'pokemon_v2_pokemonegggroups');
-    BuiltValueNullFieldError.checkNotNull(pokemon_v2_pokemonspeciesflavortexts,
-        r'PokemonSpeciesHolder', 'pokemon_v2_pokemonspeciesflavortexts');
+        pokemon_v2_pokemonevolutions, r'PokemonSpeciesHolder', 'pokemon_v2_pokemonevolutions');
+    BuiltValueNullFieldError.checkNotNull(
+        pokemon_v2_pokemonspeciesnames, r'PokemonSpeciesHolder', 'pokemon_v2_pokemonspeciesnames');
+    BuiltValueNullFieldError.checkNotNull(pokemon_v2_pokemons, r'PokemonSpeciesHolder', 'pokemon_v2_pokemons');
+    BuiltValueNullFieldError.checkNotNull(
+        pokemon_v2_pokemonegggroups, r'PokemonSpeciesHolder', 'pokemon_v2_pokemonegggroups');
+    BuiltValueNullFieldError.checkNotNull(
+        pokemon_v2_pokemonspeciesflavortexts, r'PokemonSpeciesHolder', 'pokemon_v2_pokemonspeciesflavortexts');
   }
 
   @override
-  PokemonSpeciesHolder rebuild(
-          void Function(PokemonSpeciesHolderBuilder) updates) =>
+  PokemonSpeciesHolder rebuild(void Function(PokemonSpeciesHolderBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  PokemonSpeciesHolderBuilder toBuilder() =>
-      new PokemonSpeciesHolderBuilder()..replace(this);
+  PokemonSpeciesHolderBuilder toBuilder() => new PokemonSpeciesHolderBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -385,59 +329,43 @@ class _$PokemonSpeciesHolder extends PokemonSpeciesHolder {
         is_legendary == other.is_legendary &&
         is_mythical == other.is_mythical &&
         pokemon_v2_pokemonevolutions == other.pokemon_v2_pokemonevolutions &&
-        pokemon_v2_pokemonspeciesnames ==
-            other.pokemon_v2_pokemonspeciesnames &&
+        pokemon_v2_pokemonspeciesnames == other.pokemon_v2_pokemonspeciesnames &&
         pokemon_v2_pokemons == other.pokemon_v2_pokemons &&
         hatch_counter == other.hatch_counter &&
         pokemon_v2_pokemonshape == other.pokemon_v2_pokemonshape &&
         pokemon_v2_pokemonhabitat == other.pokemon_v2_pokemonhabitat &&
         gender_rate == other.gender_rate &&
         pokemon_v2_pokemonegggroups == other.pokemon_v2_pokemonegggroups &&
-        pokemon_v2_pokemonspeciesflavortexts ==
-            other.pokemon_v2_pokemonspeciesflavortexts &&
+        pokemon_v2_pokemonspeciesflavortexts == other.pokemon_v2_pokemonspeciesflavortexts &&
         pokemon_v2_pokemoncolor == other.pokemon_v2_pokemoncolor;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(
-        $jc(
-            $jc(
-                $jc(
-                    $jc(
-                        $jc(
-                            $jc(
-                                $jc(
-                                    $jc(
-                                        $jc(
-                                            $jc(
-                                                $jc(
-                                                    $jc(
-                                                        $jc(
-                                                            $jc(
-                                                                $jc(
-                                                                    $jc(
-                                                                        $jc(
-                                                                            $jc($jc($jc(0, id.hashCode), name.hashCode),
-                                                                                base_happiness.hashCode),
-                                                                            capture_rate.hashCode),
-                                                                        evolution_chain_id.hashCode),
-                                                                    evolves_from_species_id.hashCode),
-                                                                forms_switchable.hashCode),
-                                                            generation_id.hashCode),
-                                                        is_baby.hashCode),
-                                                    is_legendary.hashCode),
-                                                is_mythical.hashCode),
-                                            pokemon_v2_pokemonevolutions.hashCode),
-                                        pokemon_v2_pokemonspeciesnames.hashCode),
-                                    pokemon_v2_pokemons.hashCode),
-                                hatch_counter.hashCode),
-                            pokemon_v2_pokemonshape.hashCode),
-                        pokemon_v2_pokemonhabitat.hashCode),
-                    gender_rate.hashCode),
-                pokemon_v2_pokemonegggroups.hashCode),
-            pokemon_v2_pokemonspeciesflavortexts.hashCode),
-        pokemon_v2_pokemoncolor.hashCode));
+    var _$hash = 0;
+    _$hash = $jc(_$hash, id.hashCode);
+    _$hash = $jc(_$hash, name.hashCode);
+    _$hash = $jc(_$hash, base_happiness.hashCode);
+    _$hash = $jc(_$hash, capture_rate.hashCode);
+    _$hash = $jc(_$hash, evolution_chain_id.hashCode);
+    _$hash = $jc(_$hash, evolves_from_species_id.hashCode);
+    _$hash = $jc(_$hash, forms_switchable.hashCode);
+    _$hash = $jc(_$hash, generation_id.hashCode);
+    _$hash = $jc(_$hash, is_baby.hashCode);
+    _$hash = $jc(_$hash, is_legendary.hashCode);
+    _$hash = $jc(_$hash, is_mythical.hashCode);
+    _$hash = $jc(_$hash, pokemon_v2_pokemonevolutions.hashCode);
+    _$hash = $jc(_$hash, pokemon_v2_pokemonspeciesnames.hashCode);
+    _$hash = $jc(_$hash, pokemon_v2_pokemons.hashCode);
+    _$hash = $jc(_$hash, hatch_counter.hashCode);
+    _$hash = $jc(_$hash, pokemon_v2_pokemonshape.hashCode);
+    _$hash = $jc(_$hash, pokemon_v2_pokemonhabitat.hashCode);
+    _$hash = $jc(_$hash, gender_rate.hashCode);
+    _$hash = $jc(_$hash, pokemon_v2_pokemonegggroups.hashCode);
+    _$hash = $jc(_$hash, pokemon_v2_pokemonspeciesflavortexts.hashCode);
+    _$hash = $jc(_$hash, pokemon_v2_pokemoncolor.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
   }
 
   @override
@@ -455,23 +383,20 @@ class _$PokemonSpeciesHolder extends PokemonSpeciesHolder {
           ..add('is_legendary', is_legendary)
           ..add('is_mythical', is_mythical)
           ..add('pokemon_v2_pokemonevolutions', pokemon_v2_pokemonevolutions)
-          ..add(
-              'pokemon_v2_pokemonspeciesnames', pokemon_v2_pokemonspeciesnames)
+          ..add('pokemon_v2_pokemonspeciesnames', pokemon_v2_pokemonspeciesnames)
           ..add('pokemon_v2_pokemons', pokemon_v2_pokemons)
           ..add('hatch_counter', hatch_counter)
           ..add('pokemon_v2_pokemonshape', pokemon_v2_pokemonshape)
           ..add('pokemon_v2_pokemonhabitat', pokemon_v2_pokemonhabitat)
           ..add('gender_rate', gender_rate)
           ..add('pokemon_v2_pokemonegggroups', pokemon_v2_pokemonegggroups)
-          ..add('pokemon_v2_pokemonspeciesflavortexts',
-              pokemon_v2_pokemonspeciesflavortexts)
+          ..add('pokemon_v2_pokemonspeciesflavortexts', pokemon_v2_pokemonspeciesflavortexts)
           ..add('pokemon_v2_pokemoncolor', pokemon_v2_pokemoncolor))
         .toString();
   }
 }
 
-class PokemonSpeciesHolderBuilder
-    implements Builder<PokemonSpeciesHolder, PokemonSpeciesHolderBuilder> {
+class PokemonSpeciesHolderBuilder implements Builder<PokemonSpeciesHolder, PokemonSpeciesHolderBuilder> {
   _$PokemonSpeciesHolder? _$v;
 
   int? _id;
@@ -484,8 +409,7 @@ class PokemonSpeciesHolderBuilder
 
   double? _base_happiness;
   double? get base_happiness => _$this._base_happiness;
-  set base_happiness(double? base_happiness) =>
-      _$this._base_happiness = base_happiness;
+  set base_happiness(double? base_happiness) => _$this._base_happiness = base_happiness;
 
   int? _capture_rate;
   int? get capture_rate => _$this._capture_rate;
@@ -493,8 +417,7 @@ class PokemonSpeciesHolderBuilder
 
   int? _evolution_chain_id;
   int? get evolution_chain_id => _$this._evolution_chain_id;
-  set evolution_chain_id(int? evolution_chain_id) =>
-      _$this._evolution_chain_id = evolution_chain_id;
+  set evolution_chain_id(int? evolution_chain_id) => _$this._evolution_chain_id = evolution_chain_id;
 
   int? _evolves_from_species_id;
   int? get evolves_from_species_id => _$this._evolves_from_species_id;
@@ -503,13 +426,11 @@ class PokemonSpeciesHolderBuilder
 
   bool? _forms_switchable;
   bool? get forms_switchable => _$this._forms_switchable;
-  set forms_switchable(bool? forms_switchable) =>
-      _$this._forms_switchable = forms_switchable;
+  set forms_switchable(bool? forms_switchable) => _$this._forms_switchable = forms_switchable;
 
   int? _generation_id;
   int? get generation_id => _$this._generation_id;
-  set generation_id(int? generation_id) =>
-      _$this._generation_id = generation_id;
+  set generation_id(int? generation_id) => _$this._generation_id = generation_id;
 
   bool? _is_baby;
   bool? get is_baby => _$this._is_baby;
@@ -526,41 +447,34 @@ class PokemonSpeciesHolderBuilder
   ListBuilder<Evolution>? _pokemon_v2_pokemonevolutions;
   ListBuilder<Evolution> get pokemon_v2_pokemonevolutions =>
       _$this._pokemon_v2_pokemonevolutions ??= new ListBuilder<Evolution>();
-  set pokemon_v2_pokemonevolutions(
-          ListBuilder<Evolution>? pokemon_v2_pokemonevolutions) =>
+  set pokemon_v2_pokemonevolutions(ListBuilder<Evolution>? pokemon_v2_pokemonevolutions) =>
       _$this._pokemon_v2_pokemonevolutions = pokemon_v2_pokemonevolutions;
 
   ListBuilder<PokemonSpecies>? _pokemon_v2_pokemonspeciesnames;
   ListBuilder<PokemonSpecies> get pokemon_v2_pokemonspeciesnames =>
-      _$this._pokemon_v2_pokemonspeciesnames ??=
-          new ListBuilder<PokemonSpecies>();
-  set pokemon_v2_pokemonspeciesnames(
-          ListBuilder<PokemonSpecies>? pokemon_v2_pokemonspeciesnames) =>
+      _$this._pokemon_v2_pokemonspeciesnames ??= new ListBuilder<PokemonSpecies>();
+  set pokemon_v2_pokemonspeciesnames(ListBuilder<PokemonSpecies>? pokemon_v2_pokemonspeciesnames) =>
       _$this._pokemon_v2_pokemonspeciesnames = pokemon_v2_pokemonspeciesnames;
 
   ListBuilder<Pokemon>? _pokemon_v2_pokemons;
-  ListBuilder<Pokemon> get pokemon_v2_pokemons =>
-      _$this._pokemon_v2_pokemons ??= new ListBuilder<Pokemon>();
+  ListBuilder<Pokemon> get pokemon_v2_pokemons => _$this._pokemon_v2_pokemons ??= new ListBuilder<Pokemon>();
   set pokemon_v2_pokemons(ListBuilder<Pokemon>? pokemon_v2_pokemons) =>
       _$this._pokemon_v2_pokemons = pokemon_v2_pokemons;
 
   double? _hatch_counter;
   double? get hatch_counter => _$this._hatch_counter;
-  set hatch_counter(double? hatch_counter) =>
-      _$this._hatch_counter = hatch_counter;
+  set hatch_counter(double? hatch_counter) => _$this._hatch_counter = hatch_counter;
 
   PokemonResourceBuilder? _pokemon_v2_pokemonshape;
   PokemonResourceBuilder get pokemon_v2_pokemonshape =>
       _$this._pokemon_v2_pokemonshape ??= new PokemonResourceBuilder();
-  set pokemon_v2_pokemonshape(
-          PokemonResourceBuilder? pokemon_v2_pokemonshape) =>
+  set pokemon_v2_pokemonshape(PokemonResourceBuilder? pokemon_v2_pokemonshape) =>
       _$this._pokemon_v2_pokemonshape = pokemon_v2_pokemonshape;
 
   PokemonResourceBuilder? _pokemon_v2_pokemonhabitat;
   PokemonResourceBuilder get pokemon_v2_pokemonhabitat =>
       _$this._pokemon_v2_pokemonhabitat ??= new PokemonResourceBuilder();
-  set pokemon_v2_pokemonhabitat(
-          PokemonResourceBuilder? pokemon_v2_pokemonhabitat) =>
+  set pokemon_v2_pokemonhabitat(PokemonResourceBuilder? pokemon_v2_pokemonhabitat) =>
       _$this._pokemon_v2_pokemonhabitat = pokemon_v2_pokemonhabitat;
 
   double? _gender_rate;
@@ -569,26 +483,20 @@ class PokemonSpeciesHolderBuilder
 
   ListBuilder<PokemonResource>? _pokemon_v2_pokemonegggroups;
   ListBuilder<PokemonResource> get pokemon_v2_pokemonegggroups =>
-      _$this._pokemon_v2_pokemonegggroups ??=
-          new ListBuilder<PokemonResource>();
-  set pokemon_v2_pokemonegggroups(
-          ListBuilder<PokemonResource>? pokemon_v2_pokemonegggroups) =>
+      _$this._pokemon_v2_pokemonegggroups ??= new ListBuilder<PokemonResource>();
+  set pokemon_v2_pokemonegggroups(ListBuilder<PokemonResource>? pokemon_v2_pokemonegggroups) =>
       _$this._pokemon_v2_pokemonegggroups = pokemon_v2_pokemonegggroups;
 
   ListBuilder<PokemonResource>? _pokemon_v2_pokemonspeciesflavortexts;
   ListBuilder<PokemonResource> get pokemon_v2_pokemonspeciesflavortexts =>
-      _$this._pokemon_v2_pokemonspeciesflavortexts ??=
-          new ListBuilder<PokemonResource>();
-  set pokemon_v2_pokemonspeciesflavortexts(
-          ListBuilder<PokemonResource>? pokemon_v2_pokemonspeciesflavortexts) =>
-      _$this._pokemon_v2_pokemonspeciesflavortexts =
-          pokemon_v2_pokemonspeciesflavortexts;
+      _$this._pokemon_v2_pokemonspeciesflavortexts ??= new ListBuilder<PokemonResource>();
+  set pokemon_v2_pokemonspeciesflavortexts(ListBuilder<PokemonResource>? pokemon_v2_pokemonspeciesflavortexts) =>
+      _$this._pokemon_v2_pokemonspeciesflavortexts = pokemon_v2_pokemonspeciesflavortexts;
 
   PokemonResourceBuilder? _pokemon_v2_pokemoncolor;
   PokemonResourceBuilder get pokemon_v2_pokemoncolor =>
       _$this._pokemon_v2_pokemoncolor ??= new PokemonResourceBuilder();
-  set pokemon_v2_pokemoncolor(
-          PokemonResourceBuilder? pokemon_v2_pokemoncolor) =>
+  set pokemon_v2_pokemoncolor(PokemonResourceBuilder? pokemon_v2_pokemoncolor) =>
       _$this._pokemon_v2_pokemoncolor = pokemon_v2_pokemoncolor;
 
   PokemonSpeciesHolderBuilder();
@@ -607,18 +515,15 @@ class PokemonSpeciesHolderBuilder
       _is_baby = $v.is_baby;
       _is_legendary = $v.is_legendary;
       _is_mythical = $v.is_mythical;
-      _pokemon_v2_pokemonevolutions =
-          $v.pokemon_v2_pokemonevolutions.toBuilder();
-      _pokemon_v2_pokemonspeciesnames =
-          $v.pokemon_v2_pokemonspeciesnames.toBuilder();
+      _pokemon_v2_pokemonevolutions = $v.pokemon_v2_pokemonevolutions.toBuilder();
+      _pokemon_v2_pokemonspeciesnames = $v.pokemon_v2_pokemonspeciesnames.toBuilder();
       _pokemon_v2_pokemons = $v.pokemon_v2_pokemons.toBuilder();
       _hatch_counter = $v.hatch_counter;
       _pokemon_v2_pokemonshape = $v.pokemon_v2_pokemonshape?.toBuilder();
       _pokemon_v2_pokemonhabitat = $v.pokemon_v2_pokemonhabitat?.toBuilder();
       _gender_rate = $v.gender_rate;
       _pokemon_v2_pokemonegggroups = $v.pokemon_v2_pokemonegggroups.toBuilder();
-      _pokemon_v2_pokemonspeciesflavortexts =
-          $v.pokemon_v2_pokemonspeciesflavortexts.toBuilder();
+      _pokemon_v2_pokemonspeciesflavortexts = $v.pokemon_v2_pokemonspeciesflavortexts.toBuilder();
       _pokemon_v2_pokemoncolor = $v.pokemon_v2_pokemoncolor?.toBuilder();
       _$v = null;
     }
@@ -655,18 +560,15 @@ class PokemonSpeciesHolderBuilder
               is_baby: is_baby,
               is_legendary: is_legendary,
               is_mythical: is_mythical,
-              pokemon_v2_pokemonevolutions:
-                  pokemon_v2_pokemonevolutions.build(),
-              pokemon_v2_pokemonspeciesnames:
-                  pokemon_v2_pokemonspeciesnames.build(),
+              pokemon_v2_pokemonevolutions: pokemon_v2_pokemonevolutions.build(),
+              pokemon_v2_pokemonspeciesnames: pokemon_v2_pokemonspeciesnames.build(),
               pokemon_v2_pokemons: pokemon_v2_pokemons.build(),
               hatch_counter: hatch_counter,
               pokemon_v2_pokemonshape: _pokemon_v2_pokemonshape?.build(),
               pokemon_v2_pokemonhabitat: _pokemon_v2_pokemonhabitat?.build(),
               gender_rate: gender_rate,
               pokemon_v2_pokemonegggroups: pokemon_v2_pokemonegggroups.build(),
-              pokemon_v2_pokemonspeciesflavortexts:
-                  pokemon_v2_pokemonspeciesflavortexts.build(),
+              pokemon_v2_pokemonspeciesflavortexts: pokemon_v2_pokemonspeciesflavortexts.build(),
               pokemon_v2_pokemoncolor: _pokemon_v2_pokemoncolor?.build());
     } catch (_) {
       late String _$failedField;
@@ -690,8 +592,7 @@ class PokemonSpeciesHolderBuilder
         _$failedField = 'pokemon_v2_pokemoncolor';
         _pokemon_v2_pokemoncolor?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
-            r'PokemonSpeciesHolder', _$failedField, e.toString());
+        throw new BuiltValueNestedFieldError(r'PokemonSpeciesHolder', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -700,4 +601,4 @@ class PokemonSpeciesHolderBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas
+// ignore_for_file: deprecated_member_use_from_same_package,type=lint

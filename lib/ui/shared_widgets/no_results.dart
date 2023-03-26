@@ -19,9 +19,7 @@ class NoResults extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: ViewConstraint(
-        constraints: const BoxConstraints(
-            maxWidth: kMaxScreenWidth / 2
-        ),
+        constraints: const BoxConstraints(maxWidth: kMaxScreenWidth / 2),
         child: Container(
           padding: const EdgeInsets.all(32.0),
           child: Column(
@@ -40,8 +38,7 @@ class NoResults extends StatelessWidget {
                   horizontal: 36.0,
                 ),
                 child: Text(
-                  emptyMessage ??
-                      context.strings.emptyMessage,
+                  emptyMessage ?? context.strings.emptyMessage,
                   style: PokeAppText.body1Style,
                   textAlign: TextAlign.center,
                 ),

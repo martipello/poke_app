@@ -211,7 +211,6 @@ class _FormTileState extends State<FormTile> {
           kPokemonTileImageHeight,
           kPokemonTileImageHeight,
         ),
-        forceSpriteImage: true,
         imageColorCallback: mainImageColorViewModel.colorListStream.add,
       );
     } else {

@@ -78,7 +78,7 @@ class PokemonPagingAdapter {
           if (!_hasBeenDisposed) {
             _handleError(
               ErrorResponse(
-                    (b) => b
+                (b) => b
                   ..error = newPage.exception?.graphqlErrors.firstOrNull()?.message
                   ..statusCode = 503,
               ),

@@ -39,9 +39,7 @@ class ErrorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: ViewConstraint(
-        constraints: const BoxConstraints(
-          maxWidth: kMaxScreenWidth / 2
-        ),
+        constraints: const BoxConstraints(maxWidth: kMaxScreenWidth / 2),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(

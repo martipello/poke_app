@@ -81,6 +81,7 @@ class _AboutState extends State<About> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _buildAboutTitle(context),
+        _buildAboutIcons(context),
         _buildAboutFairUse(context),
         _buildAboutLicences(context),
       ],
@@ -105,6 +106,11 @@ class _AboutState extends State<About> {
         _buildSectionDivider(),
       ],
     );
+  }
+
+  Widget _buildAboutIcons(BuildContext context) {
+    return const SizedBox();
+    // <a target="_blank" href="https://icons8.com/icon/ih6hQU67d27H/pokedex">Pokedex</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
   }
 
   Widget _buildAboutFairUse(

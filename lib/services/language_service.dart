@@ -72,7 +72,8 @@ class LanguageService extends PokemonService {
     if (_languageId != null) {
       languageStream.add(SupportedLanguage.getSupportedLanguageById(_languageId));
     } else {
-      final supportedLanguageForDeviceLocale = SupportedLanguage.getSupportedLanguageForLocale(Locale(Platform.localeName));
+      final supportedLanguageForDeviceLocale =
+          SupportedLanguage.getSupportedLanguageForLocale(Locale(Platform.localeName));
       languageStream.add(SupportedLanguage.getSupportedLanguageById(supportedLanguageForDeviceLocale.id));
     }
   }

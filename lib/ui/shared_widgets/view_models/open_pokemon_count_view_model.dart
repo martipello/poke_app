@@ -1,7 +1,6 @@
 import 'package:rxdart/rxdart.dart';
 
 class OpenPokemonCountViewModel {
-
   final openPokemonCountStream = BehaviorSubject<int>.seeded(0);
 
   void increment() {
@@ -9,7 +8,7 @@ class OpenPokemonCountViewModel {
     openPokemonCountStream.add(openPokemonCount + 1);
   }
 
-  void dispose(){
+  void dispose() {
     openPokemonCountStream.close();
   }
 }

@@ -56,14 +56,14 @@ class PokedexInfoWidget extends StatelessWidget {
   }
 
   Widget _buildExpansionTile(
-      BuildContext context,
+    BuildContext context,
     List<PokemonResource> pokedexEntries,
   ) {
     final _firstEntry = pokedexEntries.first;
     return PokemonExpansionTile(
       canExpand: pokedexEntries.length > 1,
       title: _buildExpansionTileTitle(
-          context,
+        context,
         _firstEntry.versionGroupName(),
         titleTextStyle: PokeAppText.body3Style.copyWith(
           color: colors(context).textOnForeground,

@@ -125,8 +125,8 @@ class _PokemonStatsViewState extends State<PokemonStatsView> with AutomaticKeepA
     return SliverToBoxAdapter(
       child: PokemonStatsWidget(
         pokemon: _pokemon,
-          primaryColor : widget.primaryColor,
-          secondaryColor : widget.secondaryColor,
+        primaryColor: widget.primaryColor,
+        secondaryColor: widget.secondaryColor,
       ),
     );
   }

@@ -9,7 +9,6 @@ import 'pokemon_species_holder.dart';
 part 'evolution_holder.g.dart';
 
 abstract class EvolutionHolder implements Built<EvolutionHolder, EvolutionHolderBuilder> {
-
   factory EvolutionHolder([void Function(EvolutionHolderBuilder) updates]) = _$EvolutionHolder;
   EvolutionHolder._();
 

@@ -13,17 +13,22 @@ extension PokemonAbilityHolderExtension on PokemonAbilityHolder? {
   }
 
   String versionDisplayName() {
-    final versionGroups = this?.pokemon_v2_ability?.pokemon_v2_abilityflavortexts.map(
-          (p0) => p0.pokemon_v2_versiongroup?.name,
-        ).whereType<String>() ?? [];
+    final versionGroups = this
+            ?.pokemon_v2_ability
+            ?.pokemon_v2_abilityflavortexts
+            .map(
+              (p0) => p0.pokemon_v2_versiongroup?.name,
+            )
+            .whereType<String>() ??
+        [];
     return versionGroups.join(', ').split(RegExp('-')).join(' ').capitalize();
   }
 
-  String shortEffect(){
+  String shortEffect() {
     return this?.pokemon_v2_ability?.pokemon_v2_abilityeffecttexts.lastOrNull()?.short_effect ?? '';
   }
 
-  String mainSeries(){
+  String mainSeries() {
     return this?.pokemon_v2_ability?.is_main_series == true ? 'Yes' : 'No';
   }
 }

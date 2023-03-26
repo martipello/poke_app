@@ -210,8 +210,8 @@ class PokemonDetailHeader extends StatelessWidget {
   }
 
   Widget get _buildExtraSmallMedium => const SizedBox(
-    width: 4,
-  );
+        width: 4,
+      );
 
   Widget get _buildSmallMargin => const SizedBox(
         height: 8,
@@ -227,5 +227,4 @@ class PokemonDetailHeader extends StatelessWidget {
       height: 72,
     );
   }
-
 }

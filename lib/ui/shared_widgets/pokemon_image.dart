@@ -8,7 +8,6 @@ import '../../api/models/pokemon/pokemon.dart';
 import '../../dependency_injection_container.dart';
 import '../../extensions/iterable_extension.dart';
 import '../../theme/base_theme.dart';
-import 'pokemon_sprite_image.dart';
 import 'view_models/image_color_view_model.dart';
 
 typedef ImageErrorBuilder = Widget Function(BuildContext context, Object? object, StackTrace? stacktrace);
@@ -24,7 +23,8 @@ class PokemonImage extends StatefulWidget {
     this.clipBehavior = Clip.none,
     this.imageColorCallback,
     this.color,
-    this.forceSpriteImage,
+    this.maskColor,
+    this.includeHero = true,
   });
 
   final Pokemon pokemon;
@@ -32,7 +32,8 @@ class PokemonImage extends StatefulWidget {
   final ImageColorCallback? imageColorCallback;
   final Clip clipBehavior;
   final Size? size;
-  final bool? forceSpriteImage;
+  final bool includeHero;
+  final Color? maskColor;
 
   @override
   State<PokemonImage> createState() => _PokemonImageState();
@@ -41,7 +42,7 @@ class PokemonImage extends StatefulWidget {
 class _PokemonImageState extends State<PokemonImage> {
   final mainImageColorViewModel = getIt.get<ImageColorViewModel>();
 
-  late final CachedNetworkImageProvider mainImageProvider;
+  CachedNetworkImageProvider? mainImageProvider;
 
   @override
   void initState() {
@@ -49,15 +50,19 @@ class _PokemonImageState extends State<PokemonImage> {
     mainImageProvider = CachedNetworkImageProvider(
       _createImageUrl(),
     );
-    mainImageColorViewModel.colorListStream.listen((value) {
-      widget.imageColorCallback?.call(value);
-    });
+    mainImageColorViewModel.colorListStream.listen(
+      (value) {
+        widget.imageColorCallback?.call(value);
+      },
+    );
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
-        mainImageColorViewModel.updatePalette(
-          context,
-          mainImageProvider,
-        );
+        if (widget.imageColorCallback != null) {
+          mainImageColorViewModel.updatePalette(
+            context,
+            mainImageProvider!,
+          );
+        }
       },
     );
   }
@@ -70,20 +75,17 @@ class _PokemonImageState extends State<PokemonImage> {
 
   @override
   Widget build(BuildContext context) {
+    if (mainImageProvider == null) {
+      return const SizedBox();
+    }
     return Material(
       type: MaterialType.transparency,
       child: _buildImageHolder(
         context,
-        true,
-        mainImageProvider,
+        widget.includeHero,
+        mainImageProvider!,
         mainImageColorViewModel.colorListStream,
-        (context, _, __) => PokemonSpriteImage(
-          pokemon: widget.pokemon,
-          spriteImageColorCallback: widget.imageColorCallback,
-          size: widget.size,
-          color: widget.color,
-          clipBehavior: widget.clipBehavior,
-        ),
+        (context, _, __) => _buildEmptyImage(),
       ),
     );
   }
@@ -191,6 +193,7 @@ class _PokemonImageState extends State<PokemonImage> {
       image: imageProvider,
       fit: BoxFit.cover,
       gaplessPlayback: true,
+      color: widget.maskColor,
       height: widget.size?.height ?? kDefaultImageHeight,
       width: widget.size?.width ?? kDefaultImageHeight,
       loadingBuilder: (context, child, chunk) {
@@ -249,9 +252,16 @@ class _PokemonImageState extends State<PokemonImage> {
   BorderRadius _buildBorderRadius() => BorderRadius.circular(180);
 
   String _createImageUrl() {
-    if (widget.forceSpriteImage == true) {
-      return '';
+    return 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${widget.pokemon.id}.png';
+  }
+
+  @override
+  void didUpdateWidget(covariant PokemonImage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.pokemon.id != oldWidget.pokemon.id) {
+      mainImageProvider = CachedNetworkImageProvider(
+        _createImageUrl(),
+      );
     }
-    return 'https://firebasestorage.googleapis.com/v0/b/pokeapp-86eec.appspot.com/o/pokemon_image_${widget.pokemon.id}.png?alt=media';
   }
 }

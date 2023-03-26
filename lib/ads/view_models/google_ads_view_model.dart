@@ -18,7 +18,6 @@ const kDefaultListAdFrequency = 8;
 const kInterstitialAdFrequency = 6;
 
 class GoogleAdsViewModel {
-
   final inlineAdaptiveBannerSize = BehaviorSubject<AdSize>();
 
   BannerAd? _bannerAd;
@@ -62,7 +61,7 @@ class GoogleAdsViewModel {
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) {
           _interstitialAd = ad;
-          _interstitialAd!.setImmersiveMode(false);
+          _interstitialAd?.setImmersiveMode(false);
         },
         onAdFailedToLoad: (error) {
           _interstitialAd = null;

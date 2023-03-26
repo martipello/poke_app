@@ -62,6 +62,7 @@ class RoundedButton extends StatelessWidget {
           side: MaterialStateProperty.all(
             BorderSide(
               color: _getOutlineColor(context),
+              width: 2,
             ),
           ),
           overlayColor: MaterialStateProperty.all(Colors.black12),
@@ -78,7 +79,7 @@ class RoundedButton extends StatelessWidget {
   }
 
   Widget _buildButtonContent(BuildContext context) {
-    var textStyle = _getTextStyle(context);
+    final textStyle = _getTextStyle(context);
     return Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -138,9 +139,12 @@ class RoundedButton extends StatelessWidget {
   }
 
   TextStyle _getTextStyle(BuildContext context) {
+    final myTextStyle = textStyle;
+    if (myTextStyle != null) {
+      return myTextStyle;
+    }
     if (isFilled && onPressed != null) {
-      return textStyle?.copyWith(color: colors(context).textOnSecondary) ??
-          PokeAppText.subtitle4Style.copyWith(color: colors(context).textOnSecondary);
+      return PokeAppText.subtitle4Style.copyWith(color: colors(context).textOnSecondary);
     } else if (!isFilled && onPressed != null) {
       return PokeAppText.subtitle4Style.copyWith(color: colors(context).secondary);
     } else if (isFilled && onPressed == null) {

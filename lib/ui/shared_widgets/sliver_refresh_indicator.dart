@@ -18,10 +18,9 @@ class SliverRefreshIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () =>
-          Future.sync(
-            onRefresh,
-          ),
+      onRefresh: () => Future.sync(
+        onRefresh,
+      ),
       color: colors(context).textOnForeground,
       child: CustomScrollView(
         controller: scrollController,

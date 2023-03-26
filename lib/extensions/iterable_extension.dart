@@ -1,3 +1,5 @@
+import 'package:collection/collection.dart';
+
 extension IterableExtension<E> on Iterable<E> {
   Iterable<E> whereNot(bool Function(E event) test) => where((e) => !test(e));
 
@@ -89,6 +91,8 @@ extension IterableExtension<E> on Iterable<E> {
     }
     return sum;
   }
+
+  List<E> randomNonRepeating(int length) => toList().sample(length);
 }
 
 extension NullableIterableExtension<E> on Iterable<E>? {

@@ -1,6 +1,7 @@
 {
     "app_name" : "PokéApp",
     "pokedex" : "Pokédex",
+    "pokemon" : "PoKéMoN",
     "searchByName" : "Search by name or ID",
     "searchByMoveName" : "Search by move name...",
     "abilities" : "Abilities",
@@ -10,11 +11,18 @@
     "types" : "Types",
     "damageTypes" : "Damage types",
     "retry" : "Retry",
+    "reset" : "Reset",
+    "confirmReset" : "Are you sure you would like to reset your wins and losses.",
     "stats" : "Stats",
     "moves" : "Moves",
     "evolutions" : "Evolutions",
     "info" : "Info",
-    "info" : "Info",
+
+    "its" : "It's",
+    "correct" : "Correct",
+    "incorrect" : "Incorrect",
+    "tooBad" : "Too bad!",
+
     "encounters" : "Encounters",
     "allGenerations" : "All generations",
     "couldntFindMap" : "Couldn't find map for region.",
@@ -139,6 +147,7 @@
     "resistantLabel" : "Resistant to :",
     "neutralLabel" : "Neutral to :",
     "unknownDamageLabel" : "Unknown damage",
-    "normalDamageLabel" : "Normal damage :"
+    "normalDamageLabel" : "Normal damage :",
+    "whoDatPokemon" : "Who's that PoKéMoN?"
 
 }
