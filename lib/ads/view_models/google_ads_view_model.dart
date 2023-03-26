@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../flavors.dart';
 
@@ -13,17 +14,20 @@ const kIOSAdUnitId = 'ca-app-pub-1989939591379723/7840951715';
 const kAndroidAdUnitId = 'ca-app-pub-1989939591379723/6308378199';
 const kDebugAdUnitId = 'ca-app-pub-3940256099942544/6300978111';
 
-const kDefaultListAdFrequency = 6;
+const kDefaultListAdFrequency = 8;
 const kInterstitialAdFrequency = 6;
 
 class GoogleAdsViewModel {
+
+  final inlineAdaptiveBannerSize = BehaviorSubject<AdSize>();
+
   BannerAd? _bannerAd;
   InterstitialAd? _interstitialAd;
 
-  AdWidget bannerAdWidget() {
+  AdWidget bannerAdWidget(AdSize adSize) {
     return AdWidget(
       ad: BannerAd(
-        size: AdSize.banner,
+        size: adSize,
         adUnitId: kDebugMode
             ? kDebugAdUnitId
             : Platform.isIOS
@@ -32,7 +36,15 @@ class GoogleAdsViewModel {
         request: const AdRequest(
           nonPersonalizedAds: true,
         ),
-        listener: const BannerAdListener(),
+        listener: BannerAdListener(
+          onAdLoaded: (ad) async {
+            _bannerAd = (ad as BannerAd);
+            final size = await _bannerAd?.getPlatformAdSize();
+            if (size != null) {
+              inlineAdaptiveBannerSize.add(size);
+            }
+          },
+        ),
       )..load(),
     );
   }

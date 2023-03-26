@@ -238,6 +238,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
       width: double.infinity,
       child: Center(
         child: TabBar(
+          dividerColor: colors(context).cardBackground,
           controller: _tabBarController,
           isScrollable: MediaQuery.of(context).isLargeScreen ? false : true,
           padding: const EdgeInsets.symmetric(
@@ -252,6 +253,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
             borderRadius: BorderRadius.circular(90), // Creates border
             color: primaryColor,
           ),
+          indicatorSize: TabBarIndicatorSize.tab,
           unselectedLabelColor: colors(context).textOnForeground,
           tabs: [
             Tab(

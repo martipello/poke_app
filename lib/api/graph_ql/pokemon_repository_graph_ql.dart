@@ -131,7 +131,10 @@ class PokemonRepositoryGraphQl {
         : PokemonType.values.map(
             (e) => e.id,
           );
-    return """
+    final id = pokemonRequest.search?.replaceAll(RegExp(r'[^0-9]'),'');
+    final isIdSearch = id?.isNotEmpty == true;
+    final search = isIdSearch ? 'id: {_eq: $id}' : 'name: {_like: "%${pokemonRequest.search ?? ''}%"}';
+    return '''
         query pokemonQuery {
           pokemon_v2_pokemon(where: {
             pokemon_v2_pokemontypes: {
@@ -139,11 +142,10 @@ class PokemonRepositoryGraphQl {
                 _in: ${typeIds.toList()}
               }, 
             pokemon_v2_pokemon: {
-              name: {
-                _like: "%${pokemonRequest.search ?? ''}%"}
-                }
+                $search
               }
-            }, order_by: {
+            }
+          }, order_by: {
               id: asc
             }, 
             limit: ${pokemonRequest.limit ?? 0}, 
@@ -180,7 +182,7 @@ class PokemonRepositoryGraphQl {
               weight
             }
         }
-    """;
+    ''';
   }
 
   String _createPokemonInfoDocument(PokemonRequest pokemonRequest) {

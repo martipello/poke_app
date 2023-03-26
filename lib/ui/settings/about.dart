@@ -8,6 +8,7 @@ import '../../theme/poke_app_text.dart';
 import '../shared_widgets/clipped_app_bar.dart';
 import '../shared_widgets/poke_divider.dart';
 import '../shared_widgets/pokeball_scroll_thumb.dart';
+import 'licences.dart';
 
 class About extends StatefulWidget {
   About({Key? key}) : super(key: key);
@@ -137,55 +138,7 @@ class _AboutState extends State<About> {
           context.strings.licences,
         ),
         _buildSmallMargin(),
-        _buildSectionBody(
-          context,
-          context.strings.fairUseDisclaimer,
-        ),
-        _buildSmallMargin(),
-        _buildSectionBody(
-          context,
-          context.strings.fairUseDisclaimer,
-        ),
-        _buildSmallMargin(),
-        _buildSectionBody(
-          context,
-          context.strings.fairUseDisclaimer,
-        ),
-        _buildSmallMargin(),
-        _buildSectionBody(
-          context,
-          context.strings.fairUseDisclaimer,
-        ),
-        _buildSmallMargin(),
-        _buildSectionBody(
-          context,
-          context.strings.fairUseDisclaimer,
-        ),
-        _buildSmallMargin(),
-        _buildSectionBody(
-          context,
-          context.strings.fairUseDisclaimer,
-        ),
-        _buildSmallMargin(),
-        _buildSectionBody(
-          context,
-          context.strings.fairUseDisclaimer,
-        ),
-        _buildSmallMargin(),
-        _buildSectionBody(
-          context,
-          context.strings.fairUseDisclaimer,
-        ),
-        _buildSmallMargin(),
-        _buildSectionBody(
-          context,
-          context.strings.fairUseDisclaimer,
-        ),
-        _buildSmallMargin(),
-        _buildSectionBody(
-          context,
-          context.strings.fairUseDisclaimer,
-        ),
+        _buildLicences(context),
         _buildSectionDivider(),
       ],
     );
@@ -226,6 +179,51 @@ class _AboutState extends State<About> {
     );
   }
 
+  Widget _buildLicences(BuildContext context) {
+    final licences = Licences.licences;
+    return Column(
+      children: [
+        ...licences.map(
+          (e) => _buildLicence(
+            context,
+            e.item1,
+            e.item2,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLicence(
+    BuildContext context,
+    String label,
+    String licenceText,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          label,
+          style: PokeAppText.subtitle4Style.copyWith(
+            color: colors(context).textOnForeground,
+          ),
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        Text(
+          licenceText,
+          style: PokeAppText.captionStyle.copyWith(
+            color: colors(context).textOnForeground,
+          ),
+        ),
+        const SizedBox(
+          height: 16,
+        ),
+      ],
+    );
+  }
+
   Widget _buildSmallMargin() {
     return const SizedBox(
       height: 8,
@@ -237,5 +235,4 @@ class _AboutState extends State<About> {
       height: 16,
     );
   }
-
 }

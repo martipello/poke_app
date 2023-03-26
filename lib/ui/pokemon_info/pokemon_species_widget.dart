@@ -129,6 +129,7 @@ class PokemonSpeciesWidget extends StatelessWidget {
     final captureRate = speciesHolder.captureRate().toString();
     final genderRate = speciesHolder.genderRate().toString();
     final hatchCounter = speciesHolder.hatchCounter().toString();
+    final steps = speciesHolder.steps();
     final isLegendary = speciesHolder.isLegendary();
     final isMythical = speciesHolder.isMythical();
     final isBaby = speciesHolder.isBaby();
@@ -167,6 +168,11 @@ class PokemonSpeciesWidget extends StatelessWidget {
           PokemonTableRowInfo(
             context.strings.hatchCounter,
             value: hatchCounter,
+          ),
+        if (steps.isNotEmpty)
+          PokemonTableRowInfo(
+            context.strings.steps,
+            value: steps,
           ),
         if (isLegendary.isNotEmpty)
           PokemonTableRowInfo(

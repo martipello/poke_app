@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../ads/list_banner_ad.dart';
+import '../../ads/inline_adaptive_banner.dart';
 import '../../ads/view_models/google_ads_view_model.dart';
 import '../../api/models/api_response.dart';
 import '../../api/models/pokemon/pokemon.dart';
@@ -257,7 +257,7 @@ class _PokemonListViewState extends State<PokemonListView> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (showAd) ListBannerAd(),
+        if (showAd) InlineAdaptiveExample(),
         PokemonTile(
           pokemon: pokemon,
         ),

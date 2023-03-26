@@ -36,6 +36,17 @@ extension PokemonSpeciesHolderExtension on PokemonSpeciesHolder? {
     return this?.hatch_counter?.toInt() ?? 0;
   }
 
+  String steps() {
+    final hatchCounter = this?.hatch_counter?.toInt() ?? 0;
+    if(hatchCounter == 0) {
+      return '';
+    }
+    final genFourSteps = hatchCounter * 255;
+    // final genTwoThreeSevenSteps = hatchCounter * 256;
+    final genFiveSixSteps = hatchCounter * 257;
+    return 'From $genFourSteps To $genFiveSixSteps';
+  }
+
   String isLegendary() {
     return this?.is_legendary == true ? 'Yes' : 'No';
   }
