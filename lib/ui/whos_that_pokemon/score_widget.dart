@@ -21,7 +21,7 @@ class ScoreWidget extends StatelessWidget {
 
   Widget _buildScore() {
     return StreamBuilder<Tuple2<int?, int?>>(
-      stream: scoreViewModel.getWinsAndLosses().asStream(),
+      stream: scoreViewModel.winsAndLossesStream,
       builder: (context, snapshot) {
         final wins = snapshot.data?.item1 ?? 0;
         final losses = snapshot.data?.item2 ?? 0;

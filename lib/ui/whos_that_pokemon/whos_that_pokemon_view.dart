@@ -42,6 +42,7 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
   @override
   void initState() {
     super.initState();
+    scoreViewModel.init();
     whosThatPokemonViewModel.generateRandomPokemon();
     whosThatPokemonViewModel.revealResultStream.listen(
       (value) {
@@ -52,13 +53,13 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
         }
       },
     );
-    scoreViewModel.getWinsAndLosses().asStream().listen(
+    scoreViewModel.winsAndLossesStream.listen(
       (event) {
-        final count = event.item1 + event.item2;
-        if (count % kDefaultListAdFrequency == 0 && F.appFlavor != Flavor.paid) {
+        final openedCount = event.item1 + event.item2;
+        if (openedCount == 1 || openedCount % kInterstitialAdFrequency == 0 && F.appFlavor != Flavor.paid) {
           //We do this as without it first ad always fails
           _googleAdsViewModel.createInterstitialAd();
-          if (count % kDefaultListAdFrequency == 0) {
+          if (openedCount % kInterstitialAdFrequency == 0) {
             _googleAdsViewModel.showInterstitialAd();
           }
         }
@@ -69,6 +70,7 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
   @override
   void dispose() {
     whosThatPokemonViewModel.dispose();
+    scoreViewModel.dispose();
     _googleAdsViewModel.dispose();
     super.dispose();
   }

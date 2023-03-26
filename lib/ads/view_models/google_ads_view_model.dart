@@ -61,7 +61,7 @@ class GoogleAdsViewModel {
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) {
           _interstitialAd = ad;
-          _interstitialAd!.setImmersiveMode(false);
+          _interstitialAd?.setImmersiveMode(false);
         },
         onAdFailedToLoad: (error) {
           _interstitialAd = null;

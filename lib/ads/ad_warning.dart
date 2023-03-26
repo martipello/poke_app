@@ -189,8 +189,10 @@ class _AdWarningState extends State<AdWarning> with TickerProviderStateMixin {
       ),
     ).then(
       (value) {
-        voidCallback1?.call();
-        voidCallback2?.call();
+        if(mounted) {
+          voidCallback1?.call();
+          voidCallback2?.call();
+        }
       },
     );
   }
