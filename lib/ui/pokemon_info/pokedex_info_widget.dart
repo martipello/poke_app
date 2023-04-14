@@ -50,7 +50,9 @@ class PokedexInfoWidget extends StatelessWidget {
       ),
       child: Text(
         context.strings.pokedex,
-        style: PokeAppText.subtitle3Style,
+        style: PokeAppText.subtitle3Style.copyWith(
+          color: colors(context).textOnForeground,
+        ),
       ),
     );
   }

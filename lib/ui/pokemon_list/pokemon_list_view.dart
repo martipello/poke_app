@@ -258,8 +258,10 @@ class _PokemonListViewState extends State<PokemonListView> {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (showAd) InlineAdaptiveExample(),
-        PokemonTile(
-          pokemon: pokemon,
+        ViewConstraint(
+          child: PokemonTile(
+            pokemon: pokemon,
+          ),
         ),
       ],
     );
