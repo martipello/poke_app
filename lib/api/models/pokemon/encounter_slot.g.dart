@@ -6,7 +6,8 @@ part of 'encounter_slot.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<EncounterSlot> _$encounterSlotSerializer = new _$EncounterSlotSerializer();
+Serializer<EncounterSlot> _$encounterSlotSerializer =
+    new _$EncounterSlotSerializer();
 
 class _$EncounterSlotSerializer implements StructuredSerializer<EncounterSlot> {
   @override
@@ -35,19 +36,22 @@ class _$EncounterSlotSerializer implements StructuredSerializer<EncounterSlot> {
     if (value != null) {
       result
         ..add('pokemon_v2_locationarea')
-        ..add(serializers.serialize(value, specifiedType: const FullType(Encounter)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(Encounter)));
     }
     value = object.pokemon_v2_encountermethod;
     if (value != null) {
       result
         ..add('pokemon_v2_encountermethod')
-        ..add(serializers.serialize(value, specifiedType: const FullType(EncounterMethod)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(EncounterMethod)));
     }
     return result;
   }
 
   @override
-  EncounterSlot deserialize(Serializers serializers, Iterable<Object?> serialized,
+  EncounterSlot deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new EncounterSlotBuilder();
 
@@ -58,18 +62,22 @@ class _$EncounterSlotSerializer implements StructuredSerializer<EncounterSlot> {
       final Object? value = iterator.current;
       switch (key) {
         case 'id':
-          result.id = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.id = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'rarity':
-          result.rarity = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.rarity = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'pokemon_v2_locationarea':
-          result.pokemon_v2_locationarea
-              .replace(serializers.deserialize(value, specifiedType: const FullType(Encounter))! as Encounter);
+          result.pokemon_v2_locationarea.replace(serializers.deserialize(value,
+              specifiedType: const FullType(Encounter))! as Encounter);
           break;
         case 'pokemon_v2_encountermethod':
-          result.pokemon_v2_encountermethod.replace(
-              serializers.deserialize(value, specifiedType: const FullType(EncounterMethod))! as EncounterMethod);
+          result.pokemon_v2_encountermethod.replace(serializers.deserialize(
+                  value,
+                  specifiedType: const FullType(EncounterMethod))!
+              as EncounterMethod);
           break;
       }
     }
@@ -91,10 +99,16 @@ class _$EncounterSlot extends EncounterSlot {
   factory _$EncounterSlot([void Function(EncounterSlotBuilder)? updates]) =>
       (new EncounterSlotBuilder()..update(updates))._build();
 
-  _$EncounterSlot._({this.id, this.rarity, this.pokemon_v2_locationarea, this.pokemon_v2_encountermethod}) : super._();
+  _$EncounterSlot._(
+      {this.id,
+      this.rarity,
+      this.pokemon_v2_locationarea,
+      this.pokemon_v2_encountermethod})
+      : super._();
 
   @override
-  EncounterSlot rebuild(void Function(EncounterSlotBuilder) updates) => (toBuilder()..update(updates)).build();
+  EncounterSlot rebuild(void Function(EncounterSlotBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   EncounterSlotBuilder toBuilder() => new EncounterSlotBuilder()..replace(this);
@@ -131,7 +145,8 @@ class _$EncounterSlot extends EncounterSlot {
   }
 }
 
-class EncounterSlotBuilder implements Builder<EncounterSlot, EncounterSlotBuilder> {
+class EncounterSlotBuilder
+    implements Builder<EncounterSlot, EncounterSlotBuilder> {
   _$EncounterSlot? _$v;
 
   int? _id;
@@ -143,14 +158,16 @@ class EncounterSlotBuilder implements Builder<EncounterSlot, EncounterSlotBuilde
   set rarity(int? rarity) => _$this._rarity = rarity;
 
   EncounterBuilder? _pokemon_v2_locationarea;
-  EncounterBuilder get pokemon_v2_locationarea => _$this._pokemon_v2_locationarea ??= new EncounterBuilder();
+  EncounterBuilder get pokemon_v2_locationarea =>
+      _$this._pokemon_v2_locationarea ??= new EncounterBuilder();
   set pokemon_v2_locationarea(EncounterBuilder? pokemon_v2_locationarea) =>
       _$this._pokemon_v2_locationarea = pokemon_v2_locationarea;
 
   EncounterMethodBuilder? _pokemon_v2_encountermethod;
   EncounterMethodBuilder get pokemon_v2_encountermethod =>
       _$this._pokemon_v2_encountermethod ??= new EncounterMethodBuilder();
-  set pokemon_v2_encountermethod(EncounterMethodBuilder? pokemon_v2_encountermethod) =>
+  set pokemon_v2_encountermethod(
+          EncounterMethodBuilder? pokemon_v2_encountermethod) =>
       _$this._pokemon_v2_encountermethod = pokemon_v2_encountermethod;
 
   EncounterSlotBuilder();
@@ -198,7 +215,8 @@ class EncounterSlotBuilder implements Builder<EncounterSlot, EncounterSlotBuilde
         _$failedField = 'pokemon_v2_encountermethod';
         _pokemon_v2_encountermethod?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(r'EncounterSlot', _$failedField, e.toString());
+        throw new BuiltValueNestedFieldError(
+            r'EncounterSlot', _$failedField, e.toString());
       }
       rethrow;
     }

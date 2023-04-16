@@ -83,13 +83,15 @@ class _$MoveMetumSerializer implements StructuredSerializer<MoveMetum> {
     if (value != null) {
       result
         ..add('pokemon_v2_movemetaailment')
-        ..add(serializers.serialize(value, specifiedType: const FullType(PokemonResource)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(PokemonResource)));
     }
     value = object.pokemon_v2_movemetacategory;
     if (value != null) {
       result
         ..add('pokemon_v2_movemetacategory')
-        ..add(serializers.serialize(value, specifiedType: const FullType(PokemonResource)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(PokemonResource)));
     }
     return result;
   }
@@ -106,42 +108,56 @@ class _$MoveMetumSerializer implements StructuredSerializer<MoveMetum> {
       final Object? value = iterator.current;
       switch (key) {
         case 'crit_rate':
-          result.crit_rate = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.crit_rate = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'ailment_chance':
-          result.ailment_chance = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.ailment_chance = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'flinch_chance':
-          result.flinch_chance = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.flinch_chance = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'drain':
-          result.drain = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.drain = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'max_hits':
-          result.max_hits = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.max_hits = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'max_turns':
-          result.max_turns = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.max_turns = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'min_hits':
-          result.min_hits = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.min_hits = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'min_turns':
-          result.min_turns = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.min_turns = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'stat_chance':
-          result.stat_chance = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.stat_chance = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'healing':
-          result.healing = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.healing = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'pokemon_v2_movemetaailment':
-          result.pokemon_v2_movemetaailment.replace(
-              serializers.deserialize(value, specifiedType: const FullType(PokemonResource))! as PokemonResource);
+          result.pokemon_v2_movemetaailment.replace(serializers.deserialize(
+                  value,
+                  specifiedType: const FullType(PokemonResource))!
+              as PokemonResource);
           break;
         case 'pokemon_v2_movemetacategory':
-          result.pokemon_v2_movemetacategory.replace(
-              serializers.deserialize(value, specifiedType: const FullType(PokemonResource))! as PokemonResource);
+          result.pokemon_v2_movemetacategory.replace(serializers.deserialize(
+                  value,
+                  specifiedType: const FullType(PokemonResource))!
+              as PokemonResource);
           break;
       }
     }
@@ -176,7 +192,8 @@ class _$MoveMetum extends MoveMetum {
   @override
   final PokemonResource? pokemon_v2_movemetacategory;
 
-  factory _$MoveMetum([void Function(MoveMetumBuilder)? updates]) => (new MoveMetumBuilder()..update(updates))._build();
+  factory _$MoveMetum([void Function(MoveMetumBuilder)? updates]) =>
+      (new MoveMetumBuilder()..update(updates))._build();
 
   _$MoveMetum._(
       {this.crit_rate,
@@ -194,7 +211,8 @@ class _$MoveMetum extends MoveMetum {
       : super._();
 
   @override
-  MoveMetum rebuild(void Function(MoveMetumBuilder) updates) => (toBuilder()..update(updates)).build();
+  MoveMetum rebuild(void Function(MoveMetumBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   MoveMetumBuilder toBuilder() => new MoveMetumBuilder()..replace(this);
@@ -264,11 +282,13 @@ class MoveMetumBuilder implements Builder<MoveMetum, MoveMetumBuilder> {
 
   int? _ailment_chance;
   int? get ailment_chance => _$this._ailment_chance;
-  set ailment_chance(int? ailment_chance) => _$this._ailment_chance = ailment_chance;
+  set ailment_chance(int? ailment_chance) =>
+      _$this._ailment_chance = ailment_chance;
 
   int? _flinch_chance;
   int? get flinch_chance => _$this._flinch_chance;
-  set flinch_chance(int? flinch_chance) => _$this._flinch_chance = flinch_chance;
+  set flinch_chance(int? flinch_chance) =>
+      _$this._flinch_chance = flinch_chance;
 
   int? _drain;
   int? get drain => _$this._drain;
@@ -301,13 +321,15 @@ class MoveMetumBuilder implements Builder<MoveMetum, MoveMetumBuilder> {
   PokemonResourceBuilder? _pokemon_v2_movemetaailment;
   PokemonResourceBuilder get pokemon_v2_movemetaailment =>
       _$this._pokemon_v2_movemetaailment ??= new PokemonResourceBuilder();
-  set pokemon_v2_movemetaailment(PokemonResourceBuilder? pokemon_v2_movemetaailment) =>
+  set pokemon_v2_movemetaailment(
+          PokemonResourceBuilder? pokemon_v2_movemetaailment) =>
       _$this._pokemon_v2_movemetaailment = pokemon_v2_movemetaailment;
 
   PokemonResourceBuilder? _pokemon_v2_movemetacategory;
   PokemonResourceBuilder get pokemon_v2_movemetacategory =>
       _$this._pokemon_v2_movemetacategory ??= new PokemonResourceBuilder();
-  set pokemon_v2_movemetacategory(PokemonResourceBuilder? pokemon_v2_movemetacategory) =>
+  set pokemon_v2_movemetacategory(
+          PokemonResourceBuilder? pokemon_v2_movemetacategory) =>
       _$this._pokemon_v2_movemetacategory = pokemon_v2_movemetacategory;
 
   MoveMetumBuilder();
@@ -326,7 +348,8 @@ class MoveMetumBuilder implements Builder<MoveMetum, MoveMetumBuilder> {
       _stat_chance = $v.stat_chance;
       _healing = $v.healing;
       _pokemon_v2_movemetaailment = $v.pokemon_v2_movemetaailment?.toBuilder();
-      _pokemon_v2_movemetacategory = $v.pokemon_v2_movemetacategory?.toBuilder();
+      _pokemon_v2_movemetacategory =
+          $v.pokemon_v2_movemetacategory?.toBuilder();
       _$v = null;
     }
     return this;
@@ -362,7 +385,8 @@ class MoveMetumBuilder implements Builder<MoveMetum, MoveMetumBuilder> {
               stat_chance: stat_chance,
               healing: healing,
               pokemon_v2_movemetaailment: _pokemon_v2_movemetaailment?.build(),
-              pokemon_v2_movemetacategory: _pokemon_v2_movemetacategory?.build());
+              pokemon_v2_movemetacategory:
+                  _pokemon_v2_movemetacategory?.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -371,7 +395,8 @@ class MoveMetumBuilder implements Builder<MoveMetum, MoveMetumBuilder> {
         _$failedField = 'pokemon_v2_movemetacategory';
         _pokemon_v2_movemetacategory?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(r'MoveMetum', _$failedField, e.toString());
+        throw new BuiltValueNestedFieldError(
+            r'MoveMetum', _$failedField, e.toString());
       }
       rethrow;
     }

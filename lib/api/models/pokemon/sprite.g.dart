@@ -15,20 +15,23 @@ class _$SpriteSerializer implements StructuredSerializer<Sprite> {
   final String wireName = 'Sprite';
 
   @override
-  Iterable<Object?> serialize(Serializers serializers, Sprite object, {FullType specifiedType = FullType.unspecified}) {
+  Iterable<Object?> serialize(Serializers serializers, Sprite object,
+      {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[];
     Object? value;
     value = object.front_default;
     if (value != null) {
       result
         ..add('front_default')
-        ..add(serializers.serialize(value, specifiedType: const FullType(String)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
     }
     value = object.front_shiny;
     if (value != null) {
       result
         ..add('front_shiny')
-        ..add(serializers.serialize(value, specifiedType: const FullType(String)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
     }
     return result;
   }
@@ -45,10 +48,12 @@ class _$SpriteSerializer implements StructuredSerializer<Sprite> {
       final Object? value = iterator.current;
       switch (key) {
         case 'front_default':
-          result.front_default = serializers.deserialize(value, specifiedType: const FullType(String)) as String?;
+          result.front_default = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'front_shiny':
-          result.front_shiny = serializers.deserialize(value, specifiedType: const FullType(String)) as String?;
+          result.front_shiny = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
           break;
       }
     }
@@ -63,12 +68,14 @@ class _$Sprite extends Sprite {
   @override
   final String? front_shiny;
 
-  factory _$Sprite([void Function(SpriteBuilder)? updates]) => (new SpriteBuilder()..update(updates))._build();
+  factory _$Sprite([void Function(SpriteBuilder)? updates]) =>
+      (new SpriteBuilder()..update(updates))._build();
 
   _$Sprite._({this.front_default, this.front_shiny}) : super._();
 
   @override
-  Sprite rebuild(void Function(SpriteBuilder) updates) => (toBuilder()..update(updates)).build();
+  Sprite rebuild(void Function(SpriteBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   SpriteBuilder toBuilder() => new SpriteBuilder()..replace(this);
@@ -76,7 +83,9 @@ class _$Sprite extends Sprite {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is Sprite && front_default == other.front_default && front_shiny == other.front_shiny;
+    return other is Sprite &&
+        front_default == other.front_default &&
+        front_shiny == other.front_shiny;
   }
 
   @override
@@ -102,7 +111,8 @@ class SpriteBuilder implements Builder<Sprite, SpriteBuilder> {
 
   String? _front_default;
   String? get front_default => _$this._front_default;
-  set front_default(String? front_default) => _$this._front_default = front_default;
+  set front_default(String? front_default) =>
+      _$this._front_default = front_default;
 
   String? _front_shiny;
   String? get front_shiny => _$this._front_shiny;
@@ -135,7 +145,8 @@ class SpriteBuilder implements Builder<Sprite, SpriteBuilder> {
   Sprite build() => _build();
 
   _$Sprite _build() {
-    final _$result = _$v ?? new _$Sprite._(front_default: front_default, front_shiny: front_shiny);
+    final _$result = _$v ??
+        new _$Sprite._(front_default: front_default, front_shiny: front_shiny);
     replace(_$result);
     return _$result;
   }

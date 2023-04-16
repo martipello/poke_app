@@ -23,7 +23,8 @@ class _$EvolutionSerializer implements StructuredSerializer<Evolution> {
     if (value != null) {
       result
         ..add('needs_overworld_rain')
-        ..add(serializers.serialize(value, specifiedType: const FullType(bool)));
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
     }
     value = object.min_level;
     if (value != null) {
@@ -59,13 +60,15 @@ class _$EvolutionSerializer implements StructuredSerializer<Evolution> {
     if (value != null) {
       result
         ..add('pokemon_v2_evolutiontrigger')
-        ..add(serializers.serialize(value, specifiedType: const FullType(PokemonResource)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(PokemonResource)));
     }
     value = object.turn_upside_down;
     if (value != null) {
       result
         ..add('turn_upside_down')
-        ..add(serializers.serialize(value, specifiedType: const FullType(bool)));
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
     }
     value = object.trade_species_id;
     if (value != null) {
@@ -77,7 +80,8 @@ class _$EvolutionSerializer implements StructuredSerializer<Evolution> {
     if (value != null) {
       result
         ..add('time_of_day')
-        ..add(serializers.serialize(value, specifiedType: const FullType(String)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
     }
     value = object.relative_physical_stats;
     if (value != null) {
@@ -89,13 +93,15 @@ class _$EvolutionSerializer implements StructuredSerializer<Evolution> {
     if (value != null) {
       result
         ..add('pokemon_v2_location')
-        ..add(serializers.serialize(value, specifiedType: const FullType(PokemonResource)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(PokemonResource)));
     }
     value = object.pokemon_v2_item;
     if (value != null) {
       result
         ..add('pokemon_v2_item')
-        ..add(serializers.serialize(value, specifiedType: const FullType(PokemonResource)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(PokemonResource)));
     }
     value = object.known_move_id;
     if (value != null) {
@@ -125,7 +131,8 @@ class _$EvolutionSerializer implements StructuredSerializer<Evolution> {
     if (value != null) {
       result
         ..add('pokemonV2ItemByHeldItemId')
-        ..add(serializers.serialize(value, specifiedType: const FullType(PokemonResource)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(PokemonResource)));
     }
     return result;
   }
@@ -142,62 +149,82 @@ class _$EvolutionSerializer implements StructuredSerializer<Evolution> {
       final Object? value = iterator.current;
       switch (key) {
         case 'needs_overworld_rain':
-          result.needs_overworld_rain = serializers.deserialize(value, specifiedType: const FullType(bool)) as bool?;
+          result.needs_overworld_rain = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
           break;
         case 'min_level':
-          result.min_level = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.min_level = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'min_happiness':
-          result.min_happiness = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.min_happiness = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'min_beauty':
-          result.min_beauty = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.min_beauty = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'min_affection':
-          result.min_affection = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.min_affection = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'location_id':
-          result.location_id = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.location_id = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'pokemon_v2_evolutiontrigger':
-          result.pokemon_v2_evolutiontrigger.replace(
-              serializers.deserialize(value, specifiedType: const FullType(PokemonResource))! as PokemonResource);
+          result.pokemon_v2_evolutiontrigger.replace(serializers.deserialize(
+                  value,
+                  specifiedType: const FullType(PokemonResource))!
+              as PokemonResource);
           break;
         case 'turn_upside_down':
-          result.turn_upside_down = serializers.deserialize(value, specifiedType: const FullType(bool)) as bool?;
+          result.turn_upside_down = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
           break;
         case 'trade_species_id':
-          result.trade_species_id = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.trade_species_id = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'time_of_day':
-          result.time_of_day = serializers.deserialize(value, specifiedType: const FullType(String)) as String?;
+          result.time_of_day = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'relative_physical_stats':
-          result.relative_physical_stats = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.relative_physical_stats = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'pokemon_v2_location':
-          result.pokemon_v2_location.replace(
-              serializers.deserialize(value, specifiedType: const FullType(PokemonResource))! as PokemonResource);
+          result.pokemon_v2_location.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(PokemonResource))!
+              as PokemonResource);
           break;
         case 'pokemon_v2_item':
-          result.pokemon_v2_item.replace(
-              serializers.deserialize(value, specifiedType: const FullType(PokemonResource))! as PokemonResource);
+          result.pokemon_v2_item.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(PokemonResource))!
+              as PokemonResource);
           break;
         case 'known_move_id':
-          result.known_move_id = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.known_move_id = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'known_move_type_id':
-          result.known_move_type_id = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.known_move_type_id = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'held_item_id':
-          result.held_item_id = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.held_item_id = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'gender_id':
-          result.gender_id = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.gender_id = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'pokemonV2ItemByHeldItemId':
-          result.pokemonV2ItemByHeldItemId.replace(
-              serializers.deserialize(value, specifiedType: const FullType(PokemonResource))! as PokemonResource);
+          result.pokemonV2ItemByHeldItemId.replace(serializers.deserialize(
+                  value,
+                  specifiedType: const FullType(PokemonResource))!
+              as PokemonResource);
           break;
       }
     }
@@ -244,7 +271,8 @@ class _$Evolution extends Evolution {
   @override
   final PokemonResource? pokemonV2ItemByHeldItemId;
 
-  factory _$Evolution([void Function(EvolutionBuilder)? updates]) => (new EvolutionBuilder()..update(updates))._build();
+  factory _$Evolution([void Function(EvolutionBuilder)? updates]) =>
+      (new EvolutionBuilder()..update(updates))._build();
 
   _$Evolution._(
       {this.needs_overworld_rain,
@@ -268,7 +296,8 @@ class _$Evolution extends Evolution {
       : super._();
 
   @override
-  Evolution rebuild(void Function(EvolutionBuilder) updates) => (toBuilder()..update(updates)).build();
+  Evolution rebuild(void Function(EvolutionBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   EvolutionBuilder toBuilder() => new EvolutionBuilder()..replace(this);
@@ -352,7 +381,8 @@ class EvolutionBuilder implements Builder<Evolution, EvolutionBuilder> {
 
   bool? _needs_overworld_rain;
   bool? get needs_overworld_rain => _$this._needs_overworld_rain;
-  set needs_overworld_rain(bool? needs_overworld_rain) => _$this._needs_overworld_rain = needs_overworld_rain;
+  set needs_overworld_rain(bool? needs_overworld_rain) =>
+      _$this._needs_overworld_rain = needs_overworld_rain;
 
   int? _min_level;
   int? get min_level => _$this._min_level;
@@ -360,7 +390,8 @@ class EvolutionBuilder implements Builder<Evolution, EvolutionBuilder> {
 
   int? _min_happiness;
   int? get min_happiness => _$this._min_happiness;
-  set min_happiness(int? min_happiness) => _$this._min_happiness = min_happiness;
+  set min_happiness(int? min_happiness) =>
+      _$this._min_happiness = min_happiness;
 
   int? _min_beauty;
   int? get min_beauty => _$this._min_beauty;
@@ -368,7 +399,8 @@ class EvolutionBuilder implements Builder<Evolution, EvolutionBuilder> {
 
   int? _min_affection;
   int? get min_affection => _$this._min_affection;
-  set min_affection(int? min_affection) => _$this._min_affection = min_affection;
+  set min_affection(int? min_affection) =>
+      _$this._min_affection = min_affection;
 
   int? _location_id;
   int? get location_id => _$this._location_id;
@@ -377,16 +409,19 @@ class EvolutionBuilder implements Builder<Evolution, EvolutionBuilder> {
   PokemonResourceBuilder? _pokemon_v2_evolutiontrigger;
   PokemonResourceBuilder get pokemon_v2_evolutiontrigger =>
       _$this._pokemon_v2_evolutiontrigger ??= new PokemonResourceBuilder();
-  set pokemon_v2_evolutiontrigger(PokemonResourceBuilder? pokemon_v2_evolutiontrigger) =>
+  set pokemon_v2_evolutiontrigger(
+          PokemonResourceBuilder? pokemon_v2_evolutiontrigger) =>
       _$this._pokemon_v2_evolutiontrigger = pokemon_v2_evolutiontrigger;
 
   bool? _turn_upside_down;
   bool? get turn_upside_down => _$this._turn_upside_down;
-  set turn_upside_down(bool? turn_upside_down) => _$this._turn_upside_down = turn_upside_down;
+  set turn_upside_down(bool? turn_upside_down) =>
+      _$this._turn_upside_down = turn_upside_down;
 
   int? _trade_species_id;
   int? get trade_species_id => _$this._trade_species_id;
-  set trade_species_id(int? trade_species_id) => _$this._trade_species_id = trade_species_id;
+  set trade_species_id(int? trade_species_id) =>
+      _$this._trade_species_id = trade_species_id;
 
   String? _time_of_day;
   String? get time_of_day => _$this._time_of_day;
@@ -398,21 +433,26 @@ class EvolutionBuilder implements Builder<Evolution, EvolutionBuilder> {
       _$this._relative_physical_stats = relative_physical_stats;
 
   PokemonResourceBuilder? _pokemon_v2_location;
-  PokemonResourceBuilder get pokemon_v2_location => _$this._pokemon_v2_location ??= new PokemonResourceBuilder();
+  PokemonResourceBuilder get pokemon_v2_location =>
+      _$this._pokemon_v2_location ??= new PokemonResourceBuilder();
   set pokemon_v2_location(PokemonResourceBuilder? pokemon_v2_location) =>
       _$this._pokemon_v2_location = pokemon_v2_location;
 
   PokemonResourceBuilder? _pokemon_v2_item;
-  PokemonResourceBuilder get pokemon_v2_item => _$this._pokemon_v2_item ??= new PokemonResourceBuilder();
-  set pokemon_v2_item(PokemonResourceBuilder? pokemon_v2_item) => _$this._pokemon_v2_item = pokemon_v2_item;
+  PokemonResourceBuilder get pokemon_v2_item =>
+      _$this._pokemon_v2_item ??= new PokemonResourceBuilder();
+  set pokemon_v2_item(PokemonResourceBuilder? pokemon_v2_item) =>
+      _$this._pokemon_v2_item = pokemon_v2_item;
 
   int? _known_move_id;
   int? get known_move_id => _$this._known_move_id;
-  set known_move_id(int? known_move_id) => _$this._known_move_id = known_move_id;
+  set known_move_id(int? known_move_id) =>
+      _$this._known_move_id = known_move_id;
 
   int? _known_move_type_id;
   int? get known_move_type_id => _$this._known_move_type_id;
-  set known_move_type_id(int? known_move_type_id) => _$this._known_move_type_id = known_move_type_id;
+  set known_move_type_id(int? known_move_type_id) =>
+      _$this._known_move_type_id = known_move_type_id;
 
   int? _held_item_id;
   int? get held_item_id => _$this._held_item_id;
@@ -425,7 +465,8 @@ class EvolutionBuilder implements Builder<Evolution, EvolutionBuilder> {
   PokemonResourceBuilder? _pokemonV2ItemByHeldItemId;
   PokemonResourceBuilder get pokemonV2ItemByHeldItemId =>
       _$this._pokemonV2ItemByHeldItemId ??= new PokemonResourceBuilder();
-  set pokemonV2ItemByHeldItemId(PokemonResourceBuilder? pokemonV2ItemByHeldItemId) =>
+  set pokemonV2ItemByHeldItemId(
+          PokemonResourceBuilder? pokemonV2ItemByHeldItemId) =>
       _$this._pokemonV2ItemByHeldItemId = pokemonV2ItemByHeldItemId;
 
   EvolutionBuilder();
@@ -439,7 +480,8 @@ class EvolutionBuilder implements Builder<Evolution, EvolutionBuilder> {
       _min_beauty = $v.min_beauty;
       _min_affection = $v.min_affection;
       _location_id = $v.location_id;
-      _pokemon_v2_evolutiontrigger = $v.pokemon_v2_evolutiontrigger?.toBuilder();
+      _pokemon_v2_evolutiontrigger =
+          $v.pokemon_v2_evolutiontrigger?.toBuilder();
       _turn_upside_down = $v.turn_upside_down;
       _trade_species_id = $v.trade_species_id;
       _time_of_day = $v.time_of_day;
@@ -481,7 +523,8 @@ class EvolutionBuilder implements Builder<Evolution, EvolutionBuilder> {
               min_beauty: min_beauty,
               min_affection: min_affection,
               location_id: location_id,
-              pokemon_v2_evolutiontrigger: _pokemon_v2_evolutiontrigger?.build(),
+              pokemon_v2_evolutiontrigger:
+                  _pokemon_v2_evolutiontrigger?.build(),
               turn_upside_down: turn_upside_down,
               trade_species_id: trade_species_id,
               time_of_day: time_of_day,
@@ -507,7 +550,8 @@ class EvolutionBuilder implements Builder<Evolution, EvolutionBuilder> {
         _$failedField = 'pokemonV2ItemByHeldItemId';
         _pokemonV2ItemByHeldItemId?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(r'Evolution', _$failedField, e.toString());
+        throw new BuiltValueNestedFieldError(
+            r'Evolution', _$failedField, e.toString());
       }
       rethrow;
     }

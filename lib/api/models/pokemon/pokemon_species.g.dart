@@ -6,9 +6,11 @@ part of 'pokemon_species.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<PokemonSpecies> _$pokemonSpeciesSerializer = new _$PokemonSpeciesSerializer();
+Serializer<PokemonSpecies> _$pokemonSpeciesSerializer =
+    new _$PokemonSpeciesSerializer();
 
-class _$PokemonSpeciesSerializer implements StructuredSerializer<PokemonSpecies> {
+class _$PokemonSpeciesSerializer
+    implements StructuredSerializer<PokemonSpecies> {
   @override
   final Iterable<Type> types = const [PokemonSpecies, _$PokemonSpecies];
   @override
@@ -23,13 +25,15 @@ class _$PokemonSpeciesSerializer implements StructuredSerializer<PokemonSpecies>
     if (value != null) {
       result
         ..add('genus')
-        ..add(serializers.serialize(value, specifiedType: const FullType(String)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
     }
     return result;
   }
 
   @override
-  PokemonSpecies deserialize(Serializers serializers, Iterable<Object?> serialized,
+  PokemonSpecies deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new PokemonSpeciesBuilder();
 
@@ -40,7 +44,8 @@ class _$PokemonSpeciesSerializer implements StructuredSerializer<PokemonSpecies>
       final Object? value = iterator.current;
       switch (key) {
         case 'genus':
-          result.genus = serializers.deserialize(value, specifiedType: const FullType(String)) as String?;
+          result.genus = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
           break;
       }
     }
@@ -59,10 +64,12 @@ class _$PokemonSpecies extends PokemonSpecies {
   _$PokemonSpecies._({this.genus}) : super._();
 
   @override
-  PokemonSpecies rebuild(void Function(PokemonSpeciesBuilder) updates) => (toBuilder()..update(updates)).build();
+  PokemonSpecies rebuild(void Function(PokemonSpeciesBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
-  PokemonSpeciesBuilder toBuilder() => new PokemonSpeciesBuilder()..replace(this);
+  PokemonSpeciesBuilder toBuilder() =>
+      new PokemonSpeciesBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -80,11 +87,13 @@ class _$PokemonSpecies extends PokemonSpecies {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'PokemonSpecies')..add('genus', genus)).toString();
+    return (newBuiltValueToStringHelper(r'PokemonSpecies')..add('genus', genus))
+        .toString();
   }
 }
 
-class PokemonSpeciesBuilder implements Builder<PokemonSpecies, PokemonSpeciesBuilder> {
+class PokemonSpeciesBuilder
+    implements Builder<PokemonSpecies, PokemonSpeciesBuilder> {
   _$PokemonSpecies? _$v;
 
   String? _genus;

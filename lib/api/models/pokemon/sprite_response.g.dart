@@ -6,9 +6,11 @@ part of 'sprite_response.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<SpriteResponse> _$spriteResponseSerializer = new _$SpriteResponseSerializer();
+Serializer<SpriteResponse> _$spriteResponseSerializer =
+    new _$SpriteResponseSerializer();
 
-class _$SpriteResponseSerializer implements StructuredSerializer<SpriteResponse> {
+class _$SpriteResponseSerializer
+    implements StructuredSerializer<SpriteResponse> {
   @override
   final Iterable<Type> types = const [SpriteResponse, _$SpriteResponse];
   @override
@@ -23,13 +25,15 @@ class _$SpriteResponseSerializer implements StructuredSerializer<SpriteResponse>
     if (value != null) {
       result
         ..add('sprites')
-        ..add(serializers.serialize(value, specifiedType: const FullType(String)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
     }
     return result;
   }
 
   @override
-  SpriteResponse deserialize(Serializers serializers, Iterable<Object?> serialized,
+  SpriteResponse deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new SpriteResponseBuilder();
 
@@ -40,7 +44,8 @@ class _$SpriteResponseSerializer implements StructuredSerializer<SpriteResponse>
       final Object? value = iterator.current;
       switch (key) {
         case 'sprites':
-          result.sprites = serializers.deserialize(value, specifiedType: const FullType(String)) as String?;
+          result.sprites = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
           break;
       }
     }
@@ -59,10 +64,12 @@ class _$SpriteResponse extends SpriteResponse {
   _$SpriteResponse._({this.sprites}) : super._();
 
   @override
-  SpriteResponse rebuild(void Function(SpriteResponseBuilder) updates) => (toBuilder()..update(updates)).build();
+  SpriteResponse rebuild(void Function(SpriteResponseBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
-  SpriteResponseBuilder toBuilder() => new SpriteResponseBuilder()..replace(this);
+  SpriteResponseBuilder toBuilder() =>
+      new SpriteResponseBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -80,11 +87,14 @@ class _$SpriteResponse extends SpriteResponse {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'SpriteResponse')..add('sprites', sprites)).toString();
+    return (newBuiltValueToStringHelper(r'SpriteResponse')
+          ..add('sprites', sprites))
+        .toString();
   }
 }
 
-class SpriteResponseBuilder implements Builder<SpriteResponse, SpriteResponseBuilder> {
+class SpriteResponseBuilder
+    implements Builder<SpriteResponse, SpriteResponseBuilder> {
   _$SpriteResponse? _$v;
 
   String? _sprites;

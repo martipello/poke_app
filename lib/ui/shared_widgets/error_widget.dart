@@ -58,10 +58,7 @@ class ErrorWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 2.0),
-                    child: _buildInfoIcon(context),
-                  ),
+                  _buildInfoIcon(context),
                   const SizedBox(
                     width: 4,
                   ),
@@ -85,8 +82,8 @@ class ErrorWidget extends StatelessWidget {
                   disableShadow: true,
                   fillColor: colors(context).cardBackground,
                   onPressed: onTryAgain,
-                  textStyle: PokeAppText.body4Style.copyWith(
-                    color: colors(context).cardBackground,
+                  textStyle: PokeAppText.body3Style.copyWith(
+                    color: colors(context).textOnForeground,
                   ),
                   outlineColor: colors(context).warning,
                 ),
@@ -134,7 +131,9 @@ class ErrorWidget extends StatelessWidget {
             child: SingleChildScrollView(
               child: Text(
                 'Message : $errorMessage',
-                style: PokeAppText.body4Style,
+                style: PokeAppText.body4Style.copyWith(
+                  color: colors(context).textOnForeground,
+                ),
               ),
             ),
           ),
@@ -143,7 +142,9 @@ class ErrorWidget extends StatelessWidget {
           ),
           Text(
             'Code : $errorCode',
-            style: PokeAppText.body4Style,
+            style: PokeAppText.body4Style.copyWith(
+              color: colors(context).textOnForeground,
+            ),
           ),
         ],
       ),

@@ -20,22 +20,28 @@ class _$PokemonSerializer implements StructuredSerializer<Pokemon> {
     final result = <Object?>[
       'pokemon_v2_pokemontypes',
       serializers.serialize(object.pokemon_v2_pokemontypes,
-          specifiedType: const FullType(BuiltList, const [const FullType(TypeDataHolder)])),
+          specifiedType: const FullType(
+              BuiltList, const [const FullType(TypeDataHolder)])),
       'pokemon_v2_pokemonabilities',
       serializers.serialize(object.pokemon_v2_pokemonabilities,
-          specifiedType: const FullType(BuiltList, const [const FullType(PokemonAbilityHolder)])),
+          specifiedType: const FullType(
+              BuiltList, const [const FullType(PokemonAbilityHolder)])),
       'pokemon_v2_pokemonforms',
       serializers.serialize(object.pokemon_v2_pokemonforms,
-          specifiedType: const FullType(BuiltList, const [const FullType(PokemonFormWithVersionGroup)])),
+          specifiedType: const FullType(
+              BuiltList, const [const FullType(PokemonFormWithVersionGroup)])),
       'pokemon_v2_pokemonstats',
       serializers.serialize(object.pokemon_v2_pokemonstats,
-          specifiedType: const FullType(BuiltList, const [const FullType(PokemonStat)])),
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(PokemonStat)])),
       'pokemon_v2_pokemonmoves',
       serializers.serialize(object.pokemon_v2_pokemonmoves,
-          specifiedType: const FullType(BuiltList, const [const FullType(PokemonMoveHolder)])),
+          specifiedType: const FullType(
+              BuiltList, const [const FullType(PokemonMoveHolder)])),
       'pokemon_v2_encounters',
       serializers.serialize(object.pokemon_v2_encounters,
-          specifiedType: const FullType(BuiltList, const [const FullType(Encounter)])),
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(Encounter)])),
     ];
     Object? value;
     value = object.id;
@@ -48,37 +54,43 @@ class _$PokemonSerializer implements StructuredSerializer<Pokemon> {
     if (value != null) {
       result
         ..add('name')
-        ..add(serializers.serialize(value, specifiedType: const FullType(String)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
     }
     value = object.height;
     if (value != null) {
       result
         ..add('height')
-        ..add(serializers.serialize(value, specifiedType: const FullType(double)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(double)));
     }
     value = object.weight;
     if (value != null) {
       result
         ..add('weight')
-        ..add(serializers.serialize(value, specifiedType: const FullType(double)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(double)));
     }
     value = object.pokemon_species_id;
     if (value != null) {
       result
         ..add('pokemon_species_id')
-        ..add(serializers.serialize(value, specifiedType: const FullType(double)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(double)));
     }
     value = object.base_experience;
     if (value != null) {
       result
         ..add('base_experience')
-        ..add(serializers.serialize(value, specifiedType: const FullType(double)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(double)));
     }
     value = object.pokemon_v2_pokemonspecy;
     if (value != null) {
       result
         ..add('pokemon_v2_pokemonspecy')
-        ..add(serializers.serialize(value, specifiedType: const FullType(PokemonSpeciesHolder)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(PokemonSpeciesHolder)));
     }
     return result;
   }
@@ -95,53 +107,70 @@ class _$PokemonSerializer implements StructuredSerializer<Pokemon> {
       final Object? value = iterator.current;
       switch (key) {
         case 'id':
-          result.id = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.id = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'name':
-          result.name = serializers.deserialize(value, specifiedType: const FullType(String)) as String?;
+          result.name = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'height':
-          result.height = serializers.deserialize(value, specifiedType: const FullType(double)) as double?;
+          result.height = serializers.deserialize(value,
+              specifiedType: const FullType(double)) as double?;
           break;
         case 'weight':
-          result.weight = serializers.deserialize(value, specifiedType: const FullType(double)) as double?;
+          result.weight = serializers.deserialize(value,
+              specifiedType: const FullType(double)) as double?;
           break;
         case 'pokemon_species_id':
-          result.pokemon_species_id = serializers.deserialize(value, specifiedType: const FullType(double)) as double?;
+          result.pokemon_species_id = serializers.deserialize(value,
+              specifiedType: const FullType(double)) as double?;
           break;
         case 'base_experience':
-          result.base_experience = serializers.deserialize(value, specifiedType: const FullType(double)) as double?;
+          result.base_experience = serializers.deserialize(value,
+              specifiedType: const FullType(double)) as double?;
           break;
         case 'pokemon_v2_pokemontypes':
           result.pokemon_v2_pokemontypes.replace(serializers.deserialize(value,
-              specifiedType: const FullType(BuiltList, const [const FullType(TypeDataHolder)]))! as BuiltList<Object?>);
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(TypeDataHolder)]))!
+              as BuiltList<Object?>);
           break;
         case 'pokemon_v2_pokemonabilities':
-          result.pokemon_v2_pokemonabilities.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(BuiltList, const [const FullType(PokemonAbilityHolder)]))!
+          result.pokemon_v2_pokemonabilities.replace(serializers.deserialize(
+                  value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(PokemonAbilityHolder)]))!
               as BuiltList<Object?>);
           break;
         case 'pokemon_v2_pokemonspecy':
           result.pokemon_v2_pokemonspecy.replace(serializers.deserialize(value,
-              specifiedType: const FullType(PokemonSpeciesHolder))! as PokemonSpeciesHolder);
+                  specifiedType: const FullType(PokemonSpeciesHolder))!
+              as PokemonSpeciesHolder);
           break;
         case 'pokemon_v2_pokemonforms':
           result.pokemon_v2_pokemonforms.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(BuiltList, const [const FullType(PokemonFormWithVersionGroup)]))!
-              as BuiltList<Object?>);
+              specifiedType: const FullType(BuiltList, const [
+                const FullType(PokemonFormWithVersionGroup)
+              ]))! as BuiltList<Object?>);
           break;
         case 'pokemon_v2_pokemonstats':
           result.pokemon_v2_pokemonstats.replace(serializers.deserialize(value,
-              specifiedType: const FullType(BuiltList, const [const FullType(PokemonStat)]))! as BuiltList<Object?>);
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(PokemonStat)]))!
+              as BuiltList<Object?>);
           break;
         case 'pokemon_v2_pokemonmoves':
           result.pokemon_v2_pokemonmoves.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(BuiltList, const [const FullType(PokemonMoveHolder)]))!
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(PokemonMoveHolder)]))!
               as BuiltList<Object?>);
           break;
         case 'pokemon_v2_encounters':
           result.pokemon_v2_encounters.replace(serializers.deserialize(value,
-              specifiedType: const FullType(BuiltList, const [const FullType(Encounter)]))! as BuiltList<Object?>);
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(Encounter)]))!
+              as BuiltList<Object?>);
           break;
       }
     }
@@ -178,7 +207,8 @@ class _$Pokemon extends Pokemon {
   @override
   final BuiltList<Encounter> pokemon_v2_encounters;
 
-  factory _$Pokemon([void Function(PokemonBuilder)? updates]) => (new PokemonBuilder()..update(updates))._build();
+  factory _$Pokemon([void Function(PokemonBuilder)? updates]) =>
+      (new PokemonBuilder()..update(updates))._build();
 
   _$Pokemon._(
       {this.id,
@@ -195,16 +225,23 @@ class _$Pokemon extends Pokemon {
       required this.pokemon_v2_pokemonmoves,
       required this.pokemon_v2_encounters})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(pokemon_v2_pokemontypes, r'Pokemon', 'pokemon_v2_pokemontypes');
-    BuiltValueNullFieldError.checkNotNull(pokemon_v2_pokemonabilities, r'Pokemon', 'pokemon_v2_pokemonabilities');
-    BuiltValueNullFieldError.checkNotNull(pokemon_v2_pokemonforms, r'Pokemon', 'pokemon_v2_pokemonforms');
-    BuiltValueNullFieldError.checkNotNull(pokemon_v2_pokemonstats, r'Pokemon', 'pokemon_v2_pokemonstats');
-    BuiltValueNullFieldError.checkNotNull(pokemon_v2_pokemonmoves, r'Pokemon', 'pokemon_v2_pokemonmoves');
-    BuiltValueNullFieldError.checkNotNull(pokemon_v2_encounters, r'Pokemon', 'pokemon_v2_encounters');
+    BuiltValueNullFieldError.checkNotNull(
+        pokemon_v2_pokemontypes, r'Pokemon', 'pokemon_v2_pokemontypes');
+    BuiltValueNullFieldError.checkNotNull(
+        pokemon_v2_pokemonabilities, r'Pokemon', 'pokemon_v2_pokemonabilities');
+    BuiltValueNullFieldError.checkNotNull(
+        pokemon_v2_pokemonforms, r'Pokemon', 'pokemon_v2_pokemonforms');
+    BuiltValueNullFieldError.checkNotNull(
+        pokemon_v2_pokemonstats, r'Pokemon', 'pokemon_v2_pokemonstats');
+    BuiltValueNullFieldError.checkNotNull(
+        pokemon_v2_pokemonmoves, r'Pokemon', 'pokemon_v2_pokemonmoves');
+    BuiltValueNullFieldError.checkNotNull(
+        pokemon_v2_encounters, r'Pokemon', 'pokemon_v2_encounters');
   }
 
   @override
-  Pokemon rebuild(void Function(PokemonBuilder) updates) => (toBuilder()..update(updates)).build();
+  Pokemon rebuild(void Function(PokemonBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   PokemonBuilder toBuilder() => new PokemonBuilder()..replace(this);
@@ -289,50 +326,61 @@ class PokemonBuilder implements Builder<Pokemon, PokemonBuilder> {
 
   double? _pokemon_species_id;
   double? get pokemon_species_id => _$this._pokemon_species_id;
-  set pokemon_species_id(double? pokemon_species_id) => _$this._pokemon_species_id = pokemon_species_id;
+  set pokemon_species_id(double? pokemon_species_id) =>
+      _$this._pokemon_species_id = pokemon_species_id;
 
   double? _base_experience;
   double? get base_experience => _$this._base_experience;
-  set base_experience(double? base_experience) => _$this._base_experience = base_experience;
+  set base_experience(double? base_experience) =>
+      _$this._base_experience = base_experience;
 
   ListBuilder<TypeDataHolder>? _pokemon_v2_pokemontypes;
   ListBuilder<TypeDataHolder> get pokemon_v2_pokemontypes =>
       _$this._pokemon_v2_pokemontypes ??= new ListBuilder<TypeDataHolder>();
-  set pokemon_v2_pokemontypes(ListBuilder<TypeDataHolder>? pokemon_v2_pokemontypes) =>
+  set pokemon_v2_pokemontypes(
+          ListBuilder<TypeDataHolder>? pokemon_v2_pokemontypes) =>
       _$this._pokemon_v2_pokemontypes = pokemon_v2_pokemontypes;
 
   ListBuilder<PokemonAbilityHolder>? _pokemon_v2_pokemonabilities;
   ListBuilder<PokemonAbilityHolder> get pokemon_v2_pokemonabilities =>
-      _$this._pokemon_v2_pokemonabilities ??= new ListBuilder<PokemonAbilityHolder>();
-  set pokemon_v2_pokemonabilities(ListBuilder<PokemonAbilityHolder>? pokemon_v2_pokemonabilities) =>
+      _$this._pokemon_v2_pokemonabilities ??=
+          new ListBuilder<PokemonAbilityHolder>();
+  set pokemon_v2_pokemonabilities(
+          ListBuilder<PokemonAbilityHolder>? pokemon_v2_pokemonabilities) =>
       _$this._pokemon_v2_pokemonabilities = pokemon_v2_pokemonabilities;
 
   PokemonSpeciesHolderBuilder? _pokemon_v2_pokemonspecy;
   PokemonSpeciesHolderBuilder get pokemon_v2_pokemonspecy =>
       _$this._pokemon_v2_pokemonspecy ??= new PokemonSpeciesHolderBuilder();
-  set pokemon_v2_pokemonspecy(PokemonSpeciesHolderBuilder? pokemon_v2_pokemonspecy) =>
+  set pokemon_v2_pokemonspecy(
+          PokemonSpeciesHolderBuilder? pokemon_v2_pokemonspecy) =>
       _$this._pokemon_v2_pokemonspecy = pokemon_v2_pokemonspecy;
 
   ListBuilder<PokemonFormWithVersionGroup>? _pokemon_v2_pokemonforms;
   ListBuilder<PokemonFormWithVersionGroup> get pokemon_v2_pokemonforms =>
-      _$this._pokemon_v2_pokemonforms ??= new ListBuilder<PokemonFormWithVersionGroup>();
-  set pokemon_v2_pokemonforms(ListBuilder<PokemonFormWithVersionGroup>? pokemon_v2_pokemonforms) =>
+      _$this._pokemon_v2_pokemonforms ??=
+          new ListBuilder<PokemonFormWithVersionGroup>();
+  set pokemon_v2_pokemonforms(
+          ListBuilder<PokemonFormWithVersionGroup>? pokemon_v2_pokemonforms) =>
       _$this._pokemon_v2_pokemonforms = pokemon_v2_pokemonforms;
 
   ListBuilder<PokemonStat>? _pokemon_v2_pokemonstats;
   ListBuilder<PokemonStat> get pokemon_v2_pokemonstats =>
       _$this._pokemon_v2_pokemonstats ??= new ListBuilder<PokemonStat>();
-  set pokemon_v2_pokemonstats(ListBuilder<PokemonStat>? pokemon_v2_pokemonstats) =>
+  set pokemon_v2_pokemonstats(
+          ListBuilder<PokemonStat>? pokemon_v2_pokemonstats) =>
       _$this._pokemon_v2_pokemonstats = pokemon_v2_pokemonstats;
 
   ListBuilder<PokemonMoveHolder>? _pokemon_v2_pokemonmoves;
   ListBuilder<PokemonMoveHolder> get pokemon_v2_pokemonmoves =>
       _$this._pokemon_v2_pokemonmoves ??= new ListBuilder<PokemonMoveHolder>();
-  set pokemon_v2_pokemonmoves(ListBuilder<PokemonMoveHolder>? pokemon_v2_pokemonmoves) =>
+  set pokemon_v2_pokemonmoves(
+          ListBuilder<PokemonMoveHolder>? pokemon_v2_pokemonmoves) =>
       _$this._pokemon_v2_pokemonmoves = pokemon_v2_pokemonmoves;
 
   ListBuilder<Encounter>? _pokemon_v2_encounters;
-  ListBuilder<Encounter> get pokemon_v2_encounters => _$this._pokemon_v2_encounters ??= new ListBuilder<Encounter>();
+  ListBuilder<Encounter> get pokemon_v2_encounters =>
+      _$this._pokemon_v2_encounters ??= new ListBuilder<Encounter>();
   set pokemon_v2_encounters(ListBuilder<Encounter>? pokemon_v2_encounters) =>
       _$this._pokemon_v2_encounters = pokemon_v2_encounters;
 
@@ -409,7 +457,8 @@ class PokemonBuilder implements Builder<Pokemon, PokemonBuilder> {
         _$failedField = 'pokemon_v2_encounters';
         pokemon_v2_encounters.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(r'Pokemon', _$failedField, e.toString());
+        throw new BuiltValueNestedFieldError(
+            r'Pokemon', _$failedField, e.toString());
       }
       rethrow;
     }

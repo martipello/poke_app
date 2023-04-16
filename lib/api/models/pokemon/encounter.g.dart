@@ -20,8 +20,10 @@ class _$EncounterSerializer implements StructuredSerializer<Encounter> {
     final result = <Object?>[
       'encounterSlotAndLocations',
       serializers.serialize(object.encounterSlotAndLocations,
-          specifiedType:
-              const FullType(BuiltMap, const [const FullType(PokemonResource), const FullType(EncounterSlot)])),
+          specifiedType: const FullType(BuiltMap, const [
+            const FullType(PokemonResource),
+            const FullType(EncounterSlot)
+          ])),
     ];
     Object? value;
     value = object.id;
@@ -46,25 +48,29 @@ class _$EncounterSerializer implements StructuredSerializer<Encounter> {
     if (value != null) {
       result
         ..add('pokemon_v2_version')
-        ..add(serializers.serialize(value, specifiedType: const FullType(PokemonResource)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(PokemonResource)));
     }
     value = object.pokemon_v2_locationarea;
     if (value != null) {
       result
         ..add('pokemon_v2_locationarea')
-        ..add(serializers.serialize(value, specifiedType: const FullType(PokemonResource)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(PokemonResource)));
     }
     value = object.pokemon_v2_location;
     if (value != null) {
       result
         ..add('pokemon_v2_location')
-        ..add(serializers.serialize(value, specifiedType: const FullType(PokemonResource)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(PokemonResource)));
     }
     value = object.pokemon_v2_encounterslot;
     if (value != null) {
       result
         ..add('pokemon_v2_encounterslot')
-        ..add(serializers.serialize(value, specifiedType: const FullType(EncounterSlot)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(EncounterSlot)));
     }
     return result;
   }
@@ -81,34 +87,43 @@ class _$EncounterSerializer implements StructuredSerializer<Encounter> {
       final Object? value = iterator.current;
       switch (key) {
         case 'id':
-          result.id = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.id = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'min_level':
-          result.min_level = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.min_level = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'max_level':
-          result.max_level = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.max_level = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'pokemon_v2_version':
-          result.pokemon_v2_version.replace(
-              serializers.deserialize(value, specifiedType: const FullType(PokemonResource))! as PokemonResource);
+          result.pokemon_v2_version.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(PokemonResource))!
+              as PokemonResource);
           break;
         case 'pokemon_v2_locationarea':
-          result.pokemon_v2_locationarea.replace(
-              serializers.deserialize(value, specifiedType: const FullType(PokemonResource))! as PokemonResource);
+          result.pokemon_v2_locationarea.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(PokemonResource))!
+              as PokemonResource);
           break;
         case 'pokemon_v2_location':
-          result.pokemon_v2_location.replace(
-              serializers.deserialize(value, specifiedType: const FullType(PokemonResource))! as PokemonResource);
+          result.pokemon_v2_location.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(PokemonResource))!
+              as PokemonResource);
           break;
         case 'pokemon_v2_encounterslot':
-          result.pokemon_v2_encounterslot
-              .replace(serializers.deserialize(value, specifiedType: const FullType(EncounterSlot))! as EncounterSlot);
+          result.pokemon_v2_encounterslot.replace(serializers.deserialize(value,
+              specifiedType: const FullType(EncounterSlot))! as EncounterSlot);
           break;
         case 'encounterSlotAndLocations':
-          result.encounterSlotAndLocations.replace(serializers.deserialize(value,
-              specifiedType:
-                  const FullType(BuiltMap, const [const FullType(PokemonResource), const FullType(EncounterSlot)]))!);
+          result.encounterSlotAndLocations.replace(serializers.deserialize(
+              value,
+              specifiedType: const FullType(BuiltMap, const [
+                const FullType(PokemonResource),
+                const FullType(EncounterSlot)
+              ]))!);
           break;
       }
     }
@@ -135,7 +150,8 @@ class _$Encounter extends Encounter {
   @override
   final BuiltMap<PokemonResource, EncounterSlot> encounterSlotAndLocations;
 
-  factory _$Encounter([void Function(EncounterBuilder)? updates]) => (new EncounterBuilder()..update(updates))._build();
+  factory _$Encounter([void Function(EncounterBuilder)? updates]) =>
+      (new EncounterBuilder()..update(updates))._build();
 
   _$Encounter._(
       {this.id,
@@ -147,11 +163,13 @@ class _$Encounter extends Encounter {
       this.pokemon_v2_encounterslot,
       required this.encounterSlotAndLocations})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(encounterSlotAndLocations, r'Encounter', 'encounterSlotAndLocations');
+    BuiltValueNullFieldError.checkNotNull(
+        encounterSlotAndLocations, r'Encounter', 'encounterSlotAndLocations');
   }
 
   @override
-  Encounter rebuild(void Function(EncounterBuilder) updates) => (toBuilder()..update(updates)).build();
+  Encounter rebuild(void Function(EncounterBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   EncounterBuilder toBuilder() => new EncounterBuilder()..replace(this);
@@ -216,29 +234,38 @@ class EncounterBuilder implements Builder<Encounter, EncounterBuilder> {
   set max_level(int? max_level) => _$this._max_level = max_level;
 
   PokemonResourceBuilder? _pokemon_v2_version;
-  PokemonResourceBuilder get pokemon_v2_version => _$this._pokemon_v2_version ??= new PokemonResourceBuilder();
-  set pokemon_v2_version(PokemonResourceBuilder? pokemon_v2_version) => _$this._pokemon_v2_version = pokemon_v2_version;
+  PokemonResourceBuilder get pokemon_v2_version =>
+      _$this._pokemon_v2_version ??= new PokemonResourceBuilder();
+  set pokemon_v2_version(PokemonResourceBuilder? pokemon_v2_version) =>
+      _$this._pokemon_v2_version = pokemon_v2_version;
 
   PokemonResourceBuilder? _pokemon_v2_locationarea;
   PokemonResourceBuilder get pokemon_v2_locationarea =>
       _$this._pokemon_v2_locationarea ??= new PokemonResourceBuilder();
-  set pokemon_v2_locationarea(PokemonResourceBuilder? pokemon_v2_locationarea) =>
+  set pokemon_v2_locationarea(
+          PokemonResourceBuilder? pokemon_v2_locationarea) =>
       _$this._pokemon_v2_locationarea = pokemon_v2_locationarea;
 
   PokemonResourceBuilder? _pokemon_v2_location;
-  PokemonResourceBuilder get pokemon_v2_location => _$this._pokemon_v2_location ??= new PokemonResourceBuilder();
+  PokemonResourceBuilder get pokemon_v2_location =>
+      _$this._pokemon_v2_location ??= new PokemonResourceBuilder();
   set pokemon_v2_location(PokemonResourceBuilder? pokemon_v2_location) =>
       _$this._pokemon_v2_location = pokemon_v2_location;
 
   EncounterSlotBuilder? _pokemon_v2_encounterslot;
-  EncounterSlotBuilder get pokemon_v2_encounterslot => _$this._pokemon_v2_encounterslot ??= new EncounterSlotBuilder();
-  set pokemon_v2_encounterslot(EncounterSlotBuilder? pokemon_v2_encounterslot) =>
+  EncounterSlotBuilder get pokemon_v2_encounterslot =>
+      _$this._pokemon_v2_encounterslot ??= new EncounterSlotBuilder();
+  set pokemon_v2_encounterslot(
+          EncounterSlotBuilder? pokemon_v2_encounterslot) =>
       _$this._pokemon_v2_encounterslot = pokemon_v2_encounterslot;
 
   MapBuilder<PokemonResource, EncounterSlot>? _encounterSlotAndLocations;
   MapBuilder<PokemonResource, EncounterSlot> get encounterSlotAndLocations =>
-      _$this._encounterSlotAndLocations ??= new MapBuilder<PokemonResource, EncounterSlot>();
-  set encounterSlotAndLocations(MapBuilder<PokemonResource, EncounterSlot>? encounterSlotAndLocations) =>
+      _$this._encounterSlotAndLocations ??=
+          new MapBuilder<PokemonResource, EncounterSlot>();
+  set encounterSlotAndLocations(
+          MapBuilder<PokemonResource, EncounterSlot>?
+              encounterSlotAndLocations) =>
       _$this._encounterSlotAndLocations = encounterSlotAndLocations;
 
   EncounterBuilder();
@@ -300,7 +327,8 @@ class EncounterBuilder implements Builder<Encounter, EncounterBuilder> {
         _$failedField = 'encounterSlotAndLocations';
         encounterSlotAndLocations.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(r'Encounter', _$failedField, e.toString());
+        throw new BuiltValueNestedFieldError(
+            r'Encounter', _$failedField, e.toString());
       }
       rethrow;
     }

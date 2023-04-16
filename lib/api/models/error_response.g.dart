@@ -6,7 +6,8 @@ part of 'error_response.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<ErrorResponse> _$errorResponseSerializer = new _$ErrorResponseSerializer();
+Serializer<ErrorResponse> _$errorResponseSerializer =
+    new _$ErrorResponseSerializer();
 
 class _$ErrorResponseSerializer implements StructuredSerializer<ErrorResponse> {
   @override
@@ -17,22 +18,28 @@ class _$ErrorResponseSerializer implements StructuredSerializer<ErrorResponse> {
   @override
   Iterable<Object?> serialize(Serializers serializers, ErrorResponse object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object?>[
-      'error',
-      serializers.serialize(object.error, specifiedType: const FullType(Object)),
-    ];
+    final result = <Object?>[];
     Object? value;
     value = object.message;
     if (value != null) {
       result
         ..add('message')
-        ..add(serializers.serialize(value, specifiedType: const FullType(String)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.error;
+    if (value != null) {
+      result
+        ..add('error')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(Object)));
     }
     value = object.url;
     if (value != null) {
       result
         ..add('url')
-        ..add(serializers.serialize(value, specifiedType: const FullType(String)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
     }
     value = object.statusCode;
     if (value != null) {
@@ -50,7 +57,8 @@ class _$ErrorResponseSerializer implements StructuredSerializer<ErrorResponse> {
   }
 
   @override
-  ErrorResponse deserialize(Serializers serializers, Iterable<Object?> serialized,
+  ErrorResponse deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new ErrorResponseBuilder();
 
@@ -61,19 +69,24 @@ class _$ErrorResponseSerializer implements StructuredSerializer<ErrorResponse> {
       final Object? value = iterator.current;
       switch (key) {
         case 'message':
-          result.message = serializers.deserialize(value, specifiedType: const FullType(String)) as String?;
+          result.message = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'error':
-          result.error = serializers.deserialize(value, specifiedType: const FullType(Object));
+          result.error = serializers.deserialize(value,
+              specifiedType: const FullType(Object));
           break;
         case 'url':
-          result.url = serializers.deserialize(value, specifiedType: const FullType(String)) as String?;
+          result.url = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'statusCode':
-          result.statusCode = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.statusCode = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'attempts_remaining':
-          result.attempts_remaining = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.attempts_remaining = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
       }
     }
@@ -86,7 +99,7 @@ class _$ErrorResponse extends ErrorResponse {
   @override
   final String? message;
   @override
-  final Object error;
+  final Object? error;
   @override
   final String? url;
   @override
@@ -97,13 +110,17 @@ class _$ErrorResponse extends ErrorResponse {
   factory _$ErrorResponse([void Function(ErrorResponseBuilder)? updates]) =>
       (new ErrorResponseBuilder()..update(updates))._build();
 
-  _$ErrorResponse._({this.message, required this.error, this.url, this.statusCode, this.attempts_remaining})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(error, r'ErrorResponse', 'error');
-  }
+  _$ErrorResponse._(
+      {this.message,
+      this.error,
+      this.url,
+      this.statusCode,
+      this.attempts_remaining})
+      : super._();
 
   @override
-  ErrorResponse rebuild(void Function(ErrorResponseBuilder) updates) => (toBuilder()..update(updates)).build();
+  ErrorResponse rebuild(void Function(ErrorResponseBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   ErrorResponseBuilder toBuilder() => new ErrorResponseBuilder()..replace(this);
@@ -143,7 +160,8 @@ class _$ErrorResponse extends ErrorResponse {
   }
 }
 
-class ErrorResponseBuilder implements Builder<ErrorResponse, ErrorResponseBuilder> {
+class ErrorResponseBuilder
+    implements Builder<ErrorResponse, ErrorResponseBuilder> {
   _$ErrorResponse? _$v;
 
   String? _message;
@@ -164,7 +182,8 @@ class ErrorResponseBuilder implements Builder<ErrorResponse, ErrorResponseBuilde
 
   int? _attempts_remaining;
   int? get attempts_remaining => _$this._attempts_remaining;
-  set attempts_remaining(int? attempts_remaining) => _$this._attempts_remaining = attempts_remaining;
+  set attempts_remaining(int? attempts_remaining) =>
+      _$this._attempts_remaining = attempts_remaining;
 
   ErrorResponseBuilder();
 
@@ -199,7 +218,7 @@ class ErrorResponseBuilder implements Builder<ErrorResponse, ErrorResponseBuilde
     final _$result = _$v ??
         new _$ErrorResponse._(
             message: message,
-            error: BuiltValueNullFieldError.checkNotNull(error, r'ErrorResponse', 'error'),
+            error: error,
             url: url,
             statusCode: statusCode,
             attempts_remaining: attempts_remaining);

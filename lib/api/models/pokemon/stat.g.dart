@@ -15,14 +15,16 @@ class _$StatSerializer implements StructuredSerializer<Stat> {
   final String wireName = 'Stat';
 
   @override
-  Iterable<Object?> serialize(Serializers serializers, Stat object, {FullType specifiedType = FullType.unspecified}) {
+  Iterable<Object?> serialize(Serializers serializers, Stat object,
+      {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[];
     Object? value;
     value = object.name;
     if (value != null) {
       result
         ..add('name')
-        ..add(serializers.serialize(value, specifiedType: const FullType(String)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
     }
     value = object.move_damage_class_id;
     if (value != null) {
@@ -34,7 +36,8 @@ class _$StatSerializer implements StructuredSerializer<Stat> {
     if (value != null) {
       result
         ..add('is_battle_only')
-        ..add(serializers.serialize(value, specifiedType: const FullType(bool)));
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
     }
     value = object.game_index;
     if (value != null) {
@@ -57,16 +60,20 @@ class _$StatSerializer implements StructuredSerializer<Stat> {
       final Object? value = iterator.current;
       switch (key) {
         case 'name':
-          result.name = serializers.deserialize(value, specifiedType: const FullType(String)) as String?;
+          result.name = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'move_damage_class_id':
-          result.move_damage_class_id = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.move_damage_class_id = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'is_battle_only':
-          result.is_battle_only = serializers.deserialize(value, specifiedType: const FullType(bool)) as bool?;
+          result.is_battle_only = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
           break;
         case 'game_index':
-          result.game_index = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.game_index = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
       }
     }
@@ -85,12 +92,19 @@ class _$Stat extends Stat {
   @override
   final int? game_index;
 
-  factory _$Stat([void Function(StatBuilder)? updates]) => (new StatBuilder()..update(updates))._build();
+  factory _$Stat([void Function(StatBuilder)? updates]) =>
+      (new StatBuilder()..update(updates))._build();
 
-  _$Stat._({this.name, this.move_damage_class_id, this.is_battle_only, this.game_index}) : super._();
+  _$Stat._(
+      {this.name,
+      this.move_damage_class_id,
+      this.is_battle_only,
+      this.game_index})
+      : super._();
 
   @override
-  Stat rebuild(void Function(StatBuilder) updates) => (toBuilder()..update(updates)).build();
+  Stat rebuild(void Function(StatBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   StatBuilder toBuilder() => new StatBuilder()..replace(this);
@@ -136,11 +150,13 @@ class StatBuilder implements Builder<Stat, StatBuilder> {
 
   int? _move_damage_class_id;
   int? get move_damage_class_id => _$this._move_damage_class_id;
-  set move_damage_class_id(int? move_damage_class_id) => _$this._move_damage_class_id = move_damage_class_id;
+  set move_damage_class_id(int? move_damage_class_id) =>
+      _$this._move_damage_class_id = move_damage_class_id;
 
   bool? _is_battle_only;
   bool? get is_battle_only => _$this._is_battle_only;
-  set is_battle_only(bool? is_battle_only) => _$this._is_battle_only = is_battle_only;
+  set is_battle_only(bool? is_battle_only) =>
+      _$this._is_battle_only = is_battle_only;
 
   int? _game_index;
   int? get game_index => _$this._game_index;
