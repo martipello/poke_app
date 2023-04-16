@@ -40,7 +40,9 @@ class GoogleAdsViewModel {
         secondaryTextStyle: _createNativeTemplateTextStyle(context),
         tertiaryTextStyle: _createNativeTemplateTextStyle(context),
       ),
-      request: const AdRequest(),
+      request: const AdRequest(
+        nonPersonalizedAds: true,
+      ),
       listener: NativeAdListener(
         onAdLoaded: (_) {
           nativeAdIsLoaded.add(true);
