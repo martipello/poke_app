@@ -8,7 +8,6 @@ import 'type_data.dart';
 part 'type_data_holder.g.dart';
 
 abstract class TypeDataHolder implements Built<TypeDataHolder, TypeDataHolderBuilder> {
-
   factory TypeDataHolder([void Function(TypeDataHolderBuilder) updates]) = _$TypeDataHolder;
   TypeDataHolder._();
 

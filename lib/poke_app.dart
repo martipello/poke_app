@@ -26,7 +26,6 @@ class PokeApp extends StatefulWidget {
 }
 
 class _PokeAppState extends State<PokeApp> {
-
   final languageService = getIt.get<LanguageService>();
   final _inAppPurchaseViewModel = getIt.get<InAppPurchaseViewModel>();
 
@@ -35,7 +34,6 @@ class _PokeAppState extends State<PokeApp> {
     _inAppPurchaseViewModel.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +78,7 @@ class _PokeAppState extends State<PokeApp> {
             About.routeName: (context) => About(),
           },
         );
-      }
+      },
     );
   }
 }

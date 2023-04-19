@@ -7,7 +7,6 @@ import '../../serializers/serializers.dart';
 part 'stat.g.dart';
 
 abstract class Stat implements Built<Stat, StatBuilder> {
-
   factory Stat([void Function(StatBuilder) updates]) = _$Stat;
   Stat._();
 

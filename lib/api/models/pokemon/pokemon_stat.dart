@@ -8,7 +8,6 @@ import 'stat.dart';
 part 'pokemon_stat.g.dart';
 
 abstract class PokemonStat implements Built<PokemonStat, PokemonStatBuilder> {
-
   factory PokemonStat([void Function(PokemonStatBuilder) updates]) = _$PokemonStat;
   PokemonStat._();
 

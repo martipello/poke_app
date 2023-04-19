@@ -14,7 +14,6 @@ class PokeballLoadingWidget extends StatefulWidget {
 }
 
 class _PokeballLoadingWidgetState extends State<PokeballLoadingWidget> {
-
   final _pokeballLoadingViewModel = getIt.get<PokeballLoadingViewModel>();
 
   @override
@@ -25,15 +24,13 @@ class _PokeballLoadingWidgetState extends State<PokeballLoadingWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: SizedBox(
-          height: widget.size?.height ?? 100,
-          width: widget.size?.width ?? 100,
-          child: RiveAnimation.asset(
-            _pokeballLoadingViewModel.animationDirectory,
-            controllers: [_pokeballLoadingViewModel.controller],
-          ),
+    return Center(
+      child: SizedBox(
+        height: widget.size?.height ?? 100,
+        width: widget.size?.width ?? 100,
+        child: RiveAnimation.asset(
+          _pokeballLoadingViewModel.animationDirectory,
+          controllers: [_pokeballLoadingViewModel.controller],
         ),
       ),
     );

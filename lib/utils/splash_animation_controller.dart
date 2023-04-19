@@ -5,7 +5,7 @@ class SplashAnimationController extends OneShotAnimation {
   SplashAnimationController(
     super.animationName, {
     this.onAnimationEnd,
-        this.autoPlay = false,
+    this.autoPlay = false,
   });
 
   final VoidCallback? onAnimationEnd;
@@ -16,7 +16,7 @@ class SplashAnimationController extends OneShotAnimation {
 
   @override
   void onActiveChanged() {
-    if(!isActive) {
+    if (!isActive) {
       onAnimationEnd?.call();
     }
   }

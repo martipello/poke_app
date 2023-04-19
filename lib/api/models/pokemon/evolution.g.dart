@@ -328,49 +328,27 @@ class _$Evolution extends Evolution {
 
   @override
   int get hashCode {
-    return $jf($jc(
-        $jc(
-            $jc(
-                $jc(
-                    $jc(
-                        $jc(
-                            $jc(
-                                $jc(
-                                    $jc(
-                                        $jc(
-                                            $jc(
-                                                $jc(
-                                                    $jc(
-                                                        $jc(
-                                                            $jc(
-                                                                $jc(
-                                                                    $jc(
-                                                                        $jc(
-                                                                            0,
-                                                                            needs_overworld_rain
-                                                                                .hashCode),
-                                                                        min_level
-                                                                            .hashCode),
-                                                                    min_happiness
-                                                                        .hashCode),
-                                                                min_beauty
-                                                                    .hashCode),
-                                                            min_affection
-                                                                .hashCode),
-                                                        location_id.hashCode),
-                                                    pokemon_v2_evolutiontrigger
-                                                        .hashCode),
-                                                turn_upside_down.hashCode),
-                                            trade_species_id.hashCode),
-                                        time_of_day.hashCode),
-                                    relative_physical_stats.hashCode),
-                                pokemon_v2_location.hashCode),
-                            pokemon_v2_item.hashCode),
-                        known_move_id.hashCode),
-                    known_move_type_id.hashCode),
-                held_item_id.hashCode),
-            gender_id.hashCode),
-        pokemonV2ItemByHeldItemId.hashCode));
+    var _$hash = 0;
+    _$hash = $jc(_$hash, needs_overworld_rain.hashCode);
+    _$hash = $jc(_$hash, min_level.hashCode);
+    _$hash = $jc(_$hash, min_happiness.hashCode);
+    _$hash = $jc(_$hash, min_beauty.hashCode);
+    _$hash = $jc(_$hash, min_affection.hashCode);
+    _$hash = $jc(_$hash, location_id.hashCode);
+    _$hash = $jc(_$hash, pokemon_v2_evolutiontrigger.hashCode);
+    _$hash = $jc(_$hash, turn_upside_down.hashCode);
+    _$hash = $jc(_$hash, trade_species_id.hashCode);
+    _$hash = $jc(_$hash, time_of_day.hashCode);
+    _$hash = $jc(_$hash, relative_physical_stats.hashCode);
+    _$hash = $jc(_$hash, pokemon_v2_location.hashCode);
+    _$hash = $jc(_$hash, pokemon_v2_item.hashCode);
+    _$hash = $jc(_$hash, known_move_id.hashCode);
+    _$hash = $jc(_$hash, known_move_type_id.hashCode);
+    _$hash = $jc(_$hash, held_item_id.hashCode);
+    _$hash = $jc(_$hash, gender_id.hashCode);
+    _$hash = $jc(_$hash, pokemonV2ItemByHeldItemId.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
   }
 
   @override
@@ -582,4 +560,4 @@ class EvolutionBuilder implements Builder<Evolution, EvolutionBuilder> {
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas
+// ignore_for_file: deprecated_member_use_from_same_package,type=lint

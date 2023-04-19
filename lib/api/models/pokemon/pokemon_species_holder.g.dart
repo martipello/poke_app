@@ -400,44 +400,30 @@ class _$PokemonSpeciesHolder extends PokemonSpeciesHolder {
 
   @override
   int get hashCode {
-    return $jf($jc(
-        $jc(
-            $jc(
-                $jc(
-                    $jc(
-                        $jc(
-                            $jc(
-                                $jc(
-                                    $jc(
-                                        $jc(
-                                            $jc(
-                                                $jc(
-                                                    $jc(
-                                                        $jc(
-                                                            $jc(
-                                                                $jc(
-                                                                    $jc(
-                                                                        $jc(
-                                                                            $jc($jc($jc(0, id.hashCode), name.hashCode),
-                                                                                base_happiness.hashCode),
-                                                                            capture_rate.hashCode),
-                                                                        evolution_chain_id.hashCode),
-                                                                    evolves_from_species_id.hashCode),
-                                                                forms_switchable.hashCode),
-                                                            generation_id.hashCode),
-                                                        is_baby.hashCode),
-                                                    is_legendary.hashCode),
-                                                is_mythical.hashCode),
-                                            pokemon_v2_pokemonevolutions.hashCode),
-                                        pokemon_v2_pokemonspeciesnames.hashCode),
-                                    pokemon_v2_pokemons.hashCode),
-                                hatch_counter.hashCode),
-                            pokemon_v2_pokemonshape.hashCode),
-                        pokemon_v2_pokemonhabitat.hashCode),
-                    gender_rate.hashCode),
-                pokemon_v2_pokemonegggroups.hashCode),
-            pokemon_v2_pokemonspeciesflavortexts.hashCode),
-        pokemon_v2_pokemoncolor.hashCode));
+    var _$hash = 0;
+    _$hash = $jc(_$hash, id.hashCode);
+    _$hash = $jc(_$hash, name.hashCode);
+    _$hash = $jc(_$hash, base_happiness.hashCode);
+    _$hash = $jc(_$hash, capture_rate.hashCode);
+    _$hash = $jc(_$hash, evolution_chain_id.hashCode);
+    _$hash = $jc(_$hash, evolves_from_species_id.hashCode);
+    _$hash = $jc(_$hash, forms_switchable.hashCode);
+    _$hash = $jc(_$hash, generation_id.hashCode);
+    _$hash = $jc(_$hash, is_baby.hashCode);
+    _$hash = $jc(_$hash, is_legendary.hashCode);
+    _$hash = $jc(_$hash, is_mythical.hashCode);
+    _$hash = $jc(_$hash, pokemon_v2_pokemonevolutions.hashCode);
+    _$hash = $jc(_$hash, pokemon_v2_pokemonspeciesnames.hashCode);
+    _$hash = $jc(_$hash, pokemon_v2_pokemons.hashCode);
+    _$hash = $jc(_$hash, hatch_counter.hashCode);
+    _$hash = $jc(_$hash, pokemon_v2_pokemonshape.hashCode);
+    _$hash = $jc(_$hash, pokemon_v2_pokemonhabitat.hashCode);
+    _$hash = $jc(_$hash, gender_rate.hashCode);
+    _$hash = $jc(_$hash, pokemon_v2_pokemonegggroups.hashCode);
+    _$hash = $jc(_$hash, pokemon_v2_pokemonspeciesflavortexts.hashCode);
+    _$hash = $jc(_$hash, pokemon_v2_pokemoncolor.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
   }
 
   @override
@@ -700,4 +686,4 @@ class PokemonSpeciesHolderBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas
+// ignore_for_file: deprecated_member_use_from_same_package,type=lint

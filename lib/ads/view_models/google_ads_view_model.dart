@@ -1,51 +1,56 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../flavors.dart';
+import '../../theme/base_theme.dart';
 
 const kDebugAndroidInterstitialAdUnitId = 'ca-app-pub-3940256099942544/1033173712';
 const kIOSInterstitialAdUnitId = 'ca-app-pub-1989939591379723/4626800281';
 const kAndroidInterstitialAdUnitId = 'ca-app-pub-1989939591379723/3449449986';
 
-const kIOSAdUnitId = 'ca-app-pub-1989939591379723/7840951715';
-const kAndroidAdUnitId = 'ca-app-pub-1989939591379723/6308378199';
-const kDebugAdUnitId = 'ca-app-pub-3940256099942544/6300978111';
+const kIOSAdUnitId = 'ca-app-pub-1989939591379723/1756704065';
+const kAndroidAdUnitId = 'ca-app-pub-1989939591379723/1756704065';
+const kDebugAdUnitId = 'ca-app-pub-3940256099942544/2247696110';
 
 const kDefaultListAdFrequency = 8;
 const kInterstitialAdFrequency = 6;
 
 class GoogleAdsViewModel {
-
-  final inlineAdaptiveBannerSize = BehaviorSubject<AdSize>();
-
-  BannerAd? _bannerAd;
   InterstitialAd? _interstitialAd;
 
-  AdWidget bannerAdWidget(AdSize adSize) {
-    return AdWidget(
-      ad: BannerAd(
-        size: adSize,
-        adUnitId: kDebugMode
-            ? kDebugAdUnitId
-            : Platform.isIOS
-                ? kIOSAdUnitId
-                : kAndroidAdUnitId,
-        request: const AdRequest(
-          nonPersonalizedAds: true,
-        ),
-        listener: BannerAdListener(
-          onAdLoaded: (ad) async {
-            _bannerAd = (ad as BannerAd);
-            final size = await _bannerAd?.getPlatformAdSize();
-            if (size != null) {
-              inlineAdaptiveBannerSize.add(size);
-            }
-          },
-        ),
-      )..load(),
+  final nativeAdIsLoaded = BehaviorSubject<bool>.seeded(false);
+
+  NativeAd createNative(BuildContext context) {
+    return NativeAd(
+      adUnitId: kDebugMode
+          ? kDebugAdUnitId
+          : Platform.isIOS
+              ? kIOSAdUnitId
+              : kAndroidAdUnitId,
+      nativeTemplateStyle: NativeTemplateStyle(
+        templateType: TemplateType.medium,
+        mainBackgroundColor: colors(context).cardBackground,
+        cornerRadius: 16.0,
+        callToActionTextStyle: _createNativeTemplateTextStyle(context),
+        primaryTextStyle: _createNativeTemplateTextStyle(context),
+        secondaryTextStyle: _createNativeTemplateTextStyle(context),
+        tertiaryTextStyle: _createNativeTemplateTextStyle(context),
+      ),
+      request: const AdRequest(
+        nonPersonalizedAds: true,
+      ),
+      listener: NativeAdListener(
+        onAdLoaded: (_) {
+          nativeAdIsLoaded.add(true);
+        },
+        onAdFailedToLoad: (ad, error) {
+          ad.dispose();
+        },
+      ),
     );
   }
 
@@ -62,7 +67,7 @@ class GoogleAdsViewModel {
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) {
           _interstitialAd = ad;
-          _interstitialAd!.setImmersiveMode(false);
+          _interstitialAd?.setImmersiveMode(false);
         },
         onAdFailedToLoad: (error) {
           _interstitialAd = null;
@@ -88,6 +93,17 @@ class GoogleAdsViewModel {
     }
   }
 
+  NativeTemplateTextStyle _createNativeTemplateTextStyle(
+    BuildContext context,
+  ) {
+    return NativeTemplateTextStyle(
+      textColor: colors(context).textOnForeground,
+      backgroundColor: colors(context).cardBackground,
+      style: NativeTemplateFontStyle.normal,
+      size: 16.0,
+    );
+  }
+
   bool showAdAtIndex(
     int index, {
     int adPerItemFrequency = kDefaultListAdFrequency,
@@ -95,7 +111,7 @@ class GoogleAdsViewModel {
       F.appFlavor != Flavor.paid && index % adPerItemFrequency == 0;
 
   void dispose() {
-    _bannerAd?.dispose();
+    nativeAdIsLoaded.close();
     _interstitialAd?.dispose();
   }
 }

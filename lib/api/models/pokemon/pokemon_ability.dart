@@ -10,7 +10,6 @@ import 'pokemon_resource.dart';
 part 'pokemon_ability.g.dart';
 
 abstract class PokemonAbility implements Built<PokemonAbility, PokemonAbilityBuilder> {
-
   factory PokemonAbility([void Function(PokemonAbilityBuilder) updates]) = _$PokemonAbility;
   PokemonAbility._();
 

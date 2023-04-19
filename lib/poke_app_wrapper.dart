@@ -24,8 +24,11 @@ class PokeAppWrapper {
         await di.init();
         MobileAds.instance.initialize();
         final requestConfiguration = RequestConfiguration(
+          testDeviceIds: [
+            '992DEA92BE3FB29E0B8D6646B55BBA4F',//PIXEL 6 PRO
+          ],
           tagForChildDirectedTreatment: TagForChildDirectedTreatment.yes,
-          maxAdContentRating: MaxAdContentRating.g
+          maxAdContentRating: MaxAdContentRating.g,
         );
         MobileAds.instance.updateRequestConfiguration(
           requestConfiguration,

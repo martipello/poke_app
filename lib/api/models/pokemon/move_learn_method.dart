@@ -9,7 +9,6 @@ import 'pokemon_resource.dart';
 part 'move_learn_method.g.dart';
 
 abstract class MoveLearnMethod implements Built<MoveLearnMethod, MoveLearnMethodBuilder> {
-
   factory MoveLearnMethod([void Function(MoveLearnMethodBuilder) updates]) = _$MoveLearnMethod;
   MoveLearnMethod._();
 

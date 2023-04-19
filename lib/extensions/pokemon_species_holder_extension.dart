@@ -38,7 +38,7 @@ extension PokemonSpeciesHolderExtension on PokemonSpeciesHolder? {
 
   String steps() {
     final hatchCounter = this?.hatch_counter?.toInt() ?? 0;
-    if(hatchCounter == 0) {
+    if (hatchCounter == 0) {
       return '';
     }
     final genFourSteps = hatchCounter * 255;

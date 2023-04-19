@@ -104,7 +104,6 @@ class BaseIconThemeData {
 }
 
 class BaseColorScheme {
-
   const BaseColorScheme({
     this.colorScheme = const ColorScheme(
       primary: Color(0xFF006CC7),
@@ -149,8 +148,6 @@ class BaseThemeColors {
     this.white = const Color(0xFFFFFFFF),
     this.background = const Color(0xFFEEEEEE),
     this.cardBackground = const Color(0xFFFFFFFF),
-
-
     this.normal = const Color(0xFFA8A878),
     this.water = const Color(0xFF6790F0),
     this.fire = const Color(0xFFF08030),
@@ -169,7 +166,6 @@ class BaseThemeColors {
     this.dragon = const Color(0xFF7038),
     this.steel = const Color(0xFFB8B7D0),
     this.fairy = const Color(0xFFF0B6BC),
-
     this.special = const Color(0xFFFF7038),
     this.physical = const Color(0xFFB8B7D0),
     this.status = const Color(0xFFF0B6BC),
@@ -223,5 +219,4 @@ class BaseThemeColors {
   final Color physical;
   final Color status;
   final Color special;
-
 }

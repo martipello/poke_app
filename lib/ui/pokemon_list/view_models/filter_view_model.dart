@@ -9,7 +9,7 @@ class FilterViewModel {
   final selectedTypeFiltersStream = BehaviorSubject<List<PokemonType>>.seeded([]);
   final selectedDamageTypeFiltersStream = BehaviorSubject<List<DamageType>>.seeded([]);
 
-  ScrollController get scrollController =>  _scrollController ??= ScrollController();
+  ScrollController get scrollController => _scrollController ??= ScrollController();
   ScrollController? _scrollController;
 
   void setFilterUIState() {
@@ -21,9 +21,9 @@ class FilterViewModel {
     }
   }
 
-  void selectTypeFilter(PokemonType type){
+  void selectTypeFilter(PokemonType type) {
     final _selectedFilters = selectedTypeFiltersStream.value;
-    if(_selectedFilters.any((selectedType) => selectedType == type)){
+    if (_selectedFilters.any((selectedType) => selectedType == type)) {
       _selectedFilters.remove(type);
     } else {
       _selectedFilters.add(type);
@@ -31,9 +31,9 @@ class FilterViewModel {
     selectedTypeFiltersStream.add(_selectedFilters);
   }
 
-  void selectDamageTypeFilter(DamageType type){
+  void selectDamageTypeFilter(DamageType type) {
     final _selectedFilters = selectedDamageTypeFiltersStream.value;
-    if(_selectedFilters.any((selectedType) => selectedType == type)){
+    if (_selectedFilters.any((selectedType) => selectedType == type)) {
       _selectedFilters.remove(type);
     } else {
       _selectedFilters.add(type);
@@ -41,15 +41,15 @@ class FilterViewModel {
     selectedDamageTypeFiltersStream.add(_selectedFilters);
   }
 
-  void clearTypeFilters(){
+  void clearTypeFilters() {
     selectedTypeFiltersStream.add([]);
   }
 
-  void clearDamageTypeFilters(){
+  void clearDamageTypeFilters() {
     selectedDamageTypeFiltersStream.add([]);
   }
 
-  void clearFilters(){
+  void clearFilters() {
     clearTypeFilters();
     clearDamageTypeFilters();
   }

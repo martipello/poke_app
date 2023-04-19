@@ -26,7 +26,6 @@ class ChipGroup extends StatefulWidget {
 }
 
 class _ChipGroupState extends State<ChipGroup> {
-
   final scrollController = ScrollController();
 
   @override

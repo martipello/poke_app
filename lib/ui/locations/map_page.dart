@@ -118,11 +118,10 @@ class _LocationMapPageState extends State<LocationMapPage> {
         maxScale: kMaxScale,
         controller: photoViewController,
         imageProvider: NetworkImage(
-          _mapForGenerationId(
-            locationMapArguments.generationName,
-          ),
-          scale: 1
-        ),
+            _mapForGenerationId(
+              locationMapArguments.generationName,
+            ),
+            scale: 1),
         loadingBuilder: (context, chunk) {
           return const PokeballLoadingWidget();
         },

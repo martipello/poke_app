@@ -8,6 +8,7 @@ import '../../../extensions/double_extension.dart';
 import '../../../extensions/iterable_extension.dart';
 import '../../../extensions/type_list_extension.dart';
 import '../../../theme/poke_app_text.dart';
+import '../../theme/base_theme.dart';
 import '../shared_widgets/chip_group.dart';
 import '../shared_widgets/poke_divider.dart';
 import '../shared_widgets/type_chip.dart';
@@ -49,7 +50,9 @@ class PokemonWeaknessResistanceWidget extends StatelessWidget {
       _buildMediumMargin(),
       Text(
         context.strings.typeEffectiveness,
-        style: PokeAppText.subtitle3Style,
+        style: PokeAppText.subtitle3Style.copyWith(
+          color: colors(context).textOnForeground,
+        ),
       ),
       _buildMediumMargin(),
       ..._buildTypeEffectivenessSections(
@@ -132,14 +135,18 @@ class PokemonWeaknessResistanceWidget extends StatelessWidget {
       children: [
         Text(
           damageFactorLabel(context, entry.key ?? 0),
-          style: PokeAppText.subtitle4Style,
+          style: PokeAppText.subtitle4Style.copyWith(
+            color: colors(context).textOnForeground,
+          ),
         ),
         const SizedBox(
           width: 4,
         ),
         Text(
           'x${entry.key.calculateDamageFactor()}',
-          style: PokeAppText.subtitle4Style,
+          style: PokeAppText.subtitle4Style.copyWith(
+            color: colors(context).textOnForeground,
+          ),
         ),
       ],
     );

@@ -41,5 +41,4 @@ class PokemonEvolutionWidget extends StatelessWidget {
       ],
     );
   }
-
 }

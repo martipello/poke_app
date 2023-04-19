@@ -27,5 +27,4 @@ extension DoubleExtension on double? {
     final scale = zoom / 10;
     return scale.clamp(kMinScale, kMaxScale).toDouble();
   }
-
 }

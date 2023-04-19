@@ -263,30 +263,22 @@ class _$PokemonForm extends PokemonForm {
 
   @override
   int get hashCode {
-    return $jf($jc(
-        $jc(
-            $jc(
-                $jc(
-                    $jc(
-                        $jc(
-                            $jc(
-                                $jc(
-                                    $jc(
-                                        $jc(
-                                            $jc(
-                                                $jc($jc(0, id.hashCode),
-                                                    name.hashCode),
-                                                is_mega.hashCode),
-                                            is_default.hashCode),
-                                        is_battle_only.hashCode),
-                                    form_name.hashCode),
-                                formOrder.hashCode),
-                            pokemon_id.hashCode),
-                        order.hashCode),
-                    pokemon_v2_pokemon.hashCode),
-                pokemon_v2_pokemonabilities.hashCode),
-            pokemon_v2_pokemonformgenerations.hashCode),
-        pokemon_v2_pokemonformnames.hashCode));
+    var _$hash = 0;
+    _$hash = $jc(_$hash, id.hashCode);
+    _$hash = $jc(_$hash, name.hashCode);
+    _$hash = $jc(_$hash, is_mega.hashCode);
+    _$hash = $jc(_$hash, is_default.hashCode);
+    _$hash = $jc(_$hash, is_battle_only.hashCode);
+    _$hash = $jc(_$hash, form_name.hashCode);
+    _$hash = $jc(_$hash, formOrder.hashCode);
+    _$hash = $jc(_$hash, pokemon_id.hashCode);
+    _$hash = $jc(_$hash, order.hashCode);
+    _$hash = $jc(_$hash, pokemon_v2_pokemon.hashCode);
+    _$hash = $jc(_$hash, pokemon_v2_pokemonabilities.hashCode);
+    _$hash = $jc(_$hash, pokemon_v2_pokemonformgenerations.hashCode);
+    _$hash = $jc(_$hash, pokemon_v2_pokemonformnames.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
   }
 
   @override
@@ -460,4 +452,4 @@ class PokemonFormBuilder implements Builder<PokemonForm, PokemonFormBuilder> {
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas
+// ignore_for_file: deprecated_member_use_from_same_package,type=lint

@@ -13,56 +13,49 @@ class PokeAppText {
 
   // Title
 
-  static const title1Style =
-  TextStyle(fontSize: 24, fontWeight: FontWeight.bold, height: 1.6);
+  static const title1Style = TextStyle(fontSize: 24, fontWeight: FontWeight.bold, height: 1.6);
 
-  static const title2Style =
-  TextStyle(fontSize: 24, fontWeight: FontWeight.normal, height: 1.6);
+  static const title2Style = TextStyle(fontSize: 24, fontWeight: FontWeight.normal, height: 1.6);
 
-  static const title3Style =
-  TextStyle(fontSize: 20, fontWeight: FontWeight.bold, height: 1.2);
+  static const title3Style = TextStyle(fontSize: 20, fontWeight: FontWeight.bold, height: 1.2);
 
-  static const title4Style =
-  TextStyle(fontSize: 20, fontWeight: FontWeight.normal, height: 1.2);
+  static const title4Style = TextStyle(fontSize: 20, fontWeight: FontWeight.normal, height: 1.2);
+
+  static const pokeFontTitle1 =
+      TextStyle(fontSize: 42, fontWeight: FontWeight.normal, height: 1.4, fontFamily: 'PokemonSolid');
 
   // Subtitle
 
-  static const subtitle1Style =
-      TextStyle(fontSize: 18, fontWeight: FontWeight.bold, height: 1.875);
+  static const subtitle1Style = TextStyle(fontSize: 18, fontWeight: FontWeight.bold, height: 1.875);
 
-  static const subtitle2Style =
-      TextStyle(fontSize: 18, fontWeight: FontWeight.normal, height: 1.875);
+  static const subtitle2Style = TextStyle(fontSize: 18, fontWeight: FontWeight.normal, height: 1.875);
 
-  static const subtitle3Style =
-      TextStyle(fontSize: 16, fontWeight: FontWeight.bold, height: 1.625);
+  static const subtitle3Style = TextStyle(fontSize: 16, fontWeight: FontWeight.bold, height: 1.625);
 
-  static const subtitle4Style =
-      TextStyle(fontSize: 14, fontWeight: FontWeight.bold, height: 1.375);
+  static const subtitle4Style = TextStyle(fontSize: 14, fontWeight: FontWeight.bold, height: 1.375);
 
   // Body
 
-  static const body1Style =
-      TextStyle(fontSize: 16, fontWeight: FontWeight.normal, height: 1.625);
+  static const pokeFontBody1 =
+      TextStyle(fontSize: 16, fontWeight: FontWeight.normal, height: 1.4, fontFamily: 'PokemonSolid');
+
+  static const body1Style = TextStyle(fontSize: 16, fontWeight: FontWeight.normal, height: 1.625);
 
   static const body2Style = TextStyle(fontSize: 16, fontWeight: FontWeight.w300, height: 1.625);
 
-  static const body3Style =
-      TextStyle(fontSize: 14, fontWeight: FontWeight.normal, height: 1.375);
+  static const body3Style = TextStyle(fontSize: 14, fontWeight: FontWeight.normal, height: 1.375);
 
   static const body4Style = TextStyle(fontSize: 14, fontWeight: FontWeight.w300, height: 1.375);
 
-  static const body5Style =
-      TextStyle(fontSize: 13, fontWeight: FontWeight.normal, height: 1.375);
+  static const body5Style = TextStyle(fontSize: 13, fontWeight: FontWeight.normal, height: 1.375);
 
   static const body6Style = TextStyle(fontSize: 13, fontWeight: FontWeight.bold, height: 1.375);
 
-  static const body7Style =
-  TextStyle(fontSize: 16, fontWeight: FontWeight.w300, height: 1.375);
+  static const body7Style = TextStyle(fontSize: 16, fontWeight: FontWeight.w300, height: 1.375);
 
   // Caption
 
-  static const captionStyle =
-      TextStyle(fontSize: 12, fontWeight: FontWeight.normal, height: 1.375);
+  static const captionStyle = TextStyle(fontSize: 12, fontWeight: FontWeight.normal, height: 1.375);
 
   // Header
 
@@ -80,9 +73,7 @@ class PokeAppText {
 
   // Button
 
-  static const button1Style =
-      TextStyle(fontSize: 18, fontWeight: FontWeight.bold, height: 1.875);
+  static const button1Style = TextStyle(fontSize: 18, fontWeight: FontWeight.bold, height: 1.875);
 
-  static const button2Style =
-      TextStyle(fontSize: 16, fontWeight: FontWeight.bold, height: 1.625);
+  static const button2Style = TextStyle(fontSize: 16, fontWeight: FontWeight.bold, height: 1.625);
 }

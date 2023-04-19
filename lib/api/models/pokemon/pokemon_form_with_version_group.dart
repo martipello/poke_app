@@ -9,9 +9,10 @@ import 'pokemon_resource.dart';
 
 part 'pokemon_form_with_version_group.g.dart';
 
-abstract class PokemonFormWithVersionGroup implements Built<PokemonFormWithVersionGroup, PokemonFormWithVersionGroupBuilder> {
-
-  factory PokemonFormWithVersionGroup([void Function(PokemonFormWithVersionGroupBuilder) updates]) = _$PokemonFormWithVersionGroup;
+abstract class PokemonFormWithVersionGroup
+    implements Built<PokemonFormWithVersionGroup, PokemonFormWithVersionGroupBuilder> {
+  factory PokemonFormWithVersionGroup([void Function(PokemonFormWithVersionGroupBuilder) updates]) =
+      _$PokemonFormWithVersionGroup;
   PokemonFormWithVersionGroup._();
 
   PokemonResource? get pokemon_v2_versiongroup;

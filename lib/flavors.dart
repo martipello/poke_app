@@ -26,5 +26,4 @@ class F {
   }
 
   static String get baseUrl => '';
-
 }

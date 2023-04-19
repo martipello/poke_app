@@ -3,8 +3,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'media_query_context_extension.dart';
 
-
 extension BuildContextExt on BuildContext {
+  double get shortestSide => MediaQuery.of(this).shortestSide;
+
   double get statusBarHeight => MediaQuery.of(this).viewPadding.top;
 
   double get screenWidth => MediaQuery.of(this).size.width;

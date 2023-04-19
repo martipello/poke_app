@@ -41,9 +41,9 @@ extension StringExtension on String? {
       queryParameters?.entries
           .map(
             (e) => stringBuffer.write(
-          '${e.key}=${e.value.toString().replaceAll('=', 'EQUAL').replaceAll('&', 'AMP')}&',
-        ),
-      )
+              '${e.key}=${e.value.toString().replaceAll('=', 'EQUAL').replaceAll('&', 'AMP')}&',
+            ),
+          )
           .toString();
     }
     return Uri(

@@ -8,7 +8,6 @@ import 'pokemon_resource.dart';
 part 'type_efficacies.g.dart';
 
 abstract class TypeEfficacies implements Built<TypeEfficacies, TypeEfficaciesBuilder> {
-
   factory TypeEfficacies([void Function(TypeEfficaciesBuilder) updates]) = _$TypeEfficacies;
   TypeEfficacies._();
 

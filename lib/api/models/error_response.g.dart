@@ -18,11 +18,7 @@ class _$ErrorResponseSerializer implements StructuredSerializer<ErrorResponse> {
   @override
   Iterable<Object?> serialize(Serializers serializers, ErrorResponse object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object?>[
-      'error',
-      serializers.serialize(object.error,
-          specifiedType: const FullType(Object)),
-    ];
+    final result = <Object?>[];
     Object? value;
     value = object.message;
     if (value != null) {
@@ -30,6 +26,13 @@ class _$ErrorResponseSerializer implements StructuredSerializer<ErrorResponse> {
         ..add('message')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
+    }
+    value = object.error;
+    if (value != null) {
+      result
+        ..add('error')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(Object)));
     }
     value = object.url;
     if (value != null) {
@@ -96,7 +99,7 @@ class _$ErrorResponse extends ErrorResponse {
   @override
   final String? message;
   @override
-  final Object error;
+  final Object? error;
   @override
   final String? url;
   @override
@@ -109,13 +112,11 @@ class _$ErrorResponse extends ErrorResponse {
 
   _$ErrorResponse._(
       {this.message,
-      required this.error,
+      this.error,
       this.url,
       this.statusCode,
       this.attempts_remaining})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(error, r'ErrorResponse', 'error');
-  }
+      : super._();
 
   @override
   ErrorResponse rebuild(void Function(ErrorResponseBuilder) updates) =>
@@ -137,10 +138,14 @@ class _$ErrorResponse extends ErrorResponse {
 
   @override
   int get hashCode {
-    return $jf($jc(
-        $jc($jc($jc($jc(0, message.hashCode), error.hashCode), url.hashCode),
-            statusCode.hashCode),
-        attempts_remaining.hashCode));
+    var _$hash = 0;
+    _$hash = $jc(_$hash, message.hashCode);
+    _$hash = $jc(_$hash, error.hashCode);
+    _$hash = $jc(_$hash, url.hashCode);
+    _$hash = $jc(_$hash, statusCode.hashCode);
+    _$hash = $jc(_$hash, attempts_remaining.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
   }
 
   @override
@@ -213,8 +218,7 @@ class ErrorResponseBuilder
     final _$result = _$v ??
         new _$ErrorResponse._(
             message: message,
-            error: BuiltValueNullFieldError.checkNotNull(
-                error, r'ErrorResponse', 'error'),
+            error: error,
             url: url,
             statusCode: statusCode,
             attempts_remaining: attempts_remaining);
@@ -223,4 +227,4 @@ class ErrorResponseBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas
+// ignore_for_file: deprecated_member_use_from_same_package,type=lint

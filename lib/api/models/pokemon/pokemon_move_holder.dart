@@ -9,7 +9,6 @@ import 'pokemon_move.dart';
 part 'pokemon_move_holder.g.dart';
 
 abstract class PokemonMoveHolder implements Built<PokemonMoveHolder, PokemonMoveHolderBuilder> {
-
   factory PokemonMoveHolder([void Function(PokemonMoveHolderBuilder) updates]) = _$PokemonMoveHolder;
   PokemonMoveHolder._();
 
