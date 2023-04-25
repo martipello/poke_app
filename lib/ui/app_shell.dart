@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../extensions/build_context_extension.dart';
 import '../theme/base_theme.dart';
 import 'pokemon_list/pokemon_list_view.dart';
+import 'pokemon_news/pokemon_news_list_view.dart';
 import 'whos_that_pokemon/whos_that_pokemon_view.dart';
 
 class AppShell extends StatefulWidget {
@@ -36,9 +37,14 @@ class _AppShellState extends State<AppShell> {
           0,
         ),
         _buildBottomNavigationBarItem(
+          'PokéNews',
+          'assets/images/fairy_type_icon.png',
+          1,
+        ),
+        _buildBottomNavigationBarItem(
           context.strings.whoDatPokemon,
           'assets/icons/whos_that_pokemon.png',
-          1,
+          2,
         ),
       ],
       onTap: (index) {
@@ -77,6 +83,7 @@ class _AppShellState extends State<AppShell> {
 
   List<Widget> get _bodies => [
         PokemonListView(),
+        PokemonNewsListView(),
         WhosThatPokemonView(),
       ];
 }

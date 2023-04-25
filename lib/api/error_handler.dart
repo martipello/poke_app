@@ -1,9 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 import '../../api/models/api_response.dart';
 import '../utils/console_output.dart';
+import 'models/app_exceptions.dart';
 import 'models/error_response.dart';
 
 class ErrorHandler {
@@ -19,29 +21,42 @@ class ErrorHandler {
         reason: errorHandlerMessage ?? error,
       );
     }
-    try {
-      final appException = error as ErrorResponse;
+    if(error is ErrorResponse) {
       return ApiResponse.error(
-        errorHandlerMessage ?? appException.message ?? appException.toString(),
-        error: appException,
+        errorHandlerMessage ?? error.message ?? error.toString(),
+        error: error,
       );
-    } catch (_) {
-      try {
-        final appException = error as GraphQLError;
-        return ApiResponse.error(
-          appException.message,
-          error: ErrorResponse(
-            (eb) => eb
-              ..message = appException.message
-              ..error = appException
-              ..statusCode = 502,
-          ),
-        );
-      } catch (_) {
-        return ApiResponse.error(
-          error.toString(),
-        );
-      }
     }
+    if(error is GraphQLError) {
+      return ApiResponse.error(
+        error.message,
+        error: ErrorResponse(
+              (eb) => eb
+            ..message = error.message
+            ..error = error
+            ..statusCode = 502,
+        ),
+      );
+    }
+    if(error is DioError) {
+      return ApiResponse.error(
+        error.message,
+        error: ErrorResponse(
+              (eb) => eb
+            ..message = error.message
+            ..error = error
+            ..statusCode = error.response?.statusCode,
+        ),
+      );
+    }
+    if(error is AppException) {
+      return ApiResponse.error(
+        error.error?.message,
+        error: error.error,
+      );
+    }
+    return ApiResponse.error(
+      error.toString(),
+    );
   }
 }

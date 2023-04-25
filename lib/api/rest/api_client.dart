@@ -6,12 +6,12 @@ import 'package:dio/dio.dart';
 import 'package:http/io_client.dart';
 import 'package:http_parser/http_parser.dart' as mime;
 
-import '../api/models/app_exceptions.dart';
-import '../extensions/file_extention.dart';
-import '../flavors.dart' as flavors;
-import '../utils/console_output.dart';
-import 'error_handler.dart';
-import 'models/error_response.dart';
+import '../../extensions/file_extention.dart';
+import '../../flavors.dart' as flavors;
+import '../../utils/console_output.dart';
+import '../error_handler.dart';
+import '../models/app_exceptions.dart';
+import '../models/error_response.dart';
 
 typedef RetryFunction = Future<dynamic> Function();
 
@@ -305,13 +305,11 @@ class ApiClient {
             url: urlCalled,
           );
         case DioErrorType.response:
-          if (error.response?.statusCode == 401) {
-            throw _buildAppException(
-              '${error.message}',
-              statusCode: error.response?.statusCode,
-              url: urlCalled,
-            );
-          }
+          throw _buildAppException(
+            '${error.response?.data.toString()}',
+            statusCode: error.response?.statusCode,
+            url: urlCalled,
+          );
       }
     } else {
       throw _buildAppException(
@@ -359,7 +357,7 @@ class ApiClient {
       if (status == null) return false;
       return status >= 200 && status < 300 || status == 304;
     };
-    dio.options.baseUrl = flavors.F.baseUrl;
+    dio.options.baseUrl = flavors.F.newsBaseUrl;
     dio.options.contentType = _getContentType(requestType);
     dio.options.queryParameters = queryParameters;
     dio.options.receiveTimeout = timeout?.inMilliseconds ?? const Duration(minutes: 1).inMilliseconds;

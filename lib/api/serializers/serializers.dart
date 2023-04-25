@@ -3,6 +3,9 @@ import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
 
 import '../models/error_response.dart';
+import '../models/news/article.dart';
+import '../models/news/news_response.dart';
+import '../models/news/source.dart';
 import '../models/pokemon/damage_type.dart';
 import '../models/pokemon/encounter.dart';
 import '../models/pokemon/encounter_method.dart';
@@ -39,6 +42,7 @@ import 'date_time_serializer.dart';
 part 'serializers.g.dart';
 
 @SerializersFor([
+  Article,
   DamageType,
   Encounter,
   EncounterMethod,
@@ -50,6 +54,7 @@ part 'serializers.g.dart';
   Machine,
   MoveLearnMethod,
   MoveMetum,
+  NewsResponse,
   Pokemon,
   PokemonAbility,
   PokemonAbilityHolder,
@@ -65,6 +70,7 @@ part 'serializers.g.dart';
   PokemonSpecies,
   PokemonStat,
   PokemonType,
+  Source,
   Sprite,
   SpriteResponse,
   Stat,

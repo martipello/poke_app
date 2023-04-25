@@ -11,6 +11,7 @@ import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import '../settings/settings.dart';
 import '../shared_widgets/chip_group.dart';
+import '../shared_widgets/hero_sliver_app_bar.dart';
 import '../shared_widgets/type_chip.dart';
 import '../shared_widgets/view_constraint.dart';
 import 'view_models/filter_view_model.dart';
@@ -21,10 +22,12 @@ class SearchAppBar extends StatefulWidget {
     Key? key,
     required this.searchTextController,
     required this.filterViewModel,
+    this.heroWidget,
   }) : super(key: key);
 
   final TextEditingController searchTextController;
-  final FilterViewModel filterViewModel;
+  final FilterViewModel? filterViewModel;
+  final Widget? heroWidget;
 
   @override
   State<SearchAppBar> createState() => _SearchAppBarState();
@@ -69,7 +72,7 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
   ) {
     return StreamBuilder<List<PokemonType>>(
       initialData: [],
-      stream: widget.filterViewModel.selectedTypeFiltersStream,
+      stream: widget.filterViewModel?.selectedTypeFiltersStream,
       builder: (context, snapshot) {
         final selectedFilters = snapshot.data ?? [];
         return SliverAppBar(
@@ -88,29 +91,29 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
           actions: [
             if (!isSearching) _buildSearchAction(),
             _buildMenuAction(),
-            const SizedBox(
-              width: 16,
-            )
+            _buildMediumMargin,
           ],
-          title: isSearching
-              ? _buildSearchView()
-              : Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 16,
-                    horizontal: 16,
-                  ),
-                  child: Text(
-                    context.strings.app_name,
-                    style: PokeAppText.subtitle2Style.copyWith(
-                      height: 1,
-                    ),
-                  ),
-                ),
+          title: isSearching ? _buildSearchView() : _buildAppName(),
           bottom: _buildSelectedFiltersHolder(
             selectedFilters,
           ),
         );
       },
+    );
+  }
+
+  Widget _buildAppName() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 16,
+        horizontal: 16,
+      ),
+      child: Text(
+        context.strings.app_name,
+        style: PokeAppText.subtitle2Style.copyWith(
+          height: 1,
+        ),
+      ),
     );
   }
 
@@ -164,7 +167,7 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
       child: Material(
         type: MaterialType.transparency,
         child: InkWell(
-          onTap: widget.filterViewModel.clearFilters,
+          onTap: widget.filterViewModel?.clearFilters,
           child: Padding(
             padding: const EdgeInsets.symmetric(
               vertical: 8,
@@ -188,7 +191,7 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
     return ChipGroup(
       padding: const EdgeInsets.symmetric(horizontal: 32),
       scrollDirection: Axis.horizontal,
-      scrollController: widget.filterViewModel.scrollController,
+      scrollController: widget.filterViewModel?.scrollController,
       chips: selectedFilters
           .map(
             (type) => TypeChip(
@@ -196,7 +199,7 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
               pokemonType: type,
               isSelected: true,
               onDelete: () {
-                widget.filterViewModel.selectTypeFilter(type);
+                widget.filterViewModel?.selectTypeFilter(type);
               },
             ),
           )
@@ -254,22 +257,11 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
   }
 
   Widget _buildHeroImageAppBar() {
-    return SliverAppBar(
-      pinned: false,
-      floating: false,
-      expandedHeight: 150,
-      flexibleSpace: FlexibleSpaceBar(
-        collapseMode: CollapseMode.parallax,
-        background: Padding(
-          padding: const EdgeInsets.only(top: 32),
-          child: ViewConstraint(
-            child: Image.asset(
-              'assets/images/pokemon_hero.png',
-              fit: BoxFit.cover,
-              width: MediaQuery.of(context).fullSizeImageScreenWidth,
-            ),
-          ),
-        ),
+    return HeroSliverAppBar(
+      child: widget.heroWidget ?? Image.asset(
+        'assets/images/pokemon_hero.png',
+        fit: BoxFit.cover,
+        width: MediaQuery.of(context).fullSizeImageScreenWidth,
       ),
     );
   }
@@ -315,4 +307,9 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
   }
 
   SizedBox get _buildSmallMargin => const SizedBox(height: 8);
+
+  SizedBox get _buildMediumMargin => const SizedBox(
+        height: 16,
+        width: 16,
+      );
 }

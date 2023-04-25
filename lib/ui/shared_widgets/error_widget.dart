@@ -114,7 +114,7 @@ class ErrorWidget extends StatelessWidget {
     ApiResponse? error,
   ) async {
     final errorCode = error?.error?.statusCode ?? 'No error code';
-    final errorMessage = error?.error?.message ?? error?.data?.toString() ?? 'No error message';
+    final errorMessage = error?.message ?? error?.data?.toString() ?? 'No error message';
     return PokeDialog(
       title: 'Error',
       content: Column(
