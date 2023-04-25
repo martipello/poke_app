@@ -3,7 +3,7 @@ import '../../models/news/news_response.dart';
 import '../../models/pokemon/pokemon_request.dart';
 import '../api_client.dart';
 
-const kApiKey = '241c2dd56e414ee49b09a4b401e45058';
+const kApiKey = '00000';
 
 class NewsRepository {
   NewsRepository(this.apiClient);
