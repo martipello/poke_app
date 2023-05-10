@@ -21,6 +21,7 @@ import '../shared_widgets/pokeball_loading_widget.dart';
 import '../shared_widgets/pokemon_image.dart';
 import '../shared_widgets/rounded_button.dart';
 import '../shared_widgets/three_d_text.dart';
+import '../shared_widgets/view_constraint.dart';
 import 'red_shimmer_background.dart';
 import 'score_widget.dart';
 import 'view_models/score_view_model.dart';
@@ -145,33 +146,35 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       controller: scrollController,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const SizedBox(
-            height: 32,
-          ),
-          _buildWhosThatPokemonImageWithBackground(
-            selectedPokemon,
-            isRevealed,
-          ),
-          _buildWhosThatPokemonText(
-            selectedPokemon?.name,
-            revealResult,
-            isRevealed,
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          _buildWhosThatPokemonOptions(
-            pokemonOptions,
-            selectedPokemon,
-            isRevealed,
-          ),
-          _buildRetryButton(),
-          _buildResetButton(),
-        ],
+      child: ViewConstraint(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(
+              height: 32,
+            ),
+            _buildWhosThatPokemonImageWithBackground(
+              selectedPokemon,
+              isRevealed,
+            ),
+            _buildWhosThatPokemonText(
+              selectedPokemon?.name,
+              revealResult,
+              isRevealed,
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            _buildWhosThatPokemonOptions(
+              pokemonOptions,
+              selectedPokemon,
+              isRevealed,
+            ),
+            _buildRetryButton(),
+            _buildResetButton(),
+          ],
+        ),
       ),
     );
   }
