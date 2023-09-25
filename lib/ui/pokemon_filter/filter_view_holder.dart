@@ -65,6 +65,7 @@ class _FilterViewHolderState extends State<FilterViewHolder> with SingleTickerPr
                     _isFilterBottomSheetShown,
                   ),
                 ),
+                if(_isFilterBottomSheetShown)
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: _buildFilterViewHolder(
