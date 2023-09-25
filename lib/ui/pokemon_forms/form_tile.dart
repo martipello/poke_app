@@ -158,7 +158,7 @@ class _FormTileState extends State<FormTile> {
             chips: _types
                 .map(
                   (type) => TypeChip(
-                    pokemonType: type.pokemon_v2_type?.pokemonType() ?? PokemonType.unknown,
+                    filterType: type.pokemon_v2_type?.pokemonType() ?? PokemonType.unknown,
                     chipType: ChipType.normal,
                   ),
                 )

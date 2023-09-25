@@ -3,8 +3,7 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../../../api/models/pokemon/pokemon_move_holder.dart';
 import '../../../../api/models/pokemon/pokemon_request.dart';
-import '../../../api/models/pokemon/damage_type.dart';
-import '../../../api/models/pokemon/pokemon_type.dart';
+import '../../../api/models/filter_type.dart';
 import '../adapters/moves_paging_adapter.dart';
 
 class PokemonMovesViewModel {
@@ -33,7 +32,7 @@ class PokemonMovesViewModel {
     updateQuery(_pokemonRequest);
   }
 
-  void setSelectedTypes(List<PokemonType> selectedTypes) {
+  void setSelectedTypes(List<FilterType> selectedTypes) {
     final _pokemonRequest = pokemonRequest?.rebuild(
           (b) => b
             ..pokemonTypes.replace(
@@ -50,7 +49,7 @@ class PokemonMovesViewModel {
     updateQuery(_pokemonRequest);
   }
 
-  void setSelectedDamageTypes(List<DamageType> selectedTypes) {
+  void setSelectedDamageTypes(List<FilterType> selectedTypes) {
     final _pokemonRequest = pokemonRequest?.rebuild(
           (b) => b
             ..damageTypes.replace(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
+import '../../api/models/filter_type.dart';
 import '../../api/models/pokemon/damage_type.dart';
 import '../../api/models/pokemon/pokemon_type.dart';
 import '../../dependency_injection_container.dart';
@@ -52,39 +53,32 @@ class _SearchWidgetState extends State<SearchWidget> with TickerProviderStateMix
     bool isSearching,
     bool isKeyboardVisible,
   ) {
-    return StreamBuilder<List<PokemonType>>(
+    return StreamBuilder<List<FilterType>>(
       initialData: [],
-      stream: widget.filterViewModel.selectedTypeFiltersStream,
-      builder: (context, selectedTypeFilterSnapshot) {
-        return StreamBuilder<List<DamageType>>(
-          initialData: [],
-          stream: widget.filterViewModel.selectedDamageTypeFiltersStream,
-          builder: (context, selectedDamageTypeFilterSnapshot) {
-            final selectedTypeFilters = selectedTypeFilterSnapshot.data ?? [];
-            final selectedDamageTypeFilters = selectedDamageTypeFilterSnapshot.data ?? [];
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                ViewConstraint(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: _buildSearchView(),
-                      ),
-                    ],
+      stream: widget.filterViewModel.selectedFiltersStream,
+      builder: (context, selectedFilterSnapshot) {
+        final selectedFilters = selectedFilterSnapshot.data ?? [];
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ViewConstraint(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: _buildSearchView(),
                   ),
-                ),
-                ViewConstraint(
-                  child: _buildSelectedTypeFiltersHolder(
-                    selectedTypeFilters,
-                    selectedDamageTypeFilters,
-                  ),
-                )
-              ],
-            );
-          },
+                ],
+              ),
+            ),
+            ViewConstraint(
+              child: _buildSelectedTypeFiltersHolder(
+                  selectedFilters.whereType<PokemonType>().toList(),
+                  selectedFilters.whereType<DamageType>().toList(),
+              ),
+            )
+          ],
         );
       },
     );
@@ -188,7 +182,7 @@ class _SearchWidgetState extends State<SearchWidget> with TickerProviderStateMix
           .map(
             (type) => TypeChip(
               chipType: ChipType.normal,
-              pokemonType: type,
+              filterType: type,
               isSelected: true,
               onDelete: () {
                 widget.filterViewModel.selectTypeFilter(
@@ -212,10 +206,10 @@ class _SearchWidgetState extends State<SearchWidget> with TickerProviderStateMix
           .map(
             (type) => TypeChip(
               chipType: ChipType.normal,
-              damageType: type,
+              filterType: type,
               isSelected: true,
               onDelete: () {
-                widget.filterViewModel.selectDamageTypeFilter(
+                widget.filterViewModel.selectTypeFilter(
                   type,
                 );
               },

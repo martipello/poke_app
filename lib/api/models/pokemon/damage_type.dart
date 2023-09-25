@@ -1,6 +1,8 @@
 import 'dart:ui';
 
-enum DamageType {
+import '../filter_type.dart';
+
+enum DamageType implements FilterType {
   physical(
     2,
     'physical',

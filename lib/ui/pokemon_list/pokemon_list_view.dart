@@ -52,7 +52,7 @@ class _PokemonListViewState extends State<PokemonListView> {
 
   void _addSelectedFilterListener() {
     const duration = Duration(milliseconds: 200);
-    _filterViewModel.selectedTypeFiltersStream.listen(
+    _filterViewModel.selectedFiltersStream.listen(
       (selectedTypes) {
         Future.delayed(duration).then(
           (value) {

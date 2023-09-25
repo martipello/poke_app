@@ -117,7 +117,7 @@ class PokemonWeaknessResistanceWidget extends StatelessWidget {
           final damageFactor = te.damage_factor?.calculateDamageFactor();
           return TypeChip(
             chipType: ChipType.normal,
-            pokemonType: PokemonType.getTypeForId(
+            filterType: PokemonType.getTypeForId(
               te.damage_type_id ?? 0,
             ),
             labelSuffix: ' x$damageFactor',

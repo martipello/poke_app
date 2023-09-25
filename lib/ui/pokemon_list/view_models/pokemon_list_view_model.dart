@@ -1,9 +1,9 @@
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../../api/models/filter_type.dart';
 import '../../../api/models/pokemon/pokemon.dart';
 import '../../../api/models/pokemon/pokemon_request.dart';
-import '../../../api/models/pokemon/pokemon_type.dart';
 import '../adapters/pokemon_paging_adapter.dart';
 
 class PokemonListViewModel {
@@ -38,7 +38,7 @@ class PokemonListViewModel {
     _updateQuery(_pokemonRequest);
   }
 
-  void setSelectedTypes(List<PokemonType> selectedTypes) {
+  void setSelectedTypes(List<FilterType> selectedTypes) {
     final _pokemonRequest = pokemonRequest?.rebuild(
           (b) => b
             ..pokemonTypes.replace(

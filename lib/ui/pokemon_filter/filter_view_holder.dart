@@ -48,7 +48,7 @@ class _FilterViewHolderState extends State<FilterViewHolder> with SingleTickerPr
     return LocalHeroWithCallbackScope(
       curve: Curves.fastOutSlowIn,
       child: StreamBuilder<bool?>(
-        initialData: true,
+        initialData: false,
         stream: widget.filterViewModel.isFilterBottomSheetShownStream,
         builder: (context, snapshot) {
           final _isFilterBottomSheetShown = snapshot.data == true;
@@ -98,9 +98,9 @@ class _FilterViewHolderState extends State<FilterViewHolder> with SingleTickerPr
   Widget _buildFilterViewHolder(
     bool _isFilterBottomSheetShown,
   ) {
-    return CircularRevealAnimation(
-      animation: _circleRevealAnimation,
-      child: ViewConstraint(
+    return ViewConstraint(
+      child: CircularRevealAnimation(
+        animation: _circleRevealAnimation,
         child: FilterView(
           filterViewModel: widget.filterViewModel,
           showDamageTypeFilters: widget.showDamageTypeFilters,

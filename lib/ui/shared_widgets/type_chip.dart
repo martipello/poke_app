@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../api/models/pokemon/damage_type.dart';
-import '../../api/models/pokemon/pokemon_type.dart';
+import '../../api/models/filter_type.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../extensions/string_extension.dart';
 import '../../theme/base_theme.dart';
@@ -19,15 +18,13 @@ class TypeChip extends StatelessWidget {
     this.onSelected,
     this.onDelete,
     required this.chipType,
-    this.pokemonType,
-    this.damageType,
+    required this.filterType,
     this.labelSuffix = '',
     this.isExpanded,
-  }) : assert(pokemonType != null || damageType != null || (chipType == ChipType.expansion && isExpanded != null));
+  });
 
   final ChipType chipType;
-  final PokemonType? pokemonType;
-  final DamageType? damageType;
+  final FilterType filterType;
   final bool isSelected;
   final bool? isExpanded;
   final OnSelected? onSelected;
@@ -47,9 +44,9 @@ class TypeChip extends StatelessWidget {
   }
 
   Widget _buildChip(BuildContext context) {
-    final label = damageType?.name ?? pokemonType?.name;
-    final color = damageType?.color ?? pokemonType?.color;
-    final image = damageType?.image ?? pokemonType?.image;
+    final label = filterType.name;
+    final color = filterType.color;
+    final image = filterType.image;
     return SizedBox(
       height: kChipHeight + 16,
       child: Chip(
@@ -59,7 +56,7 @@ class TypeChip extends StatelessWidget {
           ),
         ),
         avatar: Image.asset(
-          image!,
+          image,
           height: kChipHeight - 6,
           width: kChipHeight - 6,
         ),
@@ -71,7 +68,7 @@ class TypeChip extends StatelessWidget {
         ),
         side: BorderSide(
           width: 1,
-          color: color!,
+          color: color,
         ),
         backgroundColor: color,
         padding: const EdgeInsets.only(
@@ -91,16 +88,16 @@ class TypeChip extends StatelessWidget {
   }
 
   Widget _buildFilterChip(BuildContext context) {
-    final label = damageType?.name ?? pokemonType?.name;
-    final color = damageType?.color ?? pokemonType?.color;
-    final image = damageType?.image ?? pokemonType?.image;
+    final label = filterType.name;
+    final color = filterType.color;
+    final image = filterType.image;
     return SizedBox(
       height: kChipHeight,
       child: FilterChip(
         avatar: isSelected
             ? null
             : Image.asset(
-                image!,
+                image,
                 height: kChipHeight - 6,
                 width: kChipHeight - 6,
               ),
@@ -109,7 +106,7 @@ class TypeChip extends StatelessWidget {
         side: onSelected != null
             ? BorderSide(
                 width: 1,
-                color: color!,
+                color: color,
               )
             : null,
         label: Padding(
@@ -139,9 +136,9 @@ class TypeChip extends StatelessWidget {
   }
 
   Widget _buildExpansionChip(BuildContext context) {
-    final label = damageType?.name ?? pokemonType?.name;
-    final color = damageType?.color ?? pokemonType?.color;
-    final image = damageType?.image ?? pokemonType?.image;
+    final label = filterType.name;
+    final color = filterType.color;
+    final image = filterType.image;
     return Container(
       height: kChipHeight,
       decoration: BoxDecoration(
@@ -160,7 +157,7 @@ class TypeChip extends StatelessWidget {
         child: Row(
           children: [
             Image.asset(
-              image!,
+              image,
               height: kChipHeight - 6,
               width: kChipHeight - 6,
             ),
@@ -172,7 +169,7 @@ class TypeChip extends StatelessWidget {
                   bottom: 2,
                 ),
                 child: Text(
-                  label!.capitalize(),
+                  label.capitalize(),
                   style: PokeAppText.body3Style.copyWith(
                     color: colors(context).cardBackground,
                   ),

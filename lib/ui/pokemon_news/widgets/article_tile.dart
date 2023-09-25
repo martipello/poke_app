@@ -20,7 +20,6 @@ class ArticleTile extends StatelessWidget {
     final publishedAt = article.publishedAt.isToday() ? 'Today' : article.publishedAt.dayMonthYearFormat();
 
     return RoundedCard(
-      padding: EdgeInsets.zero,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
