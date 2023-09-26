@@ -3,10 +3,10 @@ import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'ads/view_models/google_ads_view_model.dart';
-import 'api/rest/api_client.dart';
 import 'api/error_handler.dart';
 import 'api/graph_ql/graph_ql_client.dart';
 import 'api/graph_ql/pokemon_repository_graph_ql.dart';
+import 'api/rest/api_client.dart';
 import 'api/rest/news/news_repository.dart';
 import 'in_app_purchases/view_models/in_app_purchase_view_model.dart';
 import 'services/language_service.dart';
@@ -73,7 +73,7 @@ Future<void> init() async {
   getIt.registerFactory(() => ScoreViewModel(getIt()));
   getIt.registerFactory(ExpansionCardStateViewModel.new);
   getIt.registerFactory(PokeballLoadingViewModel.new);
-  getIt.registerFactory(ImageColorViewModel.new);
+  getIt.registerFactory(() => ImageColorViewModel(getIt()));
   await _initServices();
 }
 

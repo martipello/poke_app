@@ -26,11 +26,11 @@ import 'pokemon_detail_app_bar.dart';
 class PokemonDetailPageArguments {
   PokemonDetailPageArguments({
     required this.pokemon,
-    required this.colorList,
+    this.colorScheme,
   });
 
   final Pokemon pokemon;
-  final List<int> colorList;
+  final ColorScheme? colorScheme;
 }
 
 class PokemonDetailPage extends StatefulWidget {
@@ -54,19 +54,8 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
   late final _tabBarController = TabController(length: 5, vsync: this);
   final key = GlobalKey<NestedScrollViewState>();
 
-  Color get primaryColor => pokemonDetailArguments.colorList.firstOrNull() != null
-      ? Color(pokemonDetailArguments.colorList.first)
-      : PokemonType.getTypeForId(
-              pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes.firstOrNull()?.pokemon_v2_type?.id ?? 0)
-          .color;
-
-  Color get secondaryColor => pokemonDetailArguments.colorList.lastOrNull() != null
-      ? Color(pokemonDetailArguments.colorList.last)
-      : PokemonType.getTypeForId(
-              pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes.secondOrNull()?.pokemon_v2_type?.id ??
-                  pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes.firstOrNull()?.pokemon_v2_type?.id ??
-                  0)
-          .color;
+  Color get primaryColor => pokemonDetailArguments.colorScheme?.primary ?? PokemonType.getTypeForId(pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes.firstOrNull()?.pokemon_v2_type?.id ?? 0).color;
+  Color get secondaryColor => pokemonDetailArguments.colorScheme?.primaryContainer ?? PokemonType.getTypeForId(pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes.secondOrNull()?.pokemon_v2_type?.id ?? 0).color;
 
   @override
   void initState() {
