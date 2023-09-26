@@ -8,13 +8,11 @@ class RoundedCard extends StatelessWidget {
     required this.child,
     this.onTap,
     this.borderColor,
-    this.padding = const EdgeInsets.all(16.0),
   }) : super(key: key);
 
   final Widget child;
   final Color? borderColor;
   final VoidCallback? onTap;
-  final EdgeInsets padding;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +37,7 @@ class RoundedCard extends StatelessWidget {
           child: InkWell(
             onTap: onTap,
             child: Padding(
-              padding: padding,
+              padding: const EdgeInsets.all(16.0),
               child: child,
             ),
           ),

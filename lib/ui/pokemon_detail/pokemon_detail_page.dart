@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../ads/ad_warning.dart';
 import '../../ads/view_models/google_ads_view_model.dart';
+import '../../api/models/pokemon/damage_type.dart';
 import '../../api/models/pokemon/pokemon.dart';
 import '../../api/models/pokemon/pokemon_type.dart';
 import '../../dependency_injection_container.dart';
@@ -70,6 +71,10 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
   @override
   void initState() {
     super.initState();
+    _filterViewModel.filters.add([
+      ...PokemonType.filters,
+      ...DamageType.filters
+    ]);
     _openPokemonCountViewModel.increment();
     _tabBarController.addListener(
       _tabBarListener,
@@ -163,7 +168,6 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
             child: FilterViewHolder(
               onFilterButtonPressed: collapseNestedScrollViewHeader,
               filterViewModel: _filterViewModel,
-              showDamageTypeFilters: true,
             ),
           );
         }

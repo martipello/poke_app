@@ -1,8 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/animate.dart';
-import 'package:flutter_animate/effects/effects.dart';
-import 'package:flutter_animate/extensions/extensions.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 import '../../api/models/pokemon/pokemon.dart';
 import '../../dependency_injection_container.dart';
@@ -40,6 +38,7 @@ class PokemonImage extends StatefulWidget {
 }
 
 class _PokemonImageState extends State<PokemonImage> {
+  //TODO investigate https://api.flutter.dev/flutter/material/ColorScheme/fromImageProvider.html
   final mainImageColorViewModel = getIt.get<ImageColorViewModel>();
 
   CachedNetworkImageProvider? mainImageProvider;
@@ -57,9 +56,11 @@ class _PokemonImageState extends State<PokemonImage> {
     );
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
+        //update palette updates colorListStream
         if (widget.imageColorCallback != null) {
           mainImageColorViewModel.updatePalette(
             context,
+            //TODO(MS): I think this may fail on slow internet connections
             mainImageProvider!,
           );
         }

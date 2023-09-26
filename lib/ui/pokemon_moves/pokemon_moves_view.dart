@@ -66,7 +66,7 @@ class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepA
 
   void _addSelectedFilterListener() {
     const duration = Duration(milliseconds: 200);
-    widget.filterViewModel.selectedTypeFiltersStream.listen(
+    widget.filterViewModel.selectedFiltersStream.listen(
       (selectedTypes) {
         Future.delayed(duration).then(
           (value) {
@@ -86,7 +86,7 @@ class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepA
 
   void _addSelectedDamageTypeFilterListener() {
     const duration = Duration(milliseconds: 200);
-    widget.filterViewModel.selectedDamageTypeFiltersStream.listen(
+    widget.filterViewModel.selectedFiltersStream.listen(
       (selectedDamageTypes) {
         Future.delayed(duration).then(
           (value) {

@@ -147,8 +147,7 @@ class _PokemonNewsListViewState extends State<PokemonNewsListView> {
   Widget _buildHeaderBar() {
     return SearchAppBar(
       searchTextController: _textController,
-      filterViewModel: null,
-      heroWidget: _buildHighlightArticle(),
+      filterViewModel: FilterViewModel(),
     );
   }
 

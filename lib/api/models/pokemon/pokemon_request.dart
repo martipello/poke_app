@@ -4,6 +4,7 @@ import 'package:built_value/serializer.dart';
 
 import '../../serializers/serializers.dart';
 import 'damage_type.dart';
+import 'gen_type.dart';
 import 'pokemon_type.dart';
 
 part 'pokemon_request.g.dart';
@@ -27,6 +28,8 @@ abstract class PokemonRequest implements Built<PokemonRequest, PokemonRequestBui
   BuiltList<PokemonType> get pokemonTypes;
 
   BuiltList<DamageType> get damageTypes;
+
+  BuiltList<GenType> get genTypes;
 
   String? get sort;
 

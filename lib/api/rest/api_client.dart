@@ -287,24 +287,26 @@ class ApiClient {
   }) async {
     log('ApiBaseHelper').e('ERROR $error URL $urlCalled');
     errorHandler.handleError(error, errorHandlerMessage: 'ApiBaseHelper');
-    if (error is DioError) {
+    if (error is DioException) {
       switch (error.type) {
-        case DioErrorType.cancel:
+        case DioExceptionType.cancel:
           throw _buildAppException(
             'Request to API server was cancelled.',
             statusCode: 502,
             url: urlCalled,
           );
-        case DioErrorType.sendTimeout:
-        case DioErrorType.connectTimeout:
-        case DioErrorType.receiveTimeout:
-        case DioErrorType.other:
+        case DioExceptionType.sendTimeout:
+        case DioExceptionType.connectionTimeout:
+        case DioExceptionType.receiveTimeout:
+        case DioExceptionType.badCertificate:
+        case DioExceptionType.connectionError:
+        case DioExceptionType.unknown:
           throw _buildAppException(
             '$_connectionErrorMessage',
             statusCode: 503,
             url: urlCalled,
           );
-        case DioErrorType.response:
+        case DioExceptionType.badResponse:
           throw _buildAppException(
             '${error.response?.data.toString()}',
             statusCode: error.response?.statusCode,
@@ -360,9 +362,9 @@ class ApiClient {
     dio.options.baseUrl = flavors.F.newsBaseUrl;
     dio.options.contentType = _getContentType(requestType);
     dio.options.queryParameters = queryParameters;
-    dio.options.receiveTimeout = timeout?.inMilliseconds ?? const Duration(minutes: 1).inMilliseconds;
-    dio.options.sendTimeout = timeout?.inMilliseconds ?? const Duration(minutes: 1).inMilliseconds;
-    dio.options.connectTimeout = timeout?.inMilliseconds ?? const Duration(minutes: 1).inMilliseconds;
+    dio.options.receiveTimeout = Duration(milliseconds: timeout?.inMilliseconds ?? 1000);
+    dio.options.sendTimeout = Duration(milliseconds: timeout?.inMilliseconds ?? 1000);
+    dio.options.connectTimeout = Duration(milliseconds: timeout?.inMilliseconds ?? 1000);
     dio.options.headers = {
       'Accept': 'application/json, text/plain, */*',
       if (headers != null) ...headers,

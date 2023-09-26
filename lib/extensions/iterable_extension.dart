@@ -55,13 +55,7 @@ extension IterableExtension<E> on Iterable<E> {
   }
 
   Map<T, List<E>> groupBy<T>(T Function(E e) keySelector) {
-    var groups = <T, List<E>>{};
-    for (final value in this) {
-      final key = keySelector(value);
-      groups[key] ??= [];
-      groups[key]?.add(value);
-    }
-    return groups;
+    return groupListsBy(keySelector);
   }
 
   E get(int index) => elementAt(index);
