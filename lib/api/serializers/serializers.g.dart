@@ -124,6 +124,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(DamageType)]),
           () => new ListBuilder<DamageType>())
       ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(GenType)]),
+          () => new ListBuilder<GenType>())
+      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(TypeDataHolder)]),
           () => new ListBuilder<TypeDataHolder>())
       ..addBuilderFactory(

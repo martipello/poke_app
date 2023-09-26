@@ -39,6 +39,8 @@ class PokemonPagingAdapter {
         (b) => b
           ..search = pokemonRequest.search
           ..pokemonTypes.replace(pokemonRequest.pokemonTypes)
+          ..genTypes.replace(pokemonRequest.genTypes)
+          ..damageTypes.replace(pokemonRequest.damageTypes)
           ..sort = pokemonRequest.sort,
       );
     }

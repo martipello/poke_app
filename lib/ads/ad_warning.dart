@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../dependency_injection_container.dart';
+import '../in_app_purchases/view_models/in_app_purchase_view_model.dart';
 import '../theme/base_theme.dart';
 import '../theme/poke_app_text.dart';
 import '../ui/shared_widgets/view_models/open_pokemon_count_view_model.dart';
@@ -15,6 +16,7 @@ class AdWarning extends StatefulWidget {
 
 class _AdWarningState extends State<AdWarning> with TickerProviderStateMixin {
   final _openPokemonCountViewModel = getIt.get<OpenPokemonCountViewModel>();
+  final _inAppPurchaseViewModel = getIt.get<InAppPurchaseViewModel>();
 
   AnimationController? _positionAnimationController;
   AnimationController? _rotationAnimationController;
@@ -106,6 +108,7 @@ class _AdWarningState extends State<AdWarning> with TickerProviderStateMixin {
                     children: [
                       _buildAnimatedPokeball(4),
                       _mediumHorizontalMargin(),
+                      if(!_inAppPurchaseViewModel.hasPurchasedPremium)
                       _buildWarningLabel(
                         context,
                         openPokemonCount,

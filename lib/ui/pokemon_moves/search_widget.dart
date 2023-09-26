@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
 import '../../api/models/filter_type.dart';
-import '../../api/models/pokemon/damage_type.dart';
-import '../../api/models/pokemon/pokemon_type.dart';
 import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
+import '../../extensions/iterable_extension.dart';
 import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
+import '../pokemon_filter/clear_filter.dart';
 import '../pokemon_list/view_models/filter_view_model.dart';
 import '../pokemon_list/view_models/search_view_model.dart';
 import '../shared_widgets/chip_group.dart';
@@ -74,8 +74,7 @@ class _SearchWidgetState extends State<SearchWidget> with TickerProviderStateMix
             ),
             ViewConstraint(
               child: _buildSelectedTypeFiltersHolder(
-                  selectedFilters.whereType<PokemonType>().toList(),
-                  selectedFilters.whereType<DamageType>().toList(),
+                selectedFilters,
               ),
             )
           ],
@@ -85,118 +84,45 @@ class _SearchWidgetState extends State<SearchWidget> with TickerProviderStateMix
   }
 
   Widget _buildSelectedTypeFiltersHolder(
-    List<PokemonType> selectedTypeFilters,
-    List<DamageType> selectedDamageTypeFilters,
+    List<FilterType> selectedTypeFilters,
   ) {
-    const clearFilterHeight = 48.0;
+    final filterTypes = selectedTypeFilters.groupBy((e) => e.runtimeType);
 
-    final totalHeight = _calculateHeight(
-      selectedTypeFilters,
-      selectedDamageTypeFilters,
-      clearFilterHeight,
-    );
-
-    if (selectedTypeFilters.isNotEmpty || selectedDamageTypeFilters.isNotEmpty) {
-      return SizedBox(
-        height: totalHeight,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (selectedTypeFilters.isNotEmpty)
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildSelectedTypeFilters(
-                      selectedTypeFilters,
+    if (selectedTypeFilters.isNotEmpty) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ...filterTypes.values.map((typeFilters) {
+            return Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: _buildSelectedTypeFilters(
+                        typeFilters,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            if (selectedTypeFilters.isNotEmpty && selectedDamageTypeFilters.isNotEmpty)
-              const SizedBox(
-                height: 8,
-              ),
-            if (selectedDamageTypeFilters.isNotEmpty)
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildSelectedDamageTypeFilters(
-                      selectedDamageTypeFilters,
-                    ),
-                  ),
-                ],
-              ),
-            if ((selectedTypeFilters.length + selectedDamageTypeFilters.length) > 1)
-              _buildClearAllFiltersButton(
-                clearFilterHeight,
-              ),
-            _buildSmallMargin,
-          ],
-        ),
+                  ],
+                ),
+                _buildSmallMargin,
+              ],
+            );
+          }).toList(),
+          ClearFilter(
+            clearFilterCallback: widget.filterViewModel.clearFilters,
+              isOnDarkBackground: false,
+          ),
+          _buildSmallMargin,
+        ],
       );
     } else {
       return const SizedBox();
     }
   }
 
-  Widget _buildClearAllFiltersButton(
-    double clearFilterHeight,
-  ) {
-    return Container(
-      height: clearFilterHeight,
-      padding: const EdgeInsets.symmetric(
-        vertical: 8,
-      ),
-      clipBehavior: Clip.hardEdge,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
-      child: Material(
-        type: MaterialType.transparency,
-        child: InkWell(
-          onTap: widget.filterViewModel.clearFilters,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 8,
-              horizontal: 16,
-            ),
-            child: Text(
-              context.strings.clearFilters,
-              style: PokeAppText.body3Style.copyWith(
-                color: colors(context).textOnForeground,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _buildSelectedTypeFilters(
-    List<PokemonType> selectedFilters,
-  ) {
-    return ChipGroup(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      scrollDirection: Axis.horizontal,
-      scrollController: widget.filterViewModel.scrollController,
-      chips: selectedFilters
-          .map(
-            (type) => TypeChip(
-              chipType: ChipType.normal,
-              filterType: type,
-              isSelected: true,
-              onDelete: () {
-                widget.filterViewModel.selectTypeFilter(
-                  type,
-                );
-              },
-            ),
-          )
-          .toList(),
-    );
-  }
-
-  Widget _buildSelectedDamageTypeFilters(
-    List<DamageType> selectedFilters,
+    List<FilterType> selectedFilters,
   ) {
     return ChipGroup(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -260,25 +186,4 @@ class _SearchWidgetState extends State<SearchWidget> with TickerProviderStateMix
   }
 
   SizedBox get _buildSmallMargin => const SizedBox(height: 8);
-
-  double _calculateHeight(
-    List<PokemonType> selectedTypeFilters,
-    List<DamageType> selectedDamageTypeFilters,
-    double clearFilterHeight,
-  ) {
-    const chipPadding = 12.0;
-    if (selectedTypeFilters.isNotEmpty && selectedDamageTypeFilters.isNotEmpty) {
-      if (selectedTypeFilters.length + selectedDamageTypeFilters.length > 1) {
-        return ((kChipHeight + chipPadding) * 2) + clearFilterHeight;
-      } else {
-        return ((kChipHeight + chipPadding) * 2);
-      }
-    }
-    if (selectedTypeFilters.isNotEmpty || selectedDamageTypeFilters.isNotEmpty) {
-      if (selectedTypeFilters.length + selectedDamageTypeFilters.length > 1) {
-        return (kChipHeight + chipPadding) + clearFilterHeight;
-      }
-    }
-    return kChipHeight + chipPadding;
-  }
 }

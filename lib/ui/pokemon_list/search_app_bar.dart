@@ -6,9 +6,11 @@ import 'package:sliver_tools/sliver_tools.dart';
 import '../../api/models/filter_type.dart';
 import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
+import '../../extensions/iterable_extension.dart';
 import '../../extensions/media_query_context_extension.dart';
 import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
+import '../pokemon_filter/clear_filter.dart';
 import '../settings/settings.dart';
 import '../shared_widgets/chip_group.dart';
 import '../shared_widgets/type_chip.dart';
@@ -92,20 +94,7 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
               width: 16,
             )
           ],
-          title: isSearching
-              ? _buildSearchView()
-              : Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 16,
-                    horizontal: 16,
-                  ),
-                  child: Text(
-                    context.strings.app_name,
-                    style: PokeAppText.subtitle2Style.copyWith(
-                      height: 1,
-                    ),
-                  ),
-                ),
+          title: isSearching ? _buildSearchView() : _buildAppName(context),
           bottom: _buildSelectedFiltersHolder(
             selectedFilters,
           ),
@@ -114,77 +103,74 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
     );
   }
 
-  PreferredSize? _buildSelectedFiltersHolder(
-    List<FilterType> selectedFilters,
-  ) {
-    const chipPadding = 12.0;
-    const clearFilterHeight = 48.0;
-
-    final totalHeight =
-        selectedFilters.length > 1 ? (kChipHeight + chipPadding) + clearFilterHeight : kChipHeight + chipPadding;
-
-    if (selectedFilters.isEmpty) {
-      return null;
-    } else {
-      return PreferredSize(
-        preferredSize: Size(
-          double.infinity,
-          totalHeight,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: _buildSelectedFilters(
-                    selectedFilters,
-                  ),
-                ),
-              ],
-            ),
-            if (selectedFilters.length > 1)
-              _buildClearAllFiltersButton(
-                clearFilterHeight,
-              ),
-            _buildSmallMargin,
-          ],
-        ),
-      );
-    }
-  }
-
-  Widget _buildClearAllFiltersButton(
-    double clearFilterHeight,
-  ) {
-    return Container(
-      height: clearFilterHeight,
+  Widget _buildAppName(BuildContext context) {
+    return Padding(
       padding: const EdgeInsets.symmetric(
-        vertical: 8,
+        vertical: 16,
         horizontal: 16,
       ),
-      child: Material(
-        type: MaterialType.transparency,
-        child: InkWell(
-          onTap: widget.filterViewModel.clearFilters,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 8,
-              horizontal: 16,
-            ),
-            child: Text(
-              context.strings.clearFilters,
-              style: PokeAppText.body3Style.copyWith(
-                color: Colors.white,
-              ),
-            ),
-          ),
+      child: Text(
+        context.strings.app_name,
+        style: PokeAppText.subtitle2Style.copyWith(
+          height: 1,
         ),
       ),
     );
   }
 
+  PreferredSize? _buildSelectedFiltersHolder(
+    List<FilterType> selectedFilters,
+  ) {
+    final totalHeight = _calculateHeight(
+      selectedFilters,
+    );
+    return PreferredSize(
+      preferredSize: Size(
+        double.infinity,
+        totalHeight,
+      ),
+      child: selectedFilters.isNotEmpty
+          ? _buildSelectedFilters(
+              selectedFilters,
+            )
+          : const SizedBox(),
+    );
+  }
+
   Widget _buildSelectedFilters(
+    List<FilterType> selectedFilters,
+  ) {
+    final filterTypes = selectedFilters.groupBy((e) => e.runtimeType);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        ...filterTypes.values.map((typeFilters) {
+          return Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildSelectedTypeFilters(
+                      typeFilters,
+                    ),
+                  ),
+                ],
+              ),
+              _buildSmallMargin,
+            ],
+          );
+        }).toList(),
+        ClearFilter(
+          clearFilterCallback: widget.filterViewModel.clearFilters,
+          isOnDarkBackground: true,
+        ),
+        _buildSmallMargin,
+      ],
+    );
+  }
+
+  Widget _buildSelectedTypeFilters(
     List<FilterType> selectedFilters,
   ) {
     return ChipGroup(
@@ -317,4 +303,20 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
   }
 
   SizedBox get _buildSmallMargin => const SizedBox(height: 8);
+
+  double _calculateHeight(
+    List<FilterType> selectedTypeFilters,
+  ) {
+    const kChipMargin = 16.0;
+    const kClearFilterPadding = 8.0;
+    const kFilterLayoutTotalHeight = kChipHeight + kChipMargin;
+    const kClearFilterTotalHeight = kClearFilterHeight + kClearFilterPadding;
+
+    final types = selectedTypeFilters.groupBy((e) => e.runtimeType);
+
+    if (types.isNotEmpty) {
+      return (kFilterLayoutTotalHeight * types.length) + kClearFilterTotalHeight;
+    }
+    return 8.0;
+  }
 }

@@ -2,8 +2,11 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../api/models/filter_type.dart';
+import '../../../api/models/pokemon/damage_type.dart';
+import '../../../api/models/pokemon/gen_type.dart';
 import '../../../api/models/pokemon/pokemon.dart';
 import '../../../api/models/pokemon/pokemon_request.dart';
+import '../../../api/models/pokemon/pokemon_type.dart';
 import '../adapters/pokemon_paging_adapter.dart';
 
 class PokemonListViewModel {
@@ -39,16 +42,31 @@ class PokemonListViewModel {
   }
 
   void setSelectedTypes(List<FilterType> selectedTypes) {
+    final pokemonTypes = selectedTypes.whereType<PokemonType>();
+    final damageTypes = selectedTypes.whereType<DamageType>();
+    final genTypes = selectedTypes.whereType<GenType>();
     final _pokemonRequest = pokemonRequest?.rebuild(
           (b) => b
             ..pokemonTypes.replace(
-              selectedTypes,
+              pokemonTypes,
+            )
+            ..genTypes.replace(
+              genTypes,
+            )
+            ..damageTypes.replace(
+              damageTypes,
             ),
         ) ??
         PokemonRequest(
           (b) => b
             ..pokemonTypes.replace(
-              selectedTypes,
+              pokemonTypes,
+            )
+            ..genTypes.replace(
+              genTypes,
+            )
+            ..damageTypes.replace(
+              damageTypes,
             ),
         );
     pokemonRequest = _pokemonRequest;

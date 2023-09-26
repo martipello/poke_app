@@ -12,13 +12,11 @@ class FilterViewHolder extends StatefulWidget {
   const FilterViewHolder({
     super.key,
     required this.filterViewModel,
-    this.showDamageTypeFilters = false,
     this.onFilterButtonPressed,
   });
 
   final FilterViewModel filterViewModel;
   final VoidCallback? onFilterButtonPressed;
-  final bool showDamageTypeFilters;
 
   @override
   State<FilterViewHolder> createState() => _FilterViewHolderState();
@@ -53,9 +51,7 @@ class _FilterViewHolderState extends State<FilterViewHolder> with SingleTickerPr
         builder: (context, snapshot) {
           final _isFilterBottomSheetShown = snapshot.data == true;
           return SizedBox(
-            height: widget.showDamageTypeFilters
-                ? MediaQuery.of(context).filterBottomSheetHeight
-                : MediaQuery.of(context).singleFilterBottomSheetHeight,
+            height: MediaQuery.of(context).filterBottomSheetHeight,
             width: double.infinity,
             child: Stack(
               children: [
@@ -68,7 +64,7 @@ class _FilterViewHolderState extends State<FilterViewHolder> with SingleTickerPr
                 if(_isFilterBottomSheetShown)
                 Align(
                   alignment: Alignment.bottomCenter,
-                  child: _buildFilterViewHolder(
+                  child: _buildFilterView(
                     _isFilterBottomSheetShown,
                   ),
                 ),
@@ -96,7 +92,7 @@ class _FilterViewHolderState extends State<FilterViewHolder> with SingleTickerPr
     );
   }
 
-  Widget _buildFilterViewHolder(
+  Widget _buildFilterView(
     bool _isFilterBottomSheetShown,
   ) {
     return ViewConstraint(
@@ -104,7 +100,6 @@ class _FilterViewHolderState extends State<FilterViewHolder> with SingleTickerPr
         animation: _circleRevealAnimation,
         child: FilterView(
           filterViewModel: widget.filterViewModel,
-          showDamageTypeFilters: widget.showDamageTypeFilters,
           onClose: () {
             _circleRevealAnimationController.reverse().then(
               (value) {

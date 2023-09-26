@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import '../../../extensions/iterable_extension.dart';
 import '../filter_type.dart';
 
 enum DamageType implements FilterType {
@@ -41,15 +42,15 @@ enum DamageType implements FilterType {
   final String image;
 
   static DamageType getTypeForId(int id) {
-    switch (id) {
-      case 1:
-        return DamageType.status;
-      case 2:
-        return DamageType.physical;
-      case 3:
-        return DamageType.special;
-      default:
-        return DamageType.unknown;
-    }
+    return DamageType.values.firstWhere(
+      (type) => type.id == id,
+      orElse: () => DamageType.unknown,
+    );
   }
+
+  static List<FilterType> get filters => DamageType.values
+      .whereNot(
+        (type) => type == DamageType.unknown,
+      )
+      .toList();
 }

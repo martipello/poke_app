@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../api/models/filter_type.dart';
 import '../../api/models/pokemon/damage_type.dart';
+import '../../api/models/pokemon/gen_type.dart';
 import '../../api/models/pokemon/pokemon_type.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../extensions/media_query_context_extension.dart';
@@ -16,14 +17,10 @@ class FilterView extends StatefulWidget {
     Key? key,
     required this.filterViewModel,
     required this.onClose,
-    this.showDamageTypeFilters = false,
-    this.showGenFilters = false,
   }) : super(key: key);
 
   final FilterViewModel filterViewModel;
   final VoidCallback onClose;
-  final bool showDamageTypeFilters;
-  final bool showGenFilters;
 
   @override
   State<FilterView> createState() => _FilterViewState();
@@ -38,9 +35,7 @@ class _FilterViewState extends State<FilterView> {
       ),
       child: Card(
         child: SizedBox(
-          height: widget.showDamageTypeFilters
-              ? MediaQuery.of(context).filterBottomSheetHeight
-              : MediaQuery.of(context).singleFilterBottomSheetHeight,
+          height: MediaQuery.of(context).filterBottomSheetHeight,
           width: double.infinity,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -53,7 +48,7 @@ class _FilterViewState extends State<FilterView> {
                 ),
                 child: _buildFilterHeader(),
               ),
-              _buildFilterSections(),
+              _buildFilters(),
             ],
           ),
         ),
@@ -61,76 +56,113 @@ class _FilterViewState extends State<FilterView> {
     );
   }
 
-  Widget _buildFilterSections() {
+  Widget _buildFilters() {
     return StreamBuilder<List<FilterType>>(
-        initialData: [],
-        stream: widget.filterViewModel.selectedFiltersStream,
+      initialData: [],
+      stream: widget.filterViewModel.selectedFiltersStream,
       builder: (context, snapshot) {
+        final selectedFiltersStream = snapshot.data ?? [];
         return Expanded(
           child: SingleChildScrollView(
             controller: ScrollController(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (widget.showDamageTypeFilters || widget.showGenFilters)
-                  _buildSubtitle(
-                    context.strings.types,
-                  ),
-                _buildFilterTypeChipsHolder(snapshot.data ?? []),
-                if (widget.showDamageTypeFilters) _buildDamageTypeFiltersSection(snapshot.data ?? []),
-                if (widget.showGenFilters) _buildGenTypeFiltersSection(snapshot.data ?? []),
-              ],
-            ),
+            child: _buildFilterTypeSections(selectedFiltersStream),
           ),
         );
-      }
+      },
     );
   }
 
-  Widget _buildFilterTypeChipsHolder(List<FilterType> selectedFilterTypes) {
-    final pokemonTypes = PokemonType.values.toList();
-    pokemonTypes.remove(PokemonType.shadow);
-    pokemonTypes.remove(PokemonType.unknown);
-    return _buildChipGroup(pokemonTypes, selectedFilterTypes);
+  Widget _buildFilterTypeSections(
+    List<FilterType> selectedFilterTypes,
+  ) {
+    return StreamBuilder(
+      stream: widget.filterViewModel.filters,
+      builder: (context, snapshot) {
+        final filters = snapshot.data ?? [];
+        final pokemonFilterTypes = filters.whereType<PokemonType>().toList();
+        final damageFilterTypes = filters.whereType<DamageType>().toList();
+        final genFilterTypes = filters.whereType<GenType>().toList();
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildPokemonTypeFiltersSection(
+              pokemonFilterTypes,
+              selectedFilterTypes,
+            ),
+            _buildDamageTypeFiltersSection(
+              damageFilterTypes,
+              selectedFilterTypes,
+            ),
+            _buildGenTypeFiltersSection(
+              genFilterTypes,
+              selectedFilterTypes,
+            ),
+          ],
+        );
+      },
+    );
   }
 
-  Widget _buildDamageTypeFiltersSection(List<FilterType> selectedFilterTypes) {
+  Widget _buildPokemonTypeFiltersSection(
+    List<PokemonType> filters,
+    List<FilterType> selectedFilters,
+  ) {
+    if (filters.isEmpty) {
+      return const SizedBox();
+    }
+    return _buildFilterTypeSection(
+      filters,
+      selectedFilters,
+      context.strings.types,
+    );
+  }
+
+  Widget _buildDamageTypeFiltersSection(
+    List<DamageType> filters,
+    List<FilterType> selectedFilters,
+  ) {
+    if (filters.isEmpty) {
+      return const SizedBox();
+    }
+    return _buildFilterTypeSection(
+      filters,
+      selectedFilters,
+      context.strings.damageTypes,
+    );
+  }
+
+  Widget _buildGenTypeFiltersSection(
+    List<GenType> filters,
+    List<FilterType> selectedFilters,
+  ) {
+    if (filters.isEmpty) {
+      return const SizedBox();
+    }
+    return _buildFilterTypeSection(
+      filters,
+      selectedFilters,
+      context.strings.generation,
+    );
+  }
+
+  Widget _buildFilterTypeSection(
+    List<FilterType> filters,
+    List<FilterType> selectedFilters,
+    String sectionName,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
         _buildSubtitle(
-          context.strings.damageTypes,
+          sectionName, // context.strings.generation,
         ),
-        _buildDamageTypeFilterChipsHolder(selectedFilterTypes),
+        _buildChipGroup(filters, selectedFilters),
+        const SizedBox(height: 8),
       ],
     );
-  }
-
-  Widget _buildDamageTypeFilterChipsHolder(List<FilterType> selectedFilters) {
-    final damageTypes = DamageType.values.toList();
-    damageTypes.remove(DamageType.unknown);
-    return _buildChipGroup(damageTypes, selectedFilters);
-  }
-
-  Widget _buildGenTypeFiltersSection(List<FilterType> selectedFilters) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        _buildSubtitle(
-          context.strings.generation,
-        ),
-        _buildGenTypeFilterChipsHolder(selectedFilters),
-      ],
-    );
-  }
-
-  Widget _buildGenTypeFilterChipsHolder(List<FilterType> selectedFilterTypes) {
-    final damageTypes = DamageType.values.toList();
-    damageTypes.remove(DamageType.unknown);
-    return _buildChipGroup(damageTypes, selectedFilterTypes);
   }
 
   Widget _buildChipGroup(
@@ -138,7 +170,7 @@ class _FilterViewState extends State<FilterView> {
     List<FilterType> selectedPokemonTypes,
   ) {
     return ChipGroup(
-      scrollPhysics: widget.showDamageTypeFilters ? const NeverScrollableScrollPhysics() : null,
+      scrollPhysics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.symmetric(
         horizontal: 16,
         vertical: 8,
@@ -193,7 +225,7 @@ class _FilterViewState extends State<FilterView> {
       ),
       child: Text(
         subtitle,
-        style: PokeAppText.body7Style.copyWith(
+        style: PokeAppText.body1Style.copyWith(
           color: colors(context).textOnForeground,
         ),
       ),

@@ -2,6 +2,7 @@ import 'package:graphql/client.dart';
 
 import '../../utils/console_output.dart';
 import '../models/pokemon/damage_type.dart';
+import '../models/pokemon/gen_type.dart';
 import '../models/pokemon/pokemon_request.dart';
 import '../models/pokemon/pokemon_response.dart';
 import '../models/pokemon/pokemon_type.dart';
@@ -128,7 +129,14 @@ class PokemonRepositoryGraphQl {
         ? pokemonRequest.pokemonTypes.map(
             (p0) => p0.id,
           )
-        : PokemonType.values.map(
+        : PokemonType.filters.map(
+            (e) => e.id,
+          );
+    final genTypeIds = pokemonRequest.genTypes.isNotEmpty
+        ? pokemonRequest.genTypes.map(
+            (p0) => p0.id,
+          )
+        : GenType.filters.map(
             (e) => e.id,
           );
     final id = pokemonRequest.search?.replaceAll(RegExp(r'[^0-9]'), '');
@@ -144,7 +152,12 @@ class PokemonRepositoryGraphQl {
             pokemon_v2_pokemon: {
                 $search
               }
-            }
+            }, 
+            pokemon_v2_pokemonspecy: {
+              generation_id: {
+                _in: ${genTypeIds.toList()}
+                }
+              }
           }, order_by: {
               id: asc
             }, 
@@ -493,14 +506,14 @@ pokemon_v2_pokemon(where: {id: {_eq: ${pokemonRequest.pokemonId}}}) {
         ? pokemonRequest.pokemonTypes.map(
             (p0) => p0.id,
           )
-        : PokemonType.values.map(
+        : PokemonType.filters.map(
             (e) => e.id,
           );
     final damageTypeIds = pokemonRequest.damageTypes.isNotEmpty
         ? pokemonRequest.damageTypes.map(
             (p0) => p0.id,
           )
-        : DamageType.values.map(
+        : DamageType.filters.map(
             (e) => e.id,
           );
     return '''

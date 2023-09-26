@@ -2,10 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../api/models/filter_type.dart';
+import '../../../api/models/pokemon/pokemon_type.dart';
 
 class FilterViewModel {
   final isFilterBottomSheetShownStream = BehaviorSubject<bool>.seeded(false);
   final selectedFiltersStream = BehaviorSubject<List<FilterType>>.seeded([]);
+
+  final filters = BehaviorSubject<List<FilterType>>.seeded(PokemonType.filters);
 
   ScrollController get scrollController => _scrollController ??= ScrollController();
   ScrollController? _scrollController;

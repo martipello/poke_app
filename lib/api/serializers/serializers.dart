@@ -13,6 +13,7 @@ import '../models/pokemon/encounter_slot.dart';
 import '../models/pokemon/evolution.dart';
 import '../models/pokemon/evolution_chain_holder.dart';
 import '../models/pokemon/evolution_holder.dart';
+import '../models/pokemon/gen_type.dart';
 import '../models/pokemon/machine.dart';
 import '../models/pokemon/move_learn_method.dart';
 import '../models/pokemon/move_metum.dart';
@@ -51,6 +52,7 @@ part 'serializers.g.dart';
   Evolution,
   EvolutionChainHolder,
   EvolutionHolder,
+  GenType,
   Machine,
   MoveLearnMethod,
   MoveMetum,
