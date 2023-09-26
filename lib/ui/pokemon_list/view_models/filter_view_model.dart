@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../../api/models/pokemon/damage_type.dart';
+import '../../../api/models/filter_type.dart';
 import '../../../api/models/pokemon/pokemon_type.dart';
 
 class FilterViewModel {
   final isFilterBottomSheetShownStream = BehaviorSubject<bool>.seeded(false);
-  final selectedTypeFiltersStream = BehaviorSubject<List<PokemonType>>.seeded([]);
-  final selectedDamageTypeFiltersStream = BehaviorSubject<List<DamageType>>.seeded([]);
+  final selectedFiltersStream = BehaviorSubject<List<FilterType>>.seeded([]);
+
+  final filters = BehaviorSubject<List<FilterType>>.seeded(PokemonType.filters);
 
   ScrollController get scrollController => _scrollController ??= ScrollController();
   ScrollController? _scrollController;
@@ -21,42 +22,26 @@ class FilterViewModel {
     }
   }
 
-  void selectTypeFilter(PokemonType type) {
-    final _selectedFilters = selectedTypeFiltersStream.value;
+  void selectTypeFilter(FilterType type) {
+    final _selectedFilters = selectedFiltersStream.value;
     if (_selectedFilters.any((selectedType) => selectedType == type)) {
       _selectedFilters.remove(type);
     } else {
       _selectedFilters.add(type);
     }
-    selectedTypeFiltersStream.add(_selectedFilters);
-  }
-
-  void selectDamageTypeFilter(DamageType type) {
-    final _selectedFilters = selectedDamageTypeFiltersStream.value;
-    if (_selectedFilters.any((selectedType) => selectedType == type)) {
-      _selectedFilters.remove(type);
-    } else {
-      _selectedFilters.add(type);
-    }
-    selectedDamageTypeFiltersStream.add(_selectedFilters);
+    selectedFiltersStream.add(_selectedFilters);
   }
 
   void clearTypeFilters() {
-    selectedTypeFiltersStream.add([]);
-  }
-
-  void clearDamageTypeFilters() {
-    selectedDamageTypeFiltersStream.add([]);
+    selectedFiltersStream.add([]);
   }
 
   void clearFilters() {
     clearTypeFilters();
-    clearDamageTypeFilters();
   }
 
   void dispose() {
     isFilterBottomSheetShownStream.close();
-    selectedTypeFiltersStream.close();
     _scrollController?.dispose();
   }
 }

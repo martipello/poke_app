@@ -35,10 +35,15 @@ class _AppShellState extends State<AppShell> {
           'assets/icons/pokedex-black.png',
           0,
         ),
+        // _buildBottomNavigationBarItem(
+        //   'PokéNews',
+        //   'assets/images/fairy_type_icon.png',
+        //   1,
+        // ),
         _buildBottomNavigationBarItem(
           context.strings.whoDatPokemon,
           'assets/icons/whos_that_pokemon.png',
-          1,
+          2,
         ),
       ],
       onTap: (index) {
@@ -77,6 +82,7 @@ class _AppShellState extends State<AppShell> {
 
   List<Widget> get _bodies => [
         PokemonListView(),
+        // PokemonNewsListView(),
         WhosThatPokemonView(),
       ];
 }

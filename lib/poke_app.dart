@@ -38,46 +38,47 @@ class _PokeAppState extends State<PokeApp> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<SupportedLanguage>(
-        stream: languageService.languageStream,
-        builder: (context, snapshot) {
-          //TODO handle changing localization
-          return MaterialApp(
-            title: 'PokéApp',
-            localizationsDelegates: [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: [
-              const Locale('en', ''),
-              const Locale('es', ''),
-            ],
-            theme: ThemeData(
-              primaryColor: widget.theme.colors.primary,
-              iconTheme: widget.theme.iconThemeData,
-              colorScheme: widget.theme.colorScheme.colorScheme,
-              inputDecorationTheme: widget.theme.inputDecorationTheme,
-              brightness: widget.theme.colorScheme.brightness,
-              textSelectionTheme: TextSelectionThemeData(
-                cursorColor: colors(context).secondary,
-                selectionColor: colors(context).secondary,
-                selectionHandleColor: colors(context).secondary,
-              ),
-              fontFamily: widget.theme.font,
-              appBarTheme: widget.theme.appBarTheme,
-              useMaterial3: true,
+      stream: languageService.languageStream,
+      builder: (context, snapshot) {
+        //TODO handle changing localization
+        return MaterialApp(
+          title: 'PokéApp',
+          localizationsDelegates: [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: [
+            const Locale('en', ''),
+            const Locale('es', ''),
+          ],
+          theme: ThemeData(
+            primaryColor: widget.theme.colors.primary,
+            iconTheme: widget.theme.iconThemeData,
+            colorScheme: widget.theme.colorScheme.colorScheme,
+            inputDecorationTheme: widget.theme.inputDecorationTheme,
+            brightness: widget.theme.colorScheme.brightness,
+            textSelectionTheme: TextSelectionThemeData(
+              cursorColor: colors(context).secondary,
+              selectionColor: colors(context).secondary,
+              selectionHandleColor: colors(context).secondary,
             ),
-            initialRoute: SplashPage.routeName,
-            routes: {
-              AppShell.routeName: (context) => AppShell(),
-              SplashPage.routeName: (context) => const SplashPage(),
-              PokemonDetailPage.routeName: (context) => const PokemonDetailPage(),
-              LocationMapPage.routeName: (context) => LocationMapPage(),
-              Settings.routeName: (context) => Settings(),
-              About.routeName: (context) => About(),
-            },
-          );
-        });
+            fontFamily: widget.theme.font,
+            appBarTheme: widget.theme.appBarTheme,
+            useMaterial3: true,
+          ),
+          initialRoute: SplashPage.routeName,
+          routes: {
+            AppShell.routeName: (context) => AppShell(),
+            SplashPage.routeName: (context) => const SplashPage(),
+            PokemonDetailPage.routeName: (context) => const PokemonDetailPage(),
+            LocationMapPage.routeName: (context) => LocationMapPage(),
+            Settings.routeName: (context) => Settings(),
+            About.routeName: (context) => About(),
+          },
+        );
+      },
+    );
   }
 }

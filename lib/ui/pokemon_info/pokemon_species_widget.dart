@@ -60,7 +60,9 @@ class PokemonSpeciesWidget extends StatelessWidget {
       ),
       child: Text(
         context.strings.species,
-        style: PokeAppText.subtitle3Style,
+        style: PokeAppText.subtitle3Style.copyWith(
+          color: colors(context).textOnForeground,
+        ),
       ),
     );
   }

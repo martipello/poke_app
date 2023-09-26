@@ -6,9 +6,11 @@ part of 'type_data_holder.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<TypeDataHolder> _$typeDataHolderSerializer = new _$TypeDataHolderSerializer();
+Serializer<TypeDataHolder> _$typeDataHolderSerializer =
+    new _$TypeDataHolderSerializer();
 
-class _$TypeDataHolderSerializer implements StructuredSerializer<TypeDataHolder> {
+class _$TypeDataHolderSerializer
+    implements StructuredSerializer<TypeDataHolder> {
   @override
   final Iterable<Type> types = const [TypeDataHolder, _$TypeDataHolder];
   @override
@@ -23,13 +25,15 @@ class _$TypeDataHolderSerializer implements StructuredSerializer<TypeDataHolder>
     if (value != null) {
       result
         ..add('pokemon_v2_type')
-        ..add(serializers.serialize(value, specifiedType: const FullType(TypeData)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(TypeData)));
     }
     return result;
   }
 
   @override
-  TypeDataHolder deserialize(Serializers serializers, Iterable<Object?> serialized,
+  TypeDataHolder deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new TypeDataHolderBuilder();
 
@@ -40,8 +44,8 @@ class _$TypeDataHolderSerializer implements StructuredSerializer<TypeDataHolder>
       final Object? value = iterator.current;
       switch (key) {
         case 'pokemon_v2_type':
-          result.pokemon_v2_type
-              .replace(serializers.deserialize(value, specifiedType: const FullType(TypeData))! as TypeData);
+          result.pokemon_v2_type.replace(serializers.deserialize(value,
+              specifiedType: const FullType(TypeData))! as TypeData);
           break;
       }
     }
@@ -60,10 +64,12 @@ class _$TypeDataHolder extends TypeDataHolder {
   _$TypeDataHolder._({this.pokemon_v2_type}) : super._();
 
   @override
-  TypeDataHolder rebuild(void Function(TypeDataHolderBuilder) updates) => (toBuilder()..update(updates)).build();
+  TypeDataHolder rebuild(void Function(TypeDataHolderBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
-  TypeDataHolderBuilder toBuilder() => new TypeDataHolderBuilder()..replace(this);
+  TypeDataHolderBuilder toBuilder() =>
+      new TypeDataHolderBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -81,16 +87,21 @@ class _$TypeDataHolder extends TypeDataHolder {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'TypeDataHolder')..add('pokemon_v2_type', pokemon_v2_type)).toString();
+    return (newBuiltValueToStringHelper(r'TypeDataHolder')
+          ..add('pokemon_v2_type', pokemon_v2_type))
+        .toString();
   }
 }
 
-class TypeDataHolderBuilder implements Builder<TypeDataHolder, TypeDataHolderBuilder> {
+class TypeDataHolderBuilder
+    implements Builder<TypeDataHolder, TypeDataHolderBuilder> {
   _$TypeDataHolder? _$v;
 
   TypeDataBuilder? _pokemon_v2_type;
-  TypeDataBuilder get pokemon_v2_type => _$this._pokemon_v2_type ??= new TypeDataBuilder();
-  set pokemon_v2_type(TypeDataBuilder? pokemon_v2_type) => _$this._pokemon_v2_type = pokemon_v2_type;
+  TypeDataBuilder get pokemon_v2_type =>
+      _$this._pokemon_v2_type ??= new TypeDataBuilder();
+  set pokemon_v2_type(TypeDataBuilder? pokemon_v2_type) =>
+      _$this._pokemon_v2_type = pokemon_v2_type;
 
   TypeDataHolderBuilder();
 
@@ -120,14 +131,16 @@ class TypeDataHolderBuilder implements Builder<TypeDataHolder, TypeDataHolderBui
   _$TypeDataHolder _build() {
     _$TypeDataHolder _$result;
     try {
-      _$result = _$v ?? new _$TypeDataHolder._(pokemon_v2_type: _pokemon_v2_type?.build());
+      _$result = _$v ??
+          new _$TypeDataHolder._(pokemon_v2_type: _pokemon_v2_type?.build());
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'pokemon_v2_type';
         _pokemon_v2_type?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(r'TypeDataHolder', _$failedField, e.toString());
+        throw new BuiltValueNestedFieldError(
+            r'TypeDataHolder', _$failedField, e.toString());
       }
       rethrow;
     }

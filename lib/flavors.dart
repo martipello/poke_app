@@ -25,5 +25,5 @@ class F {
     }
   }
 
-  static String get baseUrl => '';
+  static String get newsBaseUrl => 'https://newsapi.org/v2/';
 }

@@ -6,12 +6,12 @@ import 'package:dio/dio.dart';
 import 'package:http/io_client.dart';
 import 'package:http_parser/http_parser.dart' as mime;
 
-import '../api/models/app_exceptions.dart';
-import '../extensions/file_extention.dart';
-import '../flavors.dart' as flavors;
-import '../utils/console_output.dart';
-import 'error_handler.dart';
-import 'models/error_response.dart';
+import '../../extensions/file_extention.dart';
+import '../../flavors.dart' as flavors;
+import '../../utils/console_output.dart';
+import '../error_handler.dart';
+import '../models/app_exceptions.dart';
+import '../models/error_response.dart';
 
 typedef RetryFunction = Future<dynamic> Function();
 
@@ -287,31 +287,31 @@ class ApiClient {
   }) async {
     log('ApiBaseHelper').e('ERROR $error URL $urlCalled');
     errorHandler.handleError(error, errorHandlerMessage: 'ApiBaseHelper');
-    if (error is DioError) {
+    if (error is DioException) {
       switch (error.type) {
-        case DioErrorType.cancel:
+        case DioExceptionType.cancel:
           throw _buildAppException(
             'Request to API server was cancelled.',
             statusCode: 502,
             url: urlCalled,
           );
-        case DioErrorType.sendTimeout:
-        case DioErrorType.connectTimeout:
-        case DioErrorType.receiveTimeout:
-        case DioErrorType.other:
+        case DioExceptionType.sendTimeout:
+        case DioExceptionType.connectionTimeout:
+        case DioExceptionType.receiveTimeout:
+        case DioExceptionType.badCertificate:
+        case DioExceptionType.connectionError:
+        case DioExceptionType.unknown:
           throw _buildAppException(
             '$_connectionErrorMessage',
             statusCode: 503,
             url: urlCalled,
           );
-        case DioErrorType.response:
-          if (error.response?.statusCode == 401) {
-            throw _buildAppException(
-              '${error.message}',
-              statusCode: error.response?.statusCode,
-              url: urlCalled,
-            );
-          }
+        case DioExceptionType.badResponse:
+          throw _buildAppException(
+            '${error.response?.data.toString()}',
+            statusCode: error.response?.statusCode,
+            url: urlCalled,
+          );
       }
     } else {
       throw _buildAppException(
@@ -359,12 +359,12 @@ class ApiClient {
       if (status == null) return false;
       return status >= 200 && status < 300 || status == 304;
     };
-    dio.options.baseUrl = flavors.F.baseUrl;
+    dio.options.baseUrl = flavors.F.newsBaseUrl;
     dio.options.contentType = _getContentType(requestType);
     dio.options.queryParameters = queryParameters;
-    dio.options.receiveTimeout = timeout?.inMilliseconds ?? const Duration(minutes: 1).inMilliseconds;
-    dio.options.sendTimeout = timeout?.inMilliseconds ?? const Duration(minutes: 1).inMilliseconds;
-    dio.options.connectTimeout = timeout?.inMilliseconds ?? const Duration(minutes: 1).inMilliseconds;
+    dio.options.receiveTimeout = Duration(milliseconds: timeout?.inMilliseconds ?? 1000);
+    dio.options.sendTimeout = Duration(milliseconds: timeout?.inMilliseconds ?? 1000);
+    dio.options.connectTimeout = Duration(milliseconds: timeout?.inMilliseconds ?? 1000);
     dio.options.headers = {
       'Accept': 'application/json, text/plain, */*',
       if (headers != null) ...headers,

@@ -114,7 +114,7 @@ class _PokemonTileState extends State<PokemonTile> {
           chips: widget.pokemon.pokemon_v2_pokemontypes
               .map(
                 (type) => TypeChip(
-                  pokemonType: type.pokemon_v2_type?.pokemonType() ?? PokemonType.unknown,
+                  filterType: type.pokemon_v2_type?.pokemonType() ?? PokemonType.unknown,
                   chipType: ChipType.normal,
                 ),
               )

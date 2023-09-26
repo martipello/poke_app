@@ -12,6 +12,7 @@ import '../../../extensions/pokemon_resource_extension.dart';
 import '../../../extensions/string_extension.dart';
 import '../../../theme/base_theme.dart';
 import '../../../theme/poke_app_text.dart';
+import '../../api/models/filter_type.dart';
 import '../shared_widgets/expansion_card.dart';
 import '../shared_widgets/poke_divider.dart';
 import '../shared_widgets/pokemon_table.dart';
@@ -329,22 +330,16 @@ class PokemonMoveTile extends StatelessWidget {
   List<Widget> _buildMoveTypeChips(
     bool isExpanded,
   ) {
-    final moveType = PokemonType.getTypeForId(
+    final pokemonType = PokemonType.getTypeForId(
       pokemonMove.pokemon_v2_move?.pokemon_v2_type?.id ?? 0,
     );
     final moveDamageClass = pokemonMove.pokemon_v2_move?.pokemon_v2_type?.pokemon_v2_movedamageclass;
     final damageType = DamageType.getTypeForId(moveDamageClass?.id ?? 0);
-    final moveTypeChips = [damageType, Object(), moveType].map(
+    final moveTypeChips = [damageType, Object(), pokemonType].map(
       (type) {
-        if (type is PokemonType) {
+        if (type is FilterType) {
           return _buildTypeChip(
-            pokemonType: type,
-            isExpanded: isExpanded,
-          );
-        }
-        if (type is DamageType) {
-          return _buildTypeChip(
-            damageType: type,
+            type,
             isExpanded: isExpanded,
           );
         }
@@ -356,15 +351,13 @@ class PokemonMoveTile extends StatelessWidget {
     return moveTypeChips;
   }
 
-  Widget _buildTypeChip({
-    DamageType? damageType,
-    PokemonType? pokemonType,
+  Widget _buildTypeChip(
+    FilterType filterType, {
     required bool isExpanded,
   }) {
     return TypeChip(
       chipType: ChipType.expansion,
-      damageType: damageType,
-      pokemonType: pokemonType,
+      filterType: filterType,
       isExpanded: isExpanded,
     );
   }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../api/models/filter_type.dart';
 import '../../api/models/pokemon/damage_type.dart';
+import '../../api/models/pokemon/gen_type.dart';
 import '../../api/models/pokemon/pokemon_type.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../extensions/media_query_context_extension.dart';
@@ -15,12 +17,10 @@ class FilterView extends StatefulWidget {
     Key? key,
     required this.filterViewModel,
     required this.onClose,
-    this.showDamageTypeFilters = false,
   }) : super(key: key);
 
   final FilterViewModel filterViewModel;
   final VoidCallback onClose;
-  final bool showDamageTypeFilters;
 
   @override
   State<FilterView> createState() => _FilterViewState();
@@ -35,9 +35,7 @@ class _FilterViewState extends State<FilterView> {
       ),
       child: Card(
         child: SizedBox(
-          height: widget.showDamageTypeFilters
-              ? MediaQuery.of(context).filterBottomSheetHeight
-              : MediaQuery.of(context).singleFilterBottomSheetHeight,
+          height: MediaQuery.of(context).filterBottomSheetHeight,
           width: double.infinity,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -59,97 +57,141 @@ class _FilterViewState extends State<FilterView> {
   }
 
   Widget _buildFilters() {
-    return Expanded(
-      child: SingleChildScrollView(
-        controller: ScrollController(),
-        child: Column(
+    return StreamBuilder<List<FilterType>>(
+      initialData: [],
+      stream: widget.filterViewModel.selectedFiltersStream,
+      builder: (context, snapshot) {
+        final selectedFiltersStream = snapshot.data ?? [];
+        return Expanded(
+          child: SingleChildScrollView(
+            controller: ScrollController(),
+            child: _buildFilterTypeSections(selectedFiltersStream),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildFilterTypeSections(
+    List<FilterType> selectedFilterTypes,
+  ) {
+    return StreamBuilder(
+      stream: widget.filterViewModel.filters,
+      builder: (context, snapshot) {
+        final filters = snapshot.data ?? [];
+        final pokemonFilterTypes = filters.whereType<PokemonType>().toList();
+        final damageFilterTypes = filters.whereType<DamageType>().toList();
+        final genFilterTypes = filters.whereType<GenType>().toList();
+
+        return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (widget.showDamageTypeFilters)
-              _buildSubtitle(
-                context.strings.types,
-              ),
-            _buildTypeFilterChipsHolder(),
-            if (widget.showDamageTypeFilters)
-              _buildSubtitle(
-                context.strings.damageTypes,
-              ),
-            if (widget.showDamageTypeFilters) _buildDamageTypeFilterChipsHolder(),
+            _buildPokemonTypeFiltersSection(
+              pokemonFilterTypes,
+              selectedFilterTypes,
+            ),
+            _buildDamageTypeFiltersSection(
+              damageFilterTypes,
+              selectedFilterTypes,
+            ),
+            _buildGenTypeFiltersSection(
+              genFilterTypes,
+              selectedFilterTypes,
+            ),
           ],
+        );
+      },
+    );
+  }
+
+  Widget _buildPokemonTypeFiltersSection(
+    List<PokemonType> filters,
+    List<FilterType> selectedFilters,
+  ) {
+    if (filters.isEmpty) {
+      return const SizedBox();
+    }
+    return _buildFilterTypeSection(
+      filters,
+      selectedFilters,
+      context.strings.types,
+    );
+  }
+
+  Widget _buildDamageTypeFiltersSection(
+    List<DamageType> filters,
+    List<FilterType> selectedFilters,
+  ) {
+    if (filters.isEmpty) {
+      return const SizedBox();
+    }
+    return _buildFilterTypeSection(
+      filters,
+      selectedFilters,
+      context.strings.damageTypes,
+    );
+  }
+
+  Widget _buildGenTypeFiltersSection(
+    List<GenType> filters,
+    List<FilterType> selectedFilters,
+  ) {
+    if (filters.isEmpty) {
+      return const SizedBox();
+    }
+    return _buildFilterTypeSection(
+      filters,
+      selectedFilters,
+      context.strings.generation,
+    );
+  }
+
+  Widget _buildFilterTypeSection(
+    List<FilterType> filters,
+    List<FilterType> selectedFilters,
+    String sectionName,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _buildSubtitle(
+          sectionName, // context.strings.generation,
         ),
+        _buildChipGroup(filters, selectedFilters),
+        const SizedBox(height: 8),
+      ],
+    );
+  }
+
+  Widget _buildChipGroup(
+    List<FilterType> types,
+    List<FilterType> selectedPokemonTypes,
+  ) {
+    return ChipGroup(
+      scrollPhysics: const NeverScrollableScrollPhysics(),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 16,
+        vertical: 8,
       ),
-    );
-  }
-
-  Widget _buildTypeFilterChipsHolder() {
-    final pokemonTypes = PokemonType.values.toList();
-    pokemonTypes.remove(PokemonType.shadow);
-    pokemonTypes.remove(PokemonType.unknown);
-    return StreamBuilder<List<PokemonType>>(
-      initialData: [],
-      stream: widget.filterViewModel.selectedTypeFiltersStream,
-      builder: (context, snapshot) {
-        return ChipGroup(
-          scrollPhysics: widget.showDamageTypeFilters ? const NeverScrollableScrollPhysics() : null,
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 8,
-          ),
-          chips: pokemonTypes
-              .map(
-                (type) => TypeChip(
-                  chipType: ChipType.filter,
-                  pokemonType: type,
-                  isSelected: snapshot.data?.any(
-                        (selectedType) => selectedType == type,
-                      ) ==
-                      true,
-                  onSelected: (isSelected) {
-                    widget.filterViewModel.selectTypeFilter(
-                      type,
-                    );
-                  },
-                ),
-              )
-              .toList(),
-        );
-      },
-    );
-  }
-
-  Widget _buildDamageTypeFilterChipsHolder() {
-    final damageTypes = DamageType.values.toList();
-    damageTypes.remove(DamageType.unknown);
-    return StreamBuilder<List<DamageType>>(
-      initialData: [],
-      stream: widget.filterViewModel.selectedDamageTypeFiltersStream,
-      builder: (context, snapshot) {
-        return ChipGroup(
-          scrollPhysics: widget.showDamageTypeFilters ? const NeverScrollableScrollPhysics() : null,
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 8,
-          ),
-          chips: damageTypes
-              .map(
-                (type) => TypeChip(
-                  chipType: ChipType.filter,
-                  damageType: type,
-                  isSelected: snapshot.data?.any(
-                        (selectedType) => selectedType == type,
-                      ) ==
-                      true,
-                  onSelected: (isSelected) {
-                    widget.filterViewModel.selectDamageTypeFilter(
-                      type,
-                    );
-                  },
-                ),
-              )
-              .toList(),
-        );
-      },
+      chips: types
+          .map(
+            (type) => TypeChip(
+              chipType: ChipType.filter,
+              filterType: type,
+              isSelected: selectedPokemonTypes.any(
+                    (selectedType) => selectedType == type,
+                  ) ==
+                  true,
+              onSelected: (isSelected) {
+                widget.filterViewModel.selectTypeFilter(
+                  type,
+                );
+              },
+            ),
+          )
+          .toList(),
     );
   }
 
@@ -183,7 +225,7 @@ class _FilterViewState extends State<FilterView> {
       ),
       child: Text(
         subtitle,
-        style: PokeAppText.body7Style.copyWith(
+        style: PokeAppText.body1Style.copyWith(
           color: colors(context).textOnForeground,
         ),
       ),

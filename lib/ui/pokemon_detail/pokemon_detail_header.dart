@@ -130,7 +130,7 @@ class PokemonDetailHeader extends StatelessWidget {
           chips: pokemon.pokemon_v2_pokemontypes
               .map(
                 (type) => TypeChip(
-                  pokemonType: type.pokemon_v2_type?.pokemonType() ?? PokemonType.unknown,
+                  filterType: type.pokemon_v2_type?.pokemonType() ?? PokemonType.unknown,
                   chipType: ChipType.normal,
                 ),
               )

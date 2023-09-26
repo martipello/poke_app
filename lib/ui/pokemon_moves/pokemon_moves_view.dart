@@ -9,7 +9,7 @@ import '../../../dependency_injection_container.dart';
 import '../../../extensions/build_context_extension.dart';
 import '../../../theme/base_theme.dart';
 import '../../../theme/poke_app_text.dart';
-import '../../ads/list_banner_ad.dart';
+import '../../ads/native_ad.dart';
 import '../../ads/view_models/google_ads_view_model.dart';
 import '../pokemon_list/view_models/filter_view_model.dart';
 import '../shared_widgets/error_widget.dart' as ew;
@@ -66,7 +66,7 @@ class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepA
 
   void _addSelectedFilterListener() {
     const duration = Duration(milliseconds: 200);
-    widget.filterViewModel.selectedTypeFiltersStream.listen(
+    widget.filterViewModel.selectedFiltersStream.listen(
       (selectedTypes) {
         Future.delayed(duration).then(
           (value) {
@@ -86,7 +86,7 @@ class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepA
 
   void _addSelectedDamageTypeFilterListener() {
     const duration = Duration(milliseconds: 200);
-    widget.filterViewModel.selectedDamageTypeFiltersStream.listen(
+    widget.filterViewModel.selectedFiltersStream.listen(
       (selectedDamageTypes) {
         Future.delayed(duration).then(
           (value) {
@@ -286,7 +286,7 @@ class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepA
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (showAd) ListBannerAd(),
+        if (showAd) NativeAd(),
         PokemonMoveTile(
           pokemonMove: move,
         ),

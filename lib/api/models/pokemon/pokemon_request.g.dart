@@ -6,9 +6,11 @@ part of 'pokemon_request.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<PokemonRequest> _$pokemonRequestSerializer = new _$PokemonRequestSerializer();
+Serializer<PokemonRequest> _$pokemonRequestSerializer =
+    new _$PokemonRequestSerializer();
 
-class _$PokemonRequestSerializer implements StructuredSerializer<PokemonRequest> {
+class _$PokemonRequestSerializer
+    implements StructuredSerializer<PokemonRequest> {
   @override
   final Iterable<Type> types = const [PokemonRequest, _$PokemonRequest];
   @override
@@ -20,17 +22,24 @@ class _$PokemonRequestSerializer implements StructuredSerializer<PokemonRequest>
     final result = <Object?>[
       'pokemonTypes',
       serializers.serialize(object.pokemonTypes,
-          specifiedType: const FullType(BuiltList, const [const FullType(PokemonType)])),
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(PokemonType)])),
       'damageTypes',
       serializers.serialize(object.damageTypes,
-          specifiedType: const FullType(BuiltList, const [const FullType(DamageType)])),
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(DamageType)])),
+      'genTypes',
+      serializers.serialize(object.genTypes,
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(GenType)])),
     ];
     Object? value;
     value = object.pagination;
     if (value != null) {
       result
         ..add('pagination')
-        ..add(serializers.serialize(value, specifiedType: const FullType(bool)));
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
     }
     value = object.limit;
     if (value != null) {
@@ -48,7 +57,8 @@ class _$PokemonRequestSerializer implements StructuredSerializer<PokemonRequest>
     if (value != null) {
       result
         ..add('search')
-        ..add(serializers.serialize(value, specifiedType: const FullType(String)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
     }
     value = object.pokemonId;
     if (value != null) {
@@ -66,13 +76,15 @@ class _$PokemonRequestSerializer implements StructuredSerializer<PokemonRequest>
     if (value != null) {
       result
         ..add('sort')
-        ..add(serializers.serialize(value, specifiedType: const FullType(String)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
     }
     return result;
   }
 
   @override
-  PokemonRequest deserialize(Serializers serializers, Iterable<Object?> serialized,
+  PokemonRequest deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new PokemonRequestBuilder();
 
@@ -83,33 +95,50 @@ class _$PokemonRequestSerializer implements StructuredSerializer<PokemonRequest>
       final Object? value = iterator.current;
       switch (key) {
         case 'pagination':
-          result.pagination = serializers.deserialize(value, specifiedType: const FullType(bool)) as bool?;
+          result.pagination = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
           break;
         case 'limit':
-          result.limit = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.limit = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'skip':
-          result.skip = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.skip = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'search':
-          result.search = serializers.deserialize(value, specifiedType: const FullType(String)) as String?;
+          result.search = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'pokemonId':
-          result.pokemonId = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.pokemonId = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'languageId':
-          result.languageId = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.languageId = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'pokemonTypes':
           result.pokemonTypes.replace(serializers.deserialize(value,
-              specifiedType: const FullType(BuiltList, const [const FullType(PokemonType)]))! as BuiltList<Object?>);
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(PokemonType)]))!
+              as BuiltList<Object?>);
           break;
         case 'damageTypes':
           result.damageTypes.replace(serializers.deserialize(value,
-              specifiedType: const FullType(BuiltList, const [const FullType(DamageType)]))! as BuiltList<Object?>);
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(DamageType)]))!
+              as BuiltList<Object?>);
+          break;
+        case 'genTypes':
+          result.genTypes.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(GenType)]))!
+              as BuiltList<Object?>);
           break;
         case 'sort':
-          result.sort = serializers.deserialize(value, specifiedType: const FullType(String)) as String?;
+          result.sort = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
           break;
       }
     }
@@ -136,6 +165,8 @@ class _$PokemonRequest extends PokemonRequest {
   @override
   final BuiltList<DamageType> damageTypes;
   @override
+  final BuiltList<GenType> genTypes;
+  @override
   final String? sort;
 
   factory _$PokemonRequest([void Function(PokemonRequestBuilder)? updates]) =>
@@ -150,17 +181,24 @@ class _$PokemonRequest extends PokemonRequest {
       this.languageId,
       required this.pokemonTypes,
       required this.damageTypes,
+      required this.genTypes,
       this.sort})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(pokemonTypes, r'PokemonRequest', 'pokemonTypes');
-    BuiltValueNullFieldError.checkNotNull(damageTypes, r'PokemonRequest', 'damageTypes');
+    BuiltValueNullFieldError.checkNotNull(
+        pokemonTypes, r'PokemonRequest', 'pokemonTypes');
+    BuiltValueNullFieldError.checkNotNull(
+        damageTypes, r'PokemonRequest', 'damageTypes');
+    BuiltValueNullFieldError.checkNotNull(
+        genTypes, r'PokemonRequest', 'genTypes');
   }
 
   @override
-  PokemonRequest rebuild(void Function(PokemonRequestBuilder) updates) => (toBuilder()..update(updates)).build();
+  PokemonRequest rebuild(void Function(PokemonRequestBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
-  PokemonRequestBuilder toBuilder() => new PokemonRequestBuilder()..replace(this);
+  PokemonRequestBuilder toBuilder() =>
+      new PokemonRequestBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -174,6 +212,7 @@ class _$PokemonRequest extends PokemonRequest {
         languageId == other.languageId &&
         pokemonTypes == other.pokemonTypes &&
         damageTypes == other.damageTypes &&
+        genTypes == other.genTypes &&
         sort == other.sort;
   }
 
@@ -188,6 +227,7 @@ class _$PokemonRequest extends PokemonRequest {
     _$hash = $jc(_$hash, languageId.hashCode);
     _$hash = $jc(_$hash, pokemonTypes.hashCode);
     _$hash = $jc(_$hash, damageTypes.hashCode);
+    _$hash = $jc(_$hash, genTypes.hashCode);
     _$hash = $jc(_$hash, sort.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
@@ -204,12 +244,14 @@ class _$PokemonRequest extends PokemonRequest {
           ..add('languageId', languageId)
           ..add('pokemonTypes', pokemonTypes)
           ..add('damageTypes', damageTypes)
+          ..add('genTypes', genTypes)
           ..add('sort', sort))
         .toString();
   }
 }
 
-class PokemonRequestBuilder implements Builder<PokemonRequest, PokemonRequestBuilder> {
+class PokemonRequestBuilder
+    implements Builder<PokemonRequest, PokemonRequestBuilder> {
   _$PokemonRequest? _$v;
 
   bool? _pagination;
@@ -237,12 +279,21 @@ class PokemonRequestBuilder implements Builder<PokemonRequest, PokemonRequestBui
   set languageId(int? languageId) => _$this._languageId = languageId;
 
   ListBuilder<PokemonType>? _pokemonTypes;
-  ListBuilder<PokemonType> get pokemonTypes => _$this._pokemonTypes ??= new ListBuilder<PokemonType>();
-  set pokemonTypes(ListBuilder<PokemonType>? pokemonTypes) => _$this._pokemonTypes = pokemonTypes;
+  ListBuilder<PokemonType> get pokemonTypes =>
+      _$this._pokemonTypes ??= new ListBuilder<PokemonType>();
+  set pokemonTypes(ListBuilder<PokemonType>? pokemonTypes) =>
+      _$this._pokemonTypes = pokemonTypes;
 
   ListBuilder<DamageType>? _damageTypes;
-  ListBuilder<DamageType> get damageTypes => _$this._damageTypes ??= new ListBuilder<DamageType>();
-  set damageTypes(ListBuilder<DamageType>? damageTypes) => _$this._damageTypes = damageTypes;
+  ListBuilder<DamageType> get damageTypes =>
+      _$this._damageTypes ??= new ListBuilder<DamageType>();
+  set damageTypes(ListBuilder<DamageType>? damageTypes) =>
+      _$this._damageTypes = damageTypes;
+
+  ListBuilder<GenType>? _genTypes;
+  ListBuilder<GenType> get genTypes =>
+      _$this._genTypes ??= new ListBuilder<GenType>();
+  set genTypes(ListBuilder<GenType>? genTypes) => _$this._genTypes = genTypes;
 
   String? _sort;
   String? get sort => _$this._sort;
@@ -261,6 +312,7 @@ class PokemonRequestBuilder implements Builder<PokemonRequest, PokemonRequestBui
       _languageId = $v.languageId;
       _pokemonTypes = $v.pokemonTypes.toBuilder();
       _damageTypes = $v.damageTypes.toBuilder();
+      _genTypes = $v.genTypes.toBuilder();
       _sort = $v.sort;
       _$v = null;
     }
@@ -294,6 +346,7 @@ class PokemonRequestBuilder implements Builder<PokemonRequest, PokemonRequestBui
               languageId: languageId,
               pokemonTypes: pokemonTypes.build(),
               damageTypes: damageTypes.build(),
+              genTypes: genTypes.build(),
               sort: sort);
     } catch (_) {
       late String _$failedField;
@@ -302,8 +355,11 @@ class PokemonRequestBuilder implements Builder<PokemonRequest, PokemonRequestBui
         pokemonTypes.build();
         _$failedField = 'damageTypes';
         damageTypes.build();
+        _$failedField = 'genTypes';
+        genTypes.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(r'PokemonRequest', _$failedField, e.toString());
+        throw new BuiltValueNestedFieldError(
+            r'PokemonRequest', _$failedField, e.toString());
       }
       rethrow;
     }

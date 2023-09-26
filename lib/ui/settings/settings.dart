@@ -35,7 +35,7 @@ class Settings extends StatelessWidget {
     return _buildPurchaseState();
   }
 
-  FutureBuilder<ProductDetailsResponse> _buildPurchaseState() {
+  Widget _buildPurchaseState() {
     return FutureBuilder<ProductDetailsResponse>(
       future: _inAppPurchaseViewModel.productDetailsResponse(),
       builder: (context, productResponse) {

@@ -20,7 +20,8 @@ class _$TypeDataSerializer implements StructuredSerializer<TypeData> {
     final result = <Object?>[
       'pokemonV2TypeefficaciesByTargetTypeId',
       serializers.serialize(object.pokemonV2TypeefficaciesByTargetTypeId,
-          specifiedType: const FullType(BuiltList, const [const FullType(TypeEfficacies)])),
+          specifiedType: const FullType(
+              BuiltList, const [const FullType(TypeEfficacies)])),
     ];
     Object? value;
     value = object.id;
@@ -33,13 +34,15 @@ class _$TypeDataSerializer implements StructuredSerializer<TypeData> {
     if (value != null) {
       result
         ..add('name')
-        ..add(serializers.serialize(value, specifiedType: const FullType(String)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
     }
     value = object.pokemon_v2_movedamageclass;
     if (value != null) {
       result
         ..add('pokemon_v2_movedamageclass')
-        ..add(serializers.serialize(value, specifiedType: const FullType(PokemonResource)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(PokemonResource)));
     }
     return result;
   }
@@ -56,18 +59,25 @@ class _$TypeDataSerializer implements StructuredSerializer<TypeData> {
       final Object? value = iterator.current;
       switch (key) {
         case 'id':
-          result.id = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.id = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'name':
-          result.name = serializers.deserialize(value, specifiedType: const FullType(String)) as String?;
+          result.name = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'pokemon_v2_movedamageclass':
-          result.pokemon_v2_movedamageclass.replace(
-              serializers.deserialize(value, specifiedType: const FullType(PokemonResource))! as PokemonResource);
+          result.pokemon_v2_movedamageclass.replace(serializers.deserialize(
+                  value,
+                  specifiedType: const FullType(PokemonResource))!
+              as PokemonResource);
           break;
         case 'pokemonV2TypeefficaciesByTargetTypeId':
-          result.pokemonV2TypeefficaciesByTargetTypeId.replace(serializers.deserialize(value,
-              specifiedType: const FullType(BuiltList, const [const FullType(TypeEfficacies)]))! as BuiltList<Object?>);
+          result.pokemonV2TypeefficaciesByTargetTypeId.replace(
+              serializers.deserialize(value,
+                      specifiedType: const FullType(
+                          BuiltList, const [const FullType(TypeEfficacies)]))!
+                  as BuiltList<Object?>);
           break;
       }
     }
@@ -86,17 +96,22 @@ class _$TypeData extends TypeData {
   @override
   final BuiltList<TypeEfficacies> pokemonV2TypeefficaciesByTargetTypeId;
 
-  factory _$TypeData([void Function(TypeDataBuilder)? updates]) => (new TypeDataBuilder()..update(updates))._build();
+  factory _$TypeData([void Function(TypeDataBuilder)? updates]) =>
+      (new TypeDataBuilder()..update(updates))._build();
 
   _$TypeData._(
-      {this.id, this.name, this.pokemon_v2_movedamageclass, required this.pokemonV2TypeefficaciesByTargetTypeId})
+      {this.id,
+      this.name,
+      this.pokemon_v2_movedamageclass,
+      required this.pokemonV2TypeefficaciesByTargetTypeId})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        pokemonV2TypeefficaciesByTargetTypeId, r'TypeData', 'pokemonV2TypeefficaciesByTargetTypeId');
+    BuiltValueNullFieldError.checkNotNull(pokemonV2TypeefficaciesByTargetTypeId,
+        r'TypeData', 'pokemonV2TypeefficaciesByTargetTypeId');
   }
 
   @override
-  TypeData rebuild(void Function(TypeDataBuilder) updates) => (toBuilder()..update(updates)).build();
+  TypeData rebuild(void Function(TypeDataBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   TypeDataBuilder toBuilder() => new TypeDataBuilder()..replace(this);
@@ -108,7 +123,8 @@ class _$TypeData extends TypeData {
         id == other.id &&
         name == other.name &&
         pokemon_v2_movedamageclass == other.pokemon_v2_movedamageclass &&
-        pokemonV2TypeefficaciesByTargetTypeId == other.pokemonV2TypeefficaciesByTargetTypeId;
+        pokemonV2TypeefficaciesByTargetTypeId ==
+            other.pokemonV2TypeefficaciesByTargetTypeId;
   }
 
   @override
@@ -128,7 +144,8 @@ class _$TypeData extends TypeData {
           ..add('id', id)
           ..add('name', name)
           ..add('pokemon_v2_movedamageclass', pokemon_v2_movedamageclass)
-          ..add('pokemonV2TypeefficaciesByTargetTypeId', pokemonV2TypeefficaciesByTargetTypeId))
+          ..add('pokemonV2TypeefficaciesByTargetTypeId',
+              pokemonV2TypeefficaciesByTargetTypeId))
         .toString();
   }
 }
@@ -147,14 +164,18 @@ class TypeDataBuilder implements Builder<TypeData, TypeDataBuilder> {
   PokemonResourceBuilder? _pokemon_v2_movedamageclass;
   PokemonResourceBuilder get pokemon_v2_movedamageclass =>
       _$this._pokemon_v2_movedamageclass ??= new PokemonResourceBuilder();
-  set pokemon_v2_movedamageclass(PokemonResourceBuilder? pokemon_v2_movedamageclass) =>
+  set pokemon_v2_movedamageclass(
+          PokemonResourceBuilder? pokemon_v2_movedamageclass) =>
       _$this._pokemon_v2_movedamageclass = pokemon_v2_movedamageclass;
 
   ListBuilder<TypeEfficacies>? _pokemonV2TypeefficaciesByTargetTypeId;
   ListBuilder<TypeEfficacies> get pokemonV2TypeefficaciesByTargetTypeId =>
-      _$this._pokemonV2TypeefficaciesByTargetTypeId ??= new ListBuilder<TypeEfficacies>();
-  set pokemonV2TypeefficaciesByTargetTypeId(ListBuilder<TypeEfficacies>? pokemonV2TypeefficaciesByTargetTypeId) =>
-      _$this._pokemonV2TypeefficaciesByTargetTypeId = pokemonV2TypeefficaciesByTargetTypeId;
+      _$this._pokemonV2TypeefficaciesByTargetTypeId ??=
+          new ListBuilder<TypeEfficacies>();
+  set pokemonV2TypeefficaciesByTargetTypeId(
+          ListBuilder<TypeEfficacies>? pokemonV2TypeefficaciesByTargetTypeId) =>
+      _$this._pokemonV2TypeefficaciesByTargetTypeId =
+          pokemonV2TypeefficaciesByTargetTypeId;
 
   TypeDataBuilder();
 
@@ -164,7 +185,8 @@ class TypeDataBuilder implements Builder<TypeData, TypeDataBuilder> {
       _id = $v.id;
       _name = $v.name;
       _pokemon_v2_movedamageclass = $v.pokemon_v2_movedamageclass?.toBuilder();
-      _pokemonV2TypeefficaciesByTargetTypeId = $v.pokemonV2TypeefficaciesByTargetTypeId.toBuilder();
+      _pokemonV2TypeefficaciesByTargetTypeId =
+          $v.pokemonV2TypeefficaciesByTargetTypeId.toBuilder();
       _$v = null;
     }
     return this;
@@ -192,7 +214,8 @@ class TypeDataBuilder implements Builder<TypeData, TypeDataBuilder> {
               id: id,
               name: name,
               pokemon_v2_movedamageclass: _pokemon_v2_movedamageclass?.build(),
-              pokemonV2TypeefficaciesByTargetTypeId: pokemonV2TypeefficaciesByTargetTypeId.build());
+              pokemonV2TypeefficaciesByTargetTypeId:
+                  pokemonV2TypeefficaciesByTargetTypeId.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -201,7 +224,8 @@ class TypeDataBuilder implements Builder<TypeData, TypeDataBuilder> {
         _$failedField = 'pokemonV2TypeefficaciesByTargetTypeId';
         pokemonV2TypeefficaciesByTargetTypeId.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(r'TypeData', _$failedField, e.toString());
+        throw new BuiltValueNestedFieldError(
+            r'TypeData', _$failedField, e.toString());
       }
       rethrow;
     }

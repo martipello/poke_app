@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../ads/inline_adaptive_banner.dart';
+import '../../ads/native_ad.dart';
 import '../../ads/view_models/google_ads_view_model.dart';
 import '../../api/models/api_response.dart';
+import '../../api/models/pokemon/gen_type.dart';
 import '../../api/models/pokemon/pokemon.dart';
+import '../../api/models/pokemon/pokemon_type.dart';
 import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../theme/base_theme.dart';
@@ -43,6 +45,10 @@ class _PokemonListViewState extends State<PokemonListView> {
     super.initState();
     _addSearchTextListener();
     _addSearchListener();
+    _filterViewModel.filters.add([
+      ...PokemonType.filters,
+      ...GenType.filters
+    ]);
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
         _addSelectedFilterListener();
@@ -52,11 +58,11 @@ class _PokemonListViewState extends State<PokemonListView> {
 
   void _addSelectedFilterListener() {
     const duration = Duration(milliseconds: 200);
-    _filterViewModel.selectedTypeFiltersStream.listen(
+    _filterViewModel.selectedFiltersStream.listen(
       (selectedTypes) {
+        _pokemonViewModel.setSelectedTypes(selectedTypes);
         Future.delayed(duration).then(
           (value) {
-            _pokemonViewModel.setSelectedTypes(selectedTypes);
             if (_filterViewModel.scrollController.hasClients) {
               _filterViewModel.scrollController.animateTo(
                 _filterViewModel.scrollController.position.maxScrollExtent,
@@ -108,7 +114,6 @@ class _PokemonListViewState extends State<PokemonListView> {
     return WillPopScope(
       onWillPop: () async {
         //TODO if filters open close filters.
-
         return true;
       },
       child: Scaffold(
@@ -257,9 +262,11 @@ class _PokemonListViewState extends State<PokemonListView> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (showAd) InlineAdaptiveExample(),
-        PokemonTile(
-          pokemon: pokemon,
+        if (showAd) NativeAd(),
+        ViewConstraint(
+          child: PokemonTile(
+            pokemon: pokemon,
+          ),
         ),
       ],
     );

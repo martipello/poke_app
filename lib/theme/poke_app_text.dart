@@ -39,7 +39,7 @@ class PokeAppText {
   static const pokeFontBody1 =
       TextStyle(fontSize: 16, fontWeight: FontWeight.normal, height: 1.4, fontFamily: 'PokemonSolid');
 
-  static const body1Style = TextStyle(fontSize: 16, fontWeight: FontWeight.normal, height: 1.625);
+  static const body1Style = TextStyle(fontSize: 16, fontWeight: FontWeight.normal, height: 1.1);
 
   static const body2Style = TextStyle(fontSize: 16, fontWeight: FontWeight.w300, height: 1.625);
 

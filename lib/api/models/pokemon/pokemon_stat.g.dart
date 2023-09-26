@@ -41,7 +41,8 @@ class _$PokemonStatSerializer implements StructuredSerializer<PokemonStat> {
     if (value != null) {
       result
         ..add('pokemon_v2_stat')
-        ..add(serializers.serialize(value, specifiedType: const FullType(Stat)));
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(Stat)));
     }
     return result;
   }
@@ -58,16 +59,20 @@ class _$PokemonStatSerializer implements StructuredSerializer<PokemonStat> {
       final Object? value = iterator.current;
       switch (key) {
         case 'base_stat':
-          result.base_stat = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.base_stat = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'effort':
-          result.effort = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.effort = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'stat_id':
-          result.stat_id = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.stat_id = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'pokemon_v2_stat':
-          result.pokemon_v2_stat.replace(serializers.deserialize(value, specifiedType: const FullType(Stat))! as Stat);
+          result.pokemon_v2_stat.replace(serializers.deserialize(value,
+              specifiedType: const FullType(Stat))! as Stat);
           break;
       }
     }
@@ -89,10 +94,13 @@ class _$PokemonStat extends PokemonStat {
   factory _$PokemonStat([void Function(PokemonStatBuilder)? updates]) =>
       (new PokemonStatBuilder()..update(updates))._build();
 
-  _$PokemonStat._({this.base_stat, this.effort, this.stat_id, this.pokemon_v2_stat}) : super._();
+  _$PokemonStat._(
+      {this.base_stat, this.effort, this.stat_id, this.pokemon_v2_stat})
+      : super._();
 
   @override
-  PokemonStat rebuild(void Function(PokemonStatBuilder) updates) => (toBuilder()..update(updates)).build();
+  PokemonStat rebuild(void Function(PokemonStatBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   PokemonStatBuilder toBuilder() => new PokemonStatBuilder()..replace(this);
@@ -145,8 +153,10 @@ class PokemonStatBuilder implements Builder<PokemonStat, PokemonStatBuilder> {
   set stat_id(int? stat_id) => _$this._stat_id = stat_id;
 
   StatBuilder? _pokemon_v2_stat;
-  StatBuilder get pokemon_v2_stat => _$this._pokemon_v2_stat ??= new StatBuilder();
-  set pokemon_v2_stat(StatBuilder? pokemon_v2_stat) => _$this._pokemon_v2_stat = pokemon_v2_stat;
+  StatBuilder get pokemon_v2_stat =>
+      _$this._pokemon_v2_stat ??= new StatBuilder();
+  set pokemon_v2_stat(StatBuilder? pokemon_v2_stat) =>
+      _$this._pokemon_v2_stat = pokemon_v2_stat;
 
   PokemonStatBuilder();
 
@@ -181,14 +191,18 @@ class PokemonStatBuilder implements Builder<PokemonStat, PokemonStatBuilder> {
     try {
       _$result = _$v ??
           new _$PokemonStat._(
-              base_stat: base_stat, effort: effort, stat_id: stat_id, pokemon_v2_stat: _pokemon_v2_stat?.build());
+              base_stat: base_stat,
+              effort: effort,
+              stat_id: stat_id,
+              pokemon_v2_stat: _pokemon_v2_stat?.build());
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'pokemon_v2_stat';
         _pokemon_v2_stat?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(r'PokemonStat', _$failedField, e.toString());
+        throw new BuiltValueNestedFieldError(
+            r'PokemonStat', _$failedField, e.toString());
       }
       rethrow;
     }

@@ -20,10 +20,12 @@ class _$PokemonMoveSerializer implements StructuredSerializer<PokemonMove> {
     final result = <Object?>[
       'pokemon_v2_moveflavortexts',
       serializers.serialize(object.pokemon_v2_moveflavortexts,
-          specifiedType: const FullType(BuiltList, const [const FullType(PokemonResource)])),
+          specifiedType: const FullType(
+              BuiltList, const [const FullType(PokemonResource)])),
       'pokemon_v2_machines',
       serializers.serialize(object.pokemon_v2_machines,
-          specifiedType: const FullType(BuiltList, const [const FullType(Machine)])),
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(Machine)])),
     ];
     Object? value;
     value = object.id;
@@ -48,7 +50,8 @@ class _$PokemonMoveSerializer implements StructuredSerializer<PokemonMove> {
     if (value != null) {
       result
         ..add('name')
-        ..add(serializers.serialize(value, specifiedType: const FullType(String)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
     }
     value = object.priority;
     if (value != null) {
@@ -84,19 +87,22 @@ class _$PokemonMoveSerializer implements StructuredSerializer<PokemonMove> {
     if (value != null) {
       result
         ..add('pokemon_v2_generation')
-        ..add(serializers.serialize(value, specifiedType: const FullType(PokemonResource)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(PokemonResource)));
     }
     value = object.pokemon_v2_type;
     if (value != null) {
       result
         ..add('pokemon_v2_type')
-        ..add(serializers.serialize(value, specifiedType: const FullType(TypeData)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(TypeData)));
     }
     value = object.pokemon_v2_movemetum;
     if (value != null) {
       result
         ..add('pokemon_v2_movemetum')
-        ..add(serializers.serialize(value, specifiedType: const FullType(MoveMetum)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(MoveMetum)));
     }
     return result;
   }
@@ -113,52 +119,66 @@ class _$PokemonMoveSerializer implements StructuredSerializer<PokemonMove> {
       final Object? value = iterator.current;
       switch (key) {
         case 'id':
-          result.id = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.id = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'accuracy':
-          result.accuracy = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.accuracy = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'move_effect_chance':
-          result.move_effect_chance = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.move_effect_chance = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'name':
-          result.name = serializers.deserialize(value, specifiedType: const FullType(String)) as String?;
+          result.name = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'priority':
-          result.priority = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.priority = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'pp':
-          result.pp = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.pp = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'power':
-          result.power = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.power = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'super_contest_effect_id':
-          result.super_contest_effect_id = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.super_contest_effect_id = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'type_id':
-          result.type_id = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.type_id = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'pokemon_v2_generation':
-          result.pokemon_v2_generation.replace(
-              serializers.deserialize(value, specifiedType: const FullType(PokemonResource))! as PokemonResource);
+          result.pokemon_v2_generation.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(PokemonResource))!
+              as PokemonResource);
           break;
         case 'pokemon_v2_moveflavortexts':
-          result.pokemon_v2_moveflavortexts.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(BuiltList, const [const FullType(PokemonResource)]))!
+          result.pokemon_v2_moveflavortexts.replace(serializers.deserialize(
+                  value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(PokemonResource)]))!
               as BuiltList<Object?>);
           break;
         case 'pokemon_v2_type':
-          result.pokemon_v2_type
-              .replace(serializers.deserialize(value, specifiedType: const FullType(TypeData))! as TypeData);
+          result.pokemon_v2_type.replace(serializers.deserialize(value,
+              specifiedType: const FullType(TypeData))! as TypeData);
           break;
         case 'pokemon_v2_machines':
           result.pokemon_v2_machines.replace(serializers.deserialize(value,
-              specifiedType: const FullType(BuiltList, const [const FullType(Machine)]))! as BuiltList<Object?>);
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(Machine)]))!
+              as BuiltList<Object?>);
           break;
         case 'pokemon_v2_movemetum':
-          result.pokemon_v2_movemetum
-              .replace(serializers.deserialize(value, specifiedType: const FullType(MoveMetum))! as MoveMetum);
+          result.pokemon_v2_movemetum.replace(serializers.deserialize(value,
+              specifiedType: const FullType(MoveMetum))! as MoveMetum);
           break;
       }
     }
@@ -216,12 +236,15 @@ class _$PokemonMove extends PokemonMove {
       required this.pokemon_v2_machines,
       this.pokemon_v2_movemetum})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(pokemon_v2_moveflavortexts, r'PokemonMove', 'pokemon_v2_moveflavortexts');
-    BuiltValueNullFieldError.checkNotNull(pokemon_v2_machines, r'PokemonMove', 'pokemon_v2_machines');
+    BuiltValueNullFieldError.checkNotNull(pokemon_v2_moveflavortexts,
+        r'PokemonMove', 'pokemon_v2_moveflavortexts');
+    BuiltValueNullFieldError.checkNotNull(
+        pokemon_v2_machines, r'PokemonMove', 'pokemon_v2_machines');
   }
 
   @override
-  PokemonMove rebuild(void Function(PokemonMoveBuilder) updates) => (toBuilder()..update(updates)).build();
+  PokemonMove rebuild(void Function(PokemonMoveBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
   PokemonMoveBuilder toBuilder() => new PokemonMoveBuilder()..replace(this);
@@ -301,7 +324,8 @@ class PokemonMoveBuilder implements Builder<PokemonMove, PokemonMoveBuilder> {
 
   int? _move_effect_chance;
   int? get move_effect_chance => _$this._move_effect_chance;
-  set move_effect_chance(int? move_effect_chance) => _$this._move_effect_chance = move_effect_chance;
+  set move_effect_chance(int? move_effect_chance) =>
+      _$this._move_effect_chance = move_effect_chance;
 
   String? _name;
   String? get name => _$this._name;
@@ -329,27 +353,33 @@ class PokemonMoveBuilder implements Builder<PokemonMove, PokemonMoveBuilder> {
   set type_id(int? type_id) => _$this._type_id = type_id;
 
   PokemonResourceBuilder? _pokemon_v2_generation;
-  PokemonResourceBuilder get pokemon_v2_generation => _$this._pokemon_v2_generation ??= new PokemonResourceBuilder();
+  PokemonResourceBuilder get pokemon_v2_generation =>
+      _$this._pokemon_v2_generation ??= new PokemonResourceBuilder();
   set pokemon_v2_generation(PokemonResourceBuilder? pokemon_v2_generation) =>
       _$this._pokemon_v2_generation = pokemon_v2_generation;
 
   ListBuilder<PokemonResource>? _pokemon_v2_moveflavortexts;
   ListBuilder<PokemonResource> get pokemon_v2_moveflavortexts =>
       _$this._pokemon_v2_moveflavortexts ??= new ListBuilder<PokemonResource>();
-  set pokemon_v2_moveflavortexts(ListBuilder<PokemonResource>? pokemon_v2_moveflavortexts) =>
+  set pokemon_v2_moveflavortexts(
+          ListBuilder<PokemonResource>? pokemon_v2_moveflavortexts) =>
       _$this._pokemon_v2_moveflavortexts = pokemon_v2_moveflavortexts;
 
   TypeDataBuilder? _pokemon_v2_type;
-  TypeDataBuilder get pokemon_v2_type => _$this._pokemon_v2_type ??= new TypeDataBuilder();
-  set pokemon_v2_type(TypeDataBuilder? pokemon_v2_type) => _$this._pokemon_v2_type = pokemon_v2_type;
+  TypeDataBuilder get pokemon_v2_type =>
+      _$this._pokemon_v2_type ??= new TypeDataBuilder();
+  set pokemon_v2_type(TypeDataBuilder? pokemon_v2_type) =>
+      _$this._pokemon_v2_type = pokemon_v2_type;
 
   ListBuilder<Machine>? _pokemon_v2_machines;
-  ListBuilder<Machine> get pokemon_v2_machines => _$this._pokemon_v2_machines ??= new ListBuilder<Machine>();
+  ListBuilder<Machine> get pokemon_v2_machines =>
+      _$this._pokemon_v2_machines ??= new ListBuilder<Machine>();
   set pokemon_v2_machines(ListBuilder<Machine>? pokemon_v2_machines) =>
       _$this._pokemon_v2_machines = pokemon_v2_machines;
 
   MoveMetumBuilder? _pokemon_v2_movemetum;
-  MoveMetumBuilder get pokemon_v2_movemetum => _$this._pokemon_v2_movemetum ??= new MoveMetumBuilder();
+  MoveMetumBuilder get pokemon_v2_movemetum =>
+      _$this._pokemon_v2_movemetum ??= new MoveMetumBuilder();
   set pokemon_v2_movemetum(MoveMetumBuilder? pokemon_v2_movemetum) =>
       _$this._pokemon_v2_movemetum = pokemon_v2_movemetum;
 
@@ -424,7 +454,8 @@ class PokemonMoveBuilder implements Builder<PokemonMove, PokemonMoveBuilder> {
         _$failedField = 'pokemon_v2_movemetum';
         _pokemon_v2_movemetum?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(r'PokemonMove', _$failedField, e.toString());
+        throw new BuiltValueNestedFieldError(
+            r'PokemonMove', _$failedField, e.toString());
       }
       rethrow;
     }

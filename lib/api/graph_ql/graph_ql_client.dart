@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:graphql/client.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -19,9 +20,15 @@ class GraphQlClient {
   }
 
   Future<HiveStore> _getHiveStore() async {
-    final appDocumentDir = await getApplicationDocumentsDirectory();
-    return HiveStore.open(
-      path: appDocumentDir.path,
-    );
+    if (kIsWeb) {
+      return HiveStore.open(
+        path: '/assets/db',
+      );
+    } else {
+      final appDocumentDir = await getApplicationDocumentsDirectory();
+      return HiveStore.open(
+        path: appDocumentDir.path,
+      );
+    }
   }
 }

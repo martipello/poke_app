@@ -7,6 +7,7 @@ part of 'serializers.dart';
 // **************************************************************************
 
 Serializers _$serializers = (new Serializers().toBuilder()
+      ..add(Article.serializer)
       ..add(Encounter.serializer)
       ..add(EncounterMethod.serializer)
       ..add(EncounterSlot.serializer)
@@ -17,6 +18,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(Machine.serializer)
       ..add(MoveLearnMethod.serializer)
       ..add(MoveMetum.serializer)
+      ..add(NewsResponse.serializer)
       ..add(Pokemon.serializer)
       ..add(PokemonAbility.serializer)
       ..add(PokemonAbilityHolder.serializer)
@@ -31,6 +33,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(PokemonSpecies.serializer)
       ..add(PokemonSpeciesHolder.serializer)
       ..add(PokemonStat.serializer)
+      ..add(Source.serializer)
       ..add(Sprite.serializer)
       ..add(SpriteResponse.serializer)
       ..add(Stat.serializer)
@@ -38,70 +41,119 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(TypeDataHolder.serializer)
       ..add(TypeEfficacies.serializer)
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(Evolution)]), () => new ListBuilder<Evolution>())
+          const FullType(BuiltList, const [const FullType(Article)]),
+          () => new ListBuilder<Article>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(PokemonSpecies)]), () => new ListBuilder<PokemonSpecies>())
-      ..addBuilderFactory(const FullType(BuiltList, const [const FullType(Pokemon)]), () => new ListBuilder<Pokemon>())
+          const FullType(BuiltList, const [const FullType(Evolution)]),
+          () => new ListBuilder<Evolution>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(PokemonResource)]), () => new ListBuilder<PokemonResource>())
+          const FullType(BuiltList, const [const FullType(PokemonSpecies)]),
+          () => new ListBuilder<PokemonSpecies>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(PokemonResource)]), () => new ListBuilder<PokemonResource>())
+          const FullType(BuiltList, const [const FullType(Pokemon)]),
+          () => new ListBuilder<Pokemon>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(EvolutionHolder)]), () => new ListBuilder<EvolutionHolder>())
-      ..addBuilderFactory(const FullType(BuiltList, const [const FullType(Pokemon)]), () => new ListBuilder<Pokemon>())
-      ..addBuilderFactory(const FullType(BuiltList, const [const FullType(PokemonAbilityHolder)]),
+          const FullType(BuiltList, const [const FullType(PokemonResource)]),
+          () => new ListBuilder<PokemonResource>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(PokemonResource)]),
+          () => new ListBuilder<PokemonResource>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(EvolutionHolder)]),
+          () => new ListBuilder<EvolutionHolder>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(Pokemon)]),
+          () => new ListBuilder<Pokemon>())
+      ..addBuilderFactory(
+          const FullType(
+              BuiltList, const [const FullType(PokemonAbilityHolder)]),
           () => new ListBuilder<PokemonAbilityHolder>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(PokemonResource)]), () => new ListBuilder<PokemonResource>())
+          const FullType(BuiltList, const [const FullType(PokemonResource)]),
+          () => new ListBuilder<PokemonResource>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(PokemonResource)]), () => new ListBuilder<PokemonResource>())
-      ..addBuilderFactory(const FullType(BuiltList, const [const FullType(PokemonFormHolder)]),
+          const FullType(BuiltList, const [const FullType(PokemonResource)]),
+          () => new ListBuilder<PokemonResource>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(PokemonFormHolder)]),
           () => new ListBuilder<PokemonFormHolder>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(PokemonResource)]), () => new ListBuilder<PokemonResource>())
+          const FullType(BuiltList, const [const FullType(PokemonResource)]),
+          () => new ListBuilder<PokemonResource>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(PokemonResource)]), () => new ListBuilder<PokemonResource>())
-      ..addBuilderFactory(const FullType(BuiltList, const [const FullType(Machine)]), () => new ListBuilder<Machine>())
+          const FullType(BuiltList, const [const FullType(PokemonResource)]),
+          () => new ListBuilder<PokemonResource>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(PokemonResource)]), () => new ListBuilder<PokemonResource>())
+          const FullType(BuiltList, const [const FullType(Machine)]),
+          () => new ListBuilder<Machine>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(PokemonResource)]), () => new ListBuilder<PokemonResource>())
+          const FullType(BuiltList, const [const FullType(PokemonResource)]),
+          () => new ListBuilder<PokemonResource>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(PokemonResource)]), () => new ListBuilder<PokemonResource>())
+          const FullType(BuiltList, const [const FullType(PokemonResource)]),
+          () => new ListBuilder<PokemonResource>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(PokemonResource)]), () => new ListBuilder<PokemonResource>())
+          const FullType(BuiltList, const [const FullType(PokemonResource)]),
+          () => new ListBuilder<PokemonResource>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(PokemonResource)]), () => new ListBuilder<PokemonResource>())
+          const FullType(BuiltList, const [const FullType(PokemonResource)]),
+          () => new ListBuilder<PokemonResource>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(PokemonResource)]), () => new ListBuilder<PokemonResource>())
+          const FullType(BuiltList, const [const FullType(PokemonResource)]),
+          () => new ListBuilder<PokemonResource>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(PokemonResource)]), () => new ListBuilder<PokemonResource>())
+          const FullType(BuiltList, const [const FullType(PokemonResource)]),
+          () => new ListBuilder<PokemonResource>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(PokemonResource)]), () => new ListBuilder<PokemonResource>())
+          const FullType(BuiltList, const [const FullType(PokemonResource)]),
+          () => new ListBuilder<PokemonResource>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(PokemonResource)]), () => new ListBuilder<PokemonResource>())
-      ..addBuilderFactory(const FullType(BuiltList, const [const FullType(PokemonSpeciesHolder)]),
+          const FullType(BuiltList, const [const FullType(PokemonResource)]),
+          () => new ListBuilder<PokemonResource>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(PokemonResource)]),
+          () => new ListBuilder<PokemonResource>())
+      ..addBuilderFactory(
+          const FullType(
+              BuiltList, const [const FullType(PokemonSpeciesHolder)]),
           () => new ListBuilder<PokemonSpeciesHolder>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(PokemonType)]), () => new ListBuilder<PokemonType>())
+          const FullType(BuiltList, const [const FullType(PokemonType)]),
+          () => new ListBuilder<PokemonType>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(DamageType)]), () => new ListBuilder<DamageType>())
+          const FullType(BuiltList, const [const FullType(DamageType)]),
+          () => new ListBuilder<DamageType>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(TypeDataHolder)]), () => new ListBuilder<TypeDataHolder>())
-      ..addBuilderFactory(const FullType(BuiltList, const [const FullType(PokemonAbilityHolder)]),
+          const FullType(BuiltList, const [const FullType(GenType)]),
+          () => new ListBuilder<GenType>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(TypeDataHolder)]),
+          () => new ListBuilder<TypeDataHolder>())
+      ..addBuilderFactory(
+          const FullType(
+              BuiltList, const [const FullType(PokemonAbilityHolder)]),
           () => new ListBuilder<PokemonAbilityHolder>())
-      ..addBuilderFactory(const FullType(BuiltList, const [const FullType(PokemonFormWithVersionGroup)]),
+      ..addBuilderFactory(
+          const FullType(
+              BuiltList, const [const FullType(PokemonFormWithVersionGroup)]),
           () => new ListBuilder<PokemonFormWithVersionGroup>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(PokemonStat)]), () => new ListBuilder<PokemonStat>())
-      ..addBuilderFactory(const FullType(BuiltList, const [const FullType(PokemonMoveHolder)]),
+          const FullType(BuiltList, const [const FullType(PokemonStat)]),
+          () => new ListBuilder<PokemonStat>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(PokemonMoveHolder)]),
           () => new ListBuilder<PokemonMoveHolder>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(Encounter)]), () => new ListBuilder<Encounter>())
+          const FullType(BuiltList, const [const FullType(Encounter)]),
+          () => new ListBuilder<Encounter>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(TypeEfficacies)]), () => new ListBuilder<TypeEfficacies>())
+          const FullType(BuiltList, const [const FullType(TypeEfficacies)]),
+          () => new ListBuilder<TypeEfficacies>())
       ..addBuilderFactory(
-          const FullType(BuiltMap, const [const FullType(PokemonResource), const FullType(EncounterSlot)]),
+          const FullType(BuiltMap, const [
+            const FullType(PokemonResource),
+            const FullType(EncounterSlot)
+          ]),
           () => new MapBuilder<PokemonResource, EncounterSlot>()))
     .build();
 

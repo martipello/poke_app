@@ -6,9 +6,11 @@ part of 'type_efficacies.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<TypeEfficacies> _$typeEfficaciesSerializer = new _$TypeEfficaciesSerializer();
+Serializer<TypeEfficacies> _$typeEfficaciesSerializer =
+    new _$TypeEfficaciesSerializer();
 
-class _$TypeEfficaciesSerializer implements StructuredSerializer<TypeEfficacies> {
+class _$TypeEfficaciesSerializer
+    implements StructuredSerializer<TypeEfficacies> {
   @override
   final Iterable<Type> types = const [TypeEfficacies, _$TypeEfficacies];
   @override
@@ -23,7 +25,8 @@ class _$TypeEfficaciesSerializer implements StructuredSerializer<TypeEfficacies>
     if (value != null) {
       result
         ..add('damage_factor')
-        ..add(serializers.serialize(value, specifiedType: const FullType(double)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(double)));
     }
     value = object.damage_type_id;
     if (value != null) {
@@ -41,19 +44,22 @@ class _$TypeEfficaciesSerializer implements StructuredSerializer<TypeEfficacies>
     if (value != null) {
       result
         ..add('pokemonV2TypeByTargetTypeId')
-        ..add(serializers.serialize(value, specifiedType: const FullType(PokemonResource)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(PokemonResource)));
     }
     value = object.pokemon_v2_type;
     if (value != null) {
       result
         ..add('pokemon_v2_type')
-        ..add(serializers.serialize(value, specifiedType: const FullType(PokemonResource)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(PokemonResource)));
     }
     return result;
   }
 
   @override
-  TypeEfficacies deserialize(Serializers serializers, Iterable<Object?> serialized,
+  TypeEfficacies deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new TypeEfficaciesBuilder();
 
@@ -64,21 +70,27 @@ class _$TypeEfficaciesSerializer implements StructuredSerializer<TypeEfficacies>
       final Object? value = iterator.current;
       switch (key) {
         case 'damage_factor':
-          result.damage_factor = serializers.deserialize(value, specifiedType: const FullType(double)) as double?;
+          result.damage_factor = serializers.deserialize(value,
+              specifiedType: const FullType(double)) as double?;
           break;
         case 'damage_type_id':
-          result.damage_type_id = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.damage_type_id = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'target_type_id':
-          result.target_type_id = serializers.deserialize(value, specifiedType: const FullType(int)) as int?;
+          result.target_type_id = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'pokemonV2TypeByTargetTypeId':
-          result.pokemonV2TypeByTargetTypeId.replace(
-              serializers.deserialize(value, specifiedType: const FullType(PokemonResource))! as PokemonResource);
+          result.pokemonV2TypeByTargetTypeId.replace(serializers.deserialize(
+                  value,
+                  specifiedType: const FullType(PokemonResource))!
+              as PokemonResource);
           break;
         case 'pokemon_v2_type':
-          result.pokemon_v2_type.replace(
-              serializers.deserialize(value, specifiedType: const FullType(PokemonResource))! as PokemonResource);
+          result.pokemon_v2_type.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(PokemonResource))!
+              as PokemonResource);
           break;
       }
     }
@@ -111,10 +123,12 @@ class _$TypeEfficacies extends TypeEfficacies {
       : super._();
 
   @override
-  TypeEfficacies rebuild(void Function(TypeEfficaciesBuilder) updates) => (toBuilder()..update(updates)).build();
+  TypeEfficacies rebuild(void Function(TypeEfficaciesBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
 
   @override
-  TypeEfficaciesBuilder toBuilder() => new TypeEfficaciesBuilder()..replace(this);
+  TypeEfficaciesBuilder toBuilder() =>
+      new TypeEfficaciesBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -151,30 +165,37 @@ class _$TypeEfficacies extends TypeEfficacies {
   }
 }
 
-class TypeEfficaciesBuilder implements Builder<TypeEfficacies, TypeEfficaciesBuilder> {
+class TypeEfficaciesBuilder
+    implements Builder<TypeEfficacies, TypeEfficaciesBuilder> {
   _$TypeEfficacies? _$v;
 
   double? _damage_factor;
   double? get damage_factor => _$this._damage_factor;
-  set damage_factor(double? damage_factor) => _$this._damage_factor = damage_factor;
+  set damage_factor(double? damage_factor) =>
+      _$this._damage_factor = damage_factor;
 
   int? _damage_type_id;
   int? get damage_type_id => _$this._damage_type_id;
-  set damage_type_id(int? damage_type_id) => _$this._damage_type_id = damage_type_id;
+  set damage_type_id(int? damage_type_id) =>
+      _$this._damage_type_id = damage_type_id;
 
   int? _target_type_id;
   int? get target_type_id => _$this._target_type_id;
-  set target_type_id(int? target_type_id) => _$this._target_type_id = target_type_id;
+  set target_type_id(int? target_type_id) =>
+      _$this._target_type_id = target_type_id;
 
   PokemonResourceBuilder? _pokemonV2TypeByTargetTypeId;
   PokemonResourceBuilder get pokemonV2TypeByTargetTypeId =>
       _$this._pokemonV2TypeByTargetTypeId ??= new PokemonResourceBuilder();
-  set pokemonV2TypeByTargetTypeId(PokemonResourceBuilder? pokemonV2TypeByTargetTypeId) =>
+  set pokemonV2TypeByTargetTypeId(
+          PokemonResourceBuilder? pokemonV2TypeByTargetTypeId) =>
       _$this._pokemonV2TypeByTargetTypeId = pokemonV2TypeByTargetTypeId;
 
   PokemonResourceBuilder? _pokemon_v2_type;
-  PokemonResourceBuilder get pokemon_v2_type => _$this._pokemon_v2_type ??= new PokemonResourceBuilder();
-  set pokemon_v2_type(PokemonResourceBuilder? pokemon_v2_type) => _$this._pokemon_v2_type = pokemon_v2_type;
+  PokemonResourceBuilder get pokemon_v2_type =>
+      _$this._pokemon_v2_type ??= new PokemonResourceBuilder();
+  set pokemon_v2_type(PokemonResourceBuilder? pokemon_v2_type) =>
+      _$this._pokemon_v2_type = pokemon_v2_type;
 
   TypeEfficaciesBuilder();
 
@@ -184,7 +205,8 @@ class TypeEfficaciesBuilder implements Builder<TypeEfficacies, TypeEfficaciesBui
       _damage_factor = $v.damage_factor;
       _damage_type_id = $v.damage_type_id;
       _target_type_id = $v.target_type_id;
-      _pokemonV2TypeByTargetTypeId = $v.pokemonV2TypeByTargetTypeId?.toBuilder();
+      _pokemonV2TypeByTargetTypeId =
+          $v.pokemonV2TypeByTargetTypeId?.toBuilder();
       _pokemon_v2_type = $v.pokemon_v2_type?.toBuilder();
       _$v = null;
     }
@@ -213,7 +235,8 @@ class TypeEfficaciesBuilder implements Builder<TypeEfficacies, TypeEfficaciesBui
               damage_factor: damage_factor,
               damage_type_id: damage_type_id,
               target_type_id: target_type_id,
-              pokemonV2TypeByTargetTypeId: _pokemonV2TypeByTargetTypeId?.build(),
+              pokemonV2TypeByTargetTypeId:
+                  _pokemonV2TypeByTargetTypeId?.build(),
               pokemon_v2_type: _pokemon_v2_type?.build());
     } catch (_) {
       late String _$failedField;
@@ -223,7 +246,8 @@ class TypeEfficaciesBuilder implements Builder<TypeEfficacies, TypeEfficaciesBui
         _$failedField = 'pokemon_v2_type';
         _pokemon_v2_type?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(r'TypeEfficacies', _$failedField, e.toString());
+        throw new BuiltValueNestedFieldError(
+            r'TypeEfficacies', _$failedField, e.toString());
       }
       rethrow;
     }

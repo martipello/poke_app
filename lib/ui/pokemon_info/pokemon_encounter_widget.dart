@@ -135,7 +135,9 @@ class _PokemonEncounterWidgetState extends State<PokemonEncounterWidget> {
       ),
       child: Text(
         context.strings.encounters,
-        style: PokeAppText.subtitle3Style,
+        style: PokeAppText.subtitle3Style.copyWith(
+          color: colors(context).textOnForeground,
+        ),
       ),
     );
   }

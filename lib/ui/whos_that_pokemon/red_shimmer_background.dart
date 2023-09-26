@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/animate.dart';
-import 'package:flutter_animate/effects/effects.dart';
-import 'package:flutter_animate/extensions/extensions.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class RedShimmerBackground extends StatelessWidget {
   const RedShimmerBackground({Key? key}) : super(key: key);
