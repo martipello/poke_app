@@ -4,12 +4,11 @@ import 'package:flutter_animate/flutter_animate.dart';
 
 import '../../api/models/pokemon/pokemon.dart';
 import '../../dependency_injection_container.dart';
-import '../../extensions/iterable_extension.dart';
 import '../../theme/base_theme.dart';
 import 'view_models/image_color_view_model.dart';
 
 typedef ImageErrorBuilder = Widget Function(BuildContext context, Object? object, StackTrace? stacktrace);
-typedef ImageColorCallback = Function(List<int> palette);
+typedef ColorSchemeCallback = Function(ColorScheme? colorScheme);
 
 const kDefaultImageHeight = 150.0;
 
@@ -27,7 +26,7 @@ class PokemonImage extends StatefulWidget {
 
   final Pokemon pokemon;
   final Color? color;
-  final ImageColorCallback? imageColorCallback;
+  final ColorSchemeCallback? imageColorCallback;
   final Clip clipBehavior;
   final Size? size;
   final bool includeHero;
@@ -38,8 +37,7 @@ class PokemonImage extends StatefulWidget {
 }
 
 class _PokemonImageState extends State<PokemonImage> {
-  //TODO investigate https://api.flutter.dev/flutter/material/ColorScheme/fromImageProvider.html
-  final mainImageColorViewModel = getIt.get<ImageColorViewModel>();
+  final imageColorViewModel = getIt.get<ImageColorViewModel>();
 
   CachedNetworkImageProvider? mainImageProvider;
 
@@ -49,18 +47,11 @@ class _PokemonImageState extends State<PokemonImage> {
     mainImageProvider = CachedNetworkImageProvider(
       _createImageUrl(),
     );
-    mainImageColorViewModel.colorListStream.listen(
-      (value) {
-        widget.imageColorCallback?.call(value);
-      },
-    );
+    imageColorViewModel.colorSchemeStream.listen(widget.imageColorCallback);
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
-        //update palette updates colorListStream
         if (widget.imageColorCallback != null) {
-          mainImageColorViewModel.updatePalette(
-            context,
-            //TODO(MS): I think this may fail on slow internet connections
+          imageColorViewModel.colorScheme(
             mainImageProvider!,
           );
         }
@@ -70,7 +61,7 @@ class _PokemonImageState extends State<PokemonImage> {
 
   @override
   void dispose() {
-    mainImageColorViewModel.dispose();
+    imageColorViewModel.dispose();
     super.dispose();
   }
 
@@ -85,7 +76,6 @@ class _PokemonImageState extends State<PokemonImage> {
         context,
         widget.includeHero,
         mainImageProvider!,
-        mainImageColorViewModel.colorListStream,
         (context, _, __) => _buildEmptyImage(),
       ),
     );
@@ -95,18 +85,17 @@ class _PokemonImageState extends State<PokemonImage> {
     BuildContext context,
     bool buildHeroWidget,
     ImageProvider imageProvider,
-    Stream<List<int>> paletteGeneratorStream,
     ImageErrorBuilder imageErrorBuilder,
   ) {
-    return StreamBuilder<List<int>>(
-      stream: paletteGeneratorStream,
+    return StreamBuilder<ColorScheme?>(
+      stream: imageColorViewModel.colorSchemeStream,
       builder: (context, snapshot) {
-        final palette = snapshot.data ?? [];
+        final colorScheme = snapshot.data;
         return Stack(
           children: [
             _buildOuterCircle(
               imageErrorBuilder,
-              palette,
+              colorScheme,
             ),
             Positioned.fill(
               child: Align(
@@ -130,11 +119,10 @@ class _PokemonImageState extends State<PokemonImage> {
 
   Widget _buildOuterCircle(
     ImageErrorBuilder imageErrorBuilder,
-    List<int> palette,
+    ColorScheme? colorScheme,
   ) {
-    final primaryColor = palette.firstOrNull() != null ? Color(palette.first) : Colors.white;
-
-    final secondaryColor = palette.lastOrNull() != null ? Color(palette.last) : Colors.white;
+    final primaryColor = colorScheme?.primary ?? Colors.white;
+    final secondaryColor = colorScheme?.primaryContainer ?? Colors.white;
 
     return ClipRRect(
       clipBehavior: widget.clipBehavior,

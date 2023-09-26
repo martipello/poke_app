@@ -34,24 +34,22 @@ class EvolutionTile extends StatefulWidget {
 }
 
 class _EvolutionTileState extends State<EvolutionTile> {
-  final mainImageColorViewModel = getIt.get<ImageColorViewModel>();
-  final spriteImageColorViewModel = getIt.get<ImageColorViewModel>();
+  final imageColorViewModel = getIt.get<ImageColorViewModel>();
 
   Pokemon? get pokemon => widget.speciesHolder.pokemon_v2_pokemons.firstOrNull();
 
   @override
   void dispose() {
-    mainImageColorViewModel.dispose();
-    spriteImageColorViewModel.dispose();
+    imageColorViewModel.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<int>>(
-      stream: mainImageColorViewModel.colorListStream,
-      builder: (context, colorListSnapshot) {
-        final colorList = colorListSnapshot.data ?? [];
+    return StreamBuilder<ColorScheme?>(
+      stream: imageColorViewModel.colorSchemeStream,
+      builder: (context, colorSchemeSnapshot) {
+        final colorScheme = colorSchemeSnapshot.data;
         return ExpansionCard(
           titleWidget: _buildPokemonCardBody(),
           expandedChildren: _buildPokemonEvolutionTable(),
@@ -64,7 +62,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
                   pokemon: _pokemon.rebuild(
                     (p) => p..pokemon_v2_pokemonspecy = widget.speciesHolder.toBuilder(),
                   ),
-                  colorList: colorList,
+                  colorScheme: colorScheme,
                 ),
               );
             }
@@ -406,7 +404,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
           kPokemonTileImageHeight,
           kPokemonTileImageHeight,
         ),
-        imageColorCallback: mainImageColorViewModel.colorListStream.add,
+        imageColorCallback: imageColorViewModel.colorSchemeStream.add,
       );
     } else {
       return const SizedBox();
