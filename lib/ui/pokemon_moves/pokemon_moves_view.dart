@@ -65,21 +65,16 @@ class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepA
   }
 
   void _addSelectedFilterListener() {
-    const duration = Duration(milliseconds: 200);
     widget.filterViewModel.selectedFiltersStream.listen(
       (selectedTypes) {
-        Future.delayed(duration).then(
-          (value) {
-            _pokemonMovesViewModel.setSelectedTypes(selectedTypes);
-            if (widget.filterViewModel.scrollController.hasClients) {
-              widget.filterViewModel.scrollController.animateTo(
-                widget.filterViewModel.scrollController.position.maxScrollExtent,
-                duration: duration,
-                curve: Curves.fastOutSlowIn,
-              );
-            }
-          },
-        );
+        _pokemonMovesViewModel.setSelectedTypes(selectedTypes);
+        if (widget.filterViewModel.scrollController.hasClients) {
+          widget.filterViewModel.scrollController.animateTo(
+            widget.filterViewModel.scrollController.position.maxScrollExtent,
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.fastOutSlowIn,
+          );
+        }
       },
     );
   }

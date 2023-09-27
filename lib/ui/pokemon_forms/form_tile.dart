@@ -37,7 +37,7 @@ class FormTile extends StatefulWidget {
 }
 
 class _FormTileState extends State<FormTile> {
-  final mainImageColorViewModel = getIt.get<ImageColorViewModel>();
+  final imageColorViewModel = getIt.get<ImageColorViewModel>();
 
   PokemonFormWithVersionGroup get pokemonFormWithVersionGroup => widget.pokemonFormWithVersionGroup;
 
@@ -54,16 +54,16 @@ class _FormTileState extends State<FormTile> {
 
   @override
   void dispose() {
-    mainImageColorViewModel.dispose();
+    imageColorViewModel.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<int>>(
-      stream: mainImageColorViewModel.colorListStream,
-      builder: (context, colorListSnapshot) {
-        final colorList = colorListSnapshot.data ?? [];
+    return StreamBuilder<ColorScheme?>(
+      stream: imageColorViewModel.colorSchemeStream,
+      builder: (context, colorSchemeSnapshot) {
+        final colorScheme = colorSchemeSnapshot.data;
         return ExpansionCard(
           titleWidget: _buildPokemonCardBody(),
           expandedChildren: [
@@ -73,9 +73,10 @@ class _FormTileState extends State<FormTile> {
             ),
           ],
           onTap: () {
+            //TODO we could call for the color here
             _navigateToDetailPage(
               context,
-              colorList,
+              colorScheme,
             );
           },
           bottomWidgetBuilder: (_) {
@@ -211,7 +212,7 @@ class _FormTileState extends State<FormTile> {
           kPokemonTileImageHeight,
           kPokemonTileImageHeight,
         ),
-        imageColorCallback: mainImageColorViewModel.colorListStream.add,
+        imageColorCallback: imageColorViewModel.colorSchemeStream.add,
       );
     } else {
       return const SizedBox();
@@ -233,7 +234,7 @@ class _FormTileState extends State<FormTile> {
 
   void _navigateToDetailPage(
     BuildContext context,
-    List<int> colorList,
+    ColorScheme? colorScheme,
   ) {
     final _pokemon = pokemon;
     if (_pokemon != null) {
@@ -255,7 +256,7 @@ class _FormTileState extends State<FormTile> {
                     ),
                   ),
           ),
-          colorList: colorList,
+          colorScheme: colorScheme,
         ),
       );
     }
