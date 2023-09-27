@@ -57,6 +57,8 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
   Color get primaryColor => pokemonDetailArguments.colorScheme?.primary ?? PokemonType.getTypeForId(pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes.firstOrNull()?.pokemon_v2_type?.id ?? 0).color;
   Color get secondaryColor => pokemonDetailArguments.colorScheme?.primaryContainer ?? PokemonType.getTypeForId(pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes.secondOrNull()?.pokemon_v2_type?.id ?? 0).color;
 
+  Color get onPrimary => pokemonDetailArguments.colorScheme?.onPrimary ?? colors(context).textOnPrimary;
+
   @override
   void initState() {
     super.initState();
@@ -248,6 +250,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
           ),
           indicatorSize: TabBarIndicatorSize.tab,
           unselectedLabelColor: colors(context).textOnForeground,
+          labelColor: onPrimary,
           tabs: [
             Tab(
               text: context.strings.info.toUpperCase(),
