@@ -53,13 +53,13 @@ class _PokemonTileState extends State<PokemonTile> {
     const kCardPadding = 32;
     final chipHeight = widget.showTypes ? kChipHeight : 0;
     final tileHeight = kPokemonTileImageHeight + chipHeight + kCardPadding + 16 + 4;
-    return StreamBuilder<ColorScheme?>(
-      stream: mainImageColorViewModel.colorSchemeStream,
-      builder: (context, colorSchemeSnapshot) {
-        final colorScheme = colorSchemeSnapshot.data;
-        return SizedBox(
-          height: widget.showImage ? tileHeight : null,
-          child: RoundedCard(
+    return SizedBox(
+      height: widget.showImage ? tileHeight : null,
+      child: StreamBuilder<ColorScheme?>(
+        stream: mainImageColorViewModel.colorSchemeStream,
+        builder: (context, colorSchemeSnapshot) {
+          final colorScheme = colorSchemeSnapshot.data;
+          return RoundedCard(
             borderColor: widget.borderColor,
             onTap: widget.onTap ??
                 () {
@@ -73,9 +73,9 @@ class _PokemonTileState extends State<PokemonTile> {
                   );
                 },
             child: _buildPokemonCardBody(),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 

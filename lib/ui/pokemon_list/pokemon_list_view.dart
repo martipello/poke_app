@@ -45,10 +45,7 @@ class _PokemonListViewState extends State<PokemonListView> {
     super.initState();
     _addSearchTextListener();
     _addSearchListener();
-    _filterViewModel.filters.add([
-      ...PokemonType.filters,
-      ...GenType.filters
-    ]);
+    _filterViewModel.filters.add([...PokemonType.filters, ...GenType.filters]);
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
         _addSelectedFilterListener();
@@ -57,21 +54,16 @@ class _PokemonListViewState extends State<PokemonListView> {
   }
 
   void _addSelectedFilterListener() {
-    const duration = Duration(milliseconds: 200);
     _filterViewModel.selectedFiltersStream.listen(
       (selectedTypes) {
         _pokemonViewModel.setSelectedTypes(selectedTypes);
-        Future.delayed(duration).then(
-          (value) {
-            if (_filterViewModel.scrollController.hasClients) {
-              _filterViewModel.scrollController.animateTo(
-                _filterViewModel.scrollController.position.maxScrollExtent,
-                duration: duration,
-                curve: Curves.fastOutSlowIn,
-              );
-            }
-          },
-        );
+        if (_filterViewModel.scrollController.hasClients) {
+          _filterViewModel.scrollController.animateTo(
+            _filterViewModel.scrollController.position.maxScrollExtent,
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.fastOutSlowIn,
+          );
+        }
       },
     );
   }
@@ -258,17 +250,21 @@ class _PokemonListViewState extends State<PokemonListView> {
     required Pokemon pokemon,
     bool showAd = false,
   }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (showAd) NativeAd(),
-        ViewConstraint(
-          child: PokemonTile(
+    return PokemonTile(
+      pokemon: pokemon,
+    );
+    if (!showAd) {
+    } else {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (showAd) NativeAd(),
+          PokemonTile(
             pokemon: pokemon,
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    }
   }
 }
