@@ -250,10 +250,10 @@ class _PokemonListViewState extends State<PokemonListView> {
     required Pokemon pokemon,
     bool showAd = false,
   }) {
-    return PokemonTile(
-      pokemon: pokemon,
-    );
     if (!showAd) {
+      return PokemonTile(
+        pokemon: pokemon,
+      );
     } else {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
