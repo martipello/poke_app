@@ -9,20 +9,13 @@ class ImageColorViewModel {
 
   final SharedPreferencesService sharedPreferencesService;
 
-  final colorSchemeStream = BehaviorSubject<ColorScheme?>();
-
-  Future<void> colorScheme(
+  Future<ColorScheme> colorScheme(
     CachedNetworkImageProvider imageProvider,
   ) async {
     final isDarkMode = await sharedPreferencesService.isDarkMode();
-    final colorScheme = await ColorScheme.fromImageProvider(
+    return ColorScheme.fromImageProvider(
       provider: imageProvider,
       brightness: isDarkMode ? Brightness.dark : Brightness.light,
     );
-    colorSchemeStream.add(colorScheme);
-  }
-
-  void dispose() {
-    colorSchemeStream.close();
   }
 }

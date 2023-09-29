@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../api/models/pokemon/pokemon.dart';
@@ -24,22 +25,17 @@ import '../shared_widgets/view_models/image_color_view_model.dart';
 
 const kPokemonTileImageHeight = 80.0;
 
-class FormTile extends StatefulWidget {
+class FormTile extends StatelessWidget {
   FormTile({
     Key? key,
     required this.pokemonFormWithVersionGroup,
   }) : super(key: key);
 
+  late final cacheNetworkImageProvider = CachedNetworkImageProvider(createImageUrl(pokemon?.id ?? 0));
+
   final PokemonFormWithVersionGroup pokemonFormWithVersionGroup;
 
-  @override
-  State<FormTile> createState() => _FormTileState();
-}
-
-class _FormTileState extends State<FormTile> {
   final imageColorViewModel = getIt.get<ImageColorViewModel>();
-
-  PokemonFormWithVersionGroup get pokemonFormWithVersionGroup => widget.pokemonFormWithVersionGroup;
 
   PokemonForm? get pokemonForm =>
       pokemonFormWithVersionGroup.pokemon_v2_pokemonformnames.firstOrNull()?.pokemon_v2_pokemonform;
@@ -53,21 +49,15 @@ class _FormTileState extends State<FormTile> {
   List<PokemonAbilityHolder> get abilities => pokemon?.pokemon_v2_pokemonabilities.toList() ?? [];
 
   @override
-  void dispose() {
-    imageColorViewModel.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return StreamBuilder<ColorScheme?>(
-      stream: imageColorViewModel.colorSchemeStream,
+    return FutureBuilder<ColorScheme?>(
+      future: imageColorViewModel.colorScheme(cacheNetworkImageProvider),
       builder: (context, colorSchemeSnapshot) {
         final colorScheme = colorSchemeSnapshot.data;
         return ExpansionCard(
-          titleWidget: _buildPokemonCardBody(),
+          titleWidget: _buildPokemonCardBody(context),
           expandedChildren: [
-            _buildPokemonAbilities(),
+            _buildPokemonAbilities(context),
             const SizedBox(
               height: 16,
             ),
@@ -87,7 +77,7 @@ class _FormTileState extends State<FormTile> {
     );
   }
 
-  Widget _buildPokemonCardBody() {
+  Widget _buildPokemonCardBody(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -96,13 +86,13 @@ class _FormTileState extends State<FormTile> {
           width: 16,
         ),
         Expanded(
-          child: _buildPokemonInfo(),
+          child: _buildPokemonInfo(context),
         ),
       ],
     );
   }
 
-  Widget _buildPokemonAbilities() {
+  Widget _buildPokemonAbilities(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -172,7 +162,7 @@ class _FormTileState extends State<FormTile> {
     }
   }
 
-  Widget _buildPokemonInfo() {
+  Widget _buildPokemonInfo(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
@@ -183,12 +173,12 @@ class _FormTileState extends State<FormTile> {
             color: colors(context).textOnForeground,
           ),
         ),
-        _buildPokemonId(),
+        _buildPokemonId(context),
       ],
     );
   }
 
-  Widget _buildPokemonId() {
+  Widget _buildPokemonId(BuildContext context) {
     final pokemonId = pokemon?.id ?? context.strings.questionMark;
     return Padding(
       padding: const EdgeInsets.only(top: 8),
@@ -212,7 +202,7 @@ class _FormTileState extends State<FormTile> {
           kPokemonTileImageHeight,
           kPokemonTileImageHeight,
         ),
-        imageColorCallback: imageColorViewModel.colorSchemeStream.add,
+        imageProvider: cacheNetworkImageProvider,
       );
     } else {
       return const SizedBox();

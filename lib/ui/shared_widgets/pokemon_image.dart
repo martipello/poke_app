@@ -3,80 +3,49 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 import '../../api/models/pokemon/pokemon.dart';
-import '../../dependency_injection_container.dart';
 import '../../theme/base_theme.dart';
-import 'view_models/image_color_view_model.dart';
 
 typedef ImageErrorBuilder = Widget Function(BuildContext context, Object? object, StackTrace? stacktrace);
-typedef ColorSchemeCallback = Function(ColorScheme? colorScheme);
 
 const kDefaultImageHeight = 150.0;
 
-class PokemonImage extends StatefulWidget {
+
+String createImageUrl(int id) { return 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$id.png'; }
+
+
+class PokemonImage extends StatelessWidget {
   const PokemonImage({
     Key? key,
-    this.size,
     required this.pokemon,
-    this.clipBehavior = Clip.none,
-    this.imageColorCallback,
-    this.color,
+    required this.imageProvider,
+    this.size,
     this.maskColor,
+    this.colorScheme,
     this.includeHero = true,
+    this.clipBehavior = Clip.none,
   });
 
   final Pokemon pokemon;
-  final Color? color;
-  final ColorSchemeCallback? imageColorCallback;
+  final CachedNetworkImageProvider imageProvider;
+  final ColorScheme? colorScheme;
   final Clip clipBehavior;
   final Size? size;
   final bool includeHero;
   final Color? maskColor;
 
   @override
-  State<PokemonImage> createState() => _PokemonImageState();
-}
-
-class _PokemonImageState extends State<PokemonImage> {
-  final imageColorViewModel = getIt.get<ImageColorViewModel>();
-
-  CachedNetworkImageProvider? mainImageProvider;
-
-  @override
-  void initState() {
-    super.initState();
-    mainImageProvider = CachedNetworkImageProvider(
-      _createImageUrl(),
-    );
-    imageColorViewModel.colorSchemeStream.listen(widget.imageColorCallback);
-    WidgetsBinding.instance.addPostFrameCallback(
-      (timeStamp) {
-        if (widget.imageColorCallback != null) {
-          imageColorViewModel.colorScheme(
-            mainImageProvider!,
-          );
-        }
-      },
-    );
-  }
-
-  @override
-  void dispose() {
-    imageColorViewModel.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    if (mainImageProvider == null) {
-      return const SizedBox();
-    }
-    return Material(
-      type: MaterialType.transparency,
-      child: _buildImageHolder(
-        context,
-        widget.includeHero,
-        mainImageProvider!,
-        (context, _, __) => _buildEmptyImage(),
+    return SizedBox(
+      height: size?.height ?? kDefaultImageHeight,
+      width: size?.width ?? kDefaultImageHeight,
+      child: Material(
+        type: MaterialType.transparency,
+        child: _buildImageHolder(
+          context,
+          includeHero,
+          imageProvider,
+          (context, _, __) => _buildEmptyImage(),
+        ),
       ),
     );
   }
@@ -87,33 +56,27 @@ class _PokemonImageState extends State<PokemonImage> {
     ImageProvider imageProvider,
     ImageErrorBuilder imageErrorBuilder,
   ) {
-    return StreamBuilder<ColorScheme?>(
-      stream: imageColorViewModel.colorSchemeStream,
-      builder: (context, snapshot) {
-        final colorScheme = snapshot.data;
-        return Stack(
-          children: [
-            _buildOuterCircle(
+    return Stack(
+      children: [
+        _buildOuterCircle(
+          imageErrorBuilder,
+          colorScheme,
+        ),
+        Positioned.fill(
+          child: Align(
+            alignment: Alignment.center,
+            child: buildHeroWidget
+                ? _buildImageWithHero(
+              imageProvider,
               imageErrorBuilder,
-              colorScheme,
+            )
+                : _buildImage(
+              imageProvider,
+              imageErrorBuilder,
             ),
-            Positioned.fill(
-              child: Align(
-                alignment: Alignment.center,
-                child: buildHeroWidget
-                    ? _buildImageWithHero(
-                        imageProvider,
-                        imageErrorBuilder,
-                      )
-                    : _buildImage(
-                        imageProvider,
-                        imageErrorBuilder,
-                      ),
-              ),
-            ),
-          ],
-        );
-      },
+          ),
+        ),
+      ],
     );
   }
 
@@ -125,12 +88,14 @@ class _PokemonImageState extends State<PokemonImage> {
     final secondaryColor = colorScheme?.primaryContainer ?? Colors.white;
 
     return ClipRRect(
-      clipBehavior: widget.clipBehavior,
+      clipBehavior: clipBehavior,
       borderRadius: _buildBorderRadius(),
       child: AnimatedContainer(
+        height: size?.height ?? kDefaultImageHeight,
+        width: size?.width ?? kDefaultImageHeight,
         duration: const Duration(milliseconds: 300),
         decoration: BoxDecoration(
-          color: widget.color ?? primaryColor,
+          color: primaryColor,
         ),
         padding: const EdgeInsets.all(6),
         child: Center(
@@ -143,18 +108,17 @@ class _PokemonImageState extends State<PokemonImage> {
   }
 
   Widget _buildCenterCircle(
-    Color? dominantColor,
+    Color? secondaryColor,
   ) {
     return ClipRRect(
-      clipBehavior: widget.clipBehavior,
+      clipBehavior: clipBehavior,
       borderRadius: _buildBorderRadius(),
-      child: DecoratedBox(
+      child: AnimatedContainer(
+        height: size?.height ?? kDefaultImageHeight,
+        width: size?.width ?? kDefaultImageHeight,
+        duration: const Duration(milliseconds: 300),
         decoration: BoxDecoration(
-          color: widget.color ?? dominantColor,
-        ),
-        child: SizedBox(
-          height: widget.size?.height ?? kDefaultImageHeight,
-          width: widget.size?.width ?? kDefaultImageHeight,
+          color: secondaryColor,
         ),
       ),
     );
@@ -165,7 +129,7 @@ class _PokemonImageState extends State<PokemonImage> {
     ImageErrorBuilder imageErrorBuilder,
   ) {
     return Hero(
-      tag: '${widget.pokemon.id}',
+      tag: '${pokemon.id}',
       transitionOnUserGestures: true,
       child: _buildImage(
         imageProvider,
@@ -182,9 +146,9 @@ class _PokemonImageState extends State<PokemonImage> {
       image: imageProvider,
       fit: BoxFit.cover,
       gaplessPlayback: true,
-      color: widget.maskColor,
-      height: widget.size?.height ?? kDefaultImageHeight,
-      width: widget.size?.width ?? kDefaultImageHeight,
+      color: maskColor,
+      height: size?.height ?? kDefaultImageHeight,
+      width: size?.width ?? kDefaultImageHeight,
       loadingBuilder: (context, child, chunk) {
         if (chunk == null) {
           return child;
@@ -204,13 +168,13 @@ class _PokemonImageState extends State<PokemonImage> {
   }) {
     return Center(
       child: ClipRRect(
-        clipBehavior: widget.clipBehavior,
+        clipBehavior: clipBehavior,
         borderRadius: _buildBorderRadius(),
         child: SizedBox(
-          height: widget.size?.height ?? kDefaultImageHeight,
-          width: widget.size?.width ?? kDefaultImageHeight,
+          height: size?.height ?? kDefaultImageHeight,
+          width: size?.width ?? kDefaultImageHeight,
           child: Center(
-            child: isLoading ? _buildLoadingImage() : _buildEmptyImage(),
+            child: isLoading ? _buildLoadingImage(context) : _buildEmptyImage(),
           ),
         ),
       ),
@@ -224,7 +188,7 @@ class _PokemonImageState extends State<PokemonImage> {
     );
   }
 
-  Widget _buildLoadingImage() {
+  Widget _buildLoadingImage(BuildContext context) {
     return Image.asset(
       'assets/images/pokeball_outline.png',
       gaplessPlayback: true,
@@ -240,17 +204,13 @@ class _PokemonImageState extends State<PokemonImage> {
 
   BorderRadius _buildBorderRadius() => BorderRadius.circular(180);
 
-  String _createImageUrl() {
-    return 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${widget.pokemon.id}.png';
-  }
-
-  @override
-  void didUpdateWidget(covariant PokemonImage oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.pokemon.id != oldWidget.pokemon.id) {
-      mainImageProvider = CachedNetworkImageProvider(
-        _createImageUrl(),
-      );
-    }
-  }
+  // @override
+  // void didUpdateWidget(covariant PokemonImage oldWidget) {
+  //   super.didUpdateWidget(oldWidget);
+  //   if (pokemon.id != oldWidget.pokemon.id) {
+  //     mainImageProvider = CachedNetworkImageProvider(
+  //       _createImageUrl(),
+  //     );
+  //   }
+  // }
 }

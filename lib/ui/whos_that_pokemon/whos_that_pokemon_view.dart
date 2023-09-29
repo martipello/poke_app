@@ -1,4 +1,5 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -420,7 +421,21 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
         includeHero: false,
         pokemon: pokemon,
         size: Size(imageHeight, imageHeight),
-        color: Colors.transparent,
+        imageProvider: CachedNetworkImageProvider(createImageUrl(pokemon.id ?? 0)),
+        colorScheme: ColorScheme(
+          brightness: Brightness.light,
+          primary: Colors.transparent,
+          onPrimary: colors(context).textOnForeground,
+          secondary: Colors.transparent,
+          onSecondary: colors(context).textOnForeground,
+          error: Colors.transparent,
+          onError: colors(context).textOnForeground,
+          background: Colors.transparent,
+          onBackground: colors(context).textOnForeground,
+          surface: Colors.transparent,
+          onSurface: colors(context).textOnForeground,
+          primaryContainer: Colors.transparent,
+        ),
       );
     }
     return _buildLoadingImage();

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'api/models/pokemon/pokemon_type.dart';
 import 'dependency_injection_container.dart';
 import 'in_app_purchases/view_models/in_app_purchase_view_model.dart';
 import 'services/language_service.dart';
@@ -28,6 +29,14 @@ class PokeApp extends StatefulWidget {
 class _PokeAppState extends State<PokeApp> {
   final languageService = getIt.get<LanguageService>();
   final _inAppPurchaseViewModel = getIt.get<InAppPurchaseViewModel>();
+
+  @override
+  void didChangeDependencies() {
+    for (var asset in PokemonType.values) {
+      precacheImage(AssetImage(asset.image), context);
+    }
+    super.didChangeDependencies();
+  }
 
   @override
   void dispose() {

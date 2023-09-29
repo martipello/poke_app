@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../api/models/pokemon/pokemon.dart';
@@ -16,12 +17,14 @@ import '../shared_widgets/view_constraint.dart';
 const kPokemonDetailImageHeight = 200.0;
 
 class PokemonDetailHeader extends StatelessWidget {
-  const PokemonDetailHeader({
+  PokemonDetailHeader({
     Key? key,
     required this.pokemon,
   }) : super(key: key);
 
   final Pokemon pokemon;
+
+  late final cacheNetworkImageProvider = CachedNetworkImageProvider(createImageUrl(pokemon.id ?? 0));
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +46,7 @@ class PokemonDetailHeader extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             _buildExtraLargeMargin,
-            _buildPokemonImage(),
+            _buildPokemonImage(context),
             _buildMediumMargin,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -72,14 +75,28 @@ class PokemonDetailHeader extends StatelessWidget {
     );
   }
 
-  Widget _buildPokemonImage() {
+  Widget _buildPokemonImage(BuildContext context) {
     return PokemonImage(
       pokemon: pokemon,
       size: const Size(
         kPokemonDetailImageHeight,
         kPokemonDetailImageHeight,
       ),
-      color: Colors.transparent,
+      imageProvider: cacheNetworkImageProvider,
+      colorScheme: ColorScheme(
+        brightness: Brightness.light,
+        primary: Colors.transparent,
+        onPrimary: colors(context).textOnForeground,
+        secondary: Colors.transparent,
+        onSecondary: colors(context).textOnForeground,
+        error: Colors.transparent,
+        onError: colors(context).textOnForeground,
+        background: Colors.transparent,
+        onBackground: colors(context).textOnForeground,
+        surface: Colors.transparent,
+        onSurface: colors(context).textOnForeground,
+        primaryContainer: Colors.transparent,
+      ),
     );
   }
 
