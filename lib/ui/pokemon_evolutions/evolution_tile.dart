@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../api/models/pokemon/pokemon.dart';
@@ -21,7 +22,7 @@ import '../shared_widgets/view_models/image_color_view_model.dart';
 
 const kPokemonTileImageHeight = 80.0;
 
-class EvolutionTile extends StatefulWidget {
+class EvolutionTile extends StatelessWidget {
   EvolutionTile({
     Key? key,
     required this.speciesHolder,
@@ -29,30 +30,23 @@ class EvolutionTile extends StatefulWidget {
 
   final PokemonSpeciesHolder speciesHolder;
 
-  @override
-  State<EvolutionTile> createState() => _EvolutionTileState();
-}
-
-class _EvolutionTileState extends State<EvolutionTile> {
   final imageColorViewModel = getIt.get<ImageColorViewModel>();
 
-  Pokemon? get pokemon => widget.speciesHolder.pokemon_v2_pokemons.firstOrNull();
-
-  @override
-  void dispose() {
-    imageColorViewModel.dispose();
-    super.dispose();
-  }
+  Pokemon? get pokemon => speciesHolder.pokemon_v2_pokemons.firstOrNull();
+  late final cacheNetworkImageProvider = CachedNetworkImageProvider(createImageUrl(pokemon?.id ?? 0));
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<ColorScheme?>(
-      stream: imageColorViewModel.colorSchemeStream,
+    return FutureBuilder<ColorScheme?>(
+      future: imageColorViewModel.colorScheme(cacheNetworkImageProvider),
       builder: (context, colorSchemeSnapshot) {
         final colorScheme = colorSchemeSnapshot.data;
         return ExpansionCard(
-          titleWidget: _buildPokemonCardBody(),
-          expandedChildren: _buildPokemonEvolutionTable(),
+          titleWidget: _buildPokemonCardBody(
+            context,
+            colorScheme,
+          ),
+          expandedChildren: _buildPokemonEvolutionTable(context),
           onTap: () {
             final _pokemon = pokemon;
             if (_pokemon != null) {
@@ -60,7 +54,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
                 PokemonDetailPage.routeName,
                 arguments: PokemonDetailPageArguments(
                   pokemon: _pokemon.rebuild(
-                    (p) => p..pokemon_v2_pokemonspecy = widget.speciesHolder.toBuilder(),
+                    (p) => p..pokemon_v2_pokemonspecy = speciesHolder.toBuilder(),
                   ),
                   colorScheme: colorScheme,
                 ),
@@ -75,8 +69,10 @@ class _EvolutionTileState extends State<EvolutionTile> {
     );
   }
 
-  List<Widget> _buildPokemonEvolutionTable() {
-    final evolutionMetaData = widget.speciesHolder.pokemon_v2_pokemonevolutions.map(
+  List<Widget> _buildPokemonEvolutionTable(
+    BuildContext context,
+  ) {
+    final evolutionMetaData = speciesHolder.pokemon_v2_pokemonevolutions.map(
       (evolutionMetaData) {
         final evolutionConditions = <Widget>[];
 
@@ -102,6 +98,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
           final isFirst = evolutionConditions.isNotEmpty;
           evolutionConditions.add(
             _buildEvolutionCondition(
+              context,
               context.strings.locationLabel,
               '$location $region',
               isFirst,
@@ -112,6 +109,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
           final isFirst = evolutionConditions.isNotEmpty;
           evolutionConditions.add(
             _buildEvolutionCondition(
+              context,
               context.strings.itemLabel,
               item,
               isFirst,
@@ -122,6 +120,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
           final isFirst = evolutionConditions.isNotEmpty;
           evolutionConditions.add(
             _buildEvolutionCondition(
+              context,
               context.strings.levelLabel,
               minLevel.toString(),
               isFirst,
@@ -132,6 +131,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
           final isFirst = evolutionConditions.isNotEmpty;
           evolutionConditions.add(
             _buildEvolutionCondition(
+              context,
               context.strings.happinessLabel,
               minHappiness.toString(),
               isFirst,
@@ -142,6 +142,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
           final isFirst = evolutionConditions.isNotEmpty;
           evolutionConditions.add(
             _buildEvolutionCondition(
+              context,
               context.strings.beautyLabel,
               minBeauty.toString(),
               isFirst,
@@ -152,6 +153,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
           final isFirst = evolutionConditions.isNotEmpty;
           evolutionConditions.add(
             _buildEvolutionCondition(
+              context,
               context.strings.affectionLabel,
               minAffection.toString(),
               isFirst,
@@ -162,6 +164,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
           final isFirst = evolutionConditions.isNotEmpty;
           evolutionConditions.add(
             _buildEvolutionCondition(
+              context,
               context.strings.knownMoveIdLabel,
               knownMoveId.toString(),
               isFirst,
@@ -172,6 +175,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
           final isFirst = evolutionConditions.isNotEmpty;
           evolutionConditions.add(
             _buildEvolutionCondition(
+              context,
               context.strings.knownMoveTypeLabel,
               PokemonType.getTypeForId(knownMoveTypeId).name.capitalize(),
               isFirst,
@@ -182,6 +186,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
           final isFirst = evolutionConditions.isNotEmpty;
           evolutionConditions.add(
             _buildEvolutionCondition(
+              context,
               context.strings.heldItemLabel,
               heldItemName,
               isFirst,
@@ -192,6 +197,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
           final isFirst = evolutionConditions.isNotEmpty;
           evolutionConditions.add(
             _buildEvolutionCondition(
+              context,
               context.strings.tradeSpeciesIdLabel,
               tradeSpeciesId.toString(),
               isFirst,
@@ -202,6 +208,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
           final isFirst = evolutionConditions.isNotEmpty;
           evolutionConditions.add(
             _buildEvolutionCondition(
+              context,
               context.strings.genderIdLabel,
               genderId.toString(),
               isFirst,
@@ -212,6 +219,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
           final isFirst = evolutionConditions.isNotEmpty;
           evolutionConditions.add(
             _buildEvolutionCondition(
+              context,
               context.strings.turnUpsideDownLabel,
               context.strings.trueLabel,
               isFirst,
@@ -222,6 +230,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
           final isFirst = evolutionConditions.isNotEmpty;
           evolutionConditions.add(
             _buildEvolutionCondition(
+              context,
               context.strings.timeOfDayLabel,
               timeOfDay,
               isFirst,
@@ -232,6 +241,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
           final isFirst = evolutionConditions.isNotEmpty;
           evolutionConditions.add(
             _buildEvolutionCondition(
+              context,
               context.strings.physicalStatLabel,
               relativePhysicalStats.toString(),
               isFirst,
@@ -269,6 +279,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
   }
 
   Widget _buildEvolutionCondition(
+    BuildContext context,
     String label,
     String value,
     bool isFirst,
@@ -280,12 +291,12 @@ class _EvolutionTileState extends State<EvolutionTile> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildEvolutionConditionLabel(label),
+          _buildEvolutionConditionLabel(context, label),
           const SizedBox(
             width: 8,
           ),
           Expanded(
-            child: _buildEvolutionConditionValue(value),
+            child: _buildEvolutionConditionValue(context, value),
           ),
         ],
       ),
@@ -293,6 +304,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
   }
 
   Widget _buildEvolutionConditionValue(
+    BuildContext context,
     String value,
   ) {
     return Text(
@@ -304,6 +316,7 @@ class _EvolutionTileState extends State<EvolutionTile> {
   }
 
   Widget _buildEvolutionConditionLabel(
+    BuildContext context,
     String label,
   ) {
     return Text(
@@ -314,17 +327,20 @@ class _EvolutionTileState extends State<EvolutionTile> {
     );
   }
 
-  Widget _buildPokemonCardBody() {
-    final speciesName = widget.speciesHolder.pokemon_v2_pokemonspeciesnames.first.genus ?? '';
+  Widget _buildPokemonCardBody(
+    BuildContext context,
+    ColorScheme? colorScheme,
+  ) {
+    final speciesName = speciesHolder.pokemon_v2_pokemonspeciesnames.first.genus ?? '';
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildPokemonImage(),
+        _buildPokemonImage(colorScheme),
         const SizedBox(
           width: 16,
         ),
         Expanded(
-          child: _buildPokemonInfo(speciesName),
+          child: _buildPokemonInfo(context, speciesName),
         ),
         // _buildPokemonId(),
       ],
@@ -356,7 +372,10 @@ class _EvolutionTileState extends State<EvolutionTile> {
     }
   }
 
-  Widget _buildPokemonInfo(String speciesName) {
+  Widget _buildPokemonInfo(
+    BuildContext context,
+    String speciesName,
+  ) {
     final pokemonName = pokemon?.name ?? context.strings.unknownPokemon;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -375,12 +394,14 @@ class _EvolutionTileState extends State<EvolutionTile> {
               color: colors(context).textOnForeground,
             ),
           ),
-        _buildPokemonId(),
+        _buildPokemonId(context),
       ],
     );
   }
 
-  Widget _buildPokemonId() {
+  Widget _buildPokemonId(
+    BuildContext context,
+  ) {
     final pokemonId = pokemon?.id ?? context.strings.questionMark;
     return Padding(
       padding: const EdgeInsets.only(top: 8),
@@ -394,7 +415,9 @@ class _EvolutionTileState extends State<EvolutionTile> {
     );
   }
 
-  Widget _buildPokemonImage() {
+  Widget _buildPokemonImage(
+    ColorScheme? colorScheme,
+  ) {
     final _pokemon = pokemon;
     if (_pokemon != null) {
       return PokemonImage(
@@ -404,7 +427,8 @@ class _EvolutionTileState extends State<EvolutionTile> {
           kPokemonTileImageHeight,
           kPokemonTileImageHeight,
         ),
-        imageColorCallback: imageColorViewModel.colorSchemeStream.add,
+        imageProvider: cacheNetworkImageProvider,
+        colorScheme: colorScheme,
       );
     } else {
       return const SizedBox();
