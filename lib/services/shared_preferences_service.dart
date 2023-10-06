@@ -8,6 +8,7 @@ const kLanguage = 'SELECTED_LANGUAGE';
 const kWinsScore = 'WINS_SCORE';
 const kLossesScore = 'LOSSES_SCORE';
 const kDarkMode = 'DARK_MODE';
+const kAutoRetry = 'AUTO_RETRY';
 
 class SharedPreferencesService extends PokemonService {
   final _sharedPreferences = getIt.getAsync<SharedPreferences>();
@@ -54,6 +55,16 @@ class SharedPreferencesService extends PokemonService {
   Future<void> setDarkMode({required bool isDarkMode}) async {
     final sharedPreferences = await _sharedPreferences;
     sharedPreferences.setBool(kDarkMode, isDarkMode);
+  }
+
+  Future<bool> isAutoRetry() async {
+    final sharedPreferences = await _sharedPreferences;
+    return sharedPreferences.getBool(kAutoRetry) ?? false;
+  }
+
+  Future<void> setAutoRetry({required bool isAutoRetry}) async {
+    final sharedPreferences = await _sharedPreferences;
+    sharedPreferences.setBool(kAutoRetry, isAutoRetry);
   }
 
   @override

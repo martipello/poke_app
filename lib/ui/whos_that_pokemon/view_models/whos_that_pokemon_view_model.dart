@@ -14,6 +14,7 @@ import '../../../api/models/pokemon/pokemon_request.dart';
 import '../../../api/models/pokemon/pokemon_response.dart';
 import '../../../extensions/iterable_extension.dart';
 import '../../../services/language_service.dart';
+import '../../../services/shared_preferences_service.dart';
 
 enum RevealResult {
   correct,
@@ -26,13 +27,16 @@ class WhosThatPokemonViewModel {
     this.pokemonRepositoryGraphQl,
     this.errorHandler,
     this.languageService,
+    this.sharedPreferencesService,
   ) {
     _initSoundpool();
+    initAutoRetry();
   }
 
   final PokemonRepositoryGraphQl pokemonRepositoryGraphQl;
   final ErrorHandler errorHandler;
   final LanguageService languageService;
+  final SharedPreferencesService sharedPreferencesService;
 
   SimpleAnimation get controller => SimpleAnimation(
         'Timeline 1',
@@ -42,6 +46,7 @@ class WhosThatPokemonViewModel {
   final pokemonOptionsStream = BehaviorSubject<ApiResponse<PokemonResponse>>();
   final concealedPokemonStream = BehaviorSubject<Pokemon?>();
   final revealResultStream = BehaviorSubject<Tuple2<RevealResult, bool>>();
+  final autoRetry = BehaviorSubject<bool>();
 
   SimpleAnimation? _controller;
   Soundpool? _soundpool;
@@ -87,7 +92,7 @@ class WhosThatPokemonViewModel {
     }
   }
 
-  void setRevealResult(int pokemonId) {
+  void setRevealResult(int pokemonId) async {
     final concealedPokemon = concealedPokemonStream.valueOrNull;
     if (pokemonId == 0) {
       revealResultStream.add(const Tuple2(RevealResult.none, false));
@@ -99,6 +104,10 @@ class WhosThatPokemonViewModel {
       }
       if (_closingSoundId != null) {
         _playSound(_closingSoundId!);
+      }
+      if (autoRetry.valueOrNull == true) {
+        await Future.delayed(const Duration(milliseconds: 2700));
+        generateRandomPokemon();
       }
     }
   }
@@ -136,10 +145,21 @@ class WhosThatPokemonViewModel {
     }
   }
 
+  void initAutoRetry() async {
+    final isAutoRetry = await sharedPreferencesService.isAutoRetry();
+    autoRetry.add(isAutoRetry);
+  }
+
+  void setAutoRetry(bool isAutoRetry) async {
+    autoRetry.add(isAutoRetry);
+    sharedPreferencesService.setAutoRetry(isAutoRetry: isAutoRetry);
+  }
+
   void dispose() {
     _controller?.dispose();
     pokemonOptionsStream.close();
     concealedPokemonStream.close();
+    autoRetry.close();
     _soundpool?.dispose();
   }
 
