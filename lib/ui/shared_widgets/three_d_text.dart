@@ -27,99 +27,97 @@ class ThreeDText extends StatelessWidget {
   Widget _buildPokemonTexts(
     BuildContext context,
   ) {
-    return Center(
-      child: Stack(
-        fit: StackFit.loose,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 10.0,
-              right: 10.0,
-              left: 10.0,
-            ),
-            child: _buildTransparentTextBackground(),
+    return Stack(
+      fit: StackFit.loose,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 10.0,
+            right: 10.0,
+            left: 10.0,
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 1.0,
-              right: 1.0,
-              left: 9.0,
-            ),
-            child: _buildPokemonTextBackground(),
+          child: _buildTransparentTextBackground(),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 1.0,
+            right: 1.0,
+            left: 9.0,
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 2.0,
-              right: 2.0,
-              left: 8.0,
-            ),
-            child: _buildPokemonTextBackground(),
+          child: _buildPokemonTextBackground(),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 2.0,
+            right: 2.0,
+            left: 8.0,
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 3.0,
-              right: 3.0,
-              left: 7.0,
-            ),
-            child: _buildPokemonTextBackground(),
+          child: _buildPokemonTextBackground(),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 3.0,
+            right: 3.0,
+            left: 7.0,
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 4.0,
-              right: 4.0,
-              left: 6.0,
-            ),
-            child: _buildPokemonTextBackground(),
+          child: _buildPokemonTextBackground(),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 4.0,
+            right: 4.0,
+            left: 6.0,
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 5.0,
-              right: 5.0,
-              left: 5.0,
-            ),
-            child: _buildPokemonTextBackground(),
+          child: _buildPokemonTextBackground(),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 5.0,
+            right: 5.0,
+            left: 5.0,
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 6.0,
-              right: 6.0,
-              left: 4.0,
-            ),
-            child: _buildPokemonTextBackground(),
+          child: _buildPokemonTextBackground(),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 6.0,
+            right: 6.0,
+            left: 4.0,
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 7.0,
-              right: 7.0,
-              left: 3.0,
-            ),
-            child: _buildPokemonTextBackground(),
+          child: _buildPokemonTextBackground(),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 7.0,
+            right: 7.0,
+            left: 3.0,
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 8.0,
-              right: 8.0,
-              left: 2.0,
-            ),
-            child: _buildPokemonTextBackground(),
+          child: _buildPokemonTextBackground(),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 8.0,
+            right: 8.0,
+            left: 2.0,
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 9.0,
-              right: 9.0,
-              left: 1.0,
-            ),
-            child: _buildPokemonTextBackground(),
+          child: _buildPokemonTextBackground(),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 9.0,
+            right: 9.0,
+            left: 1.0,
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 4,
-              left: 12.0,
-            ),
-            child: _buildPokemonTextWithBorder(),
+          child: _buildPokemonTextBackground(),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 4,
+            left: 12.0,
           ),
-        ],
-      ),
+          child: _buildPokemonTextWithBorder(),
+        ),
+      ],
     );
   }
 

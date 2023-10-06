@@ -37,7 +37,7 @@ class _FilterViewHolderState extends State<FilterViewHolder> with SingleTickerPr
 
   @override
   void dispose() {
-    _circleRevealAnimationController.dispose();
+    // _circleRevealAnimationController.dispose();
     super.dispose();
   }
 
