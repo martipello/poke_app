@@ -13,7 +13,6 @@ import '../../in_app_purchases/view_models/in_app_purchase_view_model.dart';
 import '../../services/language_service.dart';
 import '../../services/launch_service.dart';
 import '../../services/theme_service.dart';
-import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import '../../utils/constants.dart';
 import '../shared_widgets/poke_dialog.dart';
@@ -133,7 +132,7 @@ class Settings extends StatelessWidget {
       leading: IconButton(
         icon: Icon(
           Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back,
-          color: colors(context).textOnPrimary,
+          color: context.colors.onSurface,
         ),
         onPressed: () {
           Navigator.of(context).pop();
@@ -233,9 +232,7 @@ class Settings extends StatelessWidget {
       ),
       child: Text(
         context.strings.selectLanguage,
-        style: PokeAppText.body3Style.copyWith(
-          color: colors(context).textOnForeground,
-        ),
+        style: PokeAppText.body3Style,
       ),
     );
   }
@@ -251,9 +248,7 @@ class Settings extends StatelessWidget {
       selected: language == _tempSelectedLanguage,
       title: Text(
         language.name.capitalize(),
-        style: PokeAppText.body4Style.copyWith(
-          color: colors(context).textOnForeground,
-        ),
+        style: PokeAppText.body4Style,
       ),
       onChanged: (_) {
         _languageService.tempSelectedLanguageStream.add(

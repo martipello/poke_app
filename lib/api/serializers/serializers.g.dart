@@ -8,6 +8,7 @@ part of 'serializers.dart';
 
 Serializers _$serializers = (new Serializers().toBuilder()
       ..add(Article.serializer)
+      ..add(Cry.serializer)
       ..add(Encounter.serializer)
       ..add(EncounterMethod.serializer)
       ..add(EncounterSlot.serializer)
@@ -22,6 +23,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(Pokemon.serializer)
       ..add(PokemonAbility.serializer)
       ..add(PokemonAbilityHolder.serializer)
+      ..add(PokemonCries.serializer)
       ..add(PokemonForm.serializer)
       ..add(PokemonFormHolder.serializer)
       ..add(PokemonFormWithVersionGroup.serializer)
@@ -75,6 +77,29 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(PokemonResource)]),
           () => new ListBuilder<PokemonResource>())
       ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(PokemonCries)]),
+          () => new ListBuilder<PokemonCries>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(TypeDataHolder)]),
+          () => new ListBuilder<TypeDataHolder>())
+      ..addBuilderFactory(
+          const FullType(
+              BuiltList, const [const FullType(PokemonAbilityHolder)]),
+          () => new ListBuilder<PokemonAbilityHolder>())
+      ..addBuilderFactory(
+          const FullType(
+              BuiltList, const [const FullType(PokemonFormWithVersionGroup)]),
+          () => new ListBuilder<PokemonFormWithVersionGroup>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(PokemonStat)]),
+          () => new ListBuilder<PokemonStat>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(PokemonMoveHolder)]),
+          () => new ListBuilder<PokemonMoveHolder>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(Encounter)]),
+          () => new ListBuilder<Encounter>())
+      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(PokemonFormHolder)]),
           () => new ListBuilder<PokemonFormHolder>())
       ..addBuilderFactory(
@@ -126,26 +151,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(GenType)]),
           () => new ListBuilder<GenType>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(TypeDataHolder)]),
-          () => new ListBuilder<TypeDataHolder>())
-      ..addBuilderFactory(
-          const FullType(
-              BuiltList, const [const FullType(PokemonAbilityHolder)]),
-          () => new ListBuilder<PokemonAbilityHolder>())
-      ..addBuilderFactory(
-          const FullType(
-              BuiltList, const [const FullType(PokemonFormWithVersionGroup)]),
-          () => new ListBuilder<PokemonFormWithVersionGroup>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(PokemonStat)]),
-          () => new ListBuilder<PokemonStat>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(PokemonMoveHolder)]),
-          () => new ListBuilder<PokemonMoveHolder>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(Encounter)]),
-          () => new ListBuilder<Encounter>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(TypeEfficacies)]),
           () => new ListBuilder<TypeEfficacies>())

@@ -14,7 +14,6 @@ import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../extensions/string_extension.dart';
 import '../../flavors.dart';
-import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import '../pokemon_list/pokemon_tile.dart';
 import '../shared_widgets/poke_dialog.dart';
@@ -199,6 +198,7 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
         top: 12,
       ),
       child: RoundedButton(
+        fillColor: Colors.yellow,
         label: context.strings.retry.capitalize(),
         textStyle: PokeAppText.pokeFontBody1.copyWith(
           color: Colors.blue.shade700,
@@ -224,6 +224,7 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
         textStyle: PokeAppText.pokeFontBody1.copyWith(
           color: Colors.blue.shade700,
         ),
+        fillColor: Colors.yellow,
         outlineColor: Colors.blue.shade700,
         onPressed: () async {
           final confirmReset = await _buildResetPokeDialog().show(context);
@@ -245,9 +246,7 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
         ),
         child: Text(
           context.strings.confirmReset,
-          style: PokeAppText.body4Style.copyWith(
-            color: colors(context).textOnForeground,
-          ),
+          style: PokeAppText.body4Style,
         ),
       ),
       dialogActions: [
@@ -429,22 +428,23 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
       return PokemonImage(
         maskColor: maskColor,
         includeHero: false,
+        drawOuterCircle: false,
         pokemon: pokemon,
         size: Size(imageHeight, imageHeight),
         imageProvider: CachedNetworkImageProvider(createImageUrl(pokemon.id ?? 0)),
         colorScheme: ColorScheme(
           brightness: Brightness.light,
-          primary: Colors.transparent,
-          onPrimary: colors(context).textOnForeground,
-          secondary: Colors.transparent,
-          onSecondary: colors(context).textOnForeground,
-          error: Colors.transparent,
-          onError: colors(context).textOnForeground,
-          background: Colors.transparent,
-          onBackground: colors(context).textOnForeground,
-          surface: Colors.transparent,
-          onSurface: colors(context).textOnForeground,
-          primaryContainer: Colors.transparent,
+          primary: context.colors.primary,
+          onPrimary: context.colors.onPrimary,
+          secondary: context.colors.secondary,
+          onSecondary: context.colors.onSecondary,
+          error: context.colors.error,
+          onError: context.colors.onError,
+          background: context.colors.background,
+          onBackground: context.colors.onBackground,
+          surface: context.colors.onSurface,
+          onSurface: context.colors.onSurface,
+          primaryContainer: context.colors.primaryContainer,
         ),
       );
     }
@@ -461,7 +461,7 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
         )
         .shimmer(
           duration: 1200.ms,
-          color: colors(context).textOnForeground,
+          color: context.colors.onSurface,
         );
   }
 

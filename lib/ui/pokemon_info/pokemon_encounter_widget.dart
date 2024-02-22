@@ -5,7 +5,6 @@ import '../../../api/models/pokemon/pokemon.dart';
 import '../../../api/models/pokemon/pokemon_resource.dart';
 import '../../../extensions/build_context_extension.dart';
 import '../../../extensions/iterable_extension.dart';
-import '../../../theme/base_theme.dart';
 import '../../../theme/poke_app_text.dart';
 import '../../api/models/pokemon/encounter.dart';
 import '../../api/models/pokemon/encounter_slot.dart';
@@ -135,9 +134,7 @@ class _PokemonEncounterWidgetState extends State<PokemonEncounterWidget> {
       ),
       child: Text(
         context.strings.encounters,
-        style: PokeAppText.subtitle3Style.copyWith(
-          color: colors(context).textOnForeground,
-        ),
+        style: PokeAppText.subtitle3Style,
       ),
     );
   }
@@ -149,9 +146,7 @@ class _PokemonEncounterWidgetState extends State<PokemonEncounterWidget> {
     final encounterLabel = encounter.pokemon_v2_version.normalizeName();
     return Text(
       encounterLabel.isNotEmpty ? encounterLabel : context.strings.unknownVersion,
-      style: PokeAppText.subtitle4Style.copyWith(
-        color: colors(context).textOnForeground,
-      ),
+      style: PokeAppText.subtitle4Style,
     );
   }
 
@@ -248,9 +243,7 @@ class _PokemonEncounterWidgetState extends State<PokemonEncounterWidget> {
       ),
       child: Text(
         context.strings.encounters,
-        style: PokeAppText.subtitle4Style.copyWith(
-          color: colors(context).textOnForeground,
-        ),
+        style: PokeAppText.subtitle4Style,
       ),
     );
   }

@@ -2,7 +2,7 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 
 import '../../dependency_injection_container.dart';
-import '../../theme/base_theme.dart';
+import '../../extensions/build_context_extension.dart';
 import '../../theme/poke_app_text.dart';
 import 'view_models/expansion_card_state_view_model.dart';
 
@@ -62,12 +62,7 @@ class _ExpansionCardState extends State<ExpansionCard> with TickerProviderStateM
       stream: _expansionCardStateViewModel.isExpandedStateStream,
       builder: (context, snapshot) {
         final _isExpanded = snapshot.data ?? false;
-        return Theme(
-          data: ThemeData(
-            cardColor: colors(context).cardBackground,
-          ),
-          child: _buildCard(_isExpanded),
-        );
+        return _buildCard(_isExpanded);
       },
     );
   }
@@ -147,9 +142,7 @@ class _ExpansionCardState extends State<ExpansionCard> with TickerProviderStateM
     return Flexible(
       child: Text(
         widget.title ?? '',
-        style: PokeAppText.subtitle3Style.copyWith(
-          color: colors(context).textOnForeground,
-        ),
+        style: PokeAppText.subtitle3Style,
       ),
     );
   }
@@ -160,9 +153,7 @@ class _ExpansionCardState extends State<ExpansionCard> with TickerProviderStateM
         padding: const EdgeInsets.only(top: 8.0),
         child: Text(
           widget.subtitle ?? '',
-          style: PokeAppText.body4Style.copyWith(
-            color: colors(context).textOnForeground,
-          ),
+          style: PokeAppText.body4Style,
         ),
       ),
     );
@@ -174,7 +165,7 @@ class _ExpansionCardState extends State<ExpansionCard> with TickerProviderStateM
       child: IconButton(
         icon: Icon(
           Icons.keyboard_arrow_down,
-          color: colors(context).textOnForeground,
+          color: context.colors.onSurface,
         ),
         onPressed: () {
           if (_isExpanded) {

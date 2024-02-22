@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../extensions/build_context_extension.dart';
-import '../theme/base_theme.dart';
 import 'pokemon_list/pokemon_list_view.dart';
 import 'whos_that_pokemon/whos_that_pokemon_view.dart';
 
@@ -66,7 +65,7 @@ class _AppShellState extends State<AppShell> {
       icon: Image.asset(
         imagePath,
         height: currentIndex == index ? 42 : 38,
-        color: colors(context).textOnForeground.withOpacity(
+        color: context.colors.onSurface.withOpacity(
               currentIndex == index ? 1.0 : 0.5,
             ),
         fit: BoxFit.fitHeight,

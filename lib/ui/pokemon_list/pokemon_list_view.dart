@@ -10,7 +10,6 @@ import '../../api/models/pokemon/pokemon.dart';
 import '../../api/models/pokemon/pokemon_type.dart';
 import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
-import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import '../pokemon_filter/filter_view_holder.dart';
 import '../shared_widgets/error_widget.dart' as ew;
@@ -214,21 +213,17 @@ class _PokemonListViewState extends State<PokemonListView> {
         children: [
           Text(
             context.strings.error_getting_page,
-            style: PokeAppText.body4Style.copyWith(
-              color: colors(context).textOnForeground,
-            ),
+            style: PokeAppText.body4Style,
           ),
           const SizedBox(
             height: 4,
           ),
           RoundedButton(
             label: context.strings.retry,
-            textStyle: PokeAppText.body4Style.copyWith(
-              color: colors(context).textOnForeground,
-            ),
-            outlineColor: colors(context).warning,
+            textStyle: PokeAppText.body4Style,
+            outlineColor: context.colors.error,
             isFilled: true,
-            fillColor: colors(context).cardBackground,
+            fillColor: context.colors.onPrimary,
             onPressed: onTryAgain,
           ),
         ],

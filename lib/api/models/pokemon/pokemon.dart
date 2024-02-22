@@ -6,6 +6,7 @@ import 'package:built_value/serializer.dart';
 import '../../serializers/serializers.dart';
 import 'encounter.dart';
 import 'pokemon_ability_holder.dart';
+import 'pokemon_cries.dart';
 import 'pokemon_form_with_version_group.dart';
 import 'pokemon_move_holder.dart';
 import 'pokemon_species_holder.dart';
@@ -30,6 +31,8 @@ abstract class Pokemon implements Built<Pokemon, PokemonBuilder> {
   double? get pokemon_species_id;
 
   double? get base_experience;
+
+  BuiltList<PokemonCries> get pokemon_v2_pokemoncries;//Uint8List.fromList(File(cries.first).readAsBytesSync())
 
   BuiltList<TypeDataHolder> get pokemon_v2_pokemontypes;
 

@@ -10,7 +10,6 @@ import '../../extensions/build_context_extension.dart';
 import '../../extensions/iterable_extension.dart';
 import '../../extensions/media_query_context_extension.dart';
 import '../../flavors.dart';
-import '../../theme/base_theme.dart';
 import '../pokemon_evolutions/pokemon_evolution_view.dart';
 import '../pokemon_filter/filter_view_holder.dart';
 import '../pokemon_forms/pokemon_forms_view.dart';
@@ -54,16 +53,22 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
   late final _tabBarController = TabController(length: 5, vsync: this);
   final key = GlobalKey<NestedScrollViewState>();
 
-  Color get primaryColor => pokemonDetailArguments.colorScheme?.primary ?? PokemonType.getTypeForId(pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes.firstOrNull()?.pokemon_v2_type?.id ?? 0).color;
-  Color get secondaryColor => pokemonDetailArguments.colorScheme?.primaryContainer ?? PokemonType.getTypeForId(pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes.secondOrNull()?.pokemon_v2_type?.id ?? 0).color;
+  Color get primaryColor =>
+      pokemonDetailArguments.colorScheme?.primary ??
+      PokemonType.getTypeForId(
+              pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes.firstOrNull()?.pokemon_v2_type?.id ?? 0)
+          .color;
+
+  Color get secondaryColor =>
+      pokemonDetailArguments.colorScheme?.primaryContainer ??
+      PokemonType.getTypeForId(
+              pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes.secondOrNull()?.pokemon_v2_type?.id ?? 0)
+          .color;
 
   @override
   void initState() {
     super.initState();
-    _filterViewModel.filters.add([
-      ...PokemonType.filters,
-      ...DamageType.filters
-    ]);
+    _filterViewModel.filters.add([...PokemonType.filters, ...DamageType.filters]);
     _openPokemonCountViewModel.increment();
     _tabBarController.addListener(
       _tabBarListener,
@@ -111,7 +116,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
                 ];
               },
               body: Container(
-                color: secondaryColor,
+                color: context.colors.background,
                 child: Stack(
                   children: [
                     Positioned.fill(
@@ -166,62 +171,48 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
   }
 
   Widget _buildPokemonDetailBody() {
-    final tabBarTopPadding = 16 + context.statusBarHeight;
     return ViewConstraint(
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: colors(context).cardBackground,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(
-                top: tabBarTopPadding,
-                bottom: 16,
-              ),
-              child: _buildTabBar(context),
-            ),
-            Expanded(
-              child: _buildTabBarView(),
-            ),
-          ],
-        ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: _buildTabBar(context),
+          ),
+          Expanded(
+            child: _buildTabBarView(),
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildTabBarView() {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: colors(context).foreground,
-      ),
-      child: TabBarView(
-        controller: _tabBarController,
-        children: [
-          PokemonInfoView(
-            pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
-            primaryColor: primaryColor,
-            secondaryColor: secondaryColor,
-          ),
-          PokemonStatsView(
-            pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
-            primaryColor: primaryColor,
-            secondaryColor: secondaryColor,
-          ),
-          PokemonEvolutionView(
-            pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
-          ),
-          PokemonFormsView(
-            pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
-          ),
-          PokemonMovesView(
-            pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
-            filterViewModel: _filterViewModel,
-          ),
-        ],
-      ),
+    return TabBarView(
+      controller: _tabBarController,
+      children: [
+        PokemonInfoView(
+          pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
+          primaryColor: primaryColor,
+          secondaryColor: secondaryColor,
+        ),
+        PokemonStatsView(
+          pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
+          primaryColor: primaryColor,
+          secondaryColor: secondaryColor,
+        ),
+        PokemonEvolutionView(
+          pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
+        ),
+        PokemonFormsView(
+          pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
+        ),
+        PokemonMovesView(
+          pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
+          filterViewModel: _filterViewModel,
+        ),
+      ],
     );
   }
 
@@ -231,7 +222,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
       width: double.infinity,
       child: Center(
         child: TabBar(
-          dividerColor: colors(context).cardBackground,
+          dividerColor: Colors.transparent,
           controller: _tabBarController,
           isScrollable: MediaQuery.of(context).isLargeScreen ? false : true,
           padding: const EdgeInsets.symmetric(
@@ -243,11 +234,12 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
             top: 2,
           ),
           indicator: BoxDecoration(
-            borderRadius: BorderRadius.circular(90), // Creates border
+            borderRadius: BorderRadius.circular(8), // Creates border
             color: primaryColor,
           ),
           indicatorSize: TabBarIndicatorSize.tab,
-          unselectedLabelColor: colors(context).textOnForeground,
+          unselectedLabelColor: context.colors.onSurface,
+          labelColor: context.colors.onPrimary,
           tabs: [
             Tab(
               text: context.strings.info.toUpperCase(),

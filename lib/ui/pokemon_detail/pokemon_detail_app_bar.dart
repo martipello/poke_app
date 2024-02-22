@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../api/models/pokemon/pokemon.dart';
-import '../../theme/base_theme.dart';
+import '../../extensions/build_context_extension.dart';
 import '../settings/settings.dart';
 import '../shared_widgets/clipped_app_bar.dart';
 import '../shared_widgets/type_chip.dart';
@@ -73,7 +73,7 @@ class _PokemonDetailAppBarState extends State<PokemonDetailAppBar> with TickerPr
       child: SliverAppBar(
         pinned: false,
         expandedHeight: kExpandedHeight,
-        backgroundColor: colors(context).cardBackground,
+        surfaceTintColor: Colors.transparent,
         titleSpacing: 0,
         title: ClippedAppBar(
           menuButton: _buildMenuButton(),
@@ -102,7 +102,7 @@ class _PokemonDetailAppBarState extends State<PokemonDetailAppBar> with TickerPr
     return IconButton(
       icon: Icon(
         Icons.more_vert_rounded,
-        color: colors(context).cardBackground,
+        color: context.colors.onSurface,
       ),
       onPressed: () {
         Navigator.of(context).pushNamed(
@@ -128,38 +128,27 @@ class _PokemonDetailAppBarState extends State<PokemonDetailAppBar> with TickerPr
         ViewConstraint(
           child: Align(
             alignment: Alignment.bottomCenter,
-            child: Theme(
-              data: ThemeData(
-                cardTheme: _buildCardTheme(),
-              ),
-              child: const Card(
-                child: SizedBox(
-                  height: kDetailAppBarCardBackgroundHeight,
-                  width: double.infinity,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: context.colors.surface,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(48),
+                  topRight: Radius.circular(48),
                 ),
+              ),
+              child: const SizedBox(
+                height: kDetailAppBarCardBackgroundHeight,
+                width: double.infinity,
               ),
             ),
           ),
         ),
         PokemonDetailHeader(
           pokemon: widget.pokemon,
+          primaryColor: widget.primaryColor,
         ),
       ],
     );
   }
 
-  CardTheme _buildCardTheme() {
-    return CardTheme(
-      color: colors(context).cardBackground,
-      clipBehavior: Clip.hardEdge,
-      elevation: 4,
-      margin: EdgeInsets.zero,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(48),
-          topRight: Radius.circular(48),
-        ),
-      ),
-    );
-  }
 }

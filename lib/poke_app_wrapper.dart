@@ -12,8 +12,6 @@ import 'firebase_options.dart';
 import 'in_app_purchases/view_models/in_app_purchase_view_model.dart';
 import 'poke_app.dart';
 import 'services/theme_service.dart';
-import 'theme/base_theme.dart';
-import 'theme/poke_app_theme.dart';
 
 // ignore_for_file: avoid_classes_with_only_static_members
 class PokeAppWrapper {
@@ -51,15 +49,8 @@ class PokeAppWrapper {
             stream: themeService.isDarkModeStream,
             builder: (context, snapshot) {
               final isDarkMode = snapshot.data == true;
-              return BaseTheme(
-                appTheme: isDarkMode ? pokeAppDarkTheme : pokeAppTheme,
-                child: Builder(
-                  builder: (context) {
-                    return PokeApp(
-                      theme: BaseTheme.of(context),
-                    );
-                  },
-                ),
+              return PokeApp(
+                themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
               );
             },
           ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../extensions/build_context_extension.dart';
-import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 
 const kClearFilterHeight = 48.0;
@@ -42,7 +41,7 @@ class ClearFilter extends StatelessWidget {
             child: Text(
               context.strings.clearFilters,
               style: PokeAppText.body3Style.copyWith(
-                color: isOnDarkBackground ? colors(context).textOnPrimary : colors(context).textOnForeground,
+                color: isOnDarkBackground ? context.colors.onPrimary : context.colors.onSurface,
               ),
             ),
           ),

@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../extensions/build_context_extension.dart';
 import '../../flavors.dart';
-import '../../theme/base_theme.dart';
 
 const kDebugAndroidInterstitialAdUnitId = 'ca-app-pub-3940256099942544/1033173712';
 const kIOSInterstitialAdUnitId = 'ca-app-pub-1989939591379723/4626800281';
@@ -33,7 +33,7 @@ class GoogleAdsViewModel {
               : kAndroidAdUnitId,
       nativeTemplateStyle: NativeTemplateStyle(
         templateType: TemplateType.medium,
-        mainBackgroundColor: colors(context).cardBackground,
+        mainBackgroundColor: context.colors.onSurface,
         cornerRadius: 16.0,
         callToActionTextStyle: _createNativeTemplateTextStyle(context),
         primaryTextStyle: _createNativeTemplateTextStyle(context),
@@ -97,8 +97,8 @@ class GoogleAdsViewModel {
     BuildContext context,
   ) {
     return NativeTemplateTextStyle(
-      textColor: colors(context).textOnForeground,
-      backgroundColor: colors(context).cardBackground,
+      textColor: context.colors.onSurface,
+      backgroundColor: context.colors.onSurface,
       style: NativeTemplateFontStyle.normal,
       size: 16.0,
     );

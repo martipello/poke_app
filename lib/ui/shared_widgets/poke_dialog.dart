@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/base_theme.dart';
+import '../../extensions/build_context_extension.dart';
 import '../../theme/poke_app_text.dart';
 
 extension PokeDialogShow on PokeDialog {
@@ -38,7 +38,6 @@ class PokeDialog extends StatelessWidget {
     return WillPopScope(
       onWillPop: () async => isDismissible,
       child: Dialog(
-        backgroundColor: colors(context).cardBackground,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(12),
@@ -96,9 +95,7 @@ class PokeDialog extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 16.0),
                   child: Text(
                     title!,
-                    style: PokeAppText.subtitle1Style.copyWith(
-                      color: colors(context).textOnPrimary,
-                    ),
+                    style: PokeAppText.subtitle1Style,
                   ),
                 )
               : const SizedBox(),
@@ -141,7 +138,7 @@ class PokeDialog extends StatelessWidget {
         ),
         icon: Icon(
           Icons.close,
-          color: colors(context).textOnForeground,
+          color: context.colors.onSurface,
         ),
         onPressed: () {
           Navigator.of(context).pop();
@@ -196,9 +193,7 @@ class PokeDialog extends StatelessWidget {
       onPressed: action.actionVoidCallback,
       child: Text(
         action.actionText,
-        style: PokeAppText.body3Style.copyWith(
-          color: colors(context).textOnForeground,
-        ),
+        style: PokeAppText.body3Style,
         textAlign: TextAlign.end,
       ),
     );

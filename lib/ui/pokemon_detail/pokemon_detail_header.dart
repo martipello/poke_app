@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 
 import '../../api/models/pokemon/pokemon.dart';
 import '../../api/models/pokemon/pokemon_type.dart';
@@ -7,7 +8,6 @@ import '../../extensions/build_context_extension.dart';
 import '../../extensions/pokemon_extension.dart';
 import '../../extensions/string_extension.dart';
 import '../../extensions/type_data_extension.dart';
-import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import '../shared_widgets/chip_group.dart';
 import '../shared_widgets/pokemon_image.dart';
@@ -20,11 +20,14 @@ class PokemonDetailHeader extends StatelessWidget {
   PokemonDetailHeader({
     Key? key,
     required this.pokemon,
+    required this.primaryColor,
   }) : super(key: key);
 
   final Pokemon pokemon;
+  final Color primaryColor;
 
   late final cacheNetworkImageProvider = CachedNetworkImageProvider(createImageUrl(pokemon.id ?? 0));
+  late final player = AudioPlayer()..setUrl(createAudioUrl(pokemon.id ?? 0));
 
   @override
   Widget build(BuildContext context) {
@@ -59,14 +62,40 @@ class PokemonDetailHeader extends StatelessWidget {
             _buildSpeciesName(context),
             _buildSmallMargin,
             _buildPokemonTypes(),
-            _buildSmallMargin,
-            _buildGeneration(context),
-            _buildSmallMargin,
+            _buildMediumMargin,
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildHeight(context),
-                _buildMediumMargin,
-                _buildWeight(context),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    _buildGeneration(context),
+                    _buildSmallMargin,
+                    Row(
+                      children: [
+                        _buildHeight(context),
+                        _buildMediumMargin,
+                        _buildWeight(context),
+                      ],
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: FloatingActionButton(
+                    backgroundColor: primaryColor,
+                    onPressed: () {
+                      player.play();
+                    },
+                    child: Icon(
+                      Icons.play_arrow,
+                      color: context.colors.onPrimary,
+                    ),
+                  ),
+                ),
               ],
             ),
           ],
@@ -86,15 +115,15 @@ class PokemonDetailHeader extends StatelessWidget {
       colorScheme: ColorScheme(
         brightness: Brightness.light,
         primary: Colors.transparent,
-        onPrimary: colors(context).textOnForeground,
+        onPrimary: context.colors.onSurface,
         secondary: Colors.transparent,
-        onSecondary: colors(context).textOnForeground,
+        onSecondary: context.colors.onSurface,
         error: Colors.transparent,
-        onError: colors(context).textOnForeground,
+        onError: context.colors.onSurface,
         background: Colors.transparent,
-        onBackground: colors(context).textOnForeground,
+        onBackground: context.colors.onSurface,
         surface: Colors.transparent,
-        onSurface: colors(context).textOnForeground,
+        onSurface: context.colors.onSurface,
         primaryContainer: Colors.transparent,
       ),
     );
@@ -106,9 +135,7 @@ class PokemonDetailHeader extends StatelessWidget {
     final pokemonName = pokemon.name ?? context.strings.unknownPokemon;
     return Text(
       pokemonName.capitalize(),
-      style: PokeAppText.title1Style.copyWith(
-        color: colors(context).textOnForeground,
-      ),
+      style: PokeAppText.title1Style,
     );
   }
 
@@ -118,9 +145,7 @@ class PokemonDetailHeader extends StatelessWidget {
     final pokemonId = pokemon.id ?? '??';
     return Text(
       '#${pokemonId.toString()}',
-      style: PokeAppText.subtitle4Style.copyWith(
-        color: colors(context).textOnForeground,
-      ),
+      style: PokeAppText.subtitle4Style,
     );
   }
 
@@ -131,9 +156,7 @@ class PokemonDetailHeader extends StatelessWidget {
         pokemon.pokemon_v2_pokemonspecy?.pokemon_v2_pokemonspeciesnames.first.genus ?? 'Unknown species';
     return Text(
       speciesName.capitalize(),
-      style: PokeAppText.title4Style.copyWith(
-        color: colors(context).textOnForeground,
-      ),
+      style: PokeAppText.title4Style,
     );
   }
 
@@ -165,16 +188,12 @@ class PokemonDetailHeader extends StatelessWidget {
       children: [
         Text(
           context.strings.generationLabel,
-          style: PokeAppText.body3Style.copyWith(
-            color: colors(context).textOnForeground,
-          ),
+          style: PokeAppText.body3Style,
         ),
         _buildExtraSmallMedium,
         Text(
           pokemonGenerationId,
-          style: PokeAppText.body4Style.copyWith(
-            color: colors(context).textOnForeground,
-          ),
+          style: PokeAppText.body4Style,
         ),
       ],
     );
@@ -188,16 +207,12 @@ class PokemonDetailHeader extends StatelessWidget {
       children: [
         Text(
           context.strings.heightLabel,
-          style: PokeAppText.body3Style.copyWith(
-            color: colors(context).textOnForeground,
-          ),
+          style: PokeAppText.body3Style,
         ),
         _buildExtraSmallMedium,
         Text(
           pokemonHeight,
-          style: PokeAppText.body4Style.copyWith(
-            color: colors(context).textOnForeground,
-          ),
+          style: PokeAppText.body4Style,
         ),
       ],
     );
@@ -211,16 +226,12 @@ class PokemonDetailHeader extends StatelessWidget {
       children: [
         Text(
           context.strings.weightLabel,
-          style: PokeAppText.body3Style.copyWith(
-            color: colors(context).textOnForeground,
-          ),
+          style: PokeAppText.body3Style,
         ),
         _buildExtraSmallMedium,
         Text(
           pokemonWeight,
-          style: PokeAppText.body4Style.copyWith(
-            color: colors(context).textOnForeground,
-          ),
+          style: PokeAppText.body4Style,
         ),
       ],
     );
