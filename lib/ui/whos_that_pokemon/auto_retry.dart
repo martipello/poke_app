@@ -18,6 +18,12 @@ class AutoRetry extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SwitchListTile.adaptive(
+      activeColor: Colors.blue.shade700,
+      inactiveThumbColor: Colors.blue.shade700,
+      activeTrackColor: Colors.yellow,
+      inactiveTrackColor: Colors.yellow,
+      trackOutlineColor: MaterialStateProperty.all(Colors.yellow),
+      thumbColor: MaterialStateProperty.all(Colors.blue.shade700),
       value: isAutoRetry,
       onChanged: onChanged,
       title: _buildThreeDScoreText('Auto Retry'),

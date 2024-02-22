@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/base_theme.dart';
+import '../../extensions/build_context_extension.dart';
 
 class PokemonExpansionTile extends StatelessWidget {
   const PokemonExpansionTile({
@@ -44,8 +44,8 @@ class PokemonExpansionTile extends StatelessWidget {
               : EdgeInsets.zero,
           child: title,
         ),
-        collapsedIconColor: colors(context).textOnForeground,
-        iconColor: colors(context).textOnForeground,
+        collapsedIconColor: context.colors.onSurface,
+        iconColor: context.colors.onSurface,
         subtitle: subtitle,
         children: children,
       ),

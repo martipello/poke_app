@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../extensions/build_context_extension.dart';
-import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import 'map_page.dart';
 
@@ -45,7 +44,7 @@ class OpenLocationButton extends StatelessWidget {
               children: [
                 Icon(
                   Icons.location_on_outlined,
-                  color: colors(context).link,
+                  color: context.additionalColors.link,
                   size: 16,
                 ),
                 const SizedBox(
@@ -55,7 +54,7 @@ class OpenLocationButton extends StatelessWidget {
                   child: Text(
                     context.strings.openLocationButtonLabel,
                     style: PokeAppText.body3Style.copyWith(
-                      color: colors(context).link,
+                      color: context.additionalColors.link,
                     ),
                   ),
                 ),

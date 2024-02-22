@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../extensions/build_context_extension.dart';
 import '../../extensions/media_query_context_extension.dart';
-import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import 'view_constraint.dart';
 
@@ -40,9 +39,7 @@ class NoResults extends StatelessWidget {
                 ),
                 child: Text(
                   emptyMessage ?? context.strings.emptyMessage,
-                  style: PokeAppText.body1Style.copyWith(
-                    color: colors(context).textOnForeground,
-                  ),
+                  style: PokeAppText.body1Style,
                   textAlign: TextAlign.center,
                 ),
               ),

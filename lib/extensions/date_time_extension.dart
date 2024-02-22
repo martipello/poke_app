@@ -23,7 +23,7 @@ extension DateTimeExtension on DateTime? {
 
   String dayMonthYearFormat() {
     if (this != null) {
-      return DateFormat("dd/MM/yy").format(this!);
+      return DateFormat('dd/MM/yy').format(this!);
     }
     return '';
   }

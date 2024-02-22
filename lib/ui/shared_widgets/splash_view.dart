@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 
 import '../../dependency_injection_container.dart';
-import '../../theme/base_theme.dart';
+import '../../extensions/build_context_extension.dart';
 import '../app_shell.dart';
 import 'view_models/spash_view_model.dart';
 
@@ -78,7 +78,7 @@ class _SplashViewState extends State<SplashView> with SingleTickerProviderStateM
         centerAlignment: Alignment.bottomCenter,
         child: DecoratedBox(
           decoration: BoxDecoration(
-            color: colors(context).cardBackground,
+            color: context.colors.surface,
           ),
         ),
       ),

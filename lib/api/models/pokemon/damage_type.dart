@@ -7,7 +7,7 @@ enum DamageType implements FilterType {
   physical(
     2,
     'physical',
-    Color(0xFFCA2212),
+    Color(0xFFfe4d01),
     'assets/images/physical.png',
   ),
   special(

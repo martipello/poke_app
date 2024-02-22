@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../poke_app.dart';
+import '../theme/theme.g.dart';
 import 'media_query_context_extension.dart';
 
 extension BuildContextExt on BuildContext {
@@ -23,6 +25,12 @@ extension BuildContextExt on BuildContext {
   AppLocalizations get strings => AppLocalizations.of(this)!;
 
   dynamic get routeArguments => ModalRoute.of(this)?.settings.arguments;
+
+  ColorScheme get colors => Theme.of(this).colorScheme;
+
+  AdditionalColors get additionalColors => AdditionalColorsWidget.of(this).additionalColors;
+
+  TextTheme get text => Theme.of(this).textTheme;
 
   void openKeyBoard(FocusNode focusNode) {
     FocusScope.of(this).requestFocus(focusNode);

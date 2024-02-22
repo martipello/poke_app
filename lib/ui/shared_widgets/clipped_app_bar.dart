@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import '../../theme/base_theme.dart';
+import '../../extensions/build_context_extension.dart';
 import '../../utils/irregular_trapezium_clipper.dart';
 
 class ClippedAppBar extends StatelessWidget {
@@ -57,7 +57,7 @@ class ClippedAppBar extends StatelessWidget {
       child: IconButton(
         icon: Icon(
           Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back,
-          color: colors(context).cardBackground,
+          color: context.colors.surface,
         ),
         onPressed: onBackTap,
       ),

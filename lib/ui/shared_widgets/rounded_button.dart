@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/base_theme.dart';
+import '../../extensions/build_context_extension.dart';
 import '../../theme/poke_app_text.dart';
 import 'loading_widget.dart';
 
@@ -120,21 +120,21 @@ class RoundedButton extends StatelessWidget {
 
   Color _getFillColor(BuildContext context) {
     if (isFilled && onPressed != null) {
-      return fillColor ?? colors(context).secondary;
+      return fillColor ?? context.colors.secondary;
     } else if (!isFilled && onPressed != null) {
-      return colors(context).textOnSecondary;
+      return context.colors.onSecondary;
     } else if (!isFilled && onPressed == null) {
-      return colors(context).textOnSecondary;
+      return context.colors.onSecondary;
     } else {
-      return colors(context).foreground;
+      return context.colors.surface;
     }
   }
 
   Color _getOutlineColor(BuildContext context) {
     if (onPressed != null) {
-      return outlineColor ?? fillColor ?? colors(context).secondary;
+      return outlineColor ?? fillColor ?? context.colors.secondary;
     } else {
-      return colors(context).foreground;
+      return context.colors.surface;;
     }
   }
 
@@ -144,25 +144,25 @@ class RoundedButton extends StatelessWidget {
       return myTextStyle;
     }
     if (isFilled && onPressed != null) {
-      return PokeAppText.subtitle4Style.copyWith(color: colors(context).textOnSecondary);
+      return PokeAppText.subtitle4Style.copyWith(color: context.colors.onSecondary);
     } else if (!isFilled && onPressed != null) {
-      return PokeAppText.subtitle4Style.copyWith(color: colors(context).secondary);
+      return PokeAppText.subtitle4Style.copyWith(color: context.colors.secondary);
     } else if (isFilled && onPressed == null) {
-      return PokeAppText.subtitle4Style.copyWith(color: colors(context).textOnForeground);
+      return PokeAppText.subtitle4Style.copyWith(color: context.colors.onSurface);
     } else {
-      return PokeAppText.subtitle4Style.copyWith(color: colors(context).foreground);
+      return PokeAppText.subtitle4Style.copyWith(color: context.colors.surface);
     }
   }
 
   Color _getLoadingColor(BuildContext context) {
     if (isFilled && onPressed != null) {
-      return colors(context).textOnSecondary;
+      return context.colors.onSecondary;
     } else if (!isFilled && onPressed != null) {
-      return colors(context).secondary;
+      return context.colors.secondary;
     } else if (isFilled && onPressed == null) {
-      return colors(context).textOnForeground;
+      return context.colors.onSurface;
     } else {
-      return colors(context).foreground;
+      return context.colors.surface;
     }
   }
 

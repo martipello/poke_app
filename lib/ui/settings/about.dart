@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../extensions/build_context_extension.dart';
-import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import '../shared_widgets/clipped_app_bar.dart';
 import '../shared_widgets/poke_divider.dart';
@@ -167,9 +166,7 @@ class _AboutState extends State<About> {
   ) {
     return Text(
       label,
-      style: PokeAppText.subtitle3Style.copyWith(
-        color: colors(context).textOnForeground,
-      ),
+      style: PokeAppText.subtitle3Style,
     );
   }
 
@@ -179,9 +176,7 @@ class _AboutState extends State<About> {
   ) {
     return Text(
       label,
-      style: PokeAppText.body3Style.copyWith(
-        color: colors(context).textOnForeground,
-      ),
+      style: PokeAppText.body3Style,
     );
   }
 
@@ -210,18 +205,14 @@ class _AboutState extends State<About> {
       children: [
         Text(
           label,
-          style: PokeAppText.subtitle4Style.copyWith(
-            color: colors(context).textOnForeground,
-          ),
+          style: PokeAppText.subtitle4Style,
         ),
         const SizedBox(
           height: 8,
         ),
         Text(
           licenceText,
-          style: PokeAppText.captionStyle.copyWith(
-            color: colors(context).textOnForeground,
-          ),
+          style: PokeAppText.captionStyle,
         ),
         const SizedBox(
           height: 16,
