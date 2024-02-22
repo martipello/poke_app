@@ -6,12 +6,9 @@ import '../../ads/native_ad.dart';
 import '../../ads/view_models/google_ads_view_model.dart';
 import '../../api/models/api_response.dart';
 import '../../api/models/news/article.dart';
-import '../../api/models/pokemon/stat.dart';
 import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
-import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
-import '../pokemon_filter/filter_view_holder.dart';
 import '../pokemon_list/pokemon_tile.dart';
 import '../pokemon_list/search_app_bar.dart';
 import '../pokemon_list/view_models/filter_view_model.dart';
@@ -190,9 +187,7 @@ class _PokemonNewsListViewState extends State<PokemonNewsListView> {
         children: [
           Text(
             context.strings.error_getting_page,
-            style: PokeAppText.body4Style.copyWith(
-              color: colors(context).textOnForeground,
-            ),
+            style: PokeAppText.body4Style,
           ),
           const SizedBox(
             height: 4,
@@ -200,11 +195,11 @@ class _PokemonNewsListViewState extends State<PokemonNewsListView> {
           RoundedButton(
             label: context.strings.retry,
             textStyle: PokeAppText.body4Style.copyWith(
-              color: colors(context).textOnForeground,
+              color: context.colors.onSurface,
             ),
-            outlineColor: colors(context).warning,
+            outlineColor: context.colors.error,
             isFilled: true,
-            fillColor: colors(context).cardBackground,
+            fillColor: context.colors.surface,
             onPressed: onTryAgain,
           ),
         ],

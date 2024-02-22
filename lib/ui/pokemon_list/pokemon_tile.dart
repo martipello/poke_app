@@ -8,7 +8,6 @@ import '../../extensions/build_context_extension.dart';
 import '../../extensions/media_query_context_extension.dart';
 import '../../extensions/string_extension.dart';
 import '../../extensions/type_data_extension.dart';
-import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import '../pokemon_detail/pokemon_detail_page.dart';
 import '../shared_widgets/chip_group.dart';
@@ -131,11 +130,8 @@ class _PokemonTileState extends State<PokemonTile> {
   Widget _buildPokemonInfo(String speciesName) {
     final pokemonName = widget.pokemon.name ?? context.strings.unknownPokemon;
     final nameTextStyle = widget.showImage
-        ? PokeAppText.subtitle1Style.copyWith(
-            color: colors(context).textOnForeground,
-          )
+        ? PokeAppText.subtitle1Style
         : PokeAppText.subtitle1Style.copyWith(
-            color: colors(context).textOnForeground,
             height: 1.2,
           );
     return Column(
@@ -149,9 +145,7 @@ class _PokemonTileState extends State<PokemonTile> {
         if (speciesName.isNotEmpty)
           Text(
             speciesName,
-            style: PokeAppText.body4Style.copyWith(
-              color: colors(context).textOnForeground,
-            ),
+            style: PokeAppText.body4Style,
           ),
       ],
     );
@@ -164,7 +158,6 @@ class _PokemonTileState extends State<PokemonTile> {
       child: Text(
         '#${pokemonId.toString()}',
         style: PokeAppText.body6Style.copyWith(
-          color: colors(context).textOnForeground,
           height: 1.2,
         ),
       ),

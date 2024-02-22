@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/base_theme.dart';
+import '../../extensions/build_context_extension.dart';
 
 class LoadingWidget extends StatelessWidget {
   const LoadingWidget({
@@ -21,7 +21,7 @@ class LoadingWidget extends StatelessWidget {
               valueColor,
             )
           : AlwaysStoppedAnimation(
-              colors(context).secondary,
+              context.colors.primary,
             ),
     );
   }

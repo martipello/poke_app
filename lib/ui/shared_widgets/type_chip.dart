@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../api/models/filter_type.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../extensions/string_extension.dart';
-import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 
 typedef OnSelected = void Function(bool selected);
@@ -50,11 +49,6 @@ class TypeChip extends StatelessWidget {
     return SizedBox(
       height: kChipHeight + 16,
       child: Chip(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(
-            360,
-          ),
-        ),
         avatar: Image.asset(
           image,
           height: kChipHeight - 6,
@@ -62,9 +56,7 @@ class TypeChip extends StatelessWidget {
         ),
         label: Text(
           '${label.capitalize()}$labelSuffix',
-          style: PokeAppText.body4Style.copyWith(
-            color: colors(context).cardBackground,
-          ),
+          style: PokeAppText.body4Style,
         ),
         side: BorderSide(
           width: 1,
@@ -74,14 +66,12 @@ class TypeChip extends StatelessWidget {
         padding: const EdgeInsets.only(
           right: 8,
         ),
-        labelStyle: PokeAppText.body4Style.copyWith(
-          color: colors(context).cardBackground,
-        ),
+        labelStyle: PokeAppText.body4Style,
         deleteButtonTooltipMessage: context.strings.delete,
-        deleteIconColor: colors(context).cardBackground,
         onDeleted: isSelected ? onDelete : null,
-        deleteIcon: const Icon(
+        deleteIcon: Icon(
           Icons.close,
+          color: context.colors.onPrimary,
         ),
       ),
     );
@@ -102,7 +92,7 @@ class TypeChip extends StatelessWidget {
                 width: kChipHeight - 6,
               ),
         backgroundColor: color,
-        disabledColor: colors(context).cardBackground,
+        disabledColor: context.colors.surface,
         side: onSelected != null
             ? BorderSide(
                 width: 1,
@@ -116,21 +106,19 @@ class TypeChip extends StatelessWidget {
           child: Text(
             '${label.capitalize()}$labelSuffix',
             style: PokeAppText.body4Style.copyWith(
-              color: isSelected ? colors(context).textOnForeground : colors(context).cardBackground,
+              color: isSelected ? context.colors.onSurface : context.colors.surface,
             ),
           ),
         ),
         padding: const EdgeInsets.only(
           right: 8,
         ),
-        labelStyle: PokeAppText.body4Style.copyWith(
-          color: isSelected ? colors(context).textOnForeground : colors(context).cardBackground,
-        ),
+        labelStyle: PokeAppText.body4Style,
         onSelected: onSelected,
         selected: isSelected,
         showCheckmark: isSelected,
-        selectedColor: colors(context).cardBackground,
-        checkmarkColor: colors(context).textOnForeground,
+        selectedColor: context.colors.surface,
+        checkmarkColor: context.colors.onSurface,
       ),
     );
   }
@@ -145,7 +133,7 @@ class TypeChip extends StatelessWidget {
         color: color,
         borderRadius: const BorderRadius.all(
           Radius.circular(
-            90,
+            8,
           ),
         ),
       ),
@@ -170,9 +158,7 @@ class TypeChip extends StatelessWidget {
                 ),
                 child: Text(
                   label.capitalize(),
-                  style: PokeAppText.body3Style.copyWith(
-                    color: colors(context).cardBackground,
-                  ),
+                  style: PokeAppText.body3Style,
                 ),
               ),
           ],

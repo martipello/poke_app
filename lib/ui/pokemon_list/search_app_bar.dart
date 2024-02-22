@@ -8,7 +8,6 @@ import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../extensions/iterable_extension.dart';
 import '../../extensions/media_query_context_extension.dart';
-import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import '../pokemon_filter/clear_filter.dart';
 import '../settings/settings.dart';
@@ -206,10 +205,10 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
             );
           }
         },
-        icon: Icon(
+        icon: const Icon(
           Icons.arrow_back,
           size: 24,
-          color: colors(context).textOnPrimary,
+          color: Colors.white,
         ),
       ),
     );
@@ -220,9 +219,9 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
       onPressed: () {
         Navigator.of(context).pushNamed(Settings.routeName);
       },
-      icon: Icon(
+      icon: const Icon(
         Icons.more_vert_rounded,
-        color: colors(context).textOnPrimary,
+        color: Colors.white,
       ),
     );
   }
@@ -234,9 +233,9 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
           true,
         );
       },
-      icon: Icon(
+      icon: const Icon(
         Icons.search,
-        color: colors(context).textOnPrimary,
+        color: Colors.white,
       ),
     );
   }
@@ -246,15 +245,20 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
       pinned: false,
       floating: false,
       expandedHeight: 150,
-      flexibleSpace: FlexibleSpaceBar(
-        collapseMode: CollapseMode.parallax,
-        background: Padding(
-          padding: const EdgeInsets.only(top: 32),
-          child: ViewConstraint(
-            child: Image.asset(
-              'assets/images/pokemon_hero.png',
-              fit: BoxFit.cover,
-              width: MediaQuery.of(context).fullSizeImageScreenWidth,
+      flexibleSpace: DecoratedBox(
+        decoration: const BoxDecoration(
+          color: Colors.black,
+        ),
+        child: FlexibleSpaceBar(
+          collapseMode: CollapseMode.parallax,
+          background: Padding(
+            padding: const EdgeInsets.only(top: 32),
+            child: ViewConstraint(
+              child: Image.asset(
+                'assets/images/pokemon_hero.png',
+                fit: BoxFit.cover,
+                width: MediaQuery.of(context).fullSizeImageScreenWidth,
+              ),
             ),
           ),
         ),
@@ -269,7 +273,7 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
       controller: widget.searchTextController,
       maxLines: 1,
       style: PokeAppText.body4Style.copyWith(
-        color: colors(context).textOnPrimary,
+        color: Colors.white,
       ),
       decoration: _buildSearchInputDecoration(),
     );
@@ -278,9 +282,17 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
   InputDecoration _buildSearchInputDecoration() {
     return InputDecoration(
       contentPadding: EdgeInsets.zero,
+      focusColor: Colors.transparent,
+      fillColor: Colors.transparent,
       labelText: context.strings.searchByName,
       labelStyle: PokeAppText.subtitle2Style.copyWith(
-        color: colors(context).textOnPrimary,
+        color: Colors.white,
+      ),
+      hintStyle: PokeAppText.subtitle2Style.copyWith(
+        color: Colors.white,
+      ),
+      floatingLabelStyle: PokeAppText.body3Style.copyWith(
+        color: Colors.white,
       ),
       border: InputBorder.none,
       focusedBorder: InputBorder.none,
@@ -289,10 +301,10 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
       disabledBorder: InputBorder.none,
       suffixIcon: widget.searchTextController.text.isNotEmpty
           ? IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.close,
                 size: 20,
-                color: colors(context).textOnPrimary,
+                color: Colors.white,
               ),
               onPressed: () {
                 widget.searchTextController.clear();

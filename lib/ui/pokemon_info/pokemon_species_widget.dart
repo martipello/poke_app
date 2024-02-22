@@ -6,7 +6,6 @@ import '../../../api/models/pokemon/pokemon_species_holder.dart';
 import '../../../extensions/build_context_extension.dart';
 import '../../../extensions/iterable_extension.dart';
 import '../../../extensions/pokemon_species_holder_extension.dart';
-import '../../../theme/base_theme.dart';
 import '../../../theme/poke_app_text.dart';
 import '../shared_widgets/poke_divider.dart';
 import '../shared_widgets/pokemon_expansion_tile.dart';
@@ -60,9 +59,7 @@ class PokemonSpeciesWidget extends StatelessWidget {
       ),
       child: Text(
         context.strings.species,
-        style: PokeAppText.subtitle3Style.copyWith(
-          color: colors(context).textOnForeground,
-        ),
+        style: PokeAppText.subtitle3Style,
       ),
     );
   }
@@ -104,18 +101,14 @@ class PokemonSpeciesWidget extends StatelessWidget {
         children: [
           Text(
             label,
-            style: PokeAppText.body3Style.copyWith(
-              color: colors(context).textOnForeground,
-            ),
+            style: PokeAppText.body3Style,
           ),
           const SizedBox(
             width: 8,
           ),
           Text(
             value,
-            style: PokeAppText.body4Style.copyWith(
-              color: colors(context).textOnForeground,
-            ),
+            style: PokeAppText.body4Style,
           ),
         ],
       ),
@@ -207,9 +200,7 @@ class PokemonSpeciesWidget extends StatelessWidget {
               padding: eggGroup != eggGroups.firstOrNull() ? const EdgeInsets.only(top: 8) : EdgeInsets.zero,
               child: Text(
                 eggGroup.pokemon_v2_egggroup?.name ?? '',
-                style: PokeAppText.body4Style.copyWith(
-                  color: colors(context).textOnForeground,
-                ),
+                style: PokeAppText.body4Style,
               ),
             ),
           )

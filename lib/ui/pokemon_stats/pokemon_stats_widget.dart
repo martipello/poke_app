@@ -7,7 +7,6 @@ import '../../../extensions/build_context_extension.dart';
 import '../../../extensions/iterable_extension.dart';
 import '../../../extensions/stat_extension.dart';
 import '../../../theme/poke_app_text.dart';
-import '../../theme/base_theme.dart';
 import '../shared_widgets/poke_divider.dart';
 import '../shared_widgets/pokemon_table.dart';
 import 'stat_bar.dart';
@@ -38,18 +37,14 @@ class PokemonStatsWidget extends StatelessWidget {
         children: [
           Text(
             context.strings.baseStats,
-            style: PokeAppText.subtitle3Style.copyWith(
-              color: colors(context).textOnForeground,
-            ),
+            style: PokeAppText.subtitle3Style,
           ),
           _buildMediumMargin(),
           _buildPokemonStatTable(pokemonStats),
           _buildMediumMargin(),
           Text(
             '${context.strings.total} : $total',
-            style: PokeAppText.body3Style.copyWith(
-              color: colors(context).textOnForeground,
-            ),
+            style: PokeAppText.body3Style,
           ),
           _buildMediumMargin(),
           PokeDivider(),

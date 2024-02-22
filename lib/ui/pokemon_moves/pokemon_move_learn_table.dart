@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../theme/base_theme.dart';
 import '../../../theme/poke_app_text.dart';
 
 class PokemonMoveLearnTableRow {
@@ -120,9 +119,7 @@ class PokemonMoveLearnTable extends StatelessWidget {
           Flexible(
             child: Text(
               key?.trim() ?? '',
-              style: PokeAppText.body3Style.copyWith(
-                color: colors(context).textOnForeground,
-              ),
+              style: PokeAppText.body3Style,
             ),
           ),
         ],
@@ -136,9 +133,7 @@ class PokemonMoveLearnTable extends StatelessWidget {
   ) {
     return Text(
       value ?? '',
-      style: PokeAppText.subtitle4Style.copyWith(
-        color: colors(context).textOnForeground,
-      ),
+      style: PokeAppText.subtitle4Style,
     );
   }
 }

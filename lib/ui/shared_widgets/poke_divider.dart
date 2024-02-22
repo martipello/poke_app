@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/base_theme.dart';
+import '../../extensions/build_context_extension.dart';
 
 const kThicknessThick = 0.5;
 const kThicknessThin = 0.2;
@@ -21,7 +21,7 @@ class PokeDivider extends StatelessWidget {
       height: 1,
       thickness: thickness ?? kThicknessThick,
       indent: indent,
-      color: colors(context).textOnForeground,
+      color: context.colors.onSurface,
     );
   }
 }

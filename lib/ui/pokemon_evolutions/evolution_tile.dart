@@ -10,7 +10,6 @@ import '../../../extensions/iterable_extension.dart';
 import '../../../extensions/pokemon_resource_extension.dart';
 import '../../../extensions/string_extension.dart';
 import '../../../extensions/type_data_extension.dart';
-import '../../../theme/base_theme.dart';
 import '../../../theme/poke_app_text.dart';
 import '../pokemon_detail/pokemon_detail_page.dart';
 import '../shared_widgets/chip_group.dart';
@@ -309,9 +308,7 @@ class EvolutionTile extends StatelessWidget {
   ) {
     return Text(
       value,
-      style: PokeAppText.body4Style.copyWith(
-        color: colors(context).textOnForeground,
-      ),
+      style: PokeAppText.body4Style,
     );
   }
 
@@ -321,9 +318,7 @@ class EvolutionTile extends StatelessWidget {
   ) {
     return Text(
       label,
-      style: PokeAppText.body3Style.copyWith(
-        color: colors(context).textOnForeground,
-      ),
+      style: PokeAppText.body3Style,
     );
   }
 
@@ -383,16 +378,12 @@ class EvolutionTile extends StatelessWidget {
       children: [
         Text(
           pokemonName.capitalize(),
-          style: PokeAppText.subtitle1Style.copyWith(
-            color: colors(context).textOnForeground,
-          ),
+          style: PokeAppText.subtitle1Style,
         ),
         if (speciesName.isNotEmpty)
           Text(
             speciesName,
-            style: PokeAppText.body4Style.copyWith(
-              color: colors(context).textOnForeground,
-            ),
+            style: PokeAppText.body4Style,
           ),
         _buildPokemonId(context),
       ],
@@ -408,7 +399,6 @@ class EvolutionTile extends StatelessWidget {
       child: Text(
         '#${pokemonId.toString()}',
         style: PokeAppText.body6Style.copyWith(
-          color: colors(context).textOnForeground,
           height: 1.2,
         ),
       ),

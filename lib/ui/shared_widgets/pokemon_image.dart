@@ -3,15 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 import '../../api/models/pokemon/pokemon.dart';
-import '../../theme/base_theme.dart';
+import '../../extensions/build_context_extension.dart';
 
 typedef ImageErrorBuilder = Widget Function(BuildContext context, Object? object, StackTrace? stacktrace);
 
 const kDefaultImageHeight = 150.0;
 
+String createImageUrl(int id) {
+  return 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$id.png';
+}
 
-String createImageUrl(int id) { return 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$id.png'; }
-
+String createAudioUrl(int id) {
+  return 'https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/$id.ogg';
+}
 
 class PokemonImage extends StatelessWidget {
   const PokemonImage({
@@ -22,6 +26,7 @@ class PokemonImage extends StatelessWidget {
     this.maskColor,
     this.colorScheme,
     this.includeHero = true,
+    this.drawOuterCircle = true,
     this.clipBehavior = Clip.none,
   });
 
@@ -31,6 +36,7 @@ class PokemonImage extends StatelessWidget {
   final Clip clipBehavior;
   final Size? size;
   final bool includeHero;
+  final bool drawOuterCircle;
   final Color? maskColor;
 
   @override
@@ -58,6 +64,7 @@ class PokemonImage extends StatelessWidget {
   ) {
     return Stack(
       children: [
+        if (drawOuterCircle)
         _buildOuterCircle(
           imageErrorBuilder,
           colorScheme,
@@ -67,13 +74,13 @@ class PokemonImage extends StatelessWidget {
             alignment: Alignment.center,
             child: buildHeroWidget
                 ? _buildImageWithHero(
-              imageProvider,
-              imageErrorBuilder,
-            )
+                    imageProvider,
+                    imageErrorBuilder,
+                  )
                 : _buildImage(
-              imageProvider,
-              imageErrorBuilder,
-            ),
+                    imageProvider,
+                    imageErrorBuilder,
+                  ),
           ),
         ),
       ],
@@ -198,19 +205,19 @@ class PokemonImage extends StatelessWidget {
         )
         .shimmer(
           duration: 1200.ms,
-          color: colors(context).textOnForeground,
+          color: context.colors.onSurface,
         );
   }
 
   BorderRadius _buildBorderRadius() => BorderRadius.circular(180);
 
-  // @override
-  // void didUpdateWidget(covariant PokemonImage oldWidget) {
-  //   super.didUpdateWidget(oldWidget);
-  //   if (pokemon.id != oldWidget.pokemon.id) {
-  //     mainImageProvider = CachedNetworkImageProvider(
-  //       _createImageUrl(),
-  //     );
-  //   }
-  // }
+// @override
+// void didUpdateWidget(covariant PokemonImage oldWidget) {
+//   super.didUpdateWidget(oldWidget);
+//   if (pokemon.id != oldWidget.pokemon.id) {
+//     mainImageProvider = CachedNetworkImageProvider(
+//       _createImageUrl(),
+//     );
+//   }
+// }
 }

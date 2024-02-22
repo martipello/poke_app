@@ -5,7 +5,6 @@ import '../../api/models/filter_type.dart';
 import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../extensions/iterable_extension.dart';
-import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import '../pokemon_filter/clear_filter.dart';
 import '../pokemon_list/view_models/filter_view_model.dart';
@@ -62,6 +61,7 @@ class _SearchWidgetState extends State<SearchWidget> with TickerProviderStateMix
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            const SizedBox(height: 8),
             ViewConstraint(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -111,7 +111,7 @@ class _SearchWidgetState extends State<SearchWidget> with TickerProviderStateMix
           }).toList(),
           ClearFilter(
             clearFilterCallback: widget.filterViewModel.clearFilters,
-              isOnDarkBackground: false,
+            isOnDarkBackground: false,
           ),
           _buildSmallMargin,
         ],
@@ -155,7 +155,10 @@ class _SearchWidgetState extends State<SearchWidget> with TickerProviderStateMix
       child: TextField(
         controller: widget.searchTextController,
         maxLines: 1,
-        style: PokeAppText.body1Style.copyWith(color: colors(context).textOnForeground, height: 1.6),
+        style: PokeAppText.body1Style.copyWith(
+          color: context.colors.onSurface,
+          height: 1.6,
+        ),
         decoration: _buildSearchInputDecoration(),
       ),
     );
@@ -164,7 +167,10 @@ class _SearchWidgetState extends State<SearchWidget> with TickerProviderStateMix
   InputDecoration _buildSearchInputDecoration() {
     return InputDecoration(
       labelText: context.strings.searchByMoveName,
-      labelStyle: PokeAppText.body2Style.copyWith(color: colors(context).textOnForeground, height: 1),
+      labelStyle: PokeAppText.body2Style.copyWith(
+        color: context.colors.onSurface,
+        height: 1,
+      ),
       border: InputBorder.none,
       focusedBorder: InputBorder.none,
       enabledBorder: InputBorder.none,
@@ -175,7 +181,7 @@ class _SearchWidgetState extends State<SearchWidget> with TickerProviderStateMix
               icon: Icon(
                 Icons.close,
                 size: 20,
-                color: colors(context).textOnForeground,
+                color: context.colors.onSurface,
               ),
               onPressed: () {
                 widget.searchTextController.clear();

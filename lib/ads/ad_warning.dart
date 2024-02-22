@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../dependency_injection_container.dart';
+import '../extensions/build_context_extension.dart';
 import '../in_app_purchases/view_models/in_app_purchase_view_model.dart';
-import '../theme/base_theme.dart';
 import '../theme/poke_app_text.dart';
 import '../ui/shared_widgets/view_models/open_pokemon_count_view_model.dart';
 import 'view_models/google_ads_view_model.dart';
@@ -108,11 +108,11 @@ class _AdWarningState extends State<AdWarning> with TickerProviderStateMixin {
                     children: [
                       _buildAnimatedPokeball(4),
                       _mediumHorizontalMargin(),
-                      if(!_inAppPurchaseViewModel.hasPurchasedPremium)
-                      _buildWarningLabel(
-                        context,
-                        openPokemonCount,
-                      ),
+                      if (!_inAppPurchaseViewModel.hasPurchasedPremium)
+                        _buildWarningLabel(
+                          context,
+                          openPokemonCount,
+                        ),
                     ],
                   ),
                 ),
@@ -152,7 +152,7 @@ class _AdWarningState extends State<AdWarning> with TickerProviderStateMixin {
         'Ad in : ${adInCount == kInterstitialAdFrequency ? 0 : adInCount}',
         overflow: TextOverflow.ellipsis,
         style: PokeAppText.subtitle4Style.copyWith(
-          color: colors(context).text,
+          color: context.colors.surface,
         ),
       ),
     );
@@ -160,9 +160,9 @@ class _AdWarningState extends State<AdWarning> with TickerProviderStateMixin {
 
   BoxDecoration _adWarningBoxDecoration() {
     return BoxDecoration(
-      color: Colors.white,
+      color: context.colors.onSurface,
       border: Border.all(
-        color: Colors.white,
+        color: context.colors.onSurface,
       ),
       borderRadius: const BorderRadius.horizontal(
         left: Radius.circular(
@@ -192,7 +192,7 @@ class _AdWarningState extends State<AdWarning> with TickerProviderStateMixin {
       ),
     ).then(
       (value) {
-        if(mounted) {
+        if (mounted) {
           voidCallback1?.call();
           voidCallback2?.call();
         }

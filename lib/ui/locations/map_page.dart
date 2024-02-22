@@ -6,7 +6,6 @@ import '../../api/models/region/region.dart';
 import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../extensions/double_extension.dart';
-import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import '../shared_widgets/clipped_app_bar.dart';
 import '../shared_widgets/no_results.dart';
@@ -75,7 +74,7 @@ class _LocationMapPageState extends State<LocationMapPage> {
       child: Scaffold(
         body: DecoratedBox(
           decoration: BoxDecoration(
-            color: colors(context).cardBackground,
+            color: context.colors.onSurface,
           ),
           child: Stack(
             children: [
@@ -148,7 +147,7 @@ class _LocationMapPageState extends State<LocationMapPage> {
         final currentZoom = snapshot.data ?? 0;
         return Container(
           decoration: BoxDecoration(
-            color: colors(context).textOnForeground.withOpacity(0.4),
+            color: context.colors.onSurface.withOpacity(0.4),
             borderRadius: BorderRadius.circular(90),
           ),
           child: Column(
@@ -183,7 +182,7 @@ class _LocationMapPageState extends State<LocationMapPage> {
         child: Text(
           currentZoom.removeTrailingZero(),
           style: PokeAppText.subtitle2Style.copyWith(
-            color: colors(context).textOnPrimary,
+            color: context.colors.onPrimary,
           ),
         ),
       ),
@@ -201,7 +200,7 @@ class _LocationMapPageState extends State<LocationMapPage> {
           : null,
       icon: Icon(
         Icons.add,
-        color: colors(context).textOnPrimary,
+        color: context.colors.onPrimary,
       ),
     );
   }
@@ -217,7 +216,7 @@ class _LocationMapPageState extends State<LocationMapPage> {
           : null,
       icon: Icon(
         Icons.remove,
-        color: colors(context).textOnPrimary,
+        color: context.colors.onPrimary,
       ),
     );
   }

@@ -12,7 +12,6 @@ import '../../../extensions/build_context_extension.dart';
 import '../../../extensions/iterable_extension.dart';
 import '../../../extensions/string_extension.dart';
 import '../../../extensions/type_data_extension.dart';
-import '../../../theme/base_theme.dart';
 import '../../../theme/poke_app_text.dart';
 import '../pokemon_detail/pokemon_detail_page.dart';
 import '../pokemon_info/ability_tile.dart';
@@ -103,9 +102,7 @@ class FormTile extends StatelessWidget {
           ),
           child: Text(
             context.strings.abilities,
-            style: PokeAppText.subtitle3Style.copyWith(
-              color: colors(context).textOnForeground,
-            ),
+            style: PokeAppText.subtitle3Style,
           ),
         ),
         ...abilities.map(
@@ -169,9 +166,7 @@ class FormTile extends StatelessWidget {
       children: [
         Text(
           pokemonName.capitalize(),
-          style: PokeAppText.subtitle1Style.copyWith(
-            color: colors(context).textOnForeground,
-          ),
+          style: PokeAppText.subtitle1Style,
         ),
         _buildPokemonId(context),
       ],
@@ -185,7 +180,6 @@ class FormTile extends StatelessWidget {
       child: Text(
         '#${pokemonId.toString()}',
         style: PokeAppText.body6Style.copyWith(
-          color: colors(context).textOnForeground,
           height: 1.2,
         ),
       ),

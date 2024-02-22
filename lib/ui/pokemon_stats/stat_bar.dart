@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 
 import '../../api/models/pokemon/pokemon_stat.dart';
-import '../../theme/base_theme.dart';
+import '../../extensions/build_context_extension.dart';
 import '../../theme/poke_app_text.dart';
 
 class StatBar extends StatefulWidget {
@@ -68,14 +68,14 @@ class _StatBarState extends State<StatBar> {
     return FAProgressBar(
       displayText: '',
       displayTextStyle: PokeAppText.body3Style.copyWith(
-        color: colors(context).textOnPrimary,
+        color: context.colors.onPrimary,
       ),
       currentValue: value.toDouble(),
       size: 22,
       backgroundColor: widget.secondaryColor,
       progressGradient: LinearGradient(
         colors: [
-          colors(context).cardBackground.withOpacity(0.8),
+          context.colors.surface.withOpacity(0.8),
           widget.primaryColor,
         ],
       ),
