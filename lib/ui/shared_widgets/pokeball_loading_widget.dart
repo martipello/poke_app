@@ -24,14 +24,14 @@ class _PokeballLoadingWidgetState extends State<PokeballLoadingWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        height: widget.size?.height ?? 100,
-        width: widget.size?.width ?? 100,
-        child: RiveAnimation.asset(
-          _pokeballLoadingViewModel.animationDirectory,
-          controllers: [_pokeballLoadingViewModel.controller],
-        ),
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxHeight: widget.size?.height ?? 100,
+        maxWidth: widget.size?.width ?? 100,
+      ),
+      child: RiveAnimation.asset(
+        _pokeballLoadingViewModel.animationDirectory,
+        controllers: [_pokeballLoadingViewModel.controller],
       ),
     );
   }

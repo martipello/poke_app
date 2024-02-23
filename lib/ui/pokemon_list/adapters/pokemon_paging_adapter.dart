@@ -14,9 +14,12 @@ class PokemonPagingAdapter {
     this.pokemonRepository,
     this.errorHandler,
     this.languageService,
-  );
+    this.pagingController,
+  ) {
+    pagingController.addPageRequestListener(_fetchPage);
+  }
 
-  PagingController<int, Pokemon>? pagingController;
+  final PagingController<int, Pokemon> pagingController;
 
   final PokemonRepositoryGraphQl pokemonRepository;
   final LanguageService languageService;
@@ -46,10 +49,6 @@ class PokemonPagingAdapter {
     }
   }
 
-  void addPageRequestListener() {
-    pagingController?.addPageRequestListener(_fetchPage);
-  }
-
   Future<void> _fetchPage(int pageKey) async {
     if (_pokemonRequest != null) {
       try {
@@ -70,10 +69,10 @@ class PokemonPagingAdapter {
 
           if (!_hasBeenDisposed) {
             if (isLastPage) {
-              pagingController?.appendLastPage(pokemon.pokemon_v2_pokemon.toList());
+              pagingController.appendLastPage(pokemon.pokemon_v2_pokemon.toList());
             } else {
               final nextPageKey = pageKey + limit;
-              pagingController?.appendPage(pokemon.pokemon_v2_pokemon.toList(), nextPageKey);
+              pagingController.appendPage(pokemon.pokemon_v2_pokemon.toList(), nextPageKey);
             }
           }
         } else {
@@ -104,12 +103,12 @@ class PokemonPagingAdapter {
       _hasFetchedOnce = true;
       firstFetch();
     } else {
-      pagingController?.refresh();
+      pagingController.refresh();
     }
   }
 
   void retryLastRequest() {
-    pagingController?.retryLastFailedRequest();
+    pagingController.retryLastFailedRequest();
   }
 
   bool _getIsLastPage(PokemonResponse newPage) {
@@ -121,11 +120,11 @@ class PokemonPagingAdapter {
     final handledError = errorHandler.handleError(
       error,
     );
-    pagingController?.error = handledError;
+    pagingController.error = handledError;
   }
 
   void dispose() {
     _hasBeenDisposed = true;
-    pagingController?.dispose();
+    pagingController.dispose();
   }
 }

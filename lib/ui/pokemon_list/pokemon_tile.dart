@@ -50,17 +50,18 @@ class _PokemonTileState extends State<PokemonTile> {
     const kCardPadding = 32;
     final chipHeight = widget.showTypes ? kChipHeight : 0;
     final tileHeight = kPokemonTileImageHeight + chipHeight + kCardPadding + 16 + 4;
-    return FutureBuilder<ColorScheme?>(
-      future: mainImageColorViewModel.colorScheme(cacheNetworkImageProvider),
-      builder: (context, colorSchemeSnapshot) {
-        final colorScheme = colorSchemeSnapshot.data;
-        return SizedBox(
-          height: widget.showImage ? tileHeight : null,
-          width: kMaxScreenWidth,
-          child: RoundedCard(
+
+    return SizedBox(
+      height: widget.showImage ? tileHeight : null,
+      width: kMaxScreenWidth,
+      child: FutureBuilder<ColorScheme?>(
+          future: mainImageColorViewModel.colorScheme(cacheNetworkImageProvider),
+        builder: (context, colorSchemeSnapshot) {
+          final colorScheme = colorSchemeSnapshot.data;
+            return RoundedCard(
             borderColor: widget.borderColor,
             onTap: widget.onTap ??
-                () {
+                    () {
                   context.closeKeyBoard();
                   Navigator.of(context).pushNamed(
                     PokemonDetailPage.routeName,
@@ -71,9 +72,9 @@ class _PokemonTileState extends State<PokemonTile> {
                   );
                 },
             child: _buildPokemonCardBody(colorScheme),
-          ),
-        );
-      },
+          );
+        }
+      ),
     );
   }
 

@@ -1,196 +1,67 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:rxdart/rxdart.dart';
 
 import '../../ads/native_ad.dart';
-import '../../ads/view_models/google_ads_view_model.dart';
 import '../../api/models/api_response.dart';
-import '../../api/models/pokemon/gen_type.dart';
 import '../../api/models/pokemon/pokemon.dart';
-import '../../api/models/pokemon/pokemon_type.dart';
-import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../theme/poke_app_text.dart';
-import '../pokemon_filter/filter_view_holder.dart';
 import '../shared_widgets/error_widget.dart' as ew;
 import '../shared_widgets/no_results.dart';
 import '../shared_widgets/pokeball_loading_widget.dart';
 import '../shared_widgets/rounded_button.dart';
-import '../shared_widgets/sliver_refresh_indicator.dart';
 import '../shared_widgets/view_constraint.dart';
 import 'pokemon_tile.dart';
-import 'search_app_bar.dart';
-import 'view_models/filter_view_model.dart';
-import 'view_models/pokemon_list_view_model.dart';
 
-class PokemonListView extends StatefulWidget {
-  PokemonListView({Key? key}) : super(key: key);
+typedef ShowAdAtIndex = bool Function(int index);
 
-  @override
-  State<PokemonListView> createState() => _PokemonListViewState();
-}
+class PokemonListView extends StatelessWidget {
+  const PokemonListView({
+    super.key,
+    required this.pagingController,
+    required this.showAdAtIndex,
+    required this.onTryAgain,
+  });
 
-class _PokemonListViewState extends State<PokemonListView> {
-  final _pokemonViewModel = getIt.get<PokemonListViewModel>();
-  final _googleAdsViewModel = getIt.get<GoogleAdsViewModel>();
-  final _filterViewModel = getIt.get<FilterViewModel>();
-
-  final _textController = TextEditingController();
-
-  String previousSearch = '';
-
-  @override
-  void initState() {
-    super.initState();
-    _addSearchTextListener();
-    _addSearchListener();
-    _filterViewModel.filters.add([
-      ...PokemonType.filters,
-      ...GenType.filters
-    ]);
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) {
-        _addSelectedFilterListener();
-      },
-    );
-  }
-
-  void _addSelectedFilterListener() {
-    const duration = Duration(milliseconds: 200);
-    _filterViewModel.selectedFiltersStream.listen(
-      (selectedTypes) {
-        _pokemonViewModel.setSelectedTypes(selectedTypes);
-        Future.delayed(duration).then(
-          (value) {
-            if (_filterViewModel.scrollController.hasClients) {
-              _filterViewModel.scrollController.animateTo(
-                _filterViewModel.scrollController.position.maxScrollExtent,
-                duration: duration,
-                curve: Curves.fastOutSlowIn,
-              );
-            }
-          },
-        );
-      },
-    );
-  }
-
-  void _addSearchListener() {
-    _pokemonViewModel.searchText
-        .debounce(
-          (_) => TimerStream(
-            true,
-            const Duration(milliseconds: 700),
-          ),
-        )
-        .listen(
-          _pokemonViewModel.setSearch,
-        );
-  }
-
-  void _addSearchTextListener() {
-    _textController.addListener(
-      () {
-        if (_textController.text != previousSearch) {
-          previousSearch = _textController.text;
-          _pokemonViewModel.searchText.add(_textController.text);
-        }
-      },
-    );
-  }
-
-  @override
-  void dispose() {
-    _textController.dispose();
-    _pokemonViewModel.dispose();
-    _filterViewModel.dispose();
-    _googleAdsViewModel.dispose();
-    super.dispose();
-  }
+  final PagingController<int, Pokemon> pagingController;
+  final ShowAdAtIndex showAdAtIndex;
+  final VoidCallback onTryAgain;
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        //TODO if filters open close filters.
-        return true;
-      },
-      child: Scaffold(
-        body: Stack(
-          children: [
-            NestedScrollView(
-              headerSliverBuilder: (nestedScrollViewContext, innerBoxScrolled) {
-                return [
-                  StreamBuilder<String?>(
-                    stream: _pokemonViewModel.searchText,
-                    builder: (context, snapshot) {
-                      return _buildHeaderBar();
-                    },
-                  ),
-                ];
-              },
-              body: _buildPokemonList(),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: _buildFilter(),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPokemonList() {
-    return SliverRefreshIndicator(
-      onRefresh: () async {
-        //TODO this refresh doesn't get the current search and just retries whatever the last search was even if the text has changed
-        _pokemonViewModel.refresh();
-      },
-      padding: EdgeInsets.zero,
-      sliver: SliverPadding(
-        padding: const EdgeInsets.all(8),
-        sliver: PagedSliverList(
-          pagingController: _pokemonViewModel.getPagingController(),
-          builderDelegate: PagedChildBuilderDelegate<Pokemon>(
-            itemBuilder: (context, pokemon, index) => _buildPokemonTile(
-              pokemon: pokemon,
-              showAd: _googleAdsViewModel.showAdAtIndex(index) && index != 0,
-            ),
-            firstPageErrorIndicatorBuilder: (context) => _buildErrorWidget(),
-            noItemsFoundIndicatorBuilder: (context) => _emptyListIndicator(),
-            newPageErrorIndicatorBuilder: (context) =>
-                _errorListItemWidget(onTryAgain: _pokemonViewModel.retryLastRequest),
-            firstPageProgressIndicatorBuilder: (context) => const Center(
-              child: PokeballLoadingWidget(
-                size: Size(
-                  kPokemonTileImageHeight,
-                  kPokemonTileImageHeight,
-                ),
-              ),
-            ),
-            newPageProgressIndicatorBuilder: (context) => _loadingListItemWidget(),
+    return SliverPadding(
+      padding: const EdgeInsets.all(8),
+      sliver: PagedSliverList(
+        pagingController: pagingController,
+        builderDelegate: PagedChildBuilderDelegate<Pokemon>(
+          animateTransitions: false,
+          itemBuilder: (context, pokemon, index) => _buildPokemonTile(
+            pokemon: pokemon,
+            showAd: showAdAtIndex(index) && index != 0,
           ),
+          firstPageErrorIndicatorBuilder: (context) => _buildErrorWidget(),
+          noItemsFoundIndicatorBuilder: (context) => _emptyListIndicator(),
+          newPageErrorIndicatorBuilder: _errorListItemWidget,
+          firstPageProgressIndicatorBuilder: (context) => _buildFirstPageLoading(),
+          newPageProgressIndicatorBuilder: (context) => _loadingListItemWidget(),
         ),
       ),
     );
   }
 
-  Widget _buildFilter() {
-    return FilterViewHolder(
-      filterViewModel: _filterViewModel,
-    );
-  }
-
-  Widget _buildHeaderBar() {
-    return SearchAppBar(
-      searchTextController: _textController,
-      filterViewModel: _filterViewModel,
+  Widget _buildFirstPageLoading() {
+    return const Center(
+      child: PokeballLoadingWidget(
+        size: Size(
+          kPokemonTileImageHeight,
+          kPokemonTileImageHeight,
+        ),
+      ),
     );
   }
 
   Widget _buildErrorWidget() {
-    final error = _pokemonViewModel.getPagingController().error as ApiResponse;
+    final error = pagingController.error as ApiResponse;
     return ViewConstraint(
       constraints: const BoxConstraints(
         maxWidth: 280,
@@ -198,14 +69,12 @@ class _PokemonListViewState extends State<PokemonListView> {
       child: ew.ErrorWidget(
         showImage: true,
         error: error,
-        onTryAgain: () => _pokemonViewModel.getPagingController().refresh(),
+        onTryAgain: onTryAgain,
       ),
     );
   }
 
-  Widget _errorListItemWidget({
-    required VoidCallback onTryAgain,
-  }) {
+  Widget _errorListItemWidget(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -232,15 +101,10 @@ class _PokemonListViewState extends State<PokemonListView> {
   }
 
   Widget _loadingListItemWidget() {
-    return const SizedBox(
-      height: 108,
-      child: Center(
-        child: PokeballLoadingWidget(
-          size: Size(
-            42,
-            42,
-          ),
-        ),
+    return const PokeballLoadingWidget(
+      size: Size(
+        42,
+        42,
       ),
     );
   }
@@ -253,17 +117,21 @@ class _PokemonListViewState extends State<PokemonListView> {
     required Pokemon pokemon,
     bool showAd = false,
   }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (showAd) NativeAd(),
-        ViewConstraint(
-          child: PokemonTile(
+    if (showAd) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (showAd) NativeAd(),
+          PokemonTile(
             pokemon: pokemon,
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    } else {
+      return PokemonTile(
+        pokemon: pokemon,
+      );
+    }
   }
 }
