@@ -25,11 +25,12 @@ import '../shared_widgets/view_constraint.dart';
 import 'auto_retry.dart';
 import 'red_shimmer_background.dart';
 import 'score_widget.dart';
+import '../shared_widgets/error_widget.dart' as ew;
 import 'view_models/score_view_model.dart';
 import 'view_models/whos_that_pokemon_view_model.dart';
 
 class WhosThatPokemonView extends StatefulWidget {
-  WhosThatPokemonView({Key? key}) : super(key: key);
+  const WhosThatPokemonView({Key? key}) : super(key: key);
 
   @override
   State<WhosThatPokemonView> createState() => _WhosThatPokemonViewState();
@@ -113,25 +114,32 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
     RevealResult revealResult,
     bool isRevealed,
   ) {
-    return StreamBuilder<ApiResponse<PokemonResponse>>(
+    return StreamBuilder<ApiResponse<({PokemonResponse pokemonResponse, Pokemon? concealedPokemon})>>(
       stream: whosThatPokemonViewModel.pokemonOptionsStream,
       builder: (context, pokemonOptionsSnapshot) {
-        return StreamBuilder<Pokemon?>(
-          stream: whosThatPokemonViewModel.concealedPokemonStream,
-          builder: (context, snapshot) {
-            final pokemonOptions = pokemonOptionsSnapshot.data?.data?.pokemon_v2_pokemon ?? BuiltList<Pokemon>.of([]);
-            final selectedPokemon = snapshot.data;
-            if (pokemonOptionsSnapshot.data?.status == Status.LOADING ||
-                snapshot.connectionState == ConnectionState.waiting) {
-              return const PokeballLoadingWidget();
-            }
-            return _buildWhosThatPokemonScrollView(
-              pokemonOptions,
-              selectedPokemon,
-              revealResult,
-              isRevealed,
-            );
-          },
+        final pokemonOptionsSnapshotData = pokemonOptionsSnapshot.data;
+        final pokemonOptions =
+            pokemonOptionsSnapshotData?.data?.pokemonResponse.pokemon_v2_pokemon ?? BuiltList<Pokemon>.of([]);
+        final selectedPokemon = pokemonOptionsSnapshotData?.data?.concealedPokemon;
+        if (pokemonOptionsSnapshot.data?.status == Status.ERROR) {
+          return Center(
+            child: ew.ErrorWidget(
+              error: pokemonOptionsSnapshot.data as ApiResponse,
+              onTryAgain: whosThatPokemonViewModel.generateRandomPokemon,
+            ),
+          );
+        }
+        if (pokemonOptionsSnapshot.data?.status == Status.LOADING ||
+            pokemonOptionsSnapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: PokeballLoadingWidget(),
+          );
+        }
+        return _buildWhosThatPokemonScrollView(
+          pokemonOptions,
+          selectedPokemon,
+          revealResult,
+          isRevealed,
         );
       },
     );

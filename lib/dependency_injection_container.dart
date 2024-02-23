@@ -1,4 +1,6 @@
 import 'package:get_it/get_it.dart';
+import 'package:http/http.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -6,6 +8,7 @@ import 'ads/view_models/google_ads_view_model.dart';
 import 'api/error_handler.dart';
 import 'api/graph_ql/graph_ql_client.dart';
 import 'api/graph_ql/pokemon_repository_graph_ql.dart';
+import 'api/models/pokemon/pokemon.dart';
 import 'api/rest/api_client.dart';
 import 'api/rest/news/news_repository.dart';
 import 'in_app_purchases/view_models/in_app_purchase_view_model.dart';
@@ -48,11 +51,12 @@ Future<void> init() async {
   getIt.registerLazySingleton(() => ThemeService(getIt()));
   getIt.registerLazySingleton(InAppPurchaseViewModel.new);
   getIt.registerLazySingleton(GraphQlClient.new);
+  getIt.registerLazySingleton(() => PagingController<int, Pokemon>(firstPageKey: 0, invisibleItemsThreshold: 10));
+  getIt.registerLazySingleton(() => PokemonPagingAdapter(getIt(), getIt(), getIt(), getIt()));
   getIt.registerFactory(LaunchService.new);
   getIt.registerFactory(ErrorHandler.new);
   getIt.registerFactory(() => PokemonRepositoryGraphQl(getIt()));
   getIt.registerFactory(() => NewsRepository(getIt()));
-  getIt.registerFactory(() => PokemonPagingAdapter(getIt(), getIt(), getIt()));
   getIt.registerFactory(() => PokemonNewsPagingAdapter(getIt(), getIt(), getIt()));
   getIt.registerFactory(() => MovesPagingAdapter(getIt(), getIt(), getIt()));
   getIt.registerFactory(() => PokemonListViewModel(getIt()));

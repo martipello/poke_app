@@ -43,8 +43,8 @@ class WhosThatPokemonViewModel {
         autoplay: true,
       );
 
-  final pokemonOptionsStream = BehaviorSubject<ApiResponse<PokemonResponse>>();
-  final concealedPokemonStream = BehaviorSubject<Pokemon?>();
+  final pokemonOptionsStream =
+      BehaviorSubject<ApiResponse<({PokemonResponse pokemonResponse, Pokemon? concealedPokemon})>>();
   final revealResultStream = BehaviorSubject<Tuple2<RevealResult, bool>>();
   final autoRetry = BehaviorSubject<bool>();
 
@@ -78,14 +78,16 @@ class WhosThatPokemonViewModel {
       }
       pokemonOptionsStream.add(
         ApiResponse.completed(
-          pokemonResponse.rebuild(
-            (p0) => p0..pokemon_v2_pokemon.replace(pokemon),
+          (
+            pokemonResponse: pokemonResponse.rebuild(
+              (p0) => p0..pokemon_v2_pokemon.replace(pokemon),
+            ),
+          concealedPokemon: pokemon.randomNonRepeating(1).firstOrNull(),
           ),
         ),
       );
-      concealedPokemonStream.add(pokemon.randomNonRepeating(1).firstOrNull());
     } catch (e) {
-      final errorResponse = errorHandler.handleError<PokemonResponse>(
+      final errorResponse = errorHandler.handleError<({PokemonResponse pokemonResponse, Pokemon? concealedPokemon})>(
         e,
       );
       pokemonOptionsStream.add(errorResponse);
@@ -93,7 +95,7 @@ class WhosThatPokemonViewModel {
   }
 
   void setRevealResult(int pokemonId) async {
-    final concealedPokemon = concealedPokemonStream.valueOrNull;
+    final concealedPokemon = pokemonOptionsStream.valueOrNull?.data?.concealedPokemon;
     if (pokemonId == 0) {
       revealResultStream.add(const Tuple2(RevealResult.none, false));
     } else {
@@ -158,7 +160,6 @@ class WhosThatPokemonViewModel {
   void dispose() {
     _controller?.dispose();
     pokemonOptionsStream.close();
-    concealedPokemonStream.close();
     autoRetry.close();
     _soundpool?.dispose();
   }

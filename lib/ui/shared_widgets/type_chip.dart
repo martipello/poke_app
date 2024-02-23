@@ -71,7 +71,7 @@ class TypeChip extends StatelessWidget {
         onDeleted: isSelected ? onDelete : null,
         deleteIcon: Icon(
           Icons.close,
-          color: context.colors.onPrimary,
+          color: context.colors.onSurface,
         ),
       ),
     );
