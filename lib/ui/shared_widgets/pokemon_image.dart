@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:rive/rive.dart';
 
 import '../../api/models/pokemon/pokemon.dart';
 import '../../extensions/build_context_extension.dart';
+import '../../extensions/type_data_extension.dart';
 
 const kDefaultImageHeight = 150.0;
 
@@ -26,6 +28,8 @@ class PokemonImage extends StatefulWidget {
     this.includeHero = true,
     this.drawOuterCircle = true,
     this.clipBehavior = Clip.none,
+    this.fallbackPrimaryColor,
+    this.fallbackSecondaryColor,
   });
 
   final Pokemon pokemon;
@@ -36,6 +40,8 @@ class PokemonImage extends StatefulWidget {
   final bool includeHero;
   final bool drawOuterCircle;
   final Color? maskColor;
+  final Color? fallbackPrimaryColor;
+  final Color? fallbackSecondaryColor;
 
   @override
   State<PokemonImage> createState() => _PokemonImageState();
@@ -97,22 +103,25 @@ class _PokemonImageState extends State<PokemonImage> {
   Widget _buildOuterCircle(
     ColorScheme? colorScheme,
   ) {
-    final primaryColor = colorScheme?.primary ?? Colors.white;
-    final secondaryColor = colorScheme?.primaryContainer ?? Colors.white;
+    final primaryColor = colorScheme?.primary ?? context.colors.surface;
+    final secondaryColor = colorScheme?.tertiaryContainer ?? context.colors.surface;
 
-    return ClipRRect(
-      clipBehavior: widget.clipBehavior,
-      borderRadius: _buildBorderRadius(),
-      child: Container(
-        height: widget.size?.height ?? kDefaultImageHeight,
-        width: widget.size?.width ?? kDefaultImageHeight,
-        decoration: BoxDecoration(
-          color: primaryColor,
-        ),
-        padding: const EdgeInsets.all(6.0),
-        child: Center(
-          child: _buildCenterCircle(
-            secondaryColor,
+    return Padding(
+      padding: const EdgeInsets.all(1.0),
+      child: ClipRRect(
+        clipBehavior: widget.clipBehavior,
+        borderRadius: _buildBorderRadius(),
+        child: Container(
+          height: widget.size?.height ?? kDefaultImageHeight,
+          width: widget.size?.width ?? kDefaultImageHeight,
+          decoration: BoxDecoration(
+            color: primaryColor,
+          ),
+          padding: const EdgeInsets.all(6.0),
+          child: Center(
+            child: _buildCenterCircle(
+              secondaryColor,
+            ),
           ),
         ),
       ),
@@ -211,7 +220,7 @@ class _PokemonImageState extends State<PokemonImage> {
           onPlay: (controller) => controller.repeat(),
         )
         .shimmer(
-          duration: 1200.ms,
+          duration: 1000.ms,
           color: context.colors.surface,
         );
   }
@@ -227,11 +236,4 @@ class _PokemonImageState extends State<PokemonImage> {
 
   BorderRadius _buildBorderRadius() => BorderRadius.circular(180);
 
-  // @override
-  // void didUpdateWidget(covariant PokemonImage oldWidget) {
-  //   super.didUpdateWidget(oldWidget);
-  //   if (widget.pokemon.id != oldWidget.pokemon.id) {
-  //     setState(() {});
-  //   }
-  // }
 }

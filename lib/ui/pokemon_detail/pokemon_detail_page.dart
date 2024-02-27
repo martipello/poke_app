@@ -60,7 +60,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
           .color;
 
   Color get secondaryColor =>
-      pokemonDetailArguments.colorScheme?.primaryContainer ??
+      pokemonDetailArguments.colorScheme?.tertiaryContainer ??
       PokemonType.getTypeForId(
               pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes.secondOrNull()?.pokemon_v2_type?.id ?? 0)
           .color;
