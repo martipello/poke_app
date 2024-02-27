@@ -36,14 +36,17 @@ class EvolutionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<ColorScheme?>(
-      future: imageColorViewModel.colorScheme(cacheNetworkImageProvider),
+    return FutureBuilder<({Color? primaryColor, Color? secondaryColor})>(
+      future: imageColorViewModel.palette(cacheNetworkImageProvider),
       builder: (context, colorSchemeSnapshot) {
         final colorScheme = colorSchemeSnapshot.data;
+        final primary = colorScheme?.primaryColor;
+        final secondary = colorScheme?.secondaryColor;
         return ExpansionCard(
           titleWidget: _buildPokemonCardBody(
             context,
-            colorScheme,
+            primary,
+            secondary,
           ),
           expandedChildren: _buildPokemonEvolutionTable(context),
           onTap: () {
@@ -55,7 +58,8 @@ class EvolutionTile extends StatelessWidget {
                   pokemon: _pokemon.rebuild(
                     (p) => p..pokemon_v2_pokemonspecy = speciesHolder.toBuilder(),
                   ),
-                  colorScheme: colorScheme,
+                  primary: primary,
+                  secondary: secondary,
                 ),
               );
             }
@@ -265,7 +269,7 @@ class EvolutionTile extends StatelessWidget {
       Padding(
         padding: const EdgeInsets.only(
           top: 8,
-          left: kPokemonTileImageHeight + 32,
+          left: kPokemonTileImageHeight + 16,
           right: 8,
           bottom: 24,
         ),
@@ -324,13 +328,14 @@ class EvolutionTile extends StatelessWidget {
 
   Widget _buildPokemonCardBody(
     BuildContext context,
-    ColorScheme? colorScheme,
+    Color? primary,
+    Color? secondary,
   ) {
     final speciesName = speciesHolder.pokemon_v2_pokemonspeciesnames.first.genus ?? '';
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildPokemonImage(colorScheme),
+        _buildPokemonImage(primary, secondary),
         const SizedBox(
           width: 16,
         ),
@@ -406,7 +411,8 @@ class EvolutionTile extends StatelessWidget {
   }
 
   Widget _buildPokemonImage(
-    ColorScheme? colorScheme,
+    Color? primary,
+    Color? secondary,
   ) {
     final _pokemon = pokemon;
     if (_pokemon != null) {
@@ -418,7 +424,8 @@ class EvolutionTile extends StatelessWidget {
           kPokemonTileImageHeight,
         ),
         imageProvider: cacheNetworkImageProvider,
-        colorScheme: colorScheme,
+        primary: primary,
+        secondary: secondary,
       );
     } else {
       return const SizedBox();

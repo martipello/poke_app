@@ -21,25 +21,23 @@ class PokemonImage extends StatefulWidget {
     required this.pokemon,
     required this.imageProvider,
     this.size,
-    this.maskColor,
-    this.colorScheme,
     this.includeHero = true,
     this.drawOuterCircle = true,
     this.clipBehavior = Clip.none,
-    this.fallbackPrimaryColor,
-    this.fallbackSecondaryColor,
+    this.maskColor,
+    this.primary,
+    this.secondary,
   });
 
   final Pokemon pokemon;
   final CachedNetworkImageProvider imageProvider;
-  final ColorScheme? colorScheme;
   final Clip clipBehavior;
   final Size? size;
   final bool includeHero;
   final bool drawOuterCircle;
   final Color? maskColor;
-  final Color? fallbackPrimaryColor;
-  final Color? fallbackSecondaryColor;
+  final Color? primary;
+  final Color? secondary;
 
   @override
   State<PokemonImage> createState() => _PokemonImageState();
@@ -75,9 +73,7 @@ class _PokemonImageState extends State<PokemonImage> {
           Positioned.fill(
             child: Align(
               alignment: Alignment.center,
-              child: _buildOuterCircle(
-                widget.colorScheme,
-              ),
+              child: _buildOuterCircle(),
             ),
           ),
         Positioned.fill(
@@ -98,11 +94,9 @@ class _PokemonImageState extends State<PokemonImage> {
     );
   }
 
-  Widget _buildOuterCircle(
-    ColorScheme? colorScheme,
-  ) {
-    final primaryColor = colorScheme?.primary ?? context.colors.surface;
-    final secondaryColor = colorScheme?.tertiaryContainer ?? context.colors.surface;
+  Widget _buildOuterCircle() {
+    final primaryColor = widget.primary ?? context.colors.surface;
+    final secondaryColor = widget.secondary ?? context.colors.surface;
 
     return Padding(
       padding: const EdgeInsets.all(1.0),

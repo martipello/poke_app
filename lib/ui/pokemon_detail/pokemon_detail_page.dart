@@ -25,11 +25,13 @@ import 'pokemon_detail_app_bar.dart';
 class PokemonDetailPageArguments {
   PokemonDetailPageArguments({
     required this.pokemon,
-    this.colorScheme,
+    this.primary,
+    this.secondary,
   });
 
   final Pokemon pokemon;
-  final ColorScheme? colorScheme;
+  final Color? primary;
+  final Color? secondary;
 }
 
 class PokemonDetailPage extends StatefulWidget {
@@ -54,13 +56,13 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
   final key = GlobalKey<NestedScrollViewState>();
 
   Color get primaryColor =>
-      pokemonDetailArguments.colorScheme?.primary ??
+      pokemonDetailArguments.primary ??
       PokemonType.getTypeForId(
               pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes.firstOrNull()?.pokemon_v2_type?.id ?? 0)
           .color;
 
   Color get secondaryColor =>
-      pokemonDetailArguments.colorScheme?.tertiaryContainer ??
+      pokemonDetailArguments.secondary ??
       PokemonType.getTypeForId(
               pokemonDetailArguments.pokemon.pokemon_v2_pokemontypes.secondOrNull()?.pokemon_v2_type?.id ?? 0)
           .color;

@@ -49,12 +49,18 @@ class FormTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<ColorScheme?>(
-      future: imageColorViewModel.colorScheme(cacheNetworkImageProvider),
+    return FutureBuilder<({Color? primaryColor, Color? secondaryColor})>(
+      future: imageColorViewModel.palette(cacheNetworkImageProvider),
       builder: (context, colorSchemeSnapshot) {
         final colorScheme = colorSchemeSnapshot.data;
+        final primary = colorScheme?.primaryColor;
+        final secondary = colorScheme?.secondaryColor;
         return ExpansionCard(
-          titleWidget: _buildPokemonCardBody(context),
+          titleWidget: _buildPokemonCardBody(
+            context,
+            primary,
+            secondary,
+          ),
           expandedChildren: [
             _buildPokemonAbilities(context),
             const SizedBox(
@@ -65,7 +71,8 @@ class FormTile extends StatelessWidget {
             //TODO we could call for the color here
             _navigateToDetailPage(
               context,
-              colorScheme,
+              primary,
+              secondary,
             );
           },
           bottomWidgetBuilder: (_) {
@@ -76,11 +83,18 @@ class FormTile extends StatelessWidget {
     );
   }
 
-  Widget _buildPokemonCardBody(BuildContext context) {
+  Widget _buildPokemonCardBody(
+    BuildContext context,
+    Color? primary,
+    Color? secondary,
+  ) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildPokemonImage(),
+        _buildPokemonImage(
+          primary,
+          secondary,
+        ),
         const SizedBox(
           width: 16,
         ),
@@ -186,7 +200,10 @@ class FormTile extends StatelessWidget {
     );
   }
 
-  Widget _buildPokemonImage() {
+  Widget _buildPokemonImage(
+    Color? primary,
+    Color? secondary,
+  ) {
     final _pokemon = pokemon;
     if (_pokemon != null) {
       return PokemonImage(
@@ -197,6 +214,8 @@ class FormTile extends StatelessWidget {
           kPokemonTileImageHeight,
         ),
         imageProvider: cacheNetworkImageProvider,
+        primary: primary,
+        secondary: secondary,
       );
     } else {
       return const SizedBox();
@@ -218,7 +237,8 @@ class FormTile extends StatelessWidget {
 
   void _navigateToDetailPage(
     BuildContext context,
-    ColorScheme? colorScheme,
+    Color? primary,
+    Color? secondary,
   ) {
     final _pokemon = pokemon;
     if (_pokemon != null) {
@@ -240,7 +260,8 @@ class FormTile extends StatelessWidget {
                     ),
                   ),
           ),
-          colorScheme: colorScheme,
+          primary: primary,
+          secondary: secondary,
         ),
       );
     }
