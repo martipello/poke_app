@@ -41,7 +41,7 @@ class ClearFilter extends StatelessWidget {
             child: Text(
               context.strings.clearFilters,
               style: PokeAppText.body3Style.copyWith(
-                color: isOnDarkBackground ? context.colors.onPrimary : context.colors.onSurface,
+                color: isOnDarkBackground ? Colors.white : context.colors.onSurface,
               ),
             ),
           ),
