@@ -112,6 +112,7 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
         context.strings.app_name,
         style: PokeAppText.subtitle2Style.copyWith(
           height: 1,
+          color: Colors.white,
         ),
       ),
     );

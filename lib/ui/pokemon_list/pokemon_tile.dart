@@ -5,6 +5,7 @@ import '../../api/models/pokemon/pokemon.dart';
 import '../../api/models/pokemon/pokemon_type.dart';
 import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
+import '../../extensions/iterable_extension.dart';
 import '../../extensions/media_query_context_extension.dart';
 import '../../extensions/string_extension.dart';
 import '../../extensions/type_data_extension.dart';
