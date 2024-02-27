@@ -16,7 +16,8 @@ import 'ui/splash_page.dart';
 
 class PokeApp extends StatefulWidget {
   const PokeApp({
-    Key? key, required this.themeMode,
+    Key? key,
+    required this.themeMode,
   }) : super(key: key);
 
   final ThemeMode themeMode;
@@ -31,10 +32,25 @@ class _PokeAppState extends State<PokeApp> {
 
   @override
   void didChangeDependencies() {
-    for (var asset in PokemonType.values) {
-      precacheImage(AssetImage(asset.image), context);
-    }
     super.didChangeDependencies();
+    precacheImages(context);
+  }
+
+  Future<void> precacheImages(BuildContext context) async {
+    try {
+      for (var asset in PokemonType.values) {
+        await precacheImage(
+          AssetImage(asset.image),
+          context,
+        );
+      }
+      await precacheImage(
+        const AssetImage('assets/images/pokeball_outline.png'),
+        context,
+      );
+    } catch (e) {
+      print('Failed to load and cache the image: $e');
+    }
   }
 
   @override
@@ -89,9 +105,11 @@ class AdditionalColorsWidget extends InheritedWidget {
     required Widget child,
   }) : super(key: key, child: child);
   final AdditionalColors additionalColors;
+
   static AdditionalColorsWidget of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<AdditionalColorsWidget>()!;
   }
+
   @override
   bool updateShouldNotify(AdditionalColorsWidget oldWidget) {
     return true;

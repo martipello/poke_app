@@ -5,8 +5,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../api/models/pokemon/pokemon.dart';
 import '../../extensions/build_context_extension.dart';
 
-typedef ImageErrorBuilder = Widget Function(BuildContext context, Object? object, StackTrace? stacktrace);
-
 const kDefaultImageHeight = 150.0;
 
 String createImageUrl(int id) {
@@ -17,7 +15,7 @@ String createAudioUrl(int id) {
   return 'https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/$id.ogg';
 }
 
-class PokemonImage extends StatelessWidget {
+class PokemonImage extends StatefulWidget {
   const PokemonImage({
     Key? key,
     required this.pokemon,
@@ -40,17 +38,23 @@ class PokemonImage extends StatelessWidget {
   final Color? maskColor;
 
   @override
+  State<PokemonImage> createState() => _PokemonImageState();
+}
+
+class _PokemonImageState extends State<PokemonImage> {
+  bool _hasBegunLoading = false;
+
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: size?.height ?? kDefaultImageHeight,
-      width: size?.width ?? kDefaultImageHeight,
+      height: widget.size?.height ?? kDefaultImageHeight,
+      width: widget.size?.width ?? kDefaultImageHeight,
       child: Material(
         type: MaterialType.transparency,
         child: _buildImageHolder(
           context,
-          includeHero,
-          imageProvider,
-          (context, _, __) => _buildEmptyImage(),
+          widget.includeHero,
+          widget.imageProvider,
         ),
       ),
     );
@@ -60,26 +64,29 @@ class PokemonImage extends StatelessWidget {
     BuildContext context,
     bool buildHeroWidget,
     ImageProvider imageProvider,
-    ImageErrorBuilder imageErrorBuilder,
   ) {
     return Stack(
       children: [
-        if (drawOuterCircle)
-        _buildOuterCircle(
-          imageErrorBuilder,
-          colorScheme,
-        ),
+        if (widget.drawOuterCircle)
+          Positioned.fill(
+            child: Align(
+              alignment: Alignment.center,
+              child: _buildOuterCircle(
+                widget.colorScheme,
+              ),
+            ),
+          ),
         Positioned.fill(
           child: Align(
             alignment: Alignment.center,
             child: buildHeroWidget
                 ? _buildImageWithHero(
+                    context,
                     imageProvider,
-                    imageErrorBuilder,
                   )
                 : _buildImage(
+                    context,
                     imageProvider,
-                    imageErrorBuilder,
                   ),
           ),
         ),
@@ -88,23 +95,21 @@ class PokemonImage extends StatelessWidget {
   }
 
   Widget _buildOuterCircle(
-    ImageErrorBuilder imageErrorBuilder,
     ColorScheme? colorScheme,
   ) {
     final primaryColor = colorScheme?.primary ?? Colors.white;
     final secondaryColor = colorScheme?.primaryContainer ?? Colors.white;
 
     return ClipRRect(
-      clipBehavior: clipBehavior,
+      clipBehavior: widget.clipBehavior,
       borderRadius: _buildBorderRadius(),
-      child: AnimatedContainer(
-        height: size?.height ?? kDefaultImageHeight,
-        width: size?.width ?? kDefaultImageHeight,
-        duration: const Duration(milliseconds: 300),
+      child: Container(
+        height: widget.size?.height ?? kDefaultImageHeight,
+        width: widget.size?.width ?? kDefaultImageHeight,
         decoration: BoxDecoration(
           color: primaryColor,
         ),
-        padding: const EdgeInsets.all(6),
+        padding: const EdgeInsets.all(6.0),
         child: Center(
           child: _buildCenterCircle(
             secondaryColor,
@@ -118,12 +123,11 @@ class PokemonImage extends StatelessWidget {
     Color? secondaryColor,
   ) {
     return ClipRRect(
-      clipBehavior: clipBehavior,
+      clipBehavior: widget.clipBehavior,
       borderRadius: _buildBorderRadius(),
-      child: AnimatedContainer(
-        height: size?.height ?? kDefaultImageHeight,
-        width: size?.width ?? kDefaultImageHeight,
-        duration: const Duration(milliseconds: 300),
+      child: Container(
+        height: widget.size?.height ?? kDefaultImageHeight,
+        width: widget.size?.width ?? kDefaultImageHeight,
         decoration: BoxDecoration(
           color: secondaryColor,
         ),
@@ -132,32 +136,32 @@ class PokemonImage extends StatelessWidget {
   }
 
   Widget _buildImageWithHero(
+    BuildContext context,
     ImageProvider imageProvider,
-    ImageErrorBuilder imageErrorBuilder,
   ) {
     return Hero(
-      tag: '${pokemon.id}',
+      tag: '${widget.pokemon.id}',
       transitionOnUserGestures: true,
       child: _buildImage(
+        context,
         imageProvider,
-        imageErrorBuilder,
       ),
     );
   }
 
   Widget _buildImage(
+    BuildContext context,
     ImageProvider imageProvider,
-    ImageErrorBuilder imageErrorBuilder,
   ) {
     return Image(
       image: imageProvider,
       fit: BoxFit.cover,
       gaplessPlayback: true,
-      color: maskColor,
-      height: size?.height ?? kDefaultImageHeight,
-      width: size?.width ?? kDefaultImageHeight,
+      color: widget.maskColor,
+      height: widget.size?.height ?? kDefaultImageHeight,
+      width: widget.size?.width ?? kDefaultImageHeight,
       loadingBuilder: (context, child, chunk) {
-        if (chunk == null) {
+        if (_hasBegunLoading && chunk == null) {
           return child;
         }
         return _buildEmptyImageHolder(
@@ -165,21 +169,30 @@ class PokemonImage extends StatelessWidget {
           isLoading: true,
         );
       },
-      errorBuilder: imageErrorBuilder,
+      frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+        _hasBegunLoading = frame != null;
+        return child;
+      },
+      errorBuilder: (context, _, __) {
+        return _buildEmptyImageHolder(
+          context,
+          isLoading: false,
+        );
+      },
     );
   }
 
   Widget _buildEmptyImageHolder(
     BuildContext context, {
-    bool isLoading = false,
+    bool isLoading = true,
   }) {
     return Center(
       child: ClipRRect(
-        clipBehavior: clipBehavior,
+        clipBehavior: widget.clipBehavior,
         borderRadius: _buildBorderRadius(),
         child: SizedBox(
-          height: size?.height ?? kDefaultImageHeight,
-          width: size?.width ?? kDefaultImageHeight,
+          height: widget.size?.height ?? kDefaultImageHeight,
+          width: widget.size?.width ?? kDefaultImageHeight,
           child: Center(
             child: isLoading ? _buildLoadingImage(context) : _buildEmptyImage(),
           ),
@@ -189,35 +202,36 @@ class PokemonImage extends StatelessWidget {
   }
 
   Widget _buildEmptyImage() {
-    return Image.asset(
-      'assets/images/pokeball_outline.png',
-      gaplessPlayback: true,
-    );
+    return _buildPlaceHolder();
   }
 
   Widget _buildLoadingImage(BuildContext context) {
-    return Image.asset(
-      'assets/images/pokeball_outline.png',
-      gaplessPlayback: true,
-    )
+    return _buildPlaceHolder()
         .animate(
           onPlay: (controller) => controller.repeat(),
         )
         .shimmer(
           duration: 1200.ms,
-          color: context.colors.onSurface,
+          color: context.colors.surface,
         );
+  }
+
+  Widget _buildPlaceHolder() {
+    return Image.asset(
+      'assets/images/pokeball_outline.png',
+      gaplessPlayback: true,
+      height: widget.size?.height ?? kDefaultImageHeight,
+      width: widget.size?.width ?? kDefaultImageHeight,
+    );
   }
 
   BorderRadius _buildBorderRadius() => BorderRadius.circular(180);
 
-// @override
-// void didUpdateWidget(covariant PokemonImage oldWidget) {
-//   super.didUpdateWidget(oldWidget);
-//   if (pokemon.id != oldWidget.pokemon.id) {
-//     mainImageProvider = CachedNetworkImageProvider(
-//       _createImageUrl(),
-//     );
-//   }
-// }
+  // @override
+  // void didUpdateWidget(covariant PokemonImage oldWidget) {
+  //   super.didUpdateWidget(oldWidget);
+  //   if (widget.pokemon.id != oldWidget.pokemon.id) {
+  //     setState(() {});
+  //   }
+  // }
 }

@@ -9,6 +9,7 @@ import '../../extensions/pokemon_extension.dart';
 import '../../extensions/string_extension.dart';
 import '../../extensions/type_data_extension.dart';
 import '../../theme/poke_app_text.dart';
+import '../pokemon_list/pokemon_tile.dart';
 import '../shared_widgets/chip_group.dart';
 import '../shared_widgets/pokemon_image.dart';
 import '../shared_widgets/type_chip.dart';
@@ -16,7 +17,7 @@ import '../shared_widgets/view_constraint.dart';
 
 const kPokemonDetailImageHeight = 200.0;
 
-class PokemonDetailHeader extends StatelessWidget {
+class PokemonDetailHeader extends StatefulWidget {
   PokemonDetailHeader({
     Key? key,
     required this.pokemon,
@@ -26,8 +27,15 @@ class PokemonDetailHeader extends StatelessWidget {
   final Pokemon pokemon;
   final Color primaryColor;
 
-  late final cacheNetworkImageProvider = CachedNetworkImageProvider(createImageUrl(pokemon.id ?? 0));
-  late final player = AudioPlayer()..setUrl(createAudioUrl(pokemon.id ?? 0));
+  @override
+  State<PokemonDetailHeader> createState() => _PokemonDetailHeaderState();
+}
+
+class _PokemonDetailHeaderState extends State<PokemonDetailHeader> {
+  late final cacheNetworkImageProvider = CachedNetworkImageProvider(
+    createImageUrl(widget.pokemon.id ?? 0),
+    maxHeight: kPokemonTileImageHeight.cacheSize(context),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -86,8 +94,9 @@ class PokemonDetailHeader extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: FloatingActionButton(
-                    backgroundColor: primaryColor,
-                    onPressed: () {
+                    backgroundColor: widget.primaryColor,
+                    onPressed: () async {
+                      final player = AudioPlayer()..setUrl(createAudioUrl(widget.pokemon.id ?? 0));
                       player.play();
                     },
                     child: Icon(
@@ -106,7 +115,7 @@ class PokemonDetailHeader extends StatelessWidget {
 
   Widget _buildPokemonImage(BuildContext context) {
     return PokemonImage(
-      pokemon: pokemon,
+      pokemon: widget.pokemon,
       size: const Size(
         kPokemonDetailImageHeight,
         kPokemonDetailImageHeight,
@@ -132,7 +141,7 @@ class PokemonDetailHeader extends StatelessWidget {
   Widget _buildTitle(
     BuildContext context,
   ) {
-    final pokemonName = pokemon.name ?? context.strings.unknownPokemon;
+    final pokemonName = widget.pokemon.name ?? context.strings.unknownPokemon;
     return Text(
       pokemonName.capitalize(),
       style: PokeAppText.title1Style,
@@ -142,7 +151,7 @@ class PokemonDetailHeader extends StatelessWidget {
   Widget _buildPokemonId(
     BuildContext context,
   ) {
-    final pokemonId = pokemon.id ?? '??';
+    final pokemonId = widget.pokemon.id ?? '??';
     return Text(
       '#${pokemonId.toString()}',
       style: PokeAppText.subtitle4Style,
@@ -153,7 +162,7 @@ class PokemonDetailHeader extends StatelessWidget {
     BuildContext context,
   ) {
     final speciesName =
-        pokemon.pokemon_v2_pokemonspecy?.pokemon_v2_pokemonspeciesnames.first.genus ?? 'Unknown species';
+        widget.pokemon.pokemon_v2_pokemonspecy?.pokemon_v2_pokemonspeciesnames.first.genus ?? 'Unknown species';
     return Text(
       speciesName.capitalize(),
       style: PokeAppText.title4Style,
@@ -167,7 +176,7 @@ class PokemonDetailHeader extends StatelessWidget {
         ChipGroup(
           scrollDirection: Axis.horizontal,
           padding: EdgeInsets.zero,
-          chips: pokemon.pokemon_v2_pokemontypes
+          chips: widget.pokemon.pokemon_v2_pokemontypes
               .map(
                 (type) => TypeChip(
                   filterType: type.pokemon_v2_type?.pokemonType() ?? PokemonType.unknown,
@@ -183,7 +192,7 @@ class PokemonDetailHeader extends StatelessWidget {
   Widget _buildGeneration(
     BuildContext context,
   ) {
-    final pokemonGenerationId = pokemon.pokemon_v2_pokemonspecy?.generation_id.toString() ?? 'Unknown';
+    final pokemonGenerationId = widget.pokemon.pokemon_v2_pokemonspecy?.generation_id.toString() ?? 'Unknown';
     return Row(
       children: [
         Text(
@@ -202,7 +211,7 @@ class PokemonDetailHeader extends StatelessWidget {
   Widget _buildHeight(
     BuildContext context,
   ) {
-    final pokemonHeight = pokemon.pokemonHeight();
+    final pokemonHeight = widget.pokemon.pokemonHeight();
     return Row(
       children: [
         Text(
@@ -221,7 +230,7 @@ class PokemonDetailHeader extends StatelessWidget {
   Widget _buildWeight(
     BuildContext context,
   ) {
-    final pokemonWeight = pokemon.pokemonWeight();
+    final pokemonWeight = widget.pokemon.pokemonWeight();
     return Row(
       children: [
         Text(

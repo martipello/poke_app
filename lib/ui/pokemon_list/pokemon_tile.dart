@@ -18,6 +18,12 @@ import '../shared_widgets/view_models/image_color_view_model.dart';
 
 const kPokemonTileImageHeight = 80.0;
 
+extension ImageExtension on num {
+  int cacheSize(BuildContext context) {
+    return (this * MediaQuery.of(context).devicePixelRatio).round();
+  }
+}
+
 class PokemonTile extends StatefulWidget {
   PokemonTile({
     Key? key,
@@ -43,7 +49,10 @@ class PokemonTile extends StatefulWidget {
 class _PokemonTileState extends State<PokemonTile> {
   final mainImageColorViewModel = getIt.get<ImageColorViewModel>();
 
-  late final cacheNetworkImageProvider = CachedNetworkImageProvider(createImageUrl(widget.pokemon.id ?? 0));
+  late final cacheNetworkImageProvider = CachedNetworkImageProvider(
+    createImageUrl(widget.pokemon.id ?? 0),
+    maxHeight: kPokemonTileImageHeight.cacheSize(context),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -55,13 +64,13 @@ class _PokemonTileState extends State<PokemonTile> {
       height: widget.showImage ? tileHeight : null,
       width: kMaxScreenWidth,
       child: FutureBuilder<ColorScheme?>(
-          future: mainImageColorViewModel.colorScheme(cacheNetworkImageProvider),
+        future: mainImageColorViewModel.colorScheme(cacheNetworkImageProvider),
         builder: (context, colorSchemeSnapshot) {
           final colorScheme = colorSchemeSnapshot.data;
-            return RoundedCard(
+          return RoundedCard(
             borderColor: widget.borderColor,
             onTap: widget.onTap ??
-                    () {
+                () {
                   context.closeKeyBoard();
                   Navigator.of(context).pushNamed(
                     PokemonDetailPage.routeName,
@@ -73,7 +82,7 @@ class _PokemonTileState extends State<PokemonTile> {
                 },
             child: _buildPokemonCardBody(colorScheme),
           );
-        }
+        },
       ),
     );
   }
