@@ -135,6 +135,8 @@ class _AdWarningState extends State<AdWarning> with TickerProviderStateMixin {
           'assets/images/pokeball.png',
           height: 24,
           width: 24,
+          cacheWidth: 66,
+          cacheHeight: 66,
         ),
       );
     } else {
