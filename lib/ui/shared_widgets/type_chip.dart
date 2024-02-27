@@ -69,7 +69,7 @@ class TypeChip extends StatelessWidget {
           right: 8,
         ),
         labelStyle: PokeAppText.body4Style.copyWith(
-          color: context.colors.onPrimary,
+          color: isSelected ? context.colors.surface : context.colors.onPrimary,
         ),
         deleteButtonTooltipMessage: context.strings.delete,
         onDeleted: isSelected ? onDelete : null,
@@ -77,6 +77,7 @@ class TypeChip extends StatelessWidget {
           Icons.close,
           color: context.colors.onPrimary,
         ),
+        surfaceTintColor: Colors.transparent,
       ),
     );
   }
@@ -110,7 +111,7 @@ class TypeChip extends StatelessWidget {
           child: Text(
             '${label.capitalize()}$labelSuffix',
             style: PokeAppText.body4Style.copyWith(
-              color: isSelected ? context.colors.onPrimary : context.colors.surface,
+              color: isSelected ? context.colors.onSurface : context.colors.onPrimary,
             ),
           ),
         ),
@@ -118,13 +119,14 @@ class TypeChip extends StatelessWidget {
           right: 8,
         ),
         labelStyle: PokeAppText.body4Style.copyWith(
-          color: context.colors.onPrimary,
+          color: isSelected ? context.colors.onSurface : context.colors.onPrimary,
         ),
         onSelected: onSelected,
         selected: isSelected,
         showCheckmark: isSelected,
+        surfaceTintColor: Colors.transparent,
         selectedColor: context.colors.surface,
-        checkmarkColor: context.colors.onPrimary,
+        checkmarkColor: isSelected ? context.colors.onSurface : context.colors.onPrimary,
       ),
     );
   }
@@ -165,7 +167,7 @@ class TypeChip extends StatelessWidget {
                 child: Text(
                   label.capitalize(),
                   style: PokeAppText.body3Style.copyWith(
-                    color: context.colors.onPrimary,
+                    color: isSelected ? context.colors.onSurface : context.colors.onPrimary,
                   ),
                 ),
               ),

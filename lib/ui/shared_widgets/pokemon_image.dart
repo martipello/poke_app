@@ -228,4 +228,11 @@ class _PokemonImageState extends State<PokemonImage> {
 
   BorderRadius _buildBorderRadius() => BorderRadius.circular(180);
 
+  @override
+  void didUpdateWidget(covariant PokemonImage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.pokemon.id != oldWidget.pokemon.id) {
+      setState(() {});
+    }
+  }
 }

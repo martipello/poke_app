@@ -28,28 +28,23 @@ class FilterView extends StatefulWidget {
 class _FilterViewState extends State<FilterView> {
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: ThemeData(
-        cardTheme: _buildCardTheme(),
-      ),
-      child: Card(
-        child: SizedBox(
-          height: MediaQuery.of(context).filterBottomSheetHeight,
-          width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 16,
-                  right: 16,
-                  top: 16,
-                ),
-                child: _buildFilterHeader(),
+    return Card(
+      child: SizedBox(
+        height: MediaQuery.of(context).filterBottomSheetHeight,
+        width: double.infinity,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 16,
+                right: 16,
+                top: 16,
               ),
-              _buildFilters(),
-            ],
-          ),
+              child: _buildFilterHeader(),
+            ),
+            _buildFilters(),
+          ],
         ),
       ),
     );

@@ -53,7 +53,7 @@ class PokemonListViewModel {
   }
 
   void retryLastRequest() {
-    pokemonPagingAdapter.pagingController.retryLastFailedRequest();
+    pokemonPagingAdapter.pagingController.refresh();
   }
 
   void dispose() {
