@@ -440,20 +440,6 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
         pokemon: pokemon,
         size: Size(imageHeight, imageHeight),
         imageProvider: CachedNetworkImageProvider(createImageUrl(pokemon.id ?? 0)),
-        colorScheme: ColorScheme(
-          brightness: Brightness.light,
-          primary: context.colors.primary,
-          onPrimary: context.colors.onPrimary,
-          secondary: context.colors.secondary,
-          onSecondary: context.colors.onSecondary,
-          error: context.colors.error,
-          onError: context.colors.onError,
-          background: context.colors.background,
-          onBackground: context.colors.onBackground,
-          surface: context.colors.onSurface,
-          onSurface: context.colors.onSurface,
-          primaryContainer: context.colors.primaryContainer,
-        ),
       );
     }
     return _buildLoadingImage();

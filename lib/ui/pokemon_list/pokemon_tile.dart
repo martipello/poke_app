@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:palette_generator/palette_generator.dart';
 
 import '../../api/models/pokemon/pokemon.dart';
 import '../../api/models/pokemon/pokemon_type.dart';
 import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
-import '../../extensions/iterable_extension.dart';
 import '../../extensions/media_query_context_extension.dart';
 import '../../extensions/string_extension.dart';
 import '../../extensions/type_data_extension.dart';
@@ -48,7 +48,7 @@ class PokemonTile extends StatefulWidget {
 }
 
 class _PokemonTileState extends State<PokemonTile> {
-  final mainImageColorViewModel = getIt.get<ImageColorViewModel>();
+  final imageColorViewModel = getIt.get<ImageColorViewModel>();
 
   late final cacheNetworkImageProvider = CachedNetworkImageProvider(
     createImageUrl(widget.pokemon.id ?? 0),
@@ -64,10 +64,12 @@ class _PokemonTileState extends State<PokemonTile> {
     return SizedBox(
       height: widget.showImage ? tileHeight : null,
       width: kMaxScreenWidth,
-      child: FutureBuilder<ColorScheme?>(
-        future: mainImageColorViewModel.colorScheme(cacheNetworkImageProvider),
+      child: FutureBuilder<({Color? primaryColor, Color? secondaryColor})>(
+        future: imageColorViewModel.palette(cacheNetworkImageProvider),
         builder: (context, colorSchemeSnapshot) {
           final colorScheme = colorSchemeSnapshot.data;
+          final primary = colorScheme?.primaryColor;
+          final secondary = colorScheme?.secondaryColor;
           return RoundedCard(
             borderColor: widget.borderColor,
             onTap: widget.onTap ??
@@ -77,11 +79,15 @@ class _PokemonTileState extends State<PokemonTile> {
                     PokemonDetailPage.routeName,
                     arguments: PokemonDetailPageArguments(
                       pokemon: widget.pokemon,
-                      colorScheme: colorScheme,
+                      primary: primary,
+                      secondary: secondary,
                     ),
                   );
                 },
-            child: _buildPokemonCardBody(colorScheme),
+            child: _buildPokemonCardBody(
+              primary,
+              secondary,
+            ),
           );
         },
       ),
@@ -89,7 +95,8 @@ class _PokemonTileState extends State<PokemonTile> {
   }
 
   Widget _buildPokemonCardBody(
-    ColorScheme? colorScheme,
+    Color? primary,
+    Color? secondary,
   ) {
     final speciesName = widget.pokemon.pokemon_v2_pokemonspecy?.pokemon_v2_pokemonspeciesnames.first.genus ?? '';
     return Column(
@@ -101,7 +108,8 @@ class _PokemonTileState extends State<PokemonTile> {
           children: [
             if (widget.showImage)
               _buildPokemonImage(
-                colorScheme,
+                primary,
+                secondary,
               ),
             if (widget.showImage)
               const SizedBox(
@@ -176,7 +184,8 @@ class _PokemonTileState extends State<PokemonTile> {
   }
 
   Widget _buildPokemonImage(
-    ColorScheme? colorScheme,
+    Color? primary,
+    Color? secondary,
   ) {
     return PokemonImage(
       pokemon: widget.pokemon,
@@ -187,7 +196,8 @@ class _PokemonTileState extends State<PokemonTile> {
         kPokemonTileImageHeight,
       ),
       imageProvider: cacheNetworkImageProvider,
-      colorScheme: colorScheme,
+      primary: primary,
+      secondary: secondary,
     );
   }
 }

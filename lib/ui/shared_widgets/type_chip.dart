@@ -56,7 +56,9 @@ class TypeChip extends StatelessWidget {
         ),
         label: Text(
           '${label.capitalize()}$labelSuffix',
-          style: PokeAppText.body4Style,
+          style: PokeAppText.body4Style.copyWith(
+            color: context.colors.onPrimary,
+          ),
         ),
         side: BorderSide(
           width: 1,
@@ -66,12 +68,14 @@ class TypeChip extends StatelessWidget {
         padding: const EdgeInsets.only(
           right: 8,
         ),
-        labelStyle: PokeAppText.body4Style,
+        labelStyle: PokeAppText.body4Style.copyWith(
+          color: context.colors.onPrimary,
+        ),
         deleteButtonTooltipMessage: context.strings.delete,
         onDeleted: isSelected ? onDelete : null,
         deleteIcon: Icon(
           Icons.close,
-          color: context.colors.onSurface,
+          color: context.colors.onPrimary,
         ),
       ),
     );
@@ -106,19 +110,21 @@ class TypeChip extends StatelessWidget {
           child: Text(
             '${label.capitalize()}$labelSuffix',
             style: PokeAppText.body4Style.copyWith(
-              color: isSelected ? context.colors.onSurface : context.colors.surface,
+              color: isSelected ? context.colors.onPrimary : context.colors.surface,
             ),
           ),
         ),
         padding: const EdgeInsets.only(
           right: 8,
         ),
-        labelStyle: PokeAppText.body4Style,
+        labelStyle: PokeAppText.body4Style.copyWith(
+          color: context.colors.onPrimary,
+        ),
         onSelected: onSelected,
         selected: isSelected,
         showCheckmark: isSelected,
         selectedColor: context.colors.surface,
-        checkmarkColor: context.colors.onSurface,
+        checkmarkColor: context.colors.onPrimary,
       ),
     );
   }
@@ -158,7 +164,9 @@ class TypeChip extends StatelessWidget {
                 ),
                 child: Text(
                   label.capitalize(),
-                  style: PokeAppText.body3Style,
+                  style: PokeAppText.body3Style.copyWith(
+                    color: context.colors.onPrimary,
+                  ),
                 ),
               ),
           ],

@@ -121,20 +121,8 @@ class _PokemonDetailHeaderState extends State<PokemonDetailHeader> {
         kPokemonDetailImageHeight,
       ),
       imageProvider: cacheNetworkImageProvider,
-      colorScheme: ColorScheme(
-        brightness: Brightness.light,
-        primary: Colors.transparent,
-        onPrimary: context.colors.onSurface,
-        secondary: Colors.transparent,
-        onSecondary: context.colors.onSurface,
-        error: Colors.transparent,
-        onError: context.colors.onSurface,
-        background: Colors.transparent,
-        onBackground: context.colors.onSurface,
-        surface: Colors.transparent,
-        onSurface: context.colors.onSurface,
-        primaryContainer: Colors.transparent,
-      ),
+      primary: Colors.transparent,
+      secondary: Colors.transparent,
     );
   }
 

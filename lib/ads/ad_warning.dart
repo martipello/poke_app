@@ -154,7 +154,7 @@ class _AdWarningState extends State<AdWarning> with TickerProviderStateMixin {
         'Ad in : ${adInCount == kInterstitialAdFrequency ? 0 : adInCount}',
         overflow: TextOverflow.ellipsis,
         style: PokeAppText.subtitle4Style.copyWith(
-          color: context.colors.surface,
+          color: context.colors.onSurface,
         ),
       ),
     );
@@ -162,9 +162,9 @@ class _AdWarningState extends State<AdWarning> with TickerProviderStateMixin {
 
   BoxDecoration _adWarningBoxDecoration() {
     return BoxDecoration(
-      color: context.colors.onSurface,
+      color: context.colors.surface,
       border: Border.all(
-        color: context.colors.onSurface,
+        color: context.colors.surface,
       ),
       borderRadius: const BorderRadius.horizontal(
         left: Radius.circular(
