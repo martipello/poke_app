@@ -1,11 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:rive/rive.dart';
 
 import '../../api/models/pokemon/pokemon.dart';
 import '../../extensions/build_context_extension.dart';
-import '../../extensions/type_data_extension.dart';
 
 const kDefaultImageHeight = 150.0;
 
