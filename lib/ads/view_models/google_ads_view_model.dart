@@ -16,7 +16,7 @@ const kIOSAdUnitId = 'ca-app-pub-1989939591379723/1756704065';
 const kAndroidAdUnitId = 'ca-app-pub-1989939591379723/1756704065';
 const kDebugAdUnitId = 'ca-app-pub-3940256099942544/2247696110';
 
-const kDefaultListAdFrequency = 8;
+const kDefaultListAdFrequency = 10;
 const kInterstitialAdFrequency = 6;
 
 class GoogleAdsViewModel {
@@ -108,7 +108,7 @@ class GoogleAdsViewModel {
     int index, {
     int adPerItemFrequency = kDefaultListAdFrequency,
   }) =>
-      F.appFlavor != Flavor.paid && index % adPerItemFrequency == 0;
+      F.appFlavor != Flavor.paid && index == adPerItemFrequency;
 
   void dispose() {
     nativeAdIsLoaded.close();

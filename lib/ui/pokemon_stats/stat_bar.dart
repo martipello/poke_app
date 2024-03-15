@@ -55,7 +55,7 @@ class _StatBarState extends State<StatBar> {
         final value = snapshot.connectionState == ConnectionState.waiting ? 0 : pokemonStat.base_stat;
         return _buildStatBar(
           context,
-          value?.toDouble() ?? 0,
+          value ?? 0,
         );
       },
     );
@@ -63,7 +63,7 @@ class _StatBarState extends State<StatBar> {
 
   Widget _buildStatBar(
     BuildContext context,
-    double value,
+    int value,
   ) {
     return FAProgressBar(
       displayText: '',
@@ -71,6 +71,7 @@ class _StatBarState extends State<StatBar> {
         color: context.colors.onPrimary,
       ),
       currentValue: value.toDouble(),
+      formatValue: (value, fixed) => value.toInt().toString(),
       size: 22,
       backgroundColor: widget.secondaryColor,
       progressGradient: LinearGradient(
