@@ -142,13 +142,11 @@ class PokemonMoveTile extends StatelessWidget {
             ) ??
             {};
 
+    final levelLearnedAt = pokemonMove.level ?? 0;
+
     if (learnMethodsByVersionGroup.isEmpty) {
       return const SizedBox();
     } else if (learnMethodsByVersionGroup.length == 1) {
-      final pokemonMoveLearnTableRow = PokemonTableRowInfo(
-        learnMethodsByVersionGroup.keys.firstOrNull().capitalize(),
-        value: context.strings.allGenerations,
-      );
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
@@ -156,7 +154,15 @@ class PokemonMoveTile extends StatelessWidget {
           _buildLearnMethodTable(
             context,
             [
-              pokemonMoveLearnTableRow,
+              PokemonTableRowInfo(
+                learnMethodsByVersionGroup.keys.firstOrNull().capitalize(),
+                value: context.strings.allGenerations,
+              ),
+              if(levelLearnedAt > 0)
+              PokemonTableRowInfo(
+                'Level: ',
+                value: levelLearnedAt.toString(),
+              ),
             ],
           ),
           _buildDivider(),

@@ -48,6 +48,10 @@ class _PokeAppState extends State<PokeApp> {
         const AssetImage('assets/images/pokeball_outline.png'),
         context,
       );
+      await precacheImage(
+        const AssetImage('assets/images/pokeball_filter.png'),
+        context,
+      );
     } catch (e) {
       print('Failed to load and cache the image: $e');
     }
