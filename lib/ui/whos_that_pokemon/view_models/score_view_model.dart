@@ -19,7 +19,7 @@ class ScoreViewModel {
   void resetScores() {
     sharedPreferencesService.setWinsScore(0);
     sharedPreferencesService.setLossesScore(0);
-    winsAndLossesStream.add(Tuple2(0, 0));
+    winsAndLossesStream.add(const Tuple2(0, 0));
   }
 
   void addWin() async {
@@ -38,7 +38,17 @@ class ScoreViewModel {
     winsAndLossesStream.add(Tuple2(wins, incrementLosses));
   }
 
-  void dispose(){
+  // Future<String?> sendScoreToLeaderboard() async {
+  //   final wins = winsAndLossesStream.value.item1;
+  //   return Leaderboards.submitScore(
+  //     score: Score(
+  //       value: wins,
+  //       androidLeaderboardID: 'CgkIioO1k68REAIQAQ',
+  //     ),
+  //   );
+  // }
+
+  void dispose() {
     winsAndLossesStream.close();
   }
 }

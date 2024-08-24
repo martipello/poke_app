@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:games_services/games_services.dart';
 import 'package:rive/rive.dart';
 import 'package:tuple/tuple.dart';
 
