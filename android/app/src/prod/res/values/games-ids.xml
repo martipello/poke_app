@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Google Play game services IDs. Save this file as res/values/games-ids.xml in your project.-->
+<resources>
+    <!--app_id-->
+    <string name="app_id" translatable="false">596772733322</string>
+    <!--package_name-->
+    <string name="package_name" translatable="false">com.sealstudios.pokeapp.prod</string>
+    <!--leaderboard WhosThatPokemon-->
+    <string name="leaderboard_whosthatpokemon" translatable="false">CgkIioO1k68REAIQAQ</string>
+</resources>

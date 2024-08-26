@@ -3,7 +3,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:games_services/games_services.dart';
 import 'package:rive/rive.dart';
 import 'package:tuple/tuple.dart';
 
@@ -17,6 +16,7 @@ import '../../extensions/string_extension.dart';
 import '../../flavors.dart';
 import '../../theme/poke_app_text.dart';
 import '../pokemon_list/pokemon_tile.dart';
+import '../shared_widgets/error_widget.dart' as ew;
 import '../shared_widgets/poke_dialog.dart';
 import '../shared_widgets/pokeball_loading_widget.dart';
 import '../shared_widgets/pokemon_image.dart';
@@ -26,7 +26,6 @@ import '../shared_widgets/view_constraint.dart';
 import 'auto_retry.dart';
 import 'red_shimmer_background.dart';
 import 'score_widget.dart';
-import '../shared_widgets/error_widget.dart' as ew;
 import 'view_models/score_view_model.dart';
 import 'view_models/whos_that_pokemon_view_model.dart';
 
@@ -59,7 +58,7 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
     );
     scoreViewModel.winsAndLossesStream.listen(
       (event) {
-        final openedCount = event.item1 + event.item2;
+        final openedCount = event.wins + event.losses;
         if (openedCount == 1 || openedCount % kInterstitialAdFrequency == 0 && F.appFlavor != Flavor.paid) {
           //We do this as without it first ad always fails
           _googleAdsViewModel.createInterstitialAd();
@@ -88,6 +87,10 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
       child: Scaffold(
         backgroundColor: Colors.red,
         body: _buildWhosThatPokemonViewBody(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: scoreViewModel.showLeaderboard,
+          child: const Icon(Icons.leaderboard),
+        ),
       ),
     );
   }
