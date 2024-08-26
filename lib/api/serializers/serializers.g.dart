@@ -42,6 +42,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(TypeData.serializer)
       ..add(TypeDataHolder.serializer)
       ..add(TypeEfficacies.serializer)
+      ..add(UserScore.serializer)
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Article)]),
           () => new ListBuilder<Article>())

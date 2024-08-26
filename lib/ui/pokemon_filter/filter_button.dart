@@ -34,6 +34,19 @@ class _FilterButtonState extends State<FilterButton> with SingleTickerProviderSt
   }
 
   Widget _buildFilterFloatingActionButton() {
+    return FilterButtonWidget(onTap: widget.onTap);
+  }
+}
+
+class FilterButtonWidget extends StatelessWidget {
+  const FilterButtonWidget({super.key, required this.onTap, this.imageUri = 'assets/images/pokeball_filter.png', this.child});
+
+  final VoidCallback onTap;
+  final String imageUri;
+  final Widget? child;
+
+  @override
+  Widget build(BuildContext context) {
     return FloatingActionButton(
       shape: const CircleBorder(),
       clipBehavior: Clip.hardEdge,
@@ -42,6 +55,7 @@ class _FilterButtonState extends State<FilterButton> with SingleTickerProviderSt
       child: Stack(
         children: [
           _buildFilterButtonImage(),
+          child ?? const SizedBox(),
           _buildFilterButtonInkWell(),
         ],
       ),
@@ -55,14 +69,14 @@ class _FilterButtonState extends State<FilterButton> with SingleTickerProviderSt
         splashColor: Colors.red.withOpacity(
           0.5,
         ),
-        onTap: widget.onTap,
+        onTap: onTap,
       ),
     );
   }
 
   Widget _buildFilterButtonImage() {
     return Image.asset(
-      'assets/images/pokeball_filter.png',
+      imageUri,
       gaplessPlayback: true,
     );
   }

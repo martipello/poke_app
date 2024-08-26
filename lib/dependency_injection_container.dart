@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_it/get_it.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:package_info/package_info.dart';
@@ -15,6 +16,7 @@ import 'services/language_service.dart';
 import 'services/launch_service.dart';
 import 'services/shared_preferences_service.dart';
 import 'services/theme_service.dart';
+import 'ui/leaderboard/view_models/leaderboard_view_model.dart';
 import 'ui/locations/view_models/map_zoom_control_view_model.dart';
 import 'ui/pokemon_evolutions/view_models/pokemon_evolution_view_model.dart';
 import 'ui/pokemon_forms/view_models/pokemon_forms_view_model.dart';
@@ -74,6 +76,7 @@ Future<void> init() async {
   getIt.registerFactory(SplashViewModel.new);
   getIt.registerFactory(() => WhosThatPokemonViewModel(getIt(), getIt(), getIt(), getIt()));
   getIt.registerFactory(() => ScoreViewModel(getIt()));
+  getIt.registerLazySingleton(() => LeaderboardViewModel(FirebaseFirestore.instance));
   getIt.registerFactory(ExpansionCardStateViewModel.new);
   getIt.registerFactory(PokeballLoadingViewModel.new);
   getIt.registerFactory(() => ImageColorViewModel(getIt()));

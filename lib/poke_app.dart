@@ -8,6 +8,7 @@ import 'dependency_injection_container.dart';
 import 'in_app_purchases/view_models/in_app_purchase_view_model.dart';
 import 'services/language_service.dart';
 import 'ui/app_shell.dart';
+import 'ui/leaderboard/leaderboard_page.dart';
 import 'ui/locations/map_page.dart';
 import 'ui/pokemon_detail/pokemon_detail_page.dart';
 import 'ui/settings/about.dart';
@@ -92,6 +93,7 @@ class _PokeAppState extends State<PokeApp> {
               SplashPage.routeName: (context) => const SplashPage(),
               PokemonDetailPage.routeName: (context) => const PokemonDetailPage(),
               LocationMapPage.routeName: (context) => LocationMapPage(),
+              LeaderboardPage.routeName: (context) => LeaderboardPage(),
               Settings.routeName: (context) => Settings(),
               About.routeName: (context) => About(),
             },

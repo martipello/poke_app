@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:poke_app/ui/pokemon_filter/filter_button.dart';
 import 'package:rxdart/subjects.dart';
 
 import '../extensions/build_context_extension.dart';
+import 'leaderboard/leaderboard_page.dart';
 import 'pokemon_list/pokemon_list_view_decoration.dart';
 import 'whos_that_pokemon/whos_that_pokemon_view.dart';
 
@@ -29,6 +31,17 @@ class AppShell extends StatelessWidget {
             context,
             index,
           ),
+          floatingActionButton: index == 1
+              ? FilterButtonWidget(
+                  onTap: () {
+                    Navigator.of(context).pushNamed(LeaderboardPage.routeName);
+                  },
+                  imageUri: 'assets/images/red_white_background.png',
+                  child: const Center(
+                    child: Icon(Icons.leaderboard, size: 28,),
+                  ),
+                )
+              : null,
         );
       },
     );
