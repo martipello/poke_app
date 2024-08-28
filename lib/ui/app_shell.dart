@@ -1,118 +1,130 @@
 import 'package:flutter/material.dart';
-import 'package:poke_app/ui/pokemon_filter/filter_button.dart';
-import 'package:rxdart/subjects.dart';
+import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 
 import '../extensions/build_context_extension.dart';
-import 'leaderboard/leaderboard_page.dart';
-import 'pokemon_list/pokemon_list_view_decoration.dart';
-import 'whos_that_pokemon/whos_that_pokemon_view.dart';
+import '../extensions/media_query_context_extension.dart';
+
 
 class AppShell extends StatelessWidget {
-  AppShell({key}) : super(key: key);
+  const AppShell({
+    super.key,
+    required this.navigationShell,
+  });
 
-  final _appShellViewModel = AppShellViewModel();
-  final _pageController = PageController();
-  static const routeName = '/dashboard';
+  final StatefulNavigationShell navigationShell;
+
+
+  static const routeName = 'home';
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<int>(
-      initialData: 0,
-      stream: _appShellViewModel.currentIndex,
-      builder: (context, snapshot) {
-        final index = snapshot.data ?? 0;
-        return Scaffold(
-          body: PageView(
-            physics: const NeverScrollableScrollPhysics(),
-            controller: _pageController,
-            children: _bodies,
+    final isWideLayout = MediaQuery.of(context).isLargeScreen;
+    return AnnotatedRegion(
+      value: const SystemUiOverlayStyle(
+        statusBarColor: Colors.black,
+      ),
+      child: Material(
+        child: SafeArea(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              if (isWideLayout) {
+                return _buildScaffoldWithNavigatorRail(context);
+              }
+              return _buildScaffoldWithNavigatorBar(context);
+            },
           ),
-          bottomNavigationBar: _buildBottomNavigationBar(
-            context,
-            index,
-          ),
-          floatingActionButton: index == 1
-              ? FilterButtonWidget(
-                  onTap: () {
-                    Navigator.of(context).pushNamed(LeaderboardPage.routeName);
-                  },
-                  imageUri: 'assets/images/red_white_background.png',
-                  child: const Center(
-                    child: Icon(Icons.leaderboard, size: 28,),
-                  ),
-                )
-              : null,
-        );
-      },
+        ),
+      ),
     );
   }
 
-  Widget _buildBottomNavigationBar(
-    BuildContext context,
-    int currentIndex,
-  ) {
-    return BottomNavigationBar(
-      showUnselectedLabels: false,
-      showSelectedLabels: false,
-      items: [
-        _buildBottomNavigationBarItem(
-          context,
-          currentIndex,
-          context.strings.pokedex,
-          'assets/icons/pokedex-black.png',
-          0,
+  Widget _buildScaffoldWithNavigatorRail(BuildContext context) {
+    final currentIndex = navigationShell.currentIndex;
+    return Scaffold(
+      body: Row(
+        children: [
+          NavigationRail(
+            labelType: NavigationRailLabelType.all,
+            destinations: [
+              NavigationRailDestination(
+                icon: Image.asset(
+                  'assets/icons/pokedex-black.png',
+                  height: currentIndex == 0 ? 42 : 38,
+                  color: context.colors.onSurface.withOpacity(
+                    currentIndex == 0 ? 1.0 : 0.5,
+                  ),
+                  fit: BoxFit.fitHeight,
+                ),
+                label: const Text('Pokédex'),
+              ),
+              NavigationRailDestination(
+                icon: Image.asset(
+                  'assets/icons/whos_that_pokemon.png',
+                  height: currentIndex == 1 ? 42 : 38,
+                  color: context.colors.onSurface.withOpacity(
+                    currentIndex == 1 ? 1.0 : 0.5,
+                  ),
+                  fit: BoxFit.fitHeight,
+                ),
+                label: const Text('WTP?'),
+              ),
+            ],
+            selectedIndex: navigationShell.currentIndex,
+            onDestinationSelected: onTap,
+          ),
+          Expanded(
+            child: navigationShell,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildScaffoldWithNavigatorBar(BuildContext context) {
+    return Scaffold(
+      body: navigationShell,
+      bottomNavigationBar: _buildNavigationBar(context),
+    );
+  }
+
+  Widget _buildNavigationBar(BuildContext context) {
+    final currentIndex = navigationShell.currentIndex;
+    return NavigationBar(
+      indicatorColor: Colors.transparent,
+      destinations: [
+        NavigationDestination(
+          icon: Image.asset(
+            'assets/icons/pokedex-black.png',
+            height: currentIndex == 0 ? 42 : 38,
+            color: context.colors.onSurface.withOpacity(
+              currentIndex == 0 ? 1.0 : 0.5,
+            ),
+            fit: BoxFit.fitHeight,
+          ),
+          label: 'Pokédex',
         ),
-        // _buildBottomNavigationBarItem(
-        //   'PokéNews',
-        //   'assets/images/fairy_type_icon.png',
-        //   1,
-        // ),
-        _buildBottomNavigationBarItem(
-          context,
-          currentIndex,
-          context.strings.whoDatPokemon,
-          'assets/icons/whos_that_pokemon.png',
-          1,
+        NavigationDestination(
+          icon: Image.asset(
+            'assets/icons/whos_that_pokemon.png',
+            height: currentIndex == 1 ? 42 : 38,
+            color: context.colors.onSurface.withOpacity(
+              currentIndex == 1 ? 1.0 : 0.5,
+            ),
+            fit: BoxFit.fitHeight,
+          ),
+          label: 'WTP?',
         ),
       ],
-      onTap: (index) {
-        _pageController.jumpToPage(index);
-        _appShellViewModel.currentIndex.add(index);
-      },
-      currentIndex: currentIndex,
+      onDestinationSelected: onTap,
+      selectedIndex: navigationShell.currentIndex,
     );
   }
 
-  BottomNavigationBarItem _buildBottomNavigationBarItem(
-    BuildContext context,
-    int currentIndex,
-    String label,
-    String imagePath,
-    int index,
-  ) {
-    return BottomNavigationBarItem(
-      icon: Image.asset(
-        imagePath,
-        height: currentIndex == index ? 42 : 38,
-        color: context.colors.onSurface.withOpacity(
-          currentIndex == index ? 1.0 : 0.5,
-        ),
-        fit: BoxFit.fitHeight,
-      ),
-      label: label,
-      tooltip: label,
+  void onTap(int index) {
+    navigationShell.goBranch(
+      index,
+      initialLocation: index == navigationShell.currentIndex,
     );
   }
-
-  final _bodies = const [
-    PokemonListViewDecoration(),
-    // PokemonNewsListView(),
-    WhosThatPokemonView(),
-  ];
-}
-
-class AppShellViewModel {
-  AppShellViewModel();
-
-  final currentIndex = BehaviorSubject.seeded(0);
 }

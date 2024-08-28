@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -135,7 +136,7 @@ class Settings extends StatelessWidget {
           color: context.colors.onSurface,
         ),
         onPressed: () {
-          Navigator.of(context).pop();
+          context.pop();
         },
       ),
     );
@@ -407,7 +408,7 @@ class Settings extends StatelessWidget {
         context.strings.about,
       ),
       onPressed: (context) {
-        Navigator.of(context).pushNamed(About.routeName);
+        context.push(About.routeName);
       },
     );
   }

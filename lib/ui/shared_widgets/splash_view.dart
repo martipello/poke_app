@@ -1,10 +1,12 @@
 import 'package:circular_reveal_animation/circular_reveal_animation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:rive/rive.dart';
 
 import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
 import '../app_shell.dart';
+import '../pokemon_list/pokemon_list_view_decoration.dart';
 import 'view_models/spash_view_model.dart';
 
 class SplashView extends StatefulWidget {
@@ -41,9 +43,7 @@ class _SplashViewState extends State<SplashView> with SingleTickerProviderStateM
         if (value) {
           _circleRevealAnimationController.forward().then(
             (value) {
-              Navigator.of(context).pushReplacementNamed(
-                AppShell.routeName,
-              );
+              context.go(PokemonListViewDecoration.routeName);
             },
           );
         }

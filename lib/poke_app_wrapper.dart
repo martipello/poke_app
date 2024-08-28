@@ -23,38 +23,17 @@ class PokeAppWrapper {
           options: DefaultFirebaseOptions.currentPlatform,
         );
         await di.init();
-        MobileAds.instance.initialize();
-        final requestConfiguration = RequestConfiguration(
-          testDeviceIds: [
-            '992DEA92BE3FB29E0B8D6646B55BBA4F',//PIXEL 6 PRO
-          ],
-          tagForChildDirectedTreatment: TagForChildDirectedTreatment.yes,
-          maxAdContentRating: MaxAdContentRating.g,
-        );
-        MobileAds.instance.updateRequestConfiguration(
-          requestConfiguration,
-        );
+        await initAds();
         if (!kIsWeb) {
           FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
           if (kDebugMode) {
             await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
           }
         }
-        final themeService = getIt.get<ThemeService>();
         final _inAppPurchaseViewModel = getIt.get<InAppPurchaseViewModel>();
-        _inAppPurchaseViewModel.restorePurchases();
+        await _inAppPurchaseViewModel.restorePurchases();
 
-        runApp(
-          StreamBuilder<bool?>(
-            stream: themeService.isDarkModeStream,
-            builder: (context, snapshot) {
-              final isDarkMode = snapshot.data == true;
-              return PokeApp(
-                themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
-              );
-            },
-          ),
-        );
+        runApp(const PokeApp());
       },
       (error, stack) => FirebaseCrashlytics.instance.recordError(
         error,
@@ -63,4 +42,18 @@ class PokeAppWrapper {
       ),
     );
   }
+}
+
+Future<void> initAds() async {
+  await MobileAds.instance.initialize();
+  final requestConfiguration = RequestConfiguration(
+    testDeviceIds: [
+      '992DEA92BE3FB29E0B8D6646B55BBA4F',//PIXEL 6 PRO
+    ],
+    tagForChildDirectedTreatment: TagForChildDirectedTreatment.yes,
+    maxAdContentRating: MaxAdContentRating.g,
+  );
+  await MobileAds.instance.updateRequestConfiguration(
+    requestConfiguration,
+  );
 }

@@ -48,6 +48,7 @@ class FilterButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
+      heroTag: null,
       shape: const CircleBorder(),
       clipBehavior: Clip.hardEdge,
       backgroundColor: Colors.red,

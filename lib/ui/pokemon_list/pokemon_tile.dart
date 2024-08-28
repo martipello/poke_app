@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 import '../../api/models/pokemon/pokemon.dart';
@@ -75,9 +76,9 @@ class _PokemonTileState extends State<PokemonTile> {
             onTap: widget.onTap ??
                 () {
                   context.closeKeyBoard();
-                  Navigator.of(context).pushNamed(
+                  context.push(
                     PokemonDetailPage.routeName,
-                    arguments: PokemonDetailPageArguments(
+                    extra: PokemonDetailPageArguments(
                       pokemon: widget.pokemon,
                       primary: primary,
                       secondary: secondary,

@@ -4,7 +4,6 @@ import 'package:get_it/get_it.dart';
 
 import '../../api/models/user_score.dart';
 import '../../theme/poke_app_text.dart';
-import '../shared_widgets/loading_widget.dart';
 import '../shared_widgets/pokeball_loading_widget.dart';
 import '../shared_widgets/three_d_text.dart';
 import '../shared_widgets/view_constraint.dart';
@@ -13,13 +12,17 @@ import 'view_models/leaderboard_view_model.dart';
 class LeaderboardPage extends StatelessWidget {
   LeaderboardPage({super.key});
 
-  static const routeName = 'leaderboard';
+  static const routeName = '/leaderboard';
 
   final leaderBoardViewModel = GetIt.instance.get<LeaderboardViewModel>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.red,
+        automaticallyImplyLeading: true,
+      ),
       backgroundColor: Colors.red,
       body: SafeArea(
         child: ViewConstraint(

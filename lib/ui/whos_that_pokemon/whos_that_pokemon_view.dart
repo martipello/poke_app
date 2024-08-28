@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:go_router/go_router.dart';
 import 'package:rive/rive.dart';
 import 'package:tuple/tuple.dart';
 
@@ -15,6 +16,8 @@ import '../../extensions/build_context_extension.dart';
 import '../../extensions/string_extension.dart';
 import '../../flavors.dart';
 import '../../theme/poke_app_text.dart';
+import '../leaderboard/leaderboard_page.dart';
+import '../pokemon_filter/filter_button.dart';
 import '../pokemon_list/pokemon_tile.dart';
 import '../shared_widgets/poke_dialog.dart';
 import '../shared_widgets/pokeball_loading_widget.dart';
@@ -35,6 +38,8 @@ class WhosThatPokemonView extends StatefulWidget {
   @override
   State<WhosThatPokemonView> createState() => _WhosThatPokemonViewState();
 }
+
+const kWhosThatPokemonRoute = '/whosThatPokemon';
 
 class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
   final whosThatPokemonViewModel = getIt.get<WhosThatPokemonViewModel>();
@@ -87,6 +92,18 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
       child: Scaffold(
         backgroundColor: Colors.red,
         body: _buildWhosThatPokemonViewBody(),
+        floatingActionButton: FilterButtonWidget(
+          onTap: () {
+            context.push(LeaderboardPage.routeName);
+          },
+          imageUri: 'assets/images/red_white_background.png',
+          child: const Center(
+            child: Icon(
+              Icons.leaderboard,
+              size: 28,
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -189,6 +206,7 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
                   isAutoRetry: isAutoRetry,
                   onChanged: whosThatPokemonViewModel.setAutoRetry,
                 ),
+                const SizedBox(height: 96)
               ],
             ),
           ),
