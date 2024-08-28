@@ -12,6 +12,7 @@ import 'firebase_options.dart';
 import 'in_app_purchases/view_models/in_app_purchase_view_model.dart';
 import 'poke_app.dart';
 import 'services/theme_service.dart';
+import 'utils/console_output.dart';
 
 // ignore_for_file: avoid_classes_with_only_static_members
 class PokeAppWrapper {
@@ -23,23 +24,29 @@ class PokeAppWrapper {
           options: DefaultFirebaseOptions.currentPlatform,
         );
         await di.init();
-        await initAds();
         if (!kIsWeb) {
+          await initAds();
           FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
           if (kDebugMode) {
             await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
           }
+          final _inAppPurchaseViewModel = getIt.get<InAppPurchaseViewModel>();
+          await _inAppPurchaseViewModel.restorePurchases();
         }
-        final _inAppPurchaseViewModel = getIt.get<InAppPurchaseViewModel>();
-        await _inAppPurchaseViewModel.restorePurchases();
 
         runApp(const PokeApp());
       },
-      (error, stack) => FirebaseCrashlytics.instance.recordError(
-        error,
-        stack,
-        reason: 'Zoned Error',
-      ),
+      (error, stack) {
+        if(kIsWeb) {
+          log('Zoned Error').e('Error: $error\nStack: $stack');
+        } else {
+          FirebaseCrashlytics.instance.recordError(
+            error,
+            stack,
+            reason: 'Zoned Error',
+          );
+        }
+      }
     );
   }
 }

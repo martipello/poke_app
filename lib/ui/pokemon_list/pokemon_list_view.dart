@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
@@ -117,12 +118,12 @@ class PokemonListView extends StatelessWidget {
     required Pokemon pokemon,
     bool showAd = false,
   }) {
-    if (showAd) {
+    if (showAd && !kIsWeb) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (showAd) NativeAd(),
+          if (showAd && !kIsWeb) NativeAd(),
           PokemonTile(
             pokemon: pokemon,
           ),

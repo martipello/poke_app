@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../extensions/build_context_extension.dart';
@@ -56,7 +57,7 @@ class ClippedAppBar extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: IconButton(
         icon: Icon(
-          Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back,
+          (!kIsWeb && Platform.isIOS) ? Icons.arrow_back_ios : Icons.arrow_back,
           color: context.colors.surface,
         ),
         onPressed: onBackTap,

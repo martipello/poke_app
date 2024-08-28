@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../ads/ad_warning.dart';
@@ -81,7 +82,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
     );
     _openPokemonCountViewModel.openPokemonCountStream.listen(
       (openedCount) {
-        if (openedCount == 1 || openedCount % kInterstitialAdFrequency == 0 && F.appFlavor != Flavor.paid) {
+        if (openedCount == 1 || openedCount % kInterstitialAdFrequency == 0 && F.appFlavor != Flavor.paid && !kIsWeb) {
           //We do this as without it first ad always fails
           _googleAdsViewModel.createInterstitialAd();
           if (openedCount % kInterstitialAdFrequency == 0) {

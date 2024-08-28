@@ -44,34 +44,44 @@ class AppShell extends StatelessWidget {
     return Scaffold(
       body: Row(
         children: [
-          NavigationRail(
-            labelType: NavigationRailLabelType.all,
-            destinations: [
-              NavigationRailDestination(
-                icon: Image.asset(
-                  'assets/icons/pokedex-black.png',
-                  height: currentIndex == 0 ? 42 : 38,
-                  color: context.colors.onSurface.withOpacity(
-                    currentIndex == 0 ? 1.0 : 0.5,
+          Theme(
+            data: ThemeData(
+              highlightColor: Colors.transparent,
+              splashFactory: NoSplash.splashFactory,
+            ),
+            child: NavigationRail(
+              backgroundColor: context.colors.surface,
+              indicatorColor: Colors.transparent,
+              useIndicator: false,
+              indicatorShape: null,
+              labelType: NavigationRailLabelType.all,
+              destinations: [
+                NavigationRailDestination(
+                  icon: Image.asset(
+                    'assets/icons/pokedex-black.png',
+                    height: currentIndex == 0 ? 42 : 38,
+                    color: context.colors.onSurface.withOpacity(
+                      currentIndex == 0 ? 1.0 : 0.5,
+                    ),
+                    fit: BoxFit.fitHeight,
                   ),
-                  fit: BoxFit.fitHeight,
+                  label: const Text('Pokédex'),
                 ),
-                label: const Text('Pokédex'),
-              ),
-              NavigationRailDestination(
-                icon: Image.asset(
-                  'assets/icons/whos_that_pokemon.png',
-                  height: currentIndex == 1 ? 42 : 38,
-                  color: context.colors.onSurface.withOpacity(
-                    currentIndex == 1 ? 1.0 : 0.5,
+                NavigationRailDestination(
+                  icon: Image.asset(
+                    'assets/icons/whos_that_pokemon.png',
+                    height: currentIndex == 1 ? 42 : 38,
+                    color: context.colors.onSurface.withOpacity(
+                      currentIndex == 1 ? 1.0 : 0.5,
+                    ),
+                    fit: BoxFit.fitHeight,
                   ),
-                  fit: BoxFit.fitHeight,
+                  label: const Text('WTP?'),
                 ),
-                label: const Text('WTP?'),
-              ),
-            ],
-            selectedIndex: navigationShell.currentIndex,
-            onDestinationSelected: onTap,
+              ],
+              selectedIndex: navigationShell.currentIndex,
+              onDestinationSelected: onTap,
+            ),
           ),
           Expanded(
             child: navigationShell,

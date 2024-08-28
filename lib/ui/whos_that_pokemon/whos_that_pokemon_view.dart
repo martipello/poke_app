@@ -1,5 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -64,7 +65,7 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
     scoreViewModel.winsAndLossesStream.listen(
       (event) {
         final openedCount = event.item1 + event.item2;
-        if (openedCount == 1 || openedCount % kInterstitialAdFrequency == 0 && F.appFlavor != Flavor.paid) {
+        if (openedCount == 1 || openedCount % kInterstitialAdFrequency == 0 && F.appFlavor != Flavor.paid && !kIsWeb) {
           //We do this as without it first ad always fails
           _googleAdsViewModel.createInterstitialAd();
           if (openedCount % kInterstitialAdFrequency == 0) {
@@ -100,6 +101,7 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
           child: const Center(
             child: Icon(
               Icons.leaderboard,
+              color: Colors.black,
               size: 28,
             ),
           ),

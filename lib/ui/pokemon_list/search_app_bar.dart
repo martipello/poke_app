@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
@@ -246,7 +247,7 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
     return SliverAppBar(
       pinned: false,
       floating: false,
-      expandedHeight: 150,
+      expandedHeight: kIsWeb ? 250 : 150,
       flexibleSpace: DecoratedBox(
         decoration: const BoxDecoration(
           color: Colors.black,

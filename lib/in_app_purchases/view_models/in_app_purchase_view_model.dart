@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
 import '../../extensions/purchase_details_extension.dart';
@@ -44,25 +45,30 @@ class InAppPurchaseViewModel {
     );
   }
 
-  Future<ProductDetailsResponse> productDetailsResponse() {
+  Future<ProductDetailsResponse?> productDetailsResponse() {
+    if(kIsWeb) {
+      return Future.value(null);
+    }
     return _inAppPurchase.queryProductDetails({kPremium});
   }
 
   void addListener() {
-    storeConnection = purchaseStream.listen(
-      (purchases) async {
-        final _hasPurchasedPremium = purchases.hasPurchasedPremium();
-        if (_hasPurchasedPremium) {
-          hasPurchasedPremium = true;
-          F.appFlavor = Flavor.paid;
-        }
-        for (var purchase in purchases) {
-          if (purchase.pendingCompletePurchase) {
-            _inAppPurchase.completePurchase(purchase);
+    if (!kIsWeb) {
+      storeConnection = purchaseStream.listen(
+            (purchases) async {
+          final _hasPurchasedPremium = purchases.hasPurchasedPremium();
+          if (_hasPurchasedPremium) {
+            hasPurchasedPremium = true;
+            F.appFlavor = Flavor.paid;
           }
-        }
-      },
-    );
+          for (var purchase in purchases) {
+            if (purchase.pendingCompletePurchase) {
+              _inAppPurchase.completePurchase(purchase);
+            }
+          }
+        },
+      );
+    }
   }
 
   void dispose() {

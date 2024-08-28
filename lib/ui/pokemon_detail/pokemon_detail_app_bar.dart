@@ -1,4 +1,5 @@
 import 'package:circular_reveal_animation/circular_reveal_animation.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -73,7 +74,7 @@ class _PokemonDetailAppBarState extends State<PokemonDetailAppBar> with TickerPr
       },
       child: SliverAppBar(
         pinned: false,
-        expandedHeight: kExpandedHeight,
+        expandedHeight: kIsWeb ? kExpandedHeight + 16 : kExpandedHeight,
         surfaceTintColor: Colors.transparent,
         titleSpacing: 0,
         title: ClippedAppBar(
