@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import '../../api/models/user_score.dart';
 import '../../theme/poke_app_text.dart';
 import '../shared_widgets/loading_widget.dart';
+import '../shared_widgets/pokeball_loading_widget.dart';
 import '../shared_widgets/three_d_text.dart';
 import '../shared_widgets/view_constraint.dart';
 import 'view_models/leaderboard_view_model.dart';
@@ -26,7 +27,7 @@ class LeaderboardPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 32),
-              _buildThreeDText('Leaderboard'),
+              _buildThreeDText('Leaderboard', PokeAppText.pokeFontTitle1),
               const SizedBox(height: 32),
               StreamBuilder<QuerySnapshot<UserScore>>(
                 stream: leaderBoardViewModel.getLeaderboard(),
@@ -38,15 +39,12 @@ class LeaderboardPage extends StatelessWidget {
                         itemCount: scores.size,
                         itemBuilder: (context, index) {
                           final entry = scores.docs[index].data();
-                          return ListTile(
-                            title: Text(entry.name),
-                            trailing: Text(entry.score.toString()),
-                          );
+                          return _buildLeaderBoardItem(index, entry);
                         },
                       ),
                     );
                   }
-                  return const LoadingWidget(valueColor: Colors.yellow);
+                  return const PokeballLoadingWidget();
                 },
               ),
             ],
@@ -56,15 +54,31 @@ class LeaderboardPage extends StatelessWidget {
     );
   }
 
-  Widget _buildThreeDText(String text) {
+  Widget _buildLeaderBoardItem(int index, UserScore entry) {
+    return Row(
+      children: [
+        const SizedBox(width: 16),
+        _buildThreeDText((index + 1).toString(), PokeAppText.pokeFontSubtitle1),
+        const SizedBox(width: 16),
+        Expanded(
+          child: _buildThreeDText(entry.name, PokeAppText.pokeFontSubtitle1),
+        ),
+        const SizedBox(width: 16),
+        _buildThreeDText(entry.score.toString(), PokeAppText.pokeFontSubtitle1),
+        const SizedBox(width: 16),
+      ],
+    );
+  }
+
+  Widget _buildThreeDText(String text, TextStyle style) {
     return ThreeDText(
       text: text,
       textAlign: TextAlign.center,
       strokeColor: Colors.blue.shade700,
-      style: PokeAppText.pokeFontTitle1.copyWith(
+      style: style.copyWith(
         color: Colors.yellow,
       ),
-      backgroundStyle: PokeAppText.pokeFontTitle1.copyWith(
+      backgroundStyle: style.copyWith(
         color: Colors.blue.shade900,
       ),
     );

@@ -14,7 +14,7 @@ class LeaderboardViewModel {
   }
 
   Query<UserScore> getLeaderboardReference() {
-    return firebaseFirestore.collection(leaderboardCollection).orderBy('score').limit(10).withConverter<UserScore>(
+    return firebaseFirestore.collection(leaderboardCollection).orderBy('score', descending: true).limit(10).withConverter<UserScore>(
       fromFirestore: (snapshot, _) => UserScore.fromJson(snapshot.data()!),
       toFirestore: (userScore, _) => userScore.toJson(),
     );
