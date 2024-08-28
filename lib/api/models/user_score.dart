@@ -17,7 +17,11 @@ abstract class UserScore implements Built<UserScore, UserScoreBuilder> {
 
   int get score;
 
-  int get id;
+  String get uid;
+
+  DateTime get createdDate;
+
+  DateTime? get updatedDate;
 
   Map<String, dynamic> toJson() {
     return serializers.serializeWith(UserScore.serializer, this) as Map<String, dynamic>;

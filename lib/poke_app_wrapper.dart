@@ -19,6 +19,9 @@ class PokeAppWrapper {
     runZonedGuarded<Future<void>>(
       () async {
         WidgetsFlutterBinding.ensureInitialized();
+        await Firebase.initializeApp(
+          options: DefaultFirebaseOptions.currentPlatform,
+        );
         await di.init();
         MobileAds.instance.initialize();
         final requestConfiguration = RequestConfiguration(
@@ -30,9 +33,6 @@ class PokeAppWrapper {
         );
         MobileAds.instance.updateRequestConfiguration(
           requestConfiguration,
-        );
-        await Firebase.initializeApp(
-          options: DefaultFirebaseOptions.currentPlatform,
         );
         if (!kIsWeb) {
           FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;

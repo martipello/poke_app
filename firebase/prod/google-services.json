@@ -14,7 +14,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "182864126022-8st2s8lfdh2g77h834cnsj5nfm4avaom.apps.googleusercontent.com",
+          "client_id": "182864126022-muj3hvq0102ru0a7l5bdi7t7r7dj8j32.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,15 +27,8 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "182864126022-8st2s8lfdh2g77h834cnsj5nfm4avaom.apps.googleusercontent.com",
+              "client_id": "182864126022-muj3hvq0102ru0a7l5bdi7t7r7dj8j32.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "182864126022-31so311j0hardjjoocd46et9i7qij61l.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.sealstudios.pokeapp.dev"
-              }
             }
           ]
         }
@@ -50,7 +43,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "182864126022-8st2s8lfdh2g77h834cnsj5nfm4avaom.apps.googleusercontent.com",
+          "client_id": "182864126022-muj3hvq0102ru0a7l5bdi7t7r7dj8j32.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -63,15 +56,8 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "182864126022-8st2s8lfdh2g77h834cnsj5nfm4avaom.apps.googleusercontent.com",
+              "client_id": "182864126022-muj3hvq0102ru0a7l5bdi7t7r7dj8j32.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "182864126022-31so311j0hardjjoocd46et9i7qij61l.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.sealstudios.pokeapp.dev"
-              }
             }
           ]
         }
@@ -86,7 +72,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "182864126022-8st2s8lfdh2g77h834cnsj5nfm4avaom.apps.googleusercontent.com",
+          "client_id": "182864126022-muj3hvq0102ru0a7l5bdi7t7r7dj8j32.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -99,15 +85,8 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "182864126022-8st2s8lfdh2g77h834cnsj5nfm4avaom.apps.googleusercontent.com",
+              "client_id": "182864126022-muj3hvq0102ru0a7l5bdi7t7r7dj8j32.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "182864126022-31so311j0hardjjoocd46et9i7qij61l.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.sealstudios.pokeapp.dev"
-              }
             }
           ]
         }
@@ -122,7 +101,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "182864126022-8st2s8lfdh2g77h834cnsj5nfm4avaom.apps.googleusercontent.com",
+          "client_id": "182864126022-muj3hvq0102ru0a7l5bdi7t7r7dj8j32.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -135,15 +114,8 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "182864126022-8st2s8lfdh2g77h834cnsj5nfm4avaom.apps.googleusercontent.com",
+              "client_id": "182864126022-muj3hvq0102ru0a7l5bdi7t7r7dj8j32.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "182864126022-31so311j0hardjjoocd46et9i7qij61l.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.sealstudios.pokeapp.dev"
-              }
             }
           ]
         }
