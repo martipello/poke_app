@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../api/models/pokemon/pokemon.dart';
 import '../../../api/models/pokemon/pokemon_species_holder.dart';
@@ -52,9 +53,9 @@ class EvolutionTile extends StatelessWidget {
           onTap: () {
             final _pokemon = pokemon;
             if (_pokemon != null) {
-              Navigator.of(context).pushNamed(
+              context.push(
                 PokemonDetailPage.routeName,
-                arguments: PokemonDetailPageArguments(
+                extra: PokemonDetailPageArguments(
                   pokemon: _pokemon.rebuild(
                     (p) => p..pokemon_v2_pokemonspecy = speciesHolder.toBuilder(),
                   ),

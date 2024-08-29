@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:palette_generator/palette_generator.dart';
 
 import '../../api/models/pokemon/pokemon.dart';
 import '../../api/models/pokemon/pokemon_type.dart';
@@ -58,6 +58,15 @@ class _PokemonTileState extends State<PokemonTile> {
 
   @override
   Widget build(BuildContext context) {
+    if (kIsWeb) {
+      return Center(
+        child: _buildTileContent(),
+      );
+    }
+    return _buildTileContent();
+  }
+
+  SizedBox _buildTileContent() {
     const kCardPadding = 32;
     final chipHeight = widget.showTypes ? kChipHeight : 0;
     final tileHeight = kPokemonTileImageHeight + chipHeight + kCardPadding + 16 + 4;

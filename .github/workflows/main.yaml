@@ -36,7 +36,7 @@ jobs:
           channel: stable # or: beta, master (or main)
       - run: flutter --version
       - run: flutter pub get
-      - run: flutter build web
+      - run: flutter build web -t lib/main_paid.dart
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
