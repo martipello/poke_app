@@ -1,0 +1,8 @@
+flutter_launcher_icons:
+  android: false
+  ios: false
+  web:
+    generate: true
+    image_path: "assets/images/store_image.png"
+    background_color: "#FF5733"
+    theme_color: "#FF5733"
