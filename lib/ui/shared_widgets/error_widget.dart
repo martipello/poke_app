@@ -8,7 +8,6 @@ import '../../extensions/media_query_context_extension.dart';
 import '../../extensions/string_extension.dart';
 import '../../flavors.dart';
 import '../../services/launch_service.dart';
-import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import '../../utils/constants.dart';
 import 'poke_dialog.dart';
@@ -65,9 +64,7 @@ class ErrorWidget extends StatelessWidget {
                   Flexible(
                     child: Text(
                       errorMessage ?? context.strings.errorMessage,
-                      style: PokeAppText.body2Style.copyWith(
-                        color: colors(context).textOnForeground,
-                      ),
+                      style: PokeAppText.body2Style,
                       textAlign: textAlign ?? TextAlign.center,
                     ),
                   ),
@@ -80,12 +77,12 @@ class ErrorWidget extends StatelessWidget {
                 RoundedButton(
                   label: retryLabel ?? context.strings.retry,
                   disableShadow: true,
-                  fillColor: colors(context).cardBackground,
+                  fillColor: context.colors.surface,
                   onPressed: onTryAgain,
                   textStyle: PokeAppText.body3Style.copyWith(
-                    color: colors(context).textOnForeground,
+                    color: context.colors.onSurface,
                   ),
-                  outlineColor: colors(context).warning,
+                  outlineColor: context.colors.error,
                 ),
             ],
           ),
@@ -102,7 +99,7 @@ class ErrorWidget extends StatelessWidget {
         Icons.info_outline,
         size: 18,
       ),
-      color: colors(context).textOnForeground,
+      color: context.colors.onSurface,
       onPressed: () {
         _showErrorDialog(context, error);
       },
@@ -132,7 +129,7 @@ class ErrorWidget extends StatelessWidget {
               child: Text(
                 'Message : $errorMessage',
                 style: PokeAppText.body4Style.copyWith(
-                  color: colors(context).textOnForeground,
+                  color: context.colors.onSurface,
                 ),
               ),
             ),
@@ -143,7 +140,7 @@ class ErrorWidget extends StatelessWidget {
           Text(
             'Code : $errorCode',
             style: PokeAppText.body4Style.copyWith(
-              color: colors(context).textOnForeground,
+              color: context.colors.onSurface,
             ),
           ),
         ],

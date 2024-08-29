@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/base_theme.dart';
+import '../../extensions/build_context_extension.dart';
 
 class SliverRefreshIndicator extends StatelessWidget {
   const SliverRefreshIndicator({
@@ -21,7 +21,7 @@ class SliverRefreshIndicator extends StatelessWidget {
       onRefresh: () => Future.sync(
         onRefresh,
       ),
-      color: colors(context).textOnForeground,
+      color: context.colors.onSurface,
       child: CustomScrollView(
         controller: scrollController,
         slivers: [

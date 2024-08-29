@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../api/models/pokemon/pokemon.dart';
@@ -11,7 +12,6 @@ import '../../../extensions/build_context_extension.dart';
 import '../../../extensions/iterable_extension.dart';
 import '../../../extensions/string_extension.dart';
 import '../../../extensions/type_data_extension.dart';
-import '../../../theme/base_theme.dart';
 import '../../../theme/poke_app_text.dart';
 import '../pokemon_detail/pokemon_detail_page.dart';
 import '../pokemon_info/ability_tile.dart';
@@ -24,22 +24,17 @@ import '../shared_widgets/view_models/image_color_view_model.dart';
 
 const kPokemonTileImageHeight = 80.0;
 
-class FormTile extends StatefulWidget {
+class FormTile extends StatelessWidget {
   FormTile({
     Key? key,
     required this.pokemonFormWithVersionGroup,
   }) : super(key: key);
 
+  late final cacheNetworkImageProvider = CachedNetworkImageProvider(createImageUrl(pokemon?.id ?? 0));
+
   final PokemonFormWithVersionGroup pokemonFormWithVersionGroup;
 
-  @override
-  State<FormTile> createState() => _FormTileState();
-}
-
-class _FormTileState extends State<FormTile> {
   final imageColorViewModel = getIt.get<ImageColorViewModel>();
-
-  PokemonFormWithVersionGroup get pokemonFormWithVersionGroup => widget.pokemonFormWithVersionGroup;
 
   PokemonForm? get pokemonForm =>
       pokemonFormWithVersionGroup.pokemon_v2_pokemonformnames.firstOrNull()?.pokemon_v2_pokemonform;
@@ -53,21 +48,21 @@ class _FormTileState extends State<FormTile> {
   List<PokemonAbilityHolder> get abilities => pokemon?.pokemon_v2_pokemonabilities.toList() ?? [];
 
   @override
-  void dispose() {
-    imageColorViewModel.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return StreamBuilder<ColorScheme?>(
-      stream: imageColorViewModel.colorSchemeStream,
+    return FutureBuilder<({Color? primaryColor, Color? secondaryColor})>(
+      future: imageColorViewModel.palette(cacheNetworkImageProvider),
       builder: (context, colorSchemeSnapshot) {
         final colorScheme = colorSchemeSnapshot.data;
+        final primary = colorScheme?.primaryColor;
+        final secondary = colorScheme?.secondaryColor;
         return ExpansionCard(
-          titleWidget: _buildPokemonCardBody(),
+          titleWidget: _buildPokemonCardBody(
+            context,
+            primary,
+            secondary,
+          ),
           expandedChildren: [
-            _buildPokemonAbilities(),
+            _buildPokemonAbilities(context),
             const SizedBox(
               height: 16,
             ),
@@ -76,7 +71,8 @@ class _FormTileState extends State<FormTile> {
             //TODO we could call for the color here
             _navigateToDetailPage(
               context,
-              colorScheme,
+              primary,
+              secondary,
             );
           },
           bottomWidgetBuilder: (_) {
@@ -87,22 +83,29 @@ class _FormTileState extends State<FormTile> {
     );
   }
 
-  Widget _buildPokemonCardBody() {
+  Widget _buildPokemonCardBody(
+    BuildContext context,
+    Color? primary,
+    Color? secondary,
+  ) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildPokemonImage(),
+        _buildPokemonImage(
+          primary,
+          secondary,
+        ),
         const SizedBox(
           width: 16,
         ),
         Expanded(
-          child: _buildPokemonInfo(),
+          child: _buildPokemonInfo(context),
         ),
       ],
     );
   }
 
-  Widget _buildPokemonAbilities() {
+  Widget _buildPokemonAbilities(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -113,9 +116,7 @@ class _FormTileState extends State<FormTile> {
           ),
           child: Text(
             context.strings.abilities,
-            style: PokeAppText.subtitle3Style.copyWith(
-              color: colors(context).textOnForeground,
-            ),
+            style: PokeAppText.subtitle3Style,
           ),
         ),
         ...abilities.map(
@@ -172,37 +173,37 @@ class _FormTileState extends State<FormTile> {
     }
   }
 
-  Widget _buildPokemonInfo() {
+  Widget _buildPokemonInfo(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
           pokemonName.capitalize(),
-          style: PokeAppText.subtitle1Style.copyWith(
-            color: colors(context).textOnForeground,
-          ),
+          style: PokeAppText.subtitle1Style,
         ),
-        _buildPokemonId(),
+        _buildPokemonId(context),
       ],
     );
   }
 
-  Widget _buildPokemonId() {
+  Widget _buildPokemonId(BuildContext context) {
     final pokemonId = pokemon?.id ?? context.strings.questionMark;
     return Padding(
       padding: const EdgeInsets.only(top: 8),
       child: Text(
         '#${pokemonId.toString()}',
         style: PokeAppText.body6Style.copyWith(
-          color: colors(context).textOnForeground,
           height: 1.2,
         ),
       ),
     );
   }
 
-  Widget _buildPokemonImage() {
+  Widget _buildPokemonImage(
+    Color? primary,
+    Color? secondary,
+  ) {
     final _pokemon = pokemon;
     if (_pokemon != null) {
       return PokemonImage(
@@ -212,7 +213,9 @@ class _FormTileState extends State<FormTile> {
           kPokemonTileImageHeight,
           kPokemonTileImageHeight,
         ),
-        imageColorCallback: imageColorViewModel.colorSchemeStream.add,
+        imageProvider: cacheNetworkImageProvider,
+        primary: primary,
+        secondary: secondary,
       );
     } else {
       return const SizedBox();
@@ -234,7 +237,8 @@ class _FormTileState extends State<FormTile> {
 
   void _navigateToDetailPage(
     BuildContext context,
-    ColorScheme? colorScheme,
+    Color? primary,
+    Color? secondary,
   ) {
     final _pokemon = pokemon;
     if (_pokemon != null) {
@@ -256,7 +260,8 @@ class _FormTileState extends State<FormTile> {
                     ),
                   ),
           ),
-          colorScheme: colorScheme,
+          primary: primary,
+          secondary: secondary,
         ),
       );
     }

@@ -207,6 +207,9 @@ class PokemonRepositoryGraphQl {
            name
            height
            base_experience
+           pokemon_v2_pokemoncries {
+             cries
+           }
            pokemon_v2_encounters(order_by: {version_id: asc}) {
              max_level
              min_level

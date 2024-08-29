@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:palette_generator/palette_generator.dart';
 
 import '../../../services/shared_preferences_service.dart';
 
@@ -9,20 +9,20 @@ class ImageColorViewModel {
 
   final SharedPreferencesService sharedPreferencesService;
 
-  final colorSchemeStream = BehaviorSubject<ColorScheme?>();
+  // Future<ColorScheme> colorScheme(
+  //   CachedNetworkImageProvider imageProvider,
+  // ) async {
+  //   final isDarkMode = await sharedPreferencesService.isDarkMode();
+  //   return ColorScheme.fromImageProvider(
+  //     provider: imageProvider,
+  //     brightness: isDarkMode ? Brightness.dark : Brightness.light,
+  //   );
+  // }
 
-  Future<void> colorScheme(
+  Future<({Color? primaryColor, Color? secondaryColor})> palette(
     CachedNetworkImageProvider imageProvider,
   ) async {
-    final isDarkMode = await sharedPreferencesService.isDarkMode();
-    final colorScheme = await ColorScheme.fromImageProvider(
-      provider: imageProvider,
-      brightness: isDarkMode ? Brightness.dark : Brightness.light,
-    );
-    colorSchemeStream.add(colorScheme);
-  }
-
-  void dispose() {
-    colorSchemeStream.close();
+    final palette = await PaletteGenerator.fromImageProvider(imageProvider, maximumColorCount: 8);
+    return (primaryColor : palette.colors.firstOrNull, secondaryColor : palette.colors.lastOrNull);
   }
 }

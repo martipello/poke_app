@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../theme/base_theme.dart';
+import '../extensions/build_context_extension.dart';
 import '../theme/poke_app_text.dart';
 import '../utils/constants.dart';
 
@@ -37,7 +37,7 @@ class LaunchService {
               Text(
                 'Failed to launch $_url',
                 style: PokeAppText.body3Style.copyWith(
-                  color: colors(context).textOnPrimary,
+                  color: context.colors.onPrimary,
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,

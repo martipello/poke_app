@@ -14,6 +14,7 @@ import '../../../api/models/pokemon/pokemon_request.dart';
 import '../../../api/models/pokemon/pokemon_response.dart';
 import '../../../extensions/iterable_extension.dart';
 import '../../../services/language_service.dart';
+import '../../../services/shared_preferences_service.dart';
 
 enum RevealResult {
   correct,
@@ -26,22 +27,26 @@ class WhosThatPokemonViewModel {
     this.pokemonRepositoryGraphQl,
     this.errorHandler,
     this.languageService,
+    this.sharedPreferencesService,
   ) {
     _initSoundpool();
+    initAutoRetry();
   }
 
   final PokemonRepositoryGraphQl pokemonRepositoryGraphQl;
   final ErrorHandler errorHandler;
   final LanguageService languageService;
+  final SharedPreferencesService sharedPreferencesService;
 
   SimpleAnimation get controller => SimpleAnimation(
         'Timeline 1',
         autoplay: true,
       );
 
-  final pokemonOptionsStream = BehaviorSubject<ApiResponse<PokemonResponse>>();
-  final concealedPokemonStream = BehaviorSubject<Pokemon?>();
+  final pokemonOptionsStream =
+      BehaviorSubject<ApiResponse<({PokemonResponse pokemonResponse, Pokemon? concealedPokemon})>>();
   final revealResultStream = BehaviorSubject<Tuple2<RevealResult, bool>>();
+  final autoRetry = BehaviorSubject<bool>();
 
   SimpleAnimation? _controller;
   Soundpool? _soundpool;
@@ -73,22 +78,24 @@ class WhosThatPokemonViewModel {
       }
       pokemonOptionsStream.add(
         ApiResponse.completed(
-          pokemonResponse.rebuild(
-            (p0) => p0..pokemon_v2_pokemon.replace(pokemon),
+          (
+            pokemonResponse: pokemonResponse.rebuild(
+              (p0) => p0..pokemon_v2_pokemon.replace(pokemon),
+            ),
+          concealedPokemon: pokemon.randomNonRepeating(1).firstOrNull(),
           ),
         ),
       );
-      concealedPokemonStream.add(pokemon.randomNonRepeating(1).firstOrNull());
     } catch (e) {
-      final errorResponse = errorHandler.handleError<PokemonResponse>(
+      final errorResponse = errorHandler.handleError<({PokemonResponse pokemonResponse, Pokemon? concealedPokemon})>(
         e,
       );
       pokemonOptionsStream.add(errorResponse);
     }
   }
 
-  void setRevealResult(int pokemonId) {
-    final concealedPokemon = concealedPokemonStream.valueOrNull;
+  void setRevealResult(int pokemonId) async {
+    final concealedPokemon = pokemonOptionsStream.valueOrNull?.data?.concealedPokemon;
     if (pokemonId == 0) {
       revealResultStream.add(const Tuple2(RevealResult.none, false));
     } else {
@@ -99,6 +106,10 @@ class WhosThatPokemonViewModel {
       }
       if (_closingSoundId != null) {
         _playSound(_closingSoundId!);
+      }
+      if (autoRetry.valueOrNull == true) {
+        await Future.delayed(const Duration(milliseconds: 2700));
+        generateRandomPokemon();
       }
     }
   }
@@ -136,10 +147,20 @@ class WhosThatPokemonViewModel {
     }
   }
 
+  void initAutoRetry() async {
+    final isAutoRetry = await sharedPreferencesService.isAutoRetry();
+    autoRetry.add(isAutoRetry);
+  }
+
+  void setAutoRetry(bool isAutoRetry) async {
+    autoRetry.add(isAutoRetry);
+    sharedPreferencesService.setAutoRetry(isAutoRetry: isAutoRetry);
+  }
+
   void dispose() {
     _controller?.dispose();
     pokemonOptionsStream.close();
-    concealedPokemonStream.close();
+    autoRetry.close();
     _soundpool?.dispose();
   }
 

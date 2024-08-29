@@ -6,7 +6,6 @@ import '../../api/models/pokemon/gen_type.dart';
 import '../../api/models/pokemon/pokemon_type.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../extensions/media_query_context_extension.dart';
-import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import '../pokemon_list/view_models/filter_view_model.dart';
 import '../shared_widgets/chip_group.dart';
@@ -29,28 +28,23 @@ class FilterView extends StatefulWidget {
 class _FilterViewState extends State<FilterView> {
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: ThemeData(
-        cardTheme: _buildCardTheme(),
-      ),
-      child: Card(
-        child: SizedBox(
-          height: MediaQuery.of(context).filterBottomSheetHeight,
-          width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 16,
-                  right: 16,
-                  top: 16,
-                ),
-                child: _buildFilterHeader(),
+    return Card(
+      child: SizedBox(
+        height: MediaQuery.of(context).filterBottomSheetHeight,
+        width: double.infinity,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 16,
+                right: 16,
+                top: 16,
               ),
-              _buildFilters(),
-            ],
-          ),
+              child: _buildFilterHeader(),
+            ),
+            _buildFilters(),
+          ],
         ),
       ),
     );
@@ -210,7 +204,7 @@ class _FilterViewState extends State<FilterView> {
     return Text(
       context.strings.filters,
       style: PokeAppText.subtitle1Style.copyWith(
-        color: colors(context).textOnForeground,
+        color: context.colors.onSurface,
       ),
     );
   }
@@ -226,7 +220,7 @@ class _FilterViewState extends State<FilterView> {
       child: Text(
         subtitle,
         style: PokeAppText.body1Style.copyWith(
-          color: colors(context).textOnForeground,
+          color: context.colors.onSurface,
         ),
       ),
     );
@@ -237,7 +231,7 @@ class _FilterViewState extends State<FilterView> {
       icon: Icon(
         Icons.close,
         size: 20,
-        color: colors(context).textOnForeground,
+        color: context.colors.onSurface,
       ),
       onPressed: widget.onClose,
     );
@@ -245,8 +239,9 @@ class _FilterViewState extends State<FilterView> {
 
   CardTheme _buildCardTheme() {
     return CardTheme(
-      color: colors(context).cardBackground,
       clipBehavior: Clip.hardEdge,
+      color: context.colors.surface,
+      surfaceTintColor: Colors.transparent,
       elevation: 4,
       margin: EdgeInsets.zero,
       shape: const RoundedRectangleBorder(

@@ -7,7 +7,6 @@ import '../../../api/models/pokemon/pokemon_move_holder.dart';
 import '../../../api/models/pokemon/pokemon_request.dart';
 import '../../../dependency_injection_container.dart';
 import '../../../extensions/build_context_extension.dart';
-import '../../../theme/base_theme.dart';
 import '../../../theme/poke_app_text.dart';
 import '../../ads/native_ad.dart';
 import '../../ads/view_models/google_ads_view_model.dart';
@@ -139,78 +138,55 @@ class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepA
   }
 
   Widget _buildPokemonList() {
-    return Stack(
-      children: [
-        ViewConstraint(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              _buildSearchAndSelectedFilterHolder(
-                true,
-              ),
-              Expanded(
-                child: SliverRefreshIndicator(
-                  onRefresh: () async {
-                    _pokemonMovesViewModel.refresh();
-                  },
-                  scrollController: scrollController,
-                  padding: EdgeInsets.zero,
-                  sliver: SliverPadding(
-                    padding: const EdgeInsets.all(8),
-                    sliver: PagedSliverList.separated(
-                      pagingController: _pokemonMovesViewModel.getPagingController(),
-                      builderDelegate: PagedChildBuilderDelegate<PokemonMoveHolder>(
-                        itemBuilder: (context, moveHolder, index) => _buildMoveTile(
-                          moveHolder,
-                          showAd: _googleAdsViewModel.showAdAtIndex(index) && index != 0,
-                        ),
-                        firstPageErrorIndicatorBuilder: (context) => _buildErrorWidget(),
-                        noItemsFoundIndicatorBuilder: (context) => _emptyListIndicator(),
-                        newPageErrorIndicatorBuilder: (context) =>
-                            _errorListItemWidget(onTryAgain: _pokemonMovesViewModel.retryLastRequest),
-                        firstPageProgressIndicatorBuilder: (context) => const Center(
-                          child: PokeballLoadingWidget(
-                            size: Size(80, 80),
-                          ),
-                        ),
-                        newPageProgressIndicatorBuilder: (context) => _loadingListItemWidget(),
-                      ),
-                      separatorBuilder: (context, index) => const SizedBox(
-                        height: 4,
+    return ViewConstraint(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          _buildSearchAndSelectedFilterHolder(),
+          Expanded(
+            child: SliverRefreshIndicator(
+              onRefresh: () async {
+                _pokemonMovesViewModel.refresh();
+              },
+              scrollController: scrollController,
+              padding: EdgeInsets.zero,
+              sliver: SliverPadding(
+                padding: const EdgeInsets.all(8),
+                sliver: PagedSliverList.separated(
+                  pagingController: _pokemonMovesViewModel.getPagingController(),
+                  builderDelegate: PagedChildBuilderDelegate<PokemonMoveHolder>(
+                    itemBuilder: (context, moveHolder, index) => _buildMoveTile(
+                      moveHolder,
+                      showAd: _googleAdsViewModel.showAdAtIndex(index) && index != 0,
+                    ),
+                    firstPageErrorIndicatorBuilder: (context) => _buildErrorWidget(),
+                    noItemsFoundIndicatorBuilder: (context) => _emptyListIndicator(),
+                    newPageErrorIndicatorBuilder: (context) =>
+                        _errorListItemWidget(onTryAgain: _pokemonMovesViewModel.retryLastRequest),
+                    firstPageProgressIndicatorBuilder: (context) => const Center(
+                      child: PokeballLoadingWidget(
+                        size: Size(80, 80),
                       ),
                     ),
+                    newPageProgressIndicatorBuilder: (context) => _loadingListItemWidget(),
+                  ),
+                  separatorBuilder: (context, index) => const SizedBox(
+                    height: 4,
                   ),
                 ),
               ),
-            ],
+            ),
           ),
-        ),
-        _buildSearchAndSelectedFilterHolder(
-          false,
-        ),
-      ],
+        ],
+      ),
     );
   }
 
-  Widget _buildSearchAndSelectedFilterHolder(
-    //We cant measure this and pass the size so instead we build a "dummy" to maintain the space above the list
-    bool isDummy,
-  ) {
-    return Theme(
-      data: ThemeData(
-        cardColor: colors(context).cardBackground,
-      ),
-      child: Card(
-        color: colors(context).cardBackground,
-        shape: const ContinuousRectangleBorder(),
-        margin: EdgeInsets.zero,
-        elevation: isDummy ? 0 : 4,
-        child: SearchWidget(
-          searchTextController: _searchTextController,
-          filterViewModel: widget.filterViewModel,
-        ),
-      ),
+  Widget _buildSearchAndSelectedFilterHolder() {
+    return SearchWidget(
+      searchTextController: _searchTextController,
+      filterViewModel: widget.filterViewModel,
     );
   }
 
@@ -233,21 +209,17 @@ class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepA
         children: [
           Text(
             context.strings.error_getting_page,
-            style: PokeAppText.body4Style.copyWith(
-              color: colors(context).textOnForeground,
-            ),
+            style: PokeAppText.body4Style,
           ),
           const SizedBox(
             height: 4,
           ),
           RoundedButton(
             label: context.strings.retry,
-            textStyle: PokeAppText.body4Style.copyWith(
-              color: colors(context).textOnForeground,
-            ),
-            outlineColor: colors(context).warning,
+            textStyle: PokeAppText.body4Style,
+            outlineColor: context.colors.error,
             isFilled: true,
-            fillColor: colors(context).cardBackground,
+            fillColor: context.colors.surface,
             onPressed: onTryAgain,
           ),
         ],

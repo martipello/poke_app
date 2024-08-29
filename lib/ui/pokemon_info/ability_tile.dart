@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../../api/models/pokemon/pokemon_ability_holder.dart';
 import '../../../extensions/build_context_extension.dart';
 import '../../../extensions/pokemon_ability_holder_extension.dart';
-import '../../../theme/base_theme.dart';
 import '../../../theme/poke_app_text.dart';
 import '../shared_widgets/pokemon_expansion_tile.dart';
 import '../shared_widgets/pokemon_table.dart';
@@ -95,9 +94,7 @@ class AbilityTile extends StatelessWidget {
         children: [
           Text(
             title,
-            style: PokeAppText.body3Style.copyWith(
-              color: colors(context).textOnForeground,
-            ),
+            style: PokeAppText.body3Style,
           ),
           if (isHidden)
             Padding(
@@ -106,9 +103,7 @@ class AbilityTile extends StatelessWidget {
               ),
               child: Text(
                 context.strings.hidden,
-                style: PokeAppText.body3Style.copyWith(
-                  color: colors(context).textOnForeground,
-                ),
+                style: PokeAppText.body3Style,
               ),
             ),
         ],
@@ -122,9 +117,7 @@ class AbilityTile extends StatelessWidget {
   ) {
     return Text(
       pokemonAbilityHolder.description(),
-      style: PokeAppText.body4Style.copyWith(
-        color: colors(context).textOnForeground,
-      ),
+      style: PokeAppText.body4Style,
     );
   }
 }

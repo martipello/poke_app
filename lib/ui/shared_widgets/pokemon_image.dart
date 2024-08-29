@@ -3,80 +3,61 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 import '../../api/models/pokemon/pokemon.dart';
-import '../../dependency_injection_container.dart';
-import '../../theme/base_theme.dart';
-import 'view_models/image_color_view_model.dart';
-
-typedef ImageErrorBuilder = Widget Function(BuildContext context, Object? object, StackTrace? stacktrace);
-typedef ColorSchemeCallback = Function(ColorScheme? colorScheme);
+import '../../extensions/build_context_extension.dart';
 
 const kDefaultImageHeight = 150.0;
+
+String createImageUrl(int id) {
+  return 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$id.png';
+}
+
+String createAudioUrl(int id) {
+  return 'https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/$id.ogg';
+}
 
 class PokemonImage extends StatefulWidget {
   const PokemonImage({
     Key? key,
-    this.size,
     required this.pokemon,
-    this.clipBehavior = Clip.none,
-    this.imageColorCallback,
-    this.color,
-    this.maskColor,
+    required this.imageProvider,
+    this.size,
     this.includeHero = true,
+    this.drawOuterCircle = true,
+    this.clipBehavior = Clip.none,
+    this.maskColor,
+    this.primary,
+    this.secondary,
   });
 
   final Pokemon pokemon;
-  final Color? color;
-  final ColorSchemeCallback? imageColorCallback;
+  final CachedNetworkImageProvider imageProvider;
   final Clip clipBehavior;
   final Size? size;
   final bool includeHero;
+  final bool drawOuterCircle;
   final Color? maskColor;
+  final Color? primary;
+  final Color? secondary;
 
   @override
   State<PokemonImage> createState() => _PokemonImageState();
 }
 
 class _PokemonImageState extends State<PokemonImage> {
-  final imageColorViewModel = getIt.get<ImageColorViewModel>();
-
-  CachedNetworkImageProvider? mainImageProvider;
-
-  @override
-  void initState() {
-    super.initState();
-    mainImageProvider = CachedNetworkImageProvider(
-      _createImageUrl(),
-    );
-    imageColorViewModel.colorSchemeStream.listen(widget.imageColorCallback);
-    WidgetsBinding.instance.addPostFrameCallback(
-      (timeStamp) {
-        if (widget.imageColorCallback != null) {
-          imageColorViewModel.colorScheme(
-            mainImageProvider!,
-          );
-        }
-      },
-    );
-  }
-
-  @override
-  void dispose() {
-    imageColorViewModel.dispose();
-    super.dispose();
-  }
+  bool _hasBegunLoading = false;
 
   @override
   Widget build(BuildContext context) {
-    if (mainImageProvider == null) {
-      return const SizedBox();
-    }
-    return Material(
-      type: MaterialType.transparency,
-      child: _buildImageHolder(
-        context,
-        widget.includeHero,
-        mainImageProvider!,
-        (context, _, __) => _buildEmptyImage(),
+    return SizedBox(
+      height: widget.size?.height ?? kDefaultImageHeight,
+      width: widget.size?.width ?? kDefaultImageHeight,
+      child: Material(
+        type: MaterialType.transparency,
+        child: _buildImageHolder(
+          context,
+          widget.includeHero,
+          widget.imageProvider,
+        ),
       ),
     );
   }
@@ -85,57 +66,54 @@ class _PokemonImageState extends State<PokemonImage> {
     BuildContext context,
     bool buildHeroWidget,
     ImageProvider imageProvider,
-    ImageErrorBuilder imageErrorBuilder,
   ) {
-    return StreamBuilder<ColorScheme?>(
-      stream: imageColorViewModel.colorSchemeStream,
-      builder: (context, snapshot) {
-        final colorScheme = snapshot.data;
-        return Stack(
-          children: [
-            _buildOuterCircle(
-              imageErrorBuilder,
-              colorScheme,
+    return Stack(
+      children: [
+        if (widget.drawOuterCircle)
+          Positioned.fill(
+            child: Align(
+              alignment: Alignment.center,
+              child: _buildOuterCircle(),
             ),
-            Positioned.fill(
-              child: Align(
-                alignment: Alignment.center,
-                child: buildHeroWidget
-                    ? _buildImageWithHero(
-                        imageProvider,
-                        imageErrorBuilder,
-                      )
-                    : _buildImage(
-                        imageProvider,
-                        imageErrorBuilder,
-                      ),
-              ),
-            ),
-          ],
-        );
-      },
+          ),
+        Positioned.fill(
+          child: Align(
+            alignment: Alignment.center,
+            child: buildHeroWidget
+                ? _buildImageWithHero(
+                    context,
+                    imageProvider,
+                  )
+                : _buildImage(
+                    context,
+                    imageProvider,
+                  ),
+          ),
+        ),
+      ],
     );
   }
 
-  Widget _buildOuterCircle(
-    ImageErrorBuilder imageErrorBuilder,
-    ColorScheme? colorScheme,
-  ) {
-    final primaryColor = colorScheme?.primary ?? Colors.white;
-    final secondaryColor = colorScheme?.primaryContainer ?? Colors.white;
+  Widget _buildOuterCircle() {
+    final primaryColor = widget.primary ?? context.colors.surface;
+    final secondaryColor = widget.secondary ?? context.colors.surface;
 
-    return ClipRRect(
-      clipBehavior: widget.clipBehavior,
-      borderRadius: _buildBorderRadius(),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        decoration: BoxDecoration(
-          color: widget.color ?? primaryColor,
-        ),
-        padding: const EdgeInsets.all(6),
-        child: Center(
-          child: _buildCenterCircle(
-            secondaryColor,
+    return Padding(
+      padding: const EdgeInsets.all(1.0),
+      child: ClipRRect(
+        clipBehavior: widget.clipBehavior,
+        borderRadius: _buildBorderRadius(),
+        child: Container(
+          height: widget.size?.height ?? kDefaultImageHeight,
+          width: widget.size?.width ?? kDefaultImageHeight,
+          decoration: BoxDecoration(
+            color: primaryColor,
+          ),
+          padding: const EdgeInsets.all(6.0),
+          child: Center(
+            child: _buildCenterCircle(
+              secondaryColor,
+            ),
           ),
         ),
       ),
@@ -143,40 +121,38 @@ class _PokemonImageState extends State<PokemonImage> {
   }
 
   Widget _buildCenterCircle(
-    Color? dominantColor,
+    Color? secondaryColor,
   ) {
     return ClipRRect(
       clipBehavior: widget.clipBehavior,
       borderRadius: _buildBorderRadius(),
-      child: DecoratedBox(
+      child: Container(
+        height: widget.size?.height ?? kDefaultImageHeight,
+        width: widget.size?.width ?? kDefaultImageHeight,
         decoration: BoxDecoration(
-          color: widget.color ?? dominantColor,
-        ),
-        child: SizedBox(
-          height: widget.size?.height ?? kDefaultImageHeight,
-          width: widget.size?.width ?? kDefaultImageHeight,
+          color: secondaryColor,
         ),
       ),
     );
   }
 
   Widget _buildImageWithHero(
+    BuildContext context,
     ImageProvider imageProvider,
-    ImageErrorBuilder imageErrorBuilder,
   ) {
     return Hero(
       tag: '${widget.pokemon.id}',
       transitionOnUserGestures: true,
       child: _buildImage(
+        context,
         imageProvider,
-        imageErrorBuilder,
       ),
     );
   }
 
   Widget _buildImage(
+    BuildContext context,
     ImageProvider imageProvider,
-    ImageErrorBuilder imageErrorBuilder,
   ) {
     return Image(
       image: imageProvider,
@@ -186,7 +162,7 @@ class _PokemonImageState extends State<PokemonImage> {
       height: widget.size?.height ?? kDefaultImageHeight,
       width: widget.size?.width ?? kDefaultImageHeight,
       loadingBuilder: (context, child, chunk) {
-        if (chunk == null) {
+        if (_hasBegunLoading && chunk == null) {
           return child;
         }
         return _buildEmptyImageHolder(
@@ -194,13 +170,22 @@ class _PokemonImageState extends State<PokemonImage> {
           isLoading: true,
         );
       },
-      errorBuilder: imageErrorBuilder,
+      frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+        _hasBegunLoading = frame != null;
+        return child;
+      },
+      errorBuilder: (context, _, __) {
+        return _buildEmptyImageHolder(
+          context,
+          isLoading: false,
+        );
+      },
     );
   }
 
   Widget _buildEmptyImageHolder(
     BuildContext context, {
-    bool isLoading = false,
+    bool isLoading = true,
   }) {
     return Center(
       child: ClipRRect(
@@ -210,7 +195,7 @@ class _PokemonImageState extends State<PokemonImage> {
           height: widget.size?.height ?? kDefaultImageHeight,
           width: widget.size?.width ?? kDefaultImageHeight,
           child: Center(
-            child: isLoading ? _buildLoadingImage() : _buildEmptyImage(),
+            child: isLoading ? _buildLoadingImage(context) : _buildEmptyImage(),
           ),
         ),
       ),
@@ -218,39 +203,36 @@ class _PokemonImageState extends State<PokemonImage> {
   }
 
   Widget _buildEmptyImage() {
-    return Image.asset(
-      'assets/images/pokeball_outline.png',
-      gaplessPlayback: true,
-    );
+    return _buildPlaceHolder();
   }
 
-  Widget _buildLoadingImage() {
-    return Image.asset(
-      'assets/images/pokeball_outline.png',
-      gaplessPlayback: true,
-    )
+  Widget _buildLoadingImage(BuildContext context) {
+    return _buildPlaceHolder()
         .animate(
           onPlay: (controller) => controller.repeat(),
         )
         .shimmer(
-          duration: 1200.ms,
-          color: colors(context).textOnForeground,
+          duration: 1000.ms,
+          color: context.colors.surface,
         );
   }
 
-  BorderRadius _buildBorderRadius() => BorderRadius.circular(180);
-
-  String _createImageUrl() {
-    return 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${widget.pokemon.id}.png';
+  Widget _buildPlaceHolder() {
+    return Image.asset(
+      'assets/images/pokeball_outline.png',
+      gaplessPlayback: true,
+      height: widget.size?.height ?? kDefaultImageHeight,
+      width: widget.size?.width ?? kDefaultImageHeight,
+    );
   }
+
+  BorderRadius _buildBorderRadius() => BorderRadius.circular(180);
 
   @override
   void didUpdateWidget(covariant PokemonImage oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.pokemon.id != oldWidget.pokemon.id) {
-      mainImageProvider = CachedNetworkImageProvider(
-        _createImageUrl(),
-      );
+      setState(() {});
     }
   }
 }

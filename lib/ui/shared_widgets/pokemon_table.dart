@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../extensions/build_context_extension.dart';
-import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 
 class PokemonTableRowInfo {
@@ -219,9 +218,7 @@ class PokemonTable extends StatelessWidget {
                   child: child ??
                       Text(
                         value ?? '',
-                        style: PokeAppText.body4Style.copyWith(
-                          color: colors(context).textOnForeground,
-                        ),
+                        style: PokeAppText.body4Style,
                         textAlign: labelTextAlign ?? TextAlign.start,
                       ),
                 ),
@@ -248,9 +245,7 @@ class PokemonTable extends StatelessWidget {
           Flexible(
             child: Text(
               key?.trim() ?? '',
-              style: PokeAppText.body3Style.copyWith(
-                color: colors(context).textOnForeground,
-              ),
+              style: PokeAppText.body3Style,
             ),
           ),
         ],
@@ -276,7 +271,7 @@ class PokemonTable extends StatelessWidget {
           Icon(
             icon,
             size: 18,
-            color: colors(context).textOnForeground,
+            color: context.colors.onSurface,
           ),
         ],
       ),
@@ -289,12 +284,7 @@ class PokemonTable extends StatelessWidget {
   ) {
     return Text(
       value ?? '',
-      style: tableTitleTextStyle?.copyWith(
-            color: colors(context).textOnForeground,
-          ) ??
-          PokeAppText.subtitle4Style.copyWith(
-            color: colors(context).textOnForeground,
-          ),
+      style: tableTitleTextStyle ?? PokeAppText.subtitle4Style,
     );
   }
 }

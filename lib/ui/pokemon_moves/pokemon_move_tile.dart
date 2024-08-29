@@ -10,7 +10,6 @@ import '../../../extensions/move_extension.dart';
 import '../../../extensions/move_learn_method_extension.dart';
 import '../../../extensions/pokemon_resource_extension.dart';
 import '../../../extensions/string_extension.dart';
-import '../../../theme/base_theme.dart';
 import '../../../theme/poke_app_text.dart';
 import '../../api/models/filter_type.dart';
 import '../shared_widgets/expansion_card.dart';
@@ -143,13 +142,11 @@ class PokemonMoveTile extends StatelessWidget {
             ) ??
             {};
 
+    final levelLearnedAt = pokemonMove.level ?? 0;
+
     if (learnMethodsByVersionGroup.isEmpty) {
       return const SizedBox();
     } else if (learnMethodsByVersionGroup.length == 1) {
-      final pokemonMoveLearnTableRow = PokemonTableRowInfo(
-        learnMethodsByVersionGroup.keys.firstOrNull().capitalize(),
-        value: context.strings.allGenerations,
-      );
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
@@ -157,7 +154,15 @@ class PokemonMoveTile extends StatelessWidget {
           _buildLearnMethodTable(
             context,
             [
-              pokemonMoveLearnTableRow,
+              PokemonTableRowInfo(
+                learnMethodsByVersionGroup.keys.firstOrNull().capitalize(),
+                value: context.strings.allGenerations,
+              ),
+              if(levelLearnedAt > 0)
+              PokemonTableRowInfo(
+                'Level: ',
+                value: levelLearnedAt.toString(),
+              ),
             ],
           ),
           _buildDivider(),
@@ -368,9 +373,7 @@ class PokemonMoveTile extends StatelessWidget {
   ) {
     return Text(
       description,
-      style: PokeAppText.body4Style.copyWith(
-        color: colors(context).textOnForeground,
-      ),
+      style: PokeAppText.body4Style,
     );
   }
 

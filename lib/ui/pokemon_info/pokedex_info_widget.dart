@@ -5,7 +5,6 @@ import '../../../api/models/pokemon/pokemon_resource.dart';
 import '../../../extensions/build_context_extension.dart';
 import '../../../extensions/pokemon_extension.dart';
 import '../../../extensions/pokemon_resource_extension.dart';
-import '../../../theme/base_theme.dart';
 import '../../../theme/poke_app_text.dart';
 import '../shared_widgets/poke_divider.dart';
 import '../shared_widgets/pokemon_expansion_tile.dart';
@@ -50,9 +49,7 @@ class PokedexInfoWidget extends StatelessWidget {
       ),
       child: Text(
         context.strings.pokedex,
-        style: PokeAppText.subtitle3Style.copyWith(
-          color: colors(context).textOnForeground,
-        ),
+        style: PokeAppText.subtitle3Style,
       ),
     );
   }
@@ -67,9 +64,7 @@ class PokedexInfoWidget extends StatelessWidget {
       title: _buildExpansionTileTitle(
         context,
         _firstEntry.versionGroupName(),
-        titleTextStyle: PokeAppText.body3Style.copyWith(
-          color: colors(context).textOnForeground,
-        ),
+        titleTextStyle: PokeAppText.body3Style,
       ),
       subtitle: _buildExpansionTileSubtitle(
         context,
@@ -99,9 +94,7 @@ class PokedexInfoWidget extends StatelessWidget {
             _buildExpansionTileTitle(
               context,
               entry.versionGroupName(),
-              titleTextStyle: PokeAppText.body3Style.copyWith(
-                color: colors(context).textOnForeground,
-              ),
+              titleTextStyle: PokeAppText.body3Style,
             ),
             _buildExtraSmallMargin(),
             _buildExpansionTileSubtitle(
@@ -141,9 +134,7 @@ class PokedexInfoWidget extends StatelessWidget {
       child: Text(
         title,
         style: titleTextStyle ??
-            PokeAppText.subtitle3Style.copyWith(
-              color: colors(context).textOnForeground,
-            ),
+            PokeAppText.subtitle3Style,
       ),
     );
   }
@@ -154,9 +145,7 @@ class PokedexInfoWidget extends StatelessWidget {
   ) {
     return Text(
       resource.flavorText(),
-      style: PokeAppText.body4Style.copyWith(
-        color: colors(context).textOnForeground,
-      ),
+      style: PokeAppText.body4Style,
     );
   }
 

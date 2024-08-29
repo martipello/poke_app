@@ -6,6 +6,7 @@ import '../models/error_response.dart';
 import '../models/news/article.dart';
 import '../models/news/news_response.dart';
 import '../models/news/source.dart';
+import '../models/pokemon/cry.dart';
 import '../models/pokemon/damage_type.dart';
 import '../models/pokemon/encounter.dart';
 import '../models/pokemon/encounter_method.dart';
@@ -20,6 +21,7 @@ import '../models/pokemon/move_metum.dart';
 import '../models/pokemon/pokemon.dart';
 import '../models/pokemon/pokemon_ability.dart';
 import '../models/pokemon/pokemon_ability_holder.dart';
+import '../models/pokemon/pokemon_cries.dart';
 import '../models/pokemon/pokemon_form.dart';
 import '../models/pokemon/pokemon_form_holder.dart';
 import '../models/pokemon/pokemon_form_with_version_group.dart';
@@ -44,6 +46,7 @@ part 'serializers.g.dart';
 
 @SerializersFor([
   Article,
+  Cry,
   DamageType,
   Encounter,
   EncounterMethod,
@@ -60,6 +63,7 @@ part 'serializers.g.dart';
   Pokemon,
   PokemonAbility,
   PokemonAbilityHolder,
+  PokemonCries,
   PokemonForm,
   PokemonFormHolder,
   PokemonFormWithVersionGroup,

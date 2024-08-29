@@ -1,36 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:rxdart/subjects.dart';
 
 import '../extensions/build_context_extension.dart';
-import '../theme/base_theme.dart';
-import 'pokemon_list/pokemon_list_view.dart';
+import 'pokemon_list/pokemon_list_view_decoration.dart';
 import 'whos_that_pokemon/whos_that_pokemon_view.dart';
 
-class AppShell extends StatefulWidget {
+class AppShell extends StatelessWidget {
+  AppShell({key}) : super(key: key);
+
+  final _appShellViewModel = AppShellViewModel();
+  final _pageController = PageController();
   static const routeName = '/dashboard';
 
   @override
-  State<AppShell> createState() => _AppShellState();
-}
-
-class _AppShellState extends State<AppShell> {
-  int currentIndex = 0;
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _buildBody(),
-      bottomNavigationBar: _buildBottomNavigationBar(
-        context,
-      ),
+    return StreamBuilder<int>(
+      initialData: 0,
+      stream: _appShellViewModel.currentIndex,
+      builder: (context, snapshot) {
+        final index = snapshot.data ?? 0;
+        return Scaffold(
+          body: PageView(
+            physics: const NeverScrollableScrollPhysics(),
+            controller: _pageController,
+            children: _bodies,
+          ),
+          bottomNavigationBar: _buildBottomNavigationBar(
+            context,
+            index,
+          ),
+        );
+      },
     );
   }
 
-  Widget _buildBottomNavigationBar(BuildContext context) {
+  Widget _buildBottomNavigationBar(
+    BuildContext context,
+    int currentIndex,
+  ) {
     return BottomNavigationBar(
       showUnselectedLabels: false,
       showSelectedLabels: false,
       items: [
         _buildBottomNavigationBarItem(
+          context,
+          currentIndex,
           context.strings.pokedex,
           'assets/icons/pokedex-black.png',
           0,
@@ -41,23 +55,24 @@ class _AppShellState extends State<AppShell> {
         //   1,
         // ),
         _buildBottomNavigationBarItem(
+          context,
+          currentIndex,
           context.strings.whoDatPokemon,
           'assets/icons/whos_that_pokemon.png',
-          2,
+          1,
         ),
       ],
       onTap: (index) {
-        setState(
-          () {
-            currentIndex = index;
-          },
-        );
+        _pageController.jumpToPage(index);
+        _appShellViewModel.currentIndex.add(index);
       },
       currentIndex: currentIndex,
     );
   }
 
   BottomNavigationBarItem _buildBottomNavigationBarItem(
+    BuildContext context,
+    int currentIndex,
     String label,
     String imagePath,
     int index,
@@ -66,9 +81,9 @@ class _AppShellState extends State<AppShell> {
       icon: Image.asset(
         imagePath,
         height: currentIndex == index ? 42 : 38,
-        color: colors(context).textOnForeground.withOpacity(
-              currentIndex == index ? 1.0 : 0.5,
-            ),
+        color: context.colors.onSurface.withOpacity(
+          currentIndex == index ? 1.0 : 0.5,
+        ),
         fit: BoxFit.fitHeight,
       ),
       label: label,
@@ -76,13 +91,15 @@ class _AppShellState extends State<AppShell> {
     );
   }
 
-  Widget _buildBody() {
-    return _bodies[currentIndex];
-  }
+  final _bodies = const [
+    PokemonListViewDecoration(),
+    // PokemonNewsListView(),
+    WhosThatPokemonView(),
+  ];
+}
 
-  List<Widget> get _bodies => [
-        PokemonListView(),
-        // PokemonNewsListView(),
-        WhosThatPokemonView(),
-      ];
+class AppShellViewModel {
+  AppShellViewModel();
+
+  final currentIndex = BehaviorSubject.seeded(0);
 }

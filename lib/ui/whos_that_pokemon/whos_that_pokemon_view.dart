@@ -1,4 +1,5 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -13,7 +14,6 @@ import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../extensions/string_extension.dart';
 import '../../flavors.dart';
-import '../../theme/base_theme.dart';
 import '../../theme/poke_app_text.dart';
 import '../pokemon_list/pokemon_tile.dart';
 import '../shared_widgets/poke_dialog.dart';
@@ -22,13 +22,15 @@ import '../shared_widgets/pokemon_image.dart';
 import '../shared_widgets/rounded_button.dart';
 import '../shared_widgets/three_d_text.dart';
 import '../shared_widgets/view_constraint.dart';
+import 'auto_retry.dart';
 import 'red_shimmer_background.dart';
 import 'score_widget.dart';
+import '../shared_widgets/error_widget.dart' as ew;
 import 'view_models/score_view_model.dart';
 import 'view_models/whos_that_pokemon_view_model.dart';
 
 class WhosThatPokemonView extends StatefulWidget {
-  WhosThatPokemonView({Key? key}) : super(key: key);
+  const WhosThatPokemonView({Key? key}) : super(key: key);
 
   @override
   State<WhosThatPokemonView> createState() => _WhosThatPokemonViewState();
@@ -83,6 +85,7 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
         statusBarColor: Colors.red,
       ),
       child: Scaffold(
+        backgroundColor: Colors.red,
         body: _buildWhosThatPokemonViewBody(),
       ),
     );
@@ -94,17 +97,14 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
       builder: (context, isRevealedSnapshot) {
         final revealResult = isRevealedSnapshot.data?.item1 ?? RevealResult.none;
         final isRevealed = isRevealedSnapshot.data?.item2 == true;
-        return SizedBox(
-          height: double.infinity,
-          child: Stack(
-            children: [
-              _buildRedSimmerBackground(),
-              _buildWhosThatPokemonState(
-                revealResult,
-                isRevealed,
-              ),
-            ],
-          ),
+        return Stack(
+          children: [
+            _buildRedSimmerBackground(),
+            _buildWhosThatPokemonState(
+              revealResult,
+              isRevealed,
+            ),
+          ],
         );
       },
     );
@@ -114,24 +114,32 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
     RevealResult revealResult,
     bool isRevealed,
   ) {
-    return StreamBuilder<ApiResponse<PokemonResponse>>(
+    return StreamBuilder<ApiResponse<({PokemonResponse pokemonResponse, Pokemon? concealedPokemon})>>(
       stream: whosThatPokemonViewModel.pokemonOptionsStream,
       builder: (context, pokemonOptionsSnapshot) {
-        return StreamBuilder<Pokemon?>(
-          stream: whosThatPokemonViewModel.concealedPokemonStream,
-          builder: (context, snapshot) {
-            final pokemonOptions = pokemonOptionsSnapshot.data?.data?.pokemon_v2_pokemon ?? BuiltList<Pokemon>.of([]);
-            final selectedPokemon = snapshot.data;
-            if (pokemonOptionsSnapshot.data?.status == Status.LOADING) {
-              return const PokeballLoadingWidget();
-            }
-            return _buildWhosThatPokemonScrollView(
-              pokemonOptions,
-              selectedPokemon,
-              revealResult,
-              isRevealed,
-            );
-          },
+        final pokemonOptionsSnapshotData = pokemonOptionsSnapshot.data;
+        final pokemonOptions =
+            pokemonOptionsSnapshotData?.data?.pokemonResponse.pokemon_v2_pokemon ?? BuiltList<Pokemon>.of([]);
+        final selectedPokemon = pokemonOptionsSnapshotData?.data?.concealedPokemon;
+        if (pokemonOptionsSnapshot.data?.status == Status.ERROR) {
+          return Center(
+            child: ew.ErrorWidget(
+              error: pokemonOptionsSnapshot.data as ApiResponse,
+              onTryAgain: whosThatPokemonViewModel.generateRandomPokemon,
+            ),
+          );
+        }
+        if (pokemonOptionsSnapshot.data?.status == Status.LOADING ||
+            pokemonOptionsSnapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: PokeballLoadingWidget(),
+          );
+        }
+        return _buildWhosThatPokemonScrollView(
+          pokemonOptions,
+          selectedPokemon,
+          revealResult,
+          isRevealed,
         );
       },
     );
@@ -143,39 +151,49 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
     RevealResult revealResult,
     bool isRevealed,
   ) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      controller: scrollController,
-      child: ViewConstraint(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(
-              height: 32,
+    return StreamBuilder<bool>(
+      stream: whosThatPokemonViewModel.autoRetry,
+      builder: (context, snapshot) {
+        final isAutoRetry = snapshot.data ?? false;
+        return SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          controller: scrollController,
+          child: ViewConstraint(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(
+                  height: 32,
+                ),
+                _buildWhosThatPokemonImageWithBackground(
+                  selectedPokemon,
+                  isRevealed,
+                ),
+                _buildWhosThatPokemonText(
+                  selectedPokemon?.name,
+                  revealResult,
+                  isRevealed,
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                _buildWhosThatPokemonOptions(
+                  pokemonOptions,
+                  selectedPokemon,
+                  isRevealed,
+                ),
+                if (!isAutoRetry) _buildRetryButton(),
+                _buildResetButton(),
+                AutoRetry(
+                  isAutoRetry: isAutoRetry,
+                  onChanged: whosThatPokemonViewModel.setAutoRetry,
+                ),
+              ],
             ),
-            _buildWhosThatPokemonImageWithBackground(
-              selectedPokemon,
-              isRevealed,
-            ),
-            _buildWhosThatPokemonText(
-              selectedPokemon?.name,
-              revealResult,
-              isRevealed,
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            _buildWhosThatPokemonOptions(
-              pokemonOptions,
-              selectedPokemon,
-              isRevealed,
-            ),
-            _buildRetryButton(),
-            _buildResetButton(),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -188,6 +206,7 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
         top: 12,
       ),
       child: RoundedButton(
+        fillColor: Colors.yellow,
         label: context.strings.retry.capitalize(),
         textStyle: PokeAppText.pokeFontBody1.copyWith(
           color: Colors.blue.shade700,
@@ -213,6 +232,7 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
         textStyle: PokeAppText.pokeFontBody1.copyWith(
           color: Colors.blue.shade700,
         ),
+        fillColor: Colors.yellow,
         outlineColor: Colors.blue.shade700,
         onPressed: () async {
           final confirmReset = await _buildResetPokeDialog().show(context);
@@ -234,9 +254,7 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
         ),
         child: Text(
           context.strings.confirmReset,
-          style: PokeAppText.body4Style.copyWith(
-            color: colors(context).textOnForeground,
-          ),
+          style: PokeAppText.body4Style,
         ),
       ),
       dialogActions: [
@@ -287,7 +305,7 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
             ),
           Positioned(
             right: 0,
-            top: 0,
+            top: 16,
             child: ScoreWidget(
               scoreViewModel: scoreViewModel,
             ),
@@ -418,9 +436,10 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
       return PokemonImage(
         maskColor: maskColor,
         includeHero: false,
+        drawOuterCircle: false,
         pokemon: pokemon,
         size: Size(imageHeight, imageHeight),
-        color: Colors.transparent,
+        imageProvider: CachedNetworkImageProvider(createImageUrl(pokemon.id ?? 0)),
       );
     }
     return _buildLoadingImage();
@@ -436,7 +455,7 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
         )
         .shimmer(
           duration: 1200.ms,
-          color: colors(context).textOnForeground,
+          color: context.colors.onSurface,
         );
   }
 
