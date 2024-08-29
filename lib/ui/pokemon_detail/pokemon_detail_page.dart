@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../ads/ad_warning.dart';
@@ -37,7 +38,11 @@ class PokemonDetailPageArguments {
 class PokemonDetailPage extends StatefulWidget {
   const PokemonDetailPage({
     Key? key,
+    required this.pokemonDetailArguments,
   }) : super(key: key);
+
+  final PokemonDetailPageArguments pokemonDetailArguments;
+
   static const String routeName = '/detail';
 
   @override
@@ -45,7 +50,6 @@ class PokemonDetailPage extends StatefulWidget {
 }
 
 class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProviderStateMixin {
-  PokemonDetailPageArguments get pokemonDetailArguments => context.routeArguments as PokemonDetailPageArguments;
 
   final _filterViewModel = getIt.get<FilterViewModel>();
   final _googleAdsViewModel = getIt.get<GoogleAdsViewModel>();
@@ -55,6 +59,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
   late final _tabBarController = TabController(length: 5, vsync: this);
   final key = GlobalKey<NestedScrollViewState>();
 
+  PokemonDetailPageArguments get pokemonDetailArguments => widget.pokemonDetailArguments;
   Color get primaryColor =>
       pokemonDetailArguments.primary ??
       PokemonType.getTypeForId(
@@ -77,7 +82,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
     );
     _openPokemonCountViewModel.openPokemonCountStream.listen(
       (openedCount) {
-        if (openedCount == 1 || openedCount % kInterstitialAdFrequency == 0 && F.appFlavor != Flavor.paid) {
+        if (openedCount == 1 || openedCount % kInterstitialAdFrequency == 0 && F.appFlavor != Flavor.paid && !kIsWeb) {
           //We do this as without it first ad always fails
           _googleAdsViewModel.createInterstitialAd();
           if (openedCount % kInterstitialAdFrequency == 0) {

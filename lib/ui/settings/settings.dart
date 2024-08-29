@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -35,7 +37,7 @@ class Settings extends StatelessWidget {
   }
 
   Widget _buildPurchaseState() {
-    return FutureBuilder<ProductDetailsResponse>(
+    return FutureBuilder<ProductDetailsResponse?>(
       future: _inAppPurchaseViewModel.productDetailsResponse(),
       builder: (context, productResponse) {
         final products = productResponse.data;
@@ -131,11 +133,11 @@ class Settings extends StatelessWidget {
       ),
       leading: IconButton(
         icon: Icon(
-          Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back,
+          (!kIsWeb && Platform.isIOS) ? Icons.arrow_back_ios : Icons.arrow_back,
           color: context.colors.onSurface,
         ),
         onPressed: () {
-          Navigator.of(context).pop();
+          context.pop();
         },
       ),
     );
@@ -407,7 +409,7 @@ class Settings extends StatelessWidget {
         context.strings.about,
       ),
       onPressed: (context) {
-        Navigator.of(context).pushNamed(About.routeName);
+        context.push(About.routeName);
       },
     );
   }

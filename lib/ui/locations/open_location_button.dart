@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../extensions/build_context_extension.dart';
 import '../../theme/poke_app_text.dart';
@@ -25,9 +26,9 @@ class OpenLocationButton extends StatelessWidget {
         type: MaterialType.transparency,
         child: InkWell(
           onTap: () {
-            Navigator.of(context).pushNamed(
+            context.push(
               LocationMapPage.routeName,
-              arguments: LocationMapPageArguments(
+              extra: LocationMapPageArguments(
                 generationName: generationName,
                 primaryColor: primaryColor,
                 secondaryColor: secondaryColor,

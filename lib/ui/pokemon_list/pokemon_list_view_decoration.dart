@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../ads/view_models/google_ads_view_model.dart';
 import '../../api/models/pokemon/gen_type.dart';
@@ -11,11 +12,14 @@ import 'search_app_bar.dart';
 import 'view_models/filter_view_model.dart';
 import 'view_models/pokemon_list_view_model.dart';
 
+
 class PokemonListViewDecoration extends StatefulWidget {
   const PokemonListViewDecoration({Key? key}) : super(key: key);
 
   @override
   State<PokemonListViewDecoration> createState() => _PokemonListViewDecorationState();
+
+  static const routeName = '/pokemon_list';
 }
 
 class _PokemonListViewDecorationState extends State<PokemonListViewDecoration> with AutomaticKeepAliveClientMixin {
@@ -74,8 +78,8 @@ class _PokemonListViewDecorationState extends State<PokemonListViewDecoration> w
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return WillPopScope(
-      onWillPop: () async {
+    return BackButtonListener(
+      onBackButtonPressed: () async {
         //TODO if filters open close filters.
         return true;
       },

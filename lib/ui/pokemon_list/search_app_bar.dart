@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 import '../../api/models/filter_type.dart';
@@ -218,7 +220,7 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
   Widget _buildMenuAction() {
     return IconButton(
       onPressed: () {
-        Navigator.of(context).pushNamed(Settings.routeName);
+        context.push(Settings.routeName);
       },
       icon: const Icon(
         Icons.more_vert_rounded,
@@ -245,7 +247,7 @@ class _SearchAppBarState extends State<SearchAppBar> with TickerProviderStateMix
     return SliverAppBar(
       pinned: false,
       floating: false,
-      expandedHeight: 150,
+      expandedHeight: kIsWeb ? 250 : 150,
       flexibleSpace: DecoratedBox(
         decoration: const BoxDecoration(
           color: Colors.black,

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:rxdart/rxdart.dart';
@@ -253,7 +254,7 @@ class _PokemonMovesViewState extends State<PokemonMovesView> with AutomaticKeepA
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (showAd) NativeAd(),
+        if (showAd && !kIsWeb) NativeAd(),
         PokemonMoveTile(
           pokemonMove: move,
         ),

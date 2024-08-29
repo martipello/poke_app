@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:rxdart/rxdart.dart';
@@ -234,7 +235,7 @@ class _PokemonNewsListViewState extends State<PokemonNewsListView> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (showAd) NativeAd(),
+          if (showAd && !kIsWeb) NativeAd(),
           ArticleTile(
             article: article,
           ),

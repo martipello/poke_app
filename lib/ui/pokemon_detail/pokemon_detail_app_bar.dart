@@ -1,6 +1,8 @@
 import 'package:circular_reveal_animation/circular_reveal_animation.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../api/models/pokemon/pokemon.dart';
 import '../../extensions/build_context_extension.dart';
@@ -63,16 +65,16 @@ class _PokemonDetailAppBarState extends State<PokemonDetailAppBar> with TickerPr
   }
 
   Widget _buildSliverAppBar() {
-    return WillPopScope(
-      onWillPop: () async {
+    return BackButtonListener(
+      onBackButtonPressed: () async {
         await _circleRevealAnimationController.reverse().then(
-              (value) => Navigator.of(context).pop(),
+              (value) => context.pop(),
             );
         return true;
       },
       child: SliverAppBar(
         pinned: false,
-        expandedHeight: kExpandedHeight,
+        expandedHeight: kIsWeb ? kExpandedHeight + 16 : kExpandedHeight,
         surfaceTintColor: Colors.transparent,
         titleSpacing: 0,
         title: ClippedAppBar(
@@ -80,7 +82,7 @@ class _PokemonDetailAppBarState extends State<PokemonDetailAppBar> with TickerPr
           clipColor: widget.primaryColor,
           onBackTap: () {
             _circleRevealAnimationController.reverse().then(
-                  (value) => Navigator.of(context).pop(),
+                  (value) => context.pop(),
                 );
           },
         ),
@@ -105,7 +107,7 @@ class _PokemonDetailAppBarState extends State<PokemonDetailAppBar> with TickerPr
         color: context.colors.onSurface,
       ),
       onPressed: () {
-        Navigator.of(context).pushNamed(
+        context.push(
           Settings.routeName,
         );
       },

@@ -29,6 +29,14 @@ class _FilterViewState extends State<FilterView> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: EdgeInsets.zero,
+      color: context.colors.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(24),
+          topRight: Radius.circular(24),
+        ),
+      ),
       child: SizedBox(
         height: MediaQuery.of(context).filterBottomSheetHeight,
         width: double.infinity,

@@ -29,16 +29,20 @@ class LocationMapPageArguments {
 }
 
 class LocationMapPage extends StatefulWidget {
+  const LocationMapPage({super.key, required this.locationMapPageArguments});
+
   static const String routeName = '/location_map_view';
 
   @override
   State<LocationMapPage> createState() => _LocationMapPageState();
+
+  final LocationMapPageArguments locationMapPageArguments;
 }
 
 class _LocationMapPageState extends State<LocationMapPage> {
   final mapZoomControlViewModel = getIt.get<MapZoomControlViewModel>();
 
-  LocationMapPageArguments get locationMapArguments => context.routeArguments as LocationMapPageArguments;
+  LocationMapPageArguments get locationMapArguments => widget.locationMapPageArguments;
 
   Color? get primaryColor => locationMapArguments.primaryColor;
 
@@ -74,7 +78,7 @@ class _LocationMapPageState extends State<LocationMapPage> {
       child: Scaffold(
         body: DecoratedBox(
           decoration: BoxDecoration(
-            color: context.colors.onSurface,
+            color: context.colors.surface,
           ),
           child: Stack(
             children: [
