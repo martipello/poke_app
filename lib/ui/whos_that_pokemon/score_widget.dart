@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tuple/tuple.dart';
 
 import '../../extensions/build_context_extension.dart';
 import '../../theme/poke_app_text.dart';
@@ -16,16 +15,14 @@ class ScoreWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _buildScore();
-  }
-
-  Widget _buildScore() {
-    return StreamBuilder<Tuple2<int?, int?>>(
+    return StreamBuilder<({int wins, int losses, int skips})>(
       stream: scoreViewModel.winsAndLossesStream,
       builder: (context, snapshot) {
-        final wins = snapshot.data?.item1 ?? 0;
-        final losses = snapshot.data?.item2 ?? 0;
+        final wins = snapshot.data?.wins ?? 0;
+        final losses = snapshot.data?.losses ?? 0;
+        final skips = snapshot.data?.skips ?? 0;
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisSize: MainAxisSize.min,
           children: [
             _buildThreeDScoreText(
@@ -33,6 +30,9 @@ class ScoreWidget extends StatelessWidget {
             ),
             _buildThreeDScoreText(
               '${context.strings.incorrect} $losses',
+            ),
+            _buildThreeDScoreText(
+              '${context.strings.skip}ped $skips',
             ),
           ],
         );

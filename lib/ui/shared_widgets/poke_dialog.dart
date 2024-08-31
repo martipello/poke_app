@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../extensions/build_context_extension.dart';
 import '../../theme/poke_app_text.dart';
+import 'view_constraint.dart';
 
 extension PokeDialogShow on PokeDialog {
   Future<bool?> show(
@@ -35,40 +37,42 @@ class PokeDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => isDismissible,
-      child: Dialog(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(12),
-          ),
-        ),
-        clipBehavior: Clip.hardEdge,
-        child: Stack(
-          children: [
-            _buildBackgroundPokeball(),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _buildHeader(context),
-                const SizedBox(
-                  height: 8,
-                ),
-                _buildContent(),
-                const SizedBox(
-                  height: 24,
-                ),
-                if (dialogButtonBar != null)
-                  dialogButtonBar!
-                else
-                  _buildPickerButtons(
-                    context,
-                    _getActions(context),
-                  ),
-              ],
+    return ViewConstraint(
+      child: WillPopScope(
+        onWillPop: () async => isDismissible,
+        child: Dialog(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(12),
             ),
-          ],
+          ),
+          clipBehavior: Clip.hardEdge,
+          child: Stack(
+            children: [
+              _buildBackgroundPokeball(),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _buildHeader(context),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  _buildContent(),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  if (dialogButtonBar != null)
+                    dialogButtonBar!
+                  else
+                    _buildPickerButtons(
+                      context,
+                      _getActions(context),
+                    ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -141,7 +145,7 @@ class PokeDialog extends StatelessWidget {
           color: context.colors.onSurface,
         ),
         onPressed: () {
-          Navigator.of(context).pop();
+          context.pop();
         },
       ),
     );

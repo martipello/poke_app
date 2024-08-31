@@ -8,34 +8,47 @@ class ScoreViewModel {
 
   final SharedPreferencesService sharedPreferencesService;
 
-  final winsAndLossesStream = BehaviorSubject<Tuple2<int, int>>();
+  final winsAndLossesStream = BehaviorSubject<({int wins, int losses, int skips})>();
 
   void init() async {
     final wins = await sharedPreferencesService.getWinsScore() ?? 0;
     final losses = await sharedPreferencesService.getLossesScore() ?? 0;
-    winsAndLossesStream.add(Tuple2(wins, losses));
+    final skips = await sharedPreferencesService.getSkipsScore() ?? 0;
+    winsAndLossesStream.add((wins: wins, losses: losses, skips: skips));
   }
 
   void resetScores() {
     sharedPreferencesService.setWinsScore(0);
     sharedPreferencesService.setLossesScore(0);
-    winsAndLossesStream.add(Tuple2(0, 0));
+    sharedPreferencesService.setSkipsScore(0);
+    winsAndLossesStream.add((wins: 0, losses: 0, skips: 0));
   }
 
-  void addWin() async {
-    final wins = await sharedPreferencesService.getWinsScore() ?? 0;
-    final losses = await sharedPreferencesService.getLossesScore() ?? 0;
+  void addWin() {
+    final wins = winsAndLossesStream.value.wins;
+    final losses = winsAndLossesStream.value.losses;
+    final skips = winsAndLossesStream.value.skips;
     final incrementWins = wins + 1;
     sharedPreferencesService.setWinsScore(incrementWins);
-    winsAndLossesStream.add(Tuple2(incrementWins, losses));
+    winsAndLossesStream.add((wins: incrementWins, losses: losses, skips: skips));
+  }
+
+  void addSkip() async {
+    final wins = winsAndLossesStream.value.wins;
+    final losses = winsAndLossesStream.value.losses;
+    final skips = winsAndLossesStream.value.skips;
+    final incrementSkips = skips + 1;
+    sharedPreferencesService.setWinsScore(incrementSkips);
+    winsAndLossesStream.add((wins: wins, losses: losses, skips: incrementSkips));
   }
 
   void addLoss() async {
-    final wins = await sharedPreferencesService.getWinsScore() ?? 0;
-    final losses = await sharedPreferencesService.getLossesScore() ?? 0;
+    final wins = winsAndLossesStream.value.wins;
+    final losses = winsAndLossesStream.value.losses;
+    final skips = winsAndLossesStream.value.skips;
     final incrementLosses = losses + 1;
     sharedPreferencesService.setLossesScore(incrementLosses);
-    winsAndLossesStream.add(Tuple2(wins, incrementLosses));
+    winsAndLossesStream.add((wins: wins, losses: incrementLosses, skips: skips));
   }
 
   void dispose(){

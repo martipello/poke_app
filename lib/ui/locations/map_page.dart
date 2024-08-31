@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:photo_view/photo_view.dart';
 
 import '../../api/models/region/region.dart';
@@ -106,7 +107,7 @@ class _LocationMapPageState extends State<LocationMapPage> {
         ClippedAppBar(
           clipColor: primaryColor,
           onBackTap: () {
-            Navigator.of(context).pop();
+            context.pop();
           },
         ),
       ],

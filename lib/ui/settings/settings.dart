@@ -270,7 +270,7 @@ class Settings extends StatelessWidget {
       actionText: label,
       actionVoidCallback: () {
         onTap?.call();
-        Navigator.of(context).pop();
+        context.pop();
       },
     );
   }
