@@ -61,13 +61,22 @@ class LeaderboardPage extends StatelessWidget {
     return Row(
       children: [
         const SizedBox(width: 16),
-        _buildThreeDText((index + 1).toString(), PokeAppText.pokeFontSubtitle1),
-        const SizedBox(width: 16),
-        Expanded(
-          child: _buildThreeDText(entry.name, PokeAppText.pokeFontSubtitle1),
+        _buildThreeDText(
+          (index + 1).toString(),
+          PokeAppText.pokeFontSubtitle1,
         ),
         const SizedBox(width: 16),
-        _buildThreeDText(entry.score.toString(), PokeAppText.pokeFontSubtitle1),
+        Expanded(
+          child: _buildThreeDText(
+            entry.name ?? entry.alias ?? '',
+            PokeAppText.pokeFontSubtitle1,
+          ),
+        ),
+        const SizedBox(width: 16),
+        _buildThreeDText(
+          entry.correctScore.toString(),
+          PokeAppText.pokeFontSubtitle1,
+        ),
         const SizedBox(width: 16),
       ],
     );

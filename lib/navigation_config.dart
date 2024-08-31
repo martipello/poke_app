@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:poke_app/ui/leaderboard/leaderboard_page.dart';
-import 'package:poke_app/ui/settings/about.dart';
-import 'package:poke_app/ui/settings/settings.dart';
+import 'ui/leaderboard/leaderboard_page.dart';
+import 'ui/settings/about.dart';
+import 'ui/settings/settings.dart';
 
 import 'ui/app_shell.dart';
 import 'ui/locations/map_page.dart';

@@ -71,7 +71,7 @@ class ErrorWidget extends StatelessWidget {
                 ],
               ),
               const SizedBox(
-                height: 16,
+                height: 8,
               ),
               if (onTryAgain != null)
                 RoundedButton(

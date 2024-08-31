@@ -12,6 +12,7 @@ import '../../ads/view_models/google_ads_view_model.dart';
 import '../../api/models/api_response.dart';
 import '../../api/models/pokemon/pokemon.dart';
 import '../../api/models/pokemon/pokemon_response.dart';
+import '../../api/models/user_score.dart';
 import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../extensions/string_extension.dart';
@@ -29,6 +30,7 @@ import '../shared_widgets/three_d_text.dart';
 import '../shared_widgets/view_constraint.dart';
 import 'red_shimmer_background.dart';
 import 'score_widget.dart';
+import 'submit_score_dialog_view.dart';
 import 'view_models/score_view_model.dart';
 import 'view_models/whos_that_pokemon_view_model.dart';
 
@@ -66,9 +68,9 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
         }
       },
     );
-    scoreViewModel.winsAndLossesStream.listen(
+    scoreViewModel.userScore.listen(
       (event) {
-        final openedCount = event.wins + event.losses + event.skips;
+        final openedCount = event.correctScore + event.incorrectScore + event.skippedScore;
         if (openedCount == 1 || openedCount % kInterstitialAdFrequency == 0 && F.appFlavor != Flavor.paid && !kIsWeb) {
           //We do this as without it first ad always fails
           _googleAdsViewModel.createInterstitialAd();
@@ -252,27 +254,31 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
   }
 
   Widget _buildSubmitHighScoreButton() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 4, right: 4),
-      child: RoundedButton(
-        label: context.strings.submitScore.capitalize(),
-        textStyle: PokeAppText.pokeFontBody1.copyWith(
-          color: Colors.blue.shade700,
-        ),
-        fillColor: Colors.yellow,
-        outlineColor: Colors.blue.shade700,
-        onPressed: () async {
-          showModalBottomSheet(
-            context: context,
-            builder: (context) {
-              return Container(
-                height: 196,
-                color: context.colors.surface,
+    return StreamBuilder<UserScore?>(
+      stream: scoreViewModel.userScore,
+      builder: (context, snapshot) {
+        final userScore = snapshot.data;
+        if (userScore == null) return const SizedBox();
+        return Padding(
+          padding: const EdgeInsets.only(left: 4, right: 4),
+          child: RoundedButton(
+            label: context.strings.submitScore.capitalize(),
+            textStyle: PokeAppText.pokeFontBody1.copyWith(
+              color: Colors.blue.shade700,
+            ),
+            fillColor: Colors.yellow,
+            outlineColor: Colors.blue.shade700,
+            onPressed: () async {
+              showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return SubmitScoreDialogView(userScore: userScore);
+                },
               );
             },
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -348,9 +354,15 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                ScoreWidget(
-                  scoreViewModel: scoreViewModel,
-                ),
+                StreamBuilder<UserScore>(
+                    stream: scoreViewModel.userScore,
+                    builder: (context, snapshot) {
+                      final userScore = snapshot.data;
+                      if (userScore == null) return const SizedBox();
+                      return ScoreWidget(
+                        userScore: userScore,
+                      );
+                    }),
                 const Spacer(),
                 _buildMuteButton(),
               ],
@@ -399,7 +411,7 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
     final _pokemonName = pokemonName ?? context.strings.unknownPokemon;
     return Column(
       mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         if (revealResult == RevealResult.correct)
           _buildThreeDText(

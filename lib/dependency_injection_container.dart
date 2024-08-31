@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get_it/get_it.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -46,6 +47,9 @@ final getIt = GetIt.instance;
 Future<void> init() async {
   getIt.registerLazySingletonAsync(SharedPreferences.getInstance);
   getIt.registerLazySingletonAsync(PackageInfo.fromPlatform);
+  getIt.registerLazySingleton(
+      () => FirebaseFirestore.instanceFor(app: Firebase.app(), databaseId: 'poke-app-dex-leaderboard'));
+  getIt.registerLazySingleton(() => FirebaseAuth.instance);
   getIt.registerLazySingleton(() => ApiClient(getIt()));
   getIt.registerLazySingleton(OpenPokemonCountViewModel.new);
   getIt.registerLazySingleton(SharedPreferencesService.new);
@@ -76,8 +80,8 @@ Future<void> init() async {
   getIt.registerFactory(MapZoomControlViewModel.new);
   getIt.registerFactory(SplashViewModel.new);
   getIt.registerFactory(() => WhosThatPokemonViewModel(getIt(), getIt(), getIt(), getIt()));
-  getIt.registerFactory(() => ScoreViewModel(getIt()));
-  getIt.registerLazySingleton(() => LeaderboardViewModel(FirebaseFirestore.instanceFor(app: Firebase.app(),databaseId: 'poke-app-dex-leaderboard')));
+  getIt.registerFactory(() => ScoreViewModel(getIt(), getIt(), getIt(), getIt()));
+  getIt.registerFactory(() => LeaderboardViewModel(getIt()));
   getIt.registerFactory(ExpansionCardStateViewModel.new);
   getIt.registerFactory(PokeballLoadingViewModel.new);
   getIt.registerFactory(() => ImageColorViewModel(getIt()));
