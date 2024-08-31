@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
-import 'package:rive/rive.dart';
+import 'package:rive/rive.dart' as rive;
 import 'package:tuple/tuple.dart';
 
 import '../../ads/view_models/google_ads_view_model.dart';
@@ -20,6 +20,7 @@ import '../../theme/poke_app_text.dart';
 import '../leaderboard/leaderboard_page.dart';
 import '../pokemon_filter/filter_button.dart';
 import '../pokemon_list/pokemon_tile.dart';
+import '../shared_widgets/error_widget.dart' as ew;
 import '../shared_widgets/poke_dialog.dart';
 import '../shared_widgets/pokeball_loading_widget.dart';
 import '../shared_widgets/pokemon_image.dart';
@@ -29,7 +30,6 @@ import '../shared_widgets/view_constraint.dart';
 import 'auto_retry.dart';
 import 'red_shimmer_background.dart';
 import 'score_widget.dart';
-import '../shared_widgets/error_widget.dart' as ew;
 import 'view_models/score_view_model.dart';
 import 'view_models/whos_that_pokemon_view_model.dart';
 
@@ -111,54 +111,48 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
   }
 
   Widget _buildWhosThatPokemonViewBody() {
+    return Stack(
+      children: [
+        _buildRedSimmerBackground(),
+        _buildWhosThatPokemonState(),
+      ],
+    );
+  }
+
+  Widget _buildWhosThatPokemonState() {
     return StreamBuilder<Tuple2<RevealResult, bool>>(
       stream: whosThatPokemonViewModel.revealResultStream,
       builder: (context, isRevealedSnapshot) {
         final revealResult = isRevealedSnapshot.data?.item1 ?? RevealResult.none;
         final isRevealed = isRevealedSnapshot.data?.item2 == true;
-        return Stack(
-          children: [
-            _buildRedSimmerBackground(),
-            _buildWhosThatPokemonState(
+        return StreamBuilder<ApiResponse<({PokemonResponse pokemonResponse, Pokemon? concealedPokemon})>>(
+          stream: whosThatPokemonViewModel.pokemonOptionsStream,
+          builder: (context, pokemonOptionsSnapshot) {
+            final pokemonOptionsSnapshotData = pokemonOptionsSnapshot.data;
+            final pokemonOptions =
+                pokemonOptionsSnapshotData?.data?.pokemonResponse.pokemon_v2_pokemon ?? BuiltList<Pokemon>.of([]);
+            final selectedPokemon = pokemonOptionsSnapshotData?.data?.concealedPokemon;
+            if (pokemonOptionsSnapshot.data?.status == Status.ERROR) {
+              return Center(
+                child: ew.ErrorWidget(
+                  error: pokemonOptionsSnapshot.data as ApiResponse,
+                  onTryAgain: whosThatPokemonViewModel.generateRandomPokemon,
+                ),
+              );
+            }
+            if (pokemonOptionsSnapshot.data?.status == Status.LOADING ||
+                pokemonOptionsSnapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: PokeballLoadingWidget(),
+              );
+            }
+            return _buildWhosThatPokemonScrollView(
+              pokemonOptions,
+              selectedPokemon,
               revealResult,
               isRevealed,
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _buildWhosThatPokemonState(
-    RevealResult revealResult,
-    bool isRevealed,
-  ) {
-    return StreamBuilder<ApiResponse<({PokemonResponse pokemonResponse, Pokemon? concealedPokemon})>>(
-      stream: whosThatPokemonViewModel.pokemonOptionsStream,
-      builder: (context, pokemonOptionsSnapshot) {
-        final pokemonOptionsSnapshotData = pokemonOptionsSnapshot.data;
-        final pokemonOptions =
-            pokemonOptionsSnapshotData?.data?.pokemonResponse.pokemon_v2_pokemon ?? BuiltList<Pokemon>.of([]);
-        final selectedPokemon = pokemonOptionsSnapshotData?.data?.concealedPokemon;
-        if (pokemonOptionsSnapshot.data?.status == Status.ERROR) {
-          return Center(
-            child: ew.ErrorWidget(
-              error: pokemonOptionsSnapshot.data as ApiResponse,
-              onTryAgain: whosThatPokemonViewModel.generateRandomPokemon,
-            ),
-          );
-        }
-        if (pokemonOptionsSnapshot.data?.status == Status.LOADING ||
-            pokemonOptionsSnapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: PokeballLoadingWidget(),
-          );
-        }
-        return _buildWhosThatPokemonScrollView(
-          pokemonOptions,
-          selectedPokemon,
-          revealResult,
-          isRevealed,
+            );
+          },
         );
       },
     );
@@ -433,8 +427,9 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
     );
   }
 
-  RiveAnimation _buildWhosThatPokemonImageBackground() {
-    return RiveAnimation.asset(
+  Widget _buildWhosThatPokemonImageBackground() {
+    return rive.RiveAnimation.asset(
+      antialiasing: false,
       whosThatPokemonViewModel.animationDirectory,
       controllers: [whosThatPokemonViewModel.controller],
       fit: BoxFit.fitHeight,

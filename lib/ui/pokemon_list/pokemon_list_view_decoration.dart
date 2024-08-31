@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../../ads/view_models/google_ads_view_model.dart';
 import '../../api/models/pokemon/gen_type.dart';

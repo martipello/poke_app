@@ -134,7 +134,7 @@ class RoundedButton extends StatelessWidget {
     if (onPressed != null) {
       return outlineColor ?? fillColor ?? context.colors.secondary;
     } else {
-      return context.colors.surface;;
+      return context.colors.surface;
     }
   }
 

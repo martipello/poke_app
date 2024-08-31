@@ -1,11 +1,10 @@
 import 'package:circular_reveal_animation/circular_reveal_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:rive/rive.dart';
+import 'package:rive/rive.dart' as rive;
 
 import '../../dependency_injection_container.dart';
 import '../../extensions/build_context_extension.dart';
-import '../app_shell.dart';
 import '../pokemon_list/pokemon_list_view_decoration.dart';
 import 'view_models/spash_view_model.dart';
 
@@ -86,7 +85,7 @@ class _SplashViewState extends State<SplashView> with SingleTickerProviderStateM
   }
 
   Widget _buildSplashAnimation() {
-    return RiveAnimation.asset(
+    return rive.RiveAnimation.asset(
       _splashViewModel.animationDirectory,
       controllers: [_splashViewModel.controller],
       fit: BoxFit.fitHeight,
