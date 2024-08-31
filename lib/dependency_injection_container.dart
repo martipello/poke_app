@@ -81,7 +81,7 @@ Future<void> init() async {
   getIt.registerFactory(SplashViewModel.new);
   getIt.registerFactory(() => WhosThatPokemonViewModel(getIt(), getIt(), getIt(), getIt()));
   getIt.registerFactory(() => ScoreViewModel(getIt(), getIt(), getIt(), getIt()));
-  getIt.registerFactory(() => LeaderboardViewModel(getIt()));
+  getIt.registerLazySingleton(() => LeaderboardViewModel(getIt()));
   getIt.registerFactory(ExpansionCardStateViewModel.new);
   getIt.registerFactory(PokeballLoadingViewModel.new);
   getIt.registerFactory(() => ImageColorViewModel(getIt()));

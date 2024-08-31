@@ -36,12 +36,15 @@ class LeaderboardPage extends StatelessWidget {
                 stream: leaderBoardViewModel.getLeaderboard(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    final scores = snapshot.requireData;
+                    final scores = snapshot.data?.docs ?? [];
+                    if (scores.isEmpty) {
+                      return _buildThreeDText('No scores yet', PokeAppText.pokeFontSubtitle1);
+                    }
                     return Expanded(
                       child: ListView.builder(
-                        itemCount: scores.size,
+                        itemCount: scores.length,
                         itemBuilder: (context, index) {
-                          final entry = scores.docs[index].data();
+                          final entry = scores[index].data();
                           return _buildLeaderBoardItem(index, entry);
                         },
                       ),
