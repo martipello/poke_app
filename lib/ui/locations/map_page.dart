@@ -77,20 +77,19 @@ class _LocationMapPageState extends State<LocationMapPage> {
         statusBarColor: primaryColor ?? Colors.red,
       ),
       child: Scaffold(
-        body: DecoratedBox(
-          decoration: BoxDecoration(
-            color: context.colors.surface,
-          ),
-          child: Stack(
-            children: [
-              _buildMap(),
-              _buildAppBar(context),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: _buildMapControls(),
-              ),
-            ],
-          ),
+        backgroundColor: context.colors.surface,
+        body: Stack(
+          children: [
+            Positioned.fill(
+              top: 72,
+              child: _buildMap(),
+            ),
+            _buildAppBar(context),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: _buildMapControls(),
+            ),
+          ],
         ),
       ),
     );
@@ -117,15 +116,19 @@ class _LocationMapPageState extends State<LocationMapPage> {
   Widget _buildMap() {
     return Center(
       child: PhotoView(
+        backgroundDecoration: BoxDecoration(
+          color: context.colors.surface,
+        ),
         initialScale: kDefaultScale,
         minScale: kMinScale,
         maxScale: kMaxScale,
         controller: photoViewController,
         imageProvider: NetworkImage(
-            _mapForGenerationId(
-              locationMapArguments.generationName,
-            ),
-            scale: 1),
+          _mapForGenerationId(
+            locationMapArguments.generationName,
+          ),
+          scale: 1,
+        ),
         loadingBuilder: (context, chunk) {
           return const PokeballLoadingWidget();
         },
@@ -152,7 +155,7 @@ class _LocationMapPageState extends State<LocationMapPage> {
         final currentZoom = snapshot.data ?? 0;
         return Container(
           decoration: BoxDecoration(
-            color: context.colors.onSurface.withOpacity(0.4),
+            color: context.colors.onSurface,
             borderRadius: BorderRadius.circular(90),
           ),
           child: Column(
