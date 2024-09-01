@@ -130,7 +130,7 @@ class _ExpansionCardState extends State<ExpansionCard> with TickerProviderStateM
   ) {
     return Expandable(
       controller: _expandableController,
-      collapsed: Row(),
+      collapsed: const Row(),
       expanded: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: widget.expandedChildren,

@@ -6,9 +6,10 @@ class RedShimmerBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final white = Colors.white.withOpacity(0.2);
+    final yellow = Colors.yellow.withOpacity(0.2);
+    return const ColoredBox(
       color: Colors.red,
-      height: double.infinity,
     )
         .animate(
           onPlay: (controller) => controller.repeat(),
@@ -16,7 +17,7 @@ class RedShimmerBackground extends StatelessWidget {
         .shimmer(
           angle: 2,
           duration: 800.ms,
-          color: Colors.white.withOpacity(0.2),
+          color: white,
           size: 0.2,
         )
         .animate(
@@ -25,7 +26,7 @@ class RedShimmerBackground extends StatelessWidget {
         .shimmer(
           angle: 2,
           duration: 1600.ms,
-          color: Colors.white.withOpacity(0.2),
+          color: white,
           size: 0.4,
         )
         .animate(
@@ -34,7 +35,7 @@ class RedShimmerBackground extends StatelessWidget {
         .shimmer(
           angle: 2,
           duration: 2400.ms,
-          color: Colors.yellow.withOpacity(0.2),
+          color: yellow,
           size: 0.6,
         )
         .animate(
@@ -43,7 +44,7 @@ class RedShimmerBackground extends StatelessWidget {
         .shimmer(
           angle: 2,
           duration: 3200.ms,
-          color: Colors.yellow.withOpacity(0.2),
+          color: yellow,
           size: 0.8,
         );
   }

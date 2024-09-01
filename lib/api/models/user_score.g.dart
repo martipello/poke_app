@@ -18,24 +18,42 @@ class _$UserScoreSerializer implements StructuredSerializer<UserScore> {
   Iterable<Object?> serialize(Serializers serializers, UserScore object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[
-      'name',
-      serializers.serialize(object.name, specifiedType: const FullType(String)),
-      'alias',
-      serializers.serialize(object.alias,
-          specifiedType: const FullType(String)),
-      'score',
-      serializers.serialize(object.score, specifiedType: const FullType(int)),
-      'uid',
-      serializers.serialize(object.uid, specifiedType: const FullType(String)),
-      'createdDate',
-      serializers.serialize(object.createdDate,
-          specifiedType: const FullType(DateTime)),
+      'correctScore',
+      serializers.serialize(object.correctScore,
+          specifiedType: const FullType(int)),
+      'incorrectScore',
+      serializers.serialize(object.incorrectScore,
+          specifiedType: const FullType(int)),
+      'skippedScore',
+      serializers.serialize(object.skippedScore,
+          specifiedType: const FullType(int)),
     ];
     Object? value;
-    value = object.updatedDate;
+    value = object.name;
     if (value != null) {
       result
-        ..add('updatedDate')
+        ..add('name')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.alias;
+    if (value != null) {
+      result
+        ..add('alias')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.uid;
+    if (value != null) {
+      result
+        ..add('uid')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.createdDate;
+    if (value != null) {
+      result
+        ..add('createdDate')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(DateTime)));
     }
@@ -55,26 +73,30 @@ class _$UserScoreSerializer implements StructuredSerializer<UserScore> {
       switch (key) {
         case 'name':
           result.name = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'alias':
           result.alias = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
+              specifiedType: const FullType(String)) as String?;
           break;
-        case 'score':
-          result.score = serializers.deserialize(value,
+        case 'correctScore':
+          result.correctScore = serializers.deserialize(value,
+              specifiedType: const FullType(int))! as int;
+          break;
+        case 'incorrectScore':
+          result.incorrectScore = serializers.deserialize(value,
+              specifiedType: const FullType(int))! as int;
+          break;
+        case 'skippedScore':
+          result.skippedScore = serializers.deserialize(value,
               specifiedType: const FullType(int))! as int;
           break;
         case 'uid':
           result.uid = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'createdDate':
           result.createdDate = serializers.deserialize(value,
-              specifiedType: const FullType(DateTime))! as DateTime;
-          break;
-        case 'updatedDate':
-          result.updatedDate = serializers.deserialize(value,
               specifiedType: const FullType(DateTime)) as DateTime?;
           break;
       }
@@ -86,35 +108,38 @@ class _$UserScoreSerializer implements StructuredSerializer<UserScore> {
 
 class _$UserScore extends UserScore {
   @override
-  final String name;
+  final String? name;
   @override
-  final String alias;
+  final String? alias;
   @override
-  final int score;
+  final int correctScore;
   @override
-  final String uid;
+  final int incorrectScore;
   @override
-  final DateTime createdDate;
+  final int skippedScore;
   @override
-  final DateTime? updatedDate;
+  final String? uid;
+  @override
+  final DateTime? createdDate;
 
   factory _$UserScore([void Function(UserScoreBuilder)? updates]) =>
       (new UserScoreBuilder()..update(updates))._build();
 
   _$UserScore._(
-      {required this.name,
-      required this.alias,
-      required this.score,
-      required this.uid,
-      required this.createdDate,
-      this.updatedDate})
+      {this.name,
+      this.alias,
+      required this.correctScore,
+      required this.incorrectScore,
+      required this.skippedScore,
+      this.uid,
+      this.createdDate})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(name, r'UserScore', 'name');
-    BuiltValueNullFieldError.checkNotNull(alias, r'UserScore', 'alias');
-    BuiltValueNullFieldError.checkNotNull(score, r'UserScore', 'score');
-    BuiltValueNullFieldError.checkNotNull(uid, r'UserScore', 'uid');
     BuiltValueNullFieldError.checkNotNull(
-        createdDate, r'UserScore', 'createdDate');
+        correctScore, r'UserScore', 'correctScore');
+    BuiltValueNullFieldError.checkNotNull(
+        incorrectScore, r'UserScore', 'incorrectScore');
+    BuiltValueNullFieldError.checkNotNull(
+        skippedScore, r'UserScore', 'skippedScore');
   }
 
   @override
@@ -130,10 +155,11 @@ class _$UserScore extends UserScore {
     return other is UserScore &&
         name == other.name &&
         alias == other.alias &&
-        score == other.score &&
+        correctScore == other.correctScore &&
+        incorrectScore == other.incorrectScore &&
+        skippedScore == other.skippedScore &&
         uid == other.uid &&
-        createdDate == other.createdDate &&
-        updatedDate == other.updatedDate;
+        createdDate == other.createdDate;
   }
 
   @override
@@ -141,10 +167,11 @@ class _$UserScore extends UserScore {
     var _$hash = 0;
     _$hash = $jc(_$hash, name.hashCode);
     _$hash = $jc(_$hash, alias.hashCode);
-    _$hash = $jc(_$hash, score.hashCode);
+    _$hash = $jc(_$hash, correctScore.hashCode);
+    _$hash = $jc(_$hash, incorrectScore.hashCode);
+    _$hash = $jc(_$hash, skippedScore.hashCode);
     _$hash = $jc(_$hash, uid.hashCode);
     _$hash = $jc(_$hash, createdDate.hashCode);
-    _$hash = $jc(_$hash, updatedDate.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -154,10 +181,11 @@ class _$UserScore extends UserScore {
     return (newBuiltValueToStringHelper(r'UserScore')
           ..add('name', name)
           ..add('alias', alias)
-          ..add('score', score)
+          ..add('correctScore', correctScore)
+          ..add('incorrectScore', incorrectScore)
+          ..add('skippedScore', skippedScore)
           ..add('uid', uid)
-          ..add('createdDate', createdDate)
-          ..add('updatedDate', updatedDate))
+          ..add('createdDate', createdDate))
         .toString();
   }
 }
@@ -173,9 +201,18 @@ class UserScoreBuilder implements Builder<UserScore, UserScoreBuilder> {
   String? get alias => _$this._alias;
   set alias(String? alias) => _$this._alias = alias;
 
-  int? _score;
-  int? get score => _$this._score;
-  set score(int? score) => _$this._score = score;
+  int? _correctScore;
+  int? get correctScore => _$this._correctScore;
+  set correctScore(int? correctScore) => _$this._correctScore = correctScore;
+
+  int? _incorrectScore;
+  int? get incorrectScore => _$this._incorrectScore;
+  set incorrectScore(int? incorrectScore) =>
+      _$this._incorrectScore = incorrectScore;
+
+  int? _skippedScore;
+  int? get skippedScore => _$this._skippedScore;
+  set skippedScore(int? skippedScore) => _$this._skippedScore = skippedScore;
 
   String? _uid;
   String? get uid => _$this._uid;
@@ -185,10 +222,6 @@ class UserScoreBuilder implements Builder<UserScore, UserScoreBuilder> {
   DateTime? get createdDate => _$this._createdDate;
   set createdDate(DateTime? createdDate) => _$this._createdDate = createdDate;
 
-  DateTime? _updatedDate;
-  DateTime? get updatedDate => _$this._updatedDate;
-  set updatedDate(DateTime? updatedDate) => _$this._updatedDate = updatedDate;
-
   UserScoreBuilder();
 
   UserScoreBuilder get _$this {
@@ -196,10 +229,11 @@ class UserScoreBuilder implements Builder<UserScore, UserScoreBuilder> {
     if ($v != null) {
       _name = $v.name;
       _alias = $v.alias;
-      _score = $v.score;
+      _correctScore = $v.correctScore;
+      _incorrectScore = $v.incorrectScore;
+      _skippedScore = $v.skippedScore;
       _uid = $v.uid;
       _createdDate = $v.createdDate;
-      _updatedDate = $v.updatedDate;
       _$v = null;
     }
     return this;
@@ -222,17 +256,16 @@ class UserScoreBuilder implements Builder<UserScore, UserScoreBuilder> {
   _$UserScore _build() {
     final _$result = _$v ??
         new _$UserScore._(
-            name: BuiltValueNullFieldError.checkNotNull(
-                name, r'UserScore', 'name'),
-            alias: BuiltValueNullFieldError.checkNotNull(
-                alias, r'UserScore', 'alias'),
-            score: BuiltValueNullFieldError.checkNotNull(
-                score, r'UserScore', 'score'),
-            uid:
-                BuiltValueNullFieldError.checkNotNull(uid, r'UserScore', 'uid'),
-            createdDate: BuiltValueNullFieldError.checkNotNull(
-                createdDate, r'UserScore', 'createdDate'),
-            updatedDate: updatedDate);
+            name: name,
+            alias: alias,
+            correctScore: BuiltValueNullFieldError.checkNotNull(
+                correctScore, r'UserScore', 'correctScore'),
+            incorrectScore: BuiltValueNullFieldError.checkNotNull(
+                incorrectScore, r'UserScore', 'incorrectScore'),
+            skippedScore: BuiltValueNullFieldError.checkNotNull(
+                skippedScore, r'UserScore', 'skippedScore'),
+            uid: uid,
+            createdDate: createdDate);
     replace(_$result);
     return _$result;
   }

@@ -38,7 +38,7 @@ class ErrorHandler {
         ),
       );
     }
-    if(error is DioError) {
+    if(error is DioException) {
       return ApiResponse.error(
         error.message,
         error: ErrorResponse(

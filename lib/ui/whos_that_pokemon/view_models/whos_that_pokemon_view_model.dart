@@ -25,18 +25,15 @@ enum RevealResult {
 class WhosThatPokemonViewModel {
   WhosThatPokemonViewModel(
     this.pokemonRepositoryGraphQl,
+    this.sharedPreferencesService,
     this.errorHandler,
     this.languageService,
-    this.sharedPreferencesService,
-  ) {
-    _initSoundpool();
-    initAutoRetry();
-  }
+  );
 
   final PokemonRepositoryGraphQl pokemonRepositoryGraphQl;
+  final SharedPreferencesService sharedPreferencesService;
   final ErrorHandler errorHandler;
   final LanguageService languageService;
-  final SharedPreferencesService sharedPreferencesService;
 
   SimpleAnimation get controller => SimpleAnimation(
         'Timeline 1',
@@ -46,7 +43,7 @@ class WhosThatPokemonViewModel {
   final pokemonOptionsStream =
       BehaviorSubject<ApiResponse<({PokemonResponse pokemonResponse, Pokemon? concealedPokemon})>>();
   final revealResultStream = BehaviorSubject<Tuple2<RevealResult, bool>>();
-  final autoRetry = BehaviorSubject<bool>();
+  final isAudioMuted = BehaviorSubject<bool>();
 
   SimpleAnimation? _controller;
   Soundpool? _soundpool;
@@ -107,14 +104,14 @@ class WhosThatPokemonViewModel {
       if (_closingSoundId != null) {
         _playSound(_closingSoundId!);
       }
-      if (autoRetry.valueOrNull == true) {
-        await Future.delayed(const Duration(milliseconds: 2700));
-        generateRandomPokemon();
-      }
+      await Future.delayed(const Duration(milliseconds: 2700));
+      generateRandomPokemon();
     }
   }
 
-  void _initSoundpool() {
+  Future<void> initSoundpool() async {
+    final isAudioMuted = await sharedPreferencesService.isAudioMuted();
+    this.isAudioMuted.add(isAudioMuted);
     _soundpool?.dispose();
     _soundpool = Soundpool.fromOptions(
       options: const SoundpoolOptions(),
@@ -139,7 +136,7 @@ class WhosThatPokemonViewModel {
 
   Future<void> _playSound(int soundId) async {
     final soundpool = _soundpool;
-    if (soundpool != null) {
+    if (soundpool != null && isAudioMuted.value != true) {
       soundpool.play(
         soundId,
         rate: _rate,
@@ -147,20 +144,17 @@ class WhosThatPokemonViewModel {
     }
   }
 
-  void initAutoRetry() async {
-    final isAutoRetry = await sharedPreferencesService.isAutoRetry();
-    autoRetry.add(isAutoRetry);
-  }
-
-  void setAutoRetry(bool isAutoRetry) async {
-    autoRetry.add(isAutoRetry);
-    sharedPreferencesService.setAutoRetry(isAutoRetry: isAutoRetry);
+  void setAudioMuted({required bool isAudioMuted}) {
+    _soundpool?.stop(_openingSoundId ?? 0);
+    _soundpool?.stop(_closingSoundId ?? 0);
+    sharedPreferencesService.setAudioMuted(isAudioMuted: isAudioMuted);
+    this.isAudioMuted.add(isAudioMuted);
   }
 
   void dispose() {
     _controller?.dispose();
+    isAudioMuted.close();
     pokemonOptionsStream.close();
-    autoRetry.close();
     _soundpool?.dispose();
   }
 

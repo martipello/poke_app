@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:poke_app/ui/shared_widgets/pokeball_loading_widget.dart';
 
 import '../../extensions/build_context_extension.dart';
 import '../../theme/poke_app_text.dart';
@@ -10,12 +11,14 @@ class RoundedButton extends StatelessWidget {
     this.onPressed,
     this.fillColor,
     this.isLoading = false,
+    this.usePokeballLoading = false,
     this.isFilled = true,
     this.disableShadow = false,
     required this.label,
     this.leadingIcon,
     this.trailingIcon,
     this.outlineColor,
+    this.loadingColor,
     this.textStyle,
     this.elevation,
   }) : super(key: key);
@@ -23,7 +26,9 @@ class RoundedButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final Color? fillColor;
   final Color? outlineColor;
+  final Color? loadingColor;
   final bool isLoading;
+  final bool usePokeballLoading;
   final bool isFilled;
   final bool disableShadow;
   final double? elevation;
@@ -40,32 +45,32 @@ class RoundedButton extends StatelessWidget {
       ),
       child: TextButton(
         style: ButtonStyle(
-          textStyle: MaterialStateProperty.all(
+          textStyle: WidgetStateProperty.all(
             _getTextStyle(context),
           ),
-          elevation: MaterialStateProperty.all(
+          elevation: WidgetStateProperty.all(
             onPressed != null && !disableShadow ? elevation ?? 2 : 0,
           ),
-          padding: MaterialStateProperty.all(
+          padding: WidgetStateProperty.all(
             const EdgeInsets.symmetric(
               horizontal: 16,
             ),
           ),
-          backgroundColor: MaterialStateProperty.all(
+          backgroundColor: WidgetStateProperty.all(
             _getFillColor(context),
           ),
-          shape: MaterialStateProperty.all(
+          shape: WidgetStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(18.0),
             ),
           ),
-          side: MaterialStateProperty.all(
+          side: WidgetStateProperty.all(
             BorderSide(
               color: _getOutlineColor(context),
               width: 2,
             ),
           ),
-          overlayColor: MaterialStateProperty.all(Colors.black12),
+          overlayColor: WidgetStateProperty.all(Colors.black12),
         ),
         onPressed: _handleOnPressed(),
         child: Builder(
@@ -134,7 +139,7 @@ class RoundedButton extends StatelessWidget {
     if (onPressed != null) {
       return outlineColor ?? fillColor ?? context.colors.secondary;
     } else {
-      return context.colors.surface;;
+      return context.colors.onSurface;
     }
   }
 
@@ -167,12 +172,19 @@ class RoundedButton extends StatelessWidget {
   }
 
   Widget _buildLoading(BuildContext context) {
+    if(usePokeballLoading) {
+      return const SizedBox(
+        height: 18,
+        width: 18,
+        child: PokeballLoadingWidget(),
+      );
+    }
     return SizedBox(
       height: 16,
       width: 16,
       child: LoadingWidget(
         width: 2,
-        valueColor: _getLoadingColor(context),
+        valueColor: loadingColor ?? _getLoadingColor(context),
       ),
     );
   }

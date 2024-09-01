@@ -11,6 +11,8 @@
     "types" : "Types",
     "damageTypes" : "Damage types",
     "retry" : "Retry",
+    "skip" : "Skip",
+    "submitScore" : "Submit Score",
     "reset" : "Reset",
     "confirmReset" : "Are you sure you would like to reset your wins and losses.",
     "stats" : "Stats",

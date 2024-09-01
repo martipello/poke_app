@@ -1,42 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:tuple/tuple.dart';
 
+import '../../api/models/user_score.dart';
 import '../../extensions/build_context_extension.dart';
 import '../../theme/poke_app_text.dart';
 import '../shared_widgets/three_d_text.dart';
-import 'view_models/score_view_model.dart';
 
 class ScoreWidget extends StatelessWidget {
   ScoreWidget({
     Key? key,
-    required this.scoreViewModel,
+    required this.userScore,
   }) : super(key: key);
 
-  final ScoreViewModel scoreViewModel;
+  final UserScore userScore;
 
   @override
   Widget build(BuildContext context) {
-    return _buildScore();
-  }
-
-  Widget _buildScore() {
-    return StreamBuilder<Tuple2<int?, int?>>(
-      stream: scoreViewModel.winsAndLossesStream,
-      builder: (context, snapshot) {
-        final wins = snapshot.data?.item1 ?? 0;
-        final losses = snapshot.data?.item2 ?? 0;
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _buildThreeDScoreText(
-              '${context.strings.correct} $wins',
-            ),
-            _buildThreeDScoreText(
-              '${context.strings.incorrect} $losses',
-            ),
-          ],
-        );
-      },
+    final wins = userScore.correctScore ?? 0;
+    final losses = userScore.incorrectScore ?? 0;
+    final skips = userScore.skippedScore ?? 0;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _buildThreeDScoreText(
+          '${context.strings.correct} $wins',
+        ),
+        _buildThreeDScoreText(
+          '${context.strings.incorrect} $losses',
+        ),
+        _buildThreeDScoreText(
+          '${context.strings.skip}ped $skips',
+        ),
+      ],
     );
   }
 

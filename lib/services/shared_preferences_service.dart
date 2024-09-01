@@ -7,8 +7,9 @@ import 'pokemon_service.dart';
 const kLanguage = 'SELECTED_LANGUAGE';
 const kWinsScore = 'WINS_SCORE';
 const kLossesScore = 'LOSSES_SCORE';
+const kSkipsScore = 'SKIPS_SCORE';
 const kDarkMode = 'DARK_MODE';
-const kAutoRetry = 'AUTO_RETRY';
+const kAudioMuted = 'AUDIO_MUTED';
 
 class SharedPreferencesService extends PokemonService {
   final _sharedPreferences = getIt.getAsync<SharedPreferences>();
@@ -47,6 +48,16 @@ class SharedPreferencesService extends PokemonService {
     sharedPreferences.setInt(kLossesScore, score);
   }
 
+  Future<int?> getSkipsScore() async {
+    final sharedPreferences = await _sharedPreferences;
+    return sharedPreferences.getInt(kSkipsScore);
+  }
+
+  Future<void> setSkipsScore(int score) async {
+    final sharedPreferences = await _sharedPreferences;
+    sharedPreferences.setInt(kSkipsScore, score);
+  }
+
   Future<bool> isDarkMode() async {
     final sharedPreferences = await _sharedPreferences;
     return sharedPreferences.getBool(kDarkMode) ?? false;
@@ -57,14 +68,14 @@ class SharedPreferencesService extends PokemonService {
     sharedPreferences.setBool(kDarkMode, isDarkMode);
   }
 
-  Future<bool> isAutoRetry() async {
+  Future<bool> isAudioMuted() async {
     final sharedPreferences = await _sharedPreferences;
-    return sharedPreferences.getBool(kAutoRetry) ?? false;
+    return sharedPreferences.getBool(kAudioMuted) ?? false;
   }
 
-  Future<void> setAutoRetry({required bool isAutoRetry}) async {
+  Future<void> setAudioMuted({required bool isAudioMuted}) async {
     final sharedPreferences = await _sharedPreferences;
-    sharedPreferences.setBool(kAutoRetry, isAutoRetry);
+    sharedPreferences.setBool(kAudioMuted, isAudioMuted);
   }
 
   @override

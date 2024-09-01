@@ -6,6 +6,7 @@
     "forms" : "Forms",
     "filters" : "Filters",
     "retry" : "Retry",
+    "skip" : "Skip",
     "stats" : "Stats",
     "moves" : "Moves",
     "evolutions" : "Evolutions",

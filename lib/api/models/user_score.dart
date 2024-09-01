@@ -1,4 +1,3 @@
-import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
@@ -11,17 +10,19 @@ abstract class UserScore implements Built<UserScore, UserScoreBuilder> {
   factory UserScore([void Function(UserScoreBuilder) updates]) = _$UserScore;
   UserScore._();
 
-  String get name;
+  String? get name;
 
-  String get alias;
+  String? get alias;
 
-  int get score;
+  int get correctScore;
 
-  String get uid;
+  int get incorrectScore;
 
-  DateTime get createdDate;
+  int get skippedScore;
 
-  DateTime? get updatedDate;
+  String? get uid;
+
+  DateTime? get createdDate;
 
   Map<String, dynamic> toJson() {
     return serializers.serializeWith(UserScore.serializer, this) as Map<String, dynamic>;
