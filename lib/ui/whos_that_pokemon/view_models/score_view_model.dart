@@ -91,11 +91,11 @@ class ScoreViewModel {
       final user = firebaseAuth.currentUser;
       if (user != null) {
         final userId = user.uid;
-        await firebaseFirestore.collection(leaderboardCollection).add(sanitizeUserScore(userScore, userId).toJson());
+        await firebaseFirestore.collection(leaderboardCollection).doc(userId).set(sanitizeUserScore(userScore, userId).toJson());
       } else {
         final anonymousUser = await firebaseAuth.signInAnonymously();
         final userId = anonymousUser.user?.uid;
-        await firebaseFirestore.collection(leaderboardCollection).add(sanitizeUserScore(userScore, userId).toJson());
+        await firebaseFirestore.collection(leaderboardCollection).doc(userId).set(sanitizeUserScore(userScore, userId).toJson());
       }
       submitScoreState.add(ApiResponse.completed(null));
     } catch (error) {

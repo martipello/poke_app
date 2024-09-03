@@ -69,10 +69,10 @@ class _SubmitScoreDialogViewState extends State<SubmitScoreDialogView> {
             _buildTitle(context),
             const SizedBox(height: 16),
             _buildTextForm(),
-            Padding(
-              padding: const EdgeInsets.only(top: 16.0),
-              child: _buildSubmitButton(),
-            ),
+            const SizedBox(height: 16),
+            const Text('This should overwrite any previous score.'),
+            const SizedBox(height: 16),
+            _buildSubmitButton(isLoading),
             const SizedBox(height: 16),
           ],
         ),
@@ -96,7 +96,7 @@ class _SubmitScoreDialogViewState extends State<SubmitScoreDialogView> {
     );
   }
 
-  Widget _buildSubmitButton() {
+  Widget _buildSubmitButton(bool isLoading) {
     return RoundedButton(
       label: 'Submit',
       fillColor: Colors.yellow,
@@ -104,7 +104,7 @@ class _SubmitScoreDialogViewState extends State<SubmitScoreDialogView> {
         color: Colors.blue.shade700,
       ),
       outlineColor: Colors.blue.shade700,
-      isLoading: false,
+      isLoading: isLoading,
       usePokeballLoading: true,
       onPressed: () {
         if (formKey.currentState?.validate() == true) {

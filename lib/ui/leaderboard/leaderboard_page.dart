@@ -27,6 +27,7 @@ class LeaderboardPage extends StatelessWidget {
       body: SafeArea(
         child: ViewConstraint(
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 32),
@@ -41,12 +42,20 @@ class LeaderboardPage extends StatelessWidget {
                       return _buildThreeDText('No scores yet', PokeAppText.pokeFontSubtitle1);
                     }
                     return Expanded(
-                      child: ListView.builder(
-                        itemCount: scores.length,
-                        itemBuilder: (context, index) {
-                          final entry = scores[index].data();
-                          return _buildLeaderBoardItem(index, entry);
-                        },
+                      child: Column(
+                        children: [
+                          _buildTableHeader(),
+                          const SizedBox(height: 16),
+                          Expanded(
+                            child: ListView.builder(
+                              itemCount: scores.length,
+                              itemBuilder: (context, index) {
+                                final entry = scores[index].data();
+                                return _buildLeaderBoardItem(index, entry);
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     );
                   }
@@ -57,6 +66,67 @@ class LeaderboardPage extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildTableHeader() {
+    return Row(
+      children: [
+        _buildThreeDText('#', PokeAppText.pokeFontSubtitle1),
+        const SizedBox(width: 16),
+        _buildThreeDText('Name', PokeAppText.pokeFontSubtitle1),
+        Spacer(),
+        const SizedBox(width: 16),
+        _buildOutlinedThumbsUp(),
+        const SizedBox(width: 32),
+        _buildOutlinedThumbsDown(),
+        const SizedBox(width: 16),
+      ],
+    );
+  }
+
+  Widget _buildOutlinedThumbsUp() {
+    return Stack(
+      children: [
+        ShaderMask(
+          blendMode: BlendMode.srcIn,
+          shaderCallback: (bounds) => LinearGradient(
+            colors: [Colors.blue.shade900, Colors.blue.shade700],
+          ).createShader(bounds),
+          child: Text(
+            'U+1F44D',
+            style: PokeAppText.pokeFontSubtitle1.copyWith(fontSize: PokeAppText.pokeFontSubtitle1.fontSize! + 8),
+          ),
+        ),
+        const Positioned.fill(
+          top: 3,
+          child: Center(
+            child: Text('👍', style: PokeAppText.pokeFontSubtitle1),
+          ),
+        ),
+      ],
+    );
+  }
+  Widget _buildOutlinedThumbsDown() {
+    return Stack(
+      children: [
+        ShaderMask(
+          blendMode: BlendMode.srcIn,
+          shaderCallback: (bounds) => LinearGradient(
+            colors: [Colors.blue.shade700, Colors.blue.shade900],
+          ).createShader(bounds),
+          child: Text(
+            '👎',
+            style: PokeAppText.pokeFontSubtitle1.copyWith(fontSize: PokeAppText.pokeFontSubtitle1.fontSize! + 8),
+          ),
+        ),
+        const Positioned.fill(
+          bottom: 3,
+          child: Center(
+            child: Text('👎', style: PokeAppText.pokeFontSubtitle1),
+          ),
+        ),
+      ],
     );
   }
 
@@ -78,6 +148,11 @@ class LeaderboardPage extends StatelessWidget {
         const SizedBox(width: 16),
         _buildThreeDText(
           entry.correctScore.toString(),
+          PokeAppText.pokeFontSubtitle1,
+        ),
+        const SizedBox(width: 32),
+        _buildThreeDText(
+          entry.incorrectScore.toString(),
           PokeAppText.pokeFontSubtitle1,
         ),
         const SizedBox(width: 16),
