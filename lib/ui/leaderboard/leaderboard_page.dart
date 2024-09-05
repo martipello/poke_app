@@ -94,7 +94,7 @@ class LeaderboardPage extends StatelessWidget {
             colors: [Colors.blue.shade900, Colors.blue.shade700],
           ).createShader(bounds),
           child: Text(
-            'U+1F44D',
+            '👍',
             style: PokeAppText.pokeFontSubtitle1.copyWith(fontSize: PokeAppText.pokeFontSubtitle1.fontSize! + 8),
           ),
         ),
