@@ -33,7 +33,8 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: stable # or: beta, master (or main)
+          channel: stable
+          flutter-version: 3.27.1
       - run: flutter --version
       - run: flutter pub get
       - run: flutter build web -t lib/main_paid.dart
