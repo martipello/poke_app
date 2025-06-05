@@ -356,17 +356,16 @@ class Settings extends StatelessWidget {
       description: Text(
         context.strings.shareWithFriends,
       ),
-      onPressed: (_) {
-        Share.share(
-          context.strings.shareLabel,
-        ).onError(
-          (error, stackTrace) async {
-            _launchService.launchSnackBar(
-              context,
-              error.toString(),
-            );
-          },
+      onPressed: (_) async {
+        final shareResult = await SharePlus.instance.share(
+          ShareParams(text: context.strings.shareLabel),
         );
+        if(shareResult == ShareResult.unavailable) {
+          _launchService.launchSnackBar(
+            context,
+            'Share failed, please try again.',
+          );
+        }
       },
     );
   }
