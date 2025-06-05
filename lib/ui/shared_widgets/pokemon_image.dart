@@ -56,6 +56,12 @@ class _PokemonImageState extends State<PokemonImage> {
   }
 
   @override
+  void dispose() {
+    imageUrlViewModel.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: widget.size?.height ?? kDefaultImageHeight,
@@ -260,5 +266,9 @@ class ImageProviderViewModel {
 
   void setImageProvider(CachedNetworkImageProvider imageProvider) {
     return this.imageProvider.add(imageProvider);
+  }
+
+  void dispose() {
+    imageProvider.close();
   }
 }
