@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get_it/get_it.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'ads/view_models/google_ads_view_model.dart';
@@ -33,6 +33,7 @@ import 'ui/pokemon_moves/view_models/pokemon_moves_view_model.dart';
 import 'ui/pokemon_news/adapter/pokemon_news_paging_adapter.dart';
 import 'ui/pokemon_news/views_models/pokemon_news_list_view_model.dart';
 import 'ui/pokemon_stats/view_models/pokemon_stats_weakness_resistance_view_model.dart';
+import 'ui/shared_widgets/pokemon_image.dart';
 import 'ui/shared_widgets/view_models/current_index_view_model.dart';
 import 'ui/shared_widgets/view_models/expansion_card_state_view_model.dart';
 import 'ui/shared_widgets/view_models/image_color_view_model.dart';
@@ -79,6 +80,7 @@ Future<void> init() async {
   getIt.registerFactory(CurrentIndexViewModel.new);
   getIt.registerFactory(MapZoomControlViewModel.new);
   getIt.registerFactory(SplashViewModel.new);
+  getIt.registerFactory(ImageProviderViewModel.new);
   getIt.registerFactory(() => WhosThatPokemonViewModel(getIt(), getIt(), getIt(), getIt()));
   getIt.registerFactory(() => ScoreViewModel(getIt(), getIt(), getIt(), getIt()));
   getIt.registerLazySingleton(() => LeaderboardViewModel(getIt()));

@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get_it/get_it.dart';
+import 'package:rxdart/subjects.dart';
 
 import '../../api/models/pokemon/pokemon.dart';
 import '../../extensions/build_context_extension.dart';
@@ -45,6 +47,13 @@ class PokemonImage extends StatefulWidget {
 
 class _PokemonImageState extends State<PokemonImage> {
   bool _hasBegunLoading = false;
+  final imageUrlViewModel = GetIt.instance.get<ImageProviderViewModel>();
+
+  @override
+  void initState() {
+    imageUrlViewModel.setImageProvider(widget.imageProvider);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -154,30 +163,36 @@ class _PokemonImageState extends State<PokemonImage> {
     BuildContext context,
     ImageProvider imageProvider,
   ) {
-    return Image(
-      image: imageProvider,
-      fit: BoxFit.cover,
-      gaplessPlayback: true,
-      color: widget.maskColor,
-      height: widget.size?.height ?? kDefaultImageHeight,
-      width: widget.size?.width ?? kDefaultImageHeight,
-      loadingBuilder: (context, child, chunk) {
-        if (_hasBegunLoading && chunk == null) {
-          return child;
-        }
-        return _buildEmptyImageHolder(
-          context,
-          isLoading: true,
-        );
-      },
-      frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-        _hasBegunLoading = frame != null;
-        return child;
-      },
-      errorBuilder: (context, _, __) {
-        return _buildEmptyImageHolder(
-          context,
-          isLoading: false,
+    return StreamBuilder<CachedNetworkImageProvider>(
+      stream: imageUrlViewModel.imageProvider,
+      builder: (context, snapshot) {
+        final imageProvider = snapshot.data ?? widget.imageProvider;
+        return Image(
+          image: imageProvider,
+          fit: BoxFit.cover,
+          gaplessPlayback: true,
+          color: widget.maskColor,
+          height: widget.size?.height ?? kDefaultImageHeight,
+          width: widget.size?.width ?? kDefaultImageHeight,
+          loadingBuilder: (context, child, chunk) {
+            if (_hasBegunLoading && chunk == null) {
+              return child;
+            }
+            return _buildEmptyImageHolder(
+              context,
+              isLoading: true,
+            );
+          },
+          frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+            _hasBegunLoading = frame != null;
+            return child;
+          },
+          errorBuilder: (context, _, __) {
+            return _buildEmptyImageHolder(
+              context,
+              isLoading: false,
+            );
+          },
         );
       },
     );
@@ -228,11 +243,22 @@ class _PokemonImageState extends State<PokemonImage> {
 
   BorderRadius _buildBorderRadius() => BorderRadius.circular(180);
 
+
   @override
   void didUpdateWidget(covariant PokemonImage oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.pokemon.id != oldWidget.pokemon.id) {
-      setState(() {});
+    if (oldWidget.pokemon.id != widget.pokemon.id) {
+      imageUrlViewModel.setImageProvider(
+        widget.imageProvider,
+      );
     }
+  }
+}
+
+class ImageProviderViewModel {
+  final imageProvider = BehaviorSubject<CachedNetworkImageProvider>();
+
+  void setImageProvider(CachedNetworkImageProvider imageProvider) {
+    return this.imageProvider.add(imageProvider);
   }
 }
