@@ -37,7 +37,7 @@ jobs:
           flutter-version: 3.27.1
       - run: flutter --version
       - run: flutter pub get
-      - run: flutter build web -t lib/main_paid.dart --no-enable-impeller
+      - run: flutter build web -t lib/main_paid.dart
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
