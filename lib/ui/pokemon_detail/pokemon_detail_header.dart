@@ -107,6 +107,7 @@ class _PokemonDetailHeaderState extends State<PokemonDetailHeader> {
                 ),
               ],
             ),
+            const SizedBox(height: 4),
           ],
         ),
       ),

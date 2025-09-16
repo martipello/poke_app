@@ -57,7 +57,7 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
 
   Future<void> _init() async {
     scoreViewModel.init();
-    await whosThatPokemonViewModel.initSoundpool();
+    await whosThatPokemonViewModel.initAudio();
     whosThatPokemonViewModel.generateRandomPokemon();
     whosThatPokemonViewModel.revealResultStream.listen(
       (value) {
@@ -351,21 +351,23 @@ class _WhosThatPokemonViewState extends State<WhosThatPokemonView> {
           Positioned.fill(
             right: 0,
             top: 0,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                StreamBuilder<UserScore>(
-                    stream: scoreViewModel.userScore,
-                    builder: (context, snapshot) {
-                      final userScore = snapshot.data;
-                      if (userScore == null) return const SizedBox();
-                      return ScoreWidget(
-                        userScore: userScore,
-                      );
-                    }),
-                const Spacer(),
-                _buildMuteButton(),
-              ],
+            child: SafeArea(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  StreamBuilder<UserScore>(
+                      stream: scoreViewModel.userScore,
+                      builder: (context, snapshot) {
+                        final userScore = snapshot.data;
+                        if (userScore == null) return const SizedBox();
+                        return ScoreWidget(
+                          userScore: userScore,
+                        );
+                      }),
+                  const Spacer(),
+                  _buildMuteButton(),
+                ],
+              ),
             ),
           ),
         ],

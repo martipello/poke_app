@@ -66,40 +66,43 @@ class _PokemonTileState extends State<PokemonTile> {
     return _buildTileContent();
   }
 
-  SizedBox _buildTileContent() {
+  Widget _buildTileContent() {
     const kCardPadding = 32;
     final chipHeight = widget.showTypes ? kChipHeight : 0;
     final tileHeight = kPokemonTileImageHeight + chipHeight + kCardPadding + 16 + 4;
 
-    return SizedBox(
-      height: widget.showImage ? tileHeight : null,
-      width: kMaxScreenWidth,
-      child: FutureBuilder<({Color? primaryColor, Color? secondaryColor})>(
-        future: imageColorViewModel.palette(cacheNetworkImageProvider),
-        builder: (context, colorSchemeSnapshot) {
-          final colorScheme = colorSchemeSnapshot.data;
-          final primary = colorScheme?.primaryColor;
-          final secondary = colorScheme?.secondaryColor;
-          return RoundedCard(
-            borderColor: widget.borderColor,
-            onTap: widget.onTap ??
-                () {
-                  context.closeKeyBoard();
-                  context.push(
-                    PokemonDetailPage.routeName,
-                    extra: PokemonDetailPageArguments(
-                      pokemon: widget.pokemon,
-                      primary: primary,
-                      secondary: secondary,
-                    ),
-                  );
-                },
-            child: _buildPokemonCardBody(
-              primary,
-              secondary,
-            ),
-          );
-        },
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: SizedBox(
+        height: widget.showImage ? tileHeight : null,
+        width: kMaxScreenWidth,
+        child: FutureBuilder<({Color? primaryColor, Color? secondaryColor})>(
+          future: imageColorViewModel.palette(cacheNetworkImageProvider),
+          builder: (context, colorSchemeSnapshot) {
+            final colorScheme = colorSchemeSnapshot.data;
+            final primary = colorScheme?.primaryColor;
+            final secondary = colorScheme?.secondaryColor;
+            return RoundedCard(
+              borderColor: widget.borderColor,
+              onTap: widget.onTap ??
+                  () {
+                    context.closeKeyBoard();
+                    context.push(
+                      PokemonDetailPage.routeName,
+                      extra: PokemonDetailPageArguments(
+                        pokemon: widget.pokemon,
+                        primary: primary,
+                        secondary: secondary,
+                      ),
+                    );
+                  },
+              child: _buildPokemonCardBody(
+                primary,
+                secondary,
+              ),
+            );
+          },
+        ),
       ),
     );
   }

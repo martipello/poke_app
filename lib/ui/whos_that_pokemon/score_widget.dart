@@ -15,9 +15,9 @@ class ScoreWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final wins = userScore.correctScore ?? 0;
-    final losses = userScore.incorrectScore ?? 0;
-    final skips = userScore.skippedScore ?? 0;
+    final wins = userScore.correctScore;
+    final losses = userScore.incorrectScore;
+    final skips = userScore.skippedScore;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisSize: MainAxisSize.min,

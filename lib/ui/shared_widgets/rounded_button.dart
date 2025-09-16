@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:poke_app/ui/shared_widgets/pokeball_loading_widget.dart';
 
 import '../../extensions/build_context_extension.dart';
 import '../../theme/poke_app_text.dart';
 import 'loading_widget.dart';
+import 'pokeball_loading_widget.dart';
 
 class RoundedButton extends StatelessWidget {
   const RoundedButton({

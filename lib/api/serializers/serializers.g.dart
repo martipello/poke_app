@@ -7,7 +7,6 @@ part of 'serializers.dart';
 // **************************************************************************
 
 Serializers _$serializers = (new Serializers().toBuilder()
-      ..add(Article.serializer)
       ..add(Cry.serializer)
       ..add(Encounter.serializer)
       ..add(EncounterMethod.serializer)
@@ -19,7 +18,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(Machine.serializer)
       ..add(MoveLearnMethod.serializer)
       ..add(MoveMetum.serializer)
-      ..add(NewsResponse.serializer)
       ..add(Pokemon.serializer)
       ..add(PokemonAbility.serializer)
       ..add(PokemonAbilityHolder.serializer)
@@ -35,7 +33,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(PokemonSpecies.serializer)
       ..add(PokemonSpeciesHolder.serializer)
       ..add(PokemonStat.serializer)
-      ..add(Source.serializer)
       ..add(Sprite.serializer)
       ..add(SpriteResponse.serializer)
       ..add(Stat.serializer)
@@ -43,9 +40,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(TypeDataHolder.serializer)
       ..add(TypeEfficacies.serializer)
       ..add(UserScore.serializer)
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(Article)]),
-          () => new ListBuilder<Article>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Evolution)]),
           () => new ListBuilder<Evolution>())

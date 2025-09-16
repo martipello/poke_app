@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../ads/ad_warning.dart';
 import '../../ads/view_models/google_ads_view_model.dart';
@@ -112,40 +113,44 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: NestedScrollView(
-              key: key,
-              headerSliverBuilder: (context, innerBoxIsScrolled) {
-                return [
-                  _buildPokemonDetailAppBar(),
-                ];
-              },
-              body: Container(
-                color: context.colors.background,
-                child: Stack(
-                  children: [
-                    Positioned.fill(
-                      child: _buildPokemonDetailBody(),
-                    ),
-                    _buildFilterViewHolderState(),
-                  ],
+      backgroundColor: primaryColor,
+      body: SafeArea(
+        bottom: false,
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: NestedScrollView(
+                key: key,
+                headerSliverBuilder: (context, innerBoxIsScrolled) {
+                  return [
+                    _buildPokemonDetailAppBar(),
+                  ];
+                },
+                body: Container(
+                  color: context.colors.background,
+                  child: Stack(
+                    children: [
+                      Positioned.fill(
+                        child: _buildPokemonDetailBody(),
+                      ),
+                      _buildFilterViewHolderState(),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          if (F.appFlavor != Flavor.paid)
-            Align(
-              alignment: Alignment.topRight,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  top: kToolbarHeight + 32,
+            if (F.appFlavor != Flavor.paid)
+              Align(
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    top: kToolbarHeight + 32,
+                  ),
+                  child: AdWarning(),
                 ),
-                child: AdWarning(),
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -196,30 +201,32 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
   }
 
   Widget _buildTabBarView() {
-    return TabBarView(
-      controller: _tabBarController,
-      children: [
-        PokemonInfoView(
-          pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
-          primaryColor: primaryColor,
-          secondaryColor: secondaryColor,
-        ),
-        PokemonStatsView(
-          pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
-          primaryColor: primaryColor,
-          secondaryColor: secondaryColor,
-        ),
-        PokemonEvolutionView(
-          pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
-        ),
-        PokemonFormsView(
-          pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
-        ),
-        PokemonMovesView(
-          pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
-          filterViewModel: _filterViewModel,
-        ),
-      ],
+    return SafeArea(
+      child: TabBarView(
+        controller: _tabBarController,
+        children: [
+          PokemonInfoView(
+            pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
+            primaryColor: primaryColor,
+            secondaryColor: secondaryColor,
+          ),
+          PokemonStatsView(
+            pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
+            primaryColor: primaryColor,
+            secondaryColor: secondaryColor,
+          ),
+          PokemonEvolutionView(
+            pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
+          ),
+          PokemonFormsView(
+            pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
+          ),
+          PokemonMovesView(
+            pokemonId: pokemonDetailArguments.pokemon.id ?? 0,
+            filterViewModel: _filterViewModel,
+          ),
+        ],
+      ),
     );
   }
 

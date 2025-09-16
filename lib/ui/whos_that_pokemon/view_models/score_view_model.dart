@@ -25,7 +25,8 @@ class ScoreViewModel {
   final submitScoreState = BehaviorSubject<ApiResponse<void>>();
   final userScore = BehaviorSubject<UserScore>();
 
-  void init() async {
+  Future<void> init() async {
+    await firebaseAuth.signInAnonymously();
     final wins = await sharedPreferencesService.getWinsScore() ?? 0;
     final losses = await sharedPreferencesService.getLossesScore() ?? 0;
     final skips = await sharedPreferencesService.getSkipsScore() ?? 0;

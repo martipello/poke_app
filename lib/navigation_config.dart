@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'ui/leaderboard/leaderboard_page.dart';
-import 'ui/settings/about.dart';
-import 'ui/settings/settings.dart';
 
 import 'ui/app_shell.dart';
+import 'ui/leaderboard/leaderboard_page.dart';
 import 'ui/locations/map_page.dart';
 import 'ui/pokemon_detail/pokemon_detail_page.dart';
 import 'ui/pokemon_list/pokemon_list_view_decoration.dart';
+import 'ui/settings/about.dart';
+import 'ui/settings/settings.dart';
 import 'ui/splash_page.dart';
 import 'ui/whos_that_pokemon/whos_that_pokemon_view.dart';
 

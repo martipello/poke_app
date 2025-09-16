@@ -25,15 +25,13 @@ class AppShell extends StatelessWidget {
         statusBarColor: Colors.black,
       ),
       child: Material(
-        child: SafeArea(
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              if (isWideLayout) {
-                return _buildScaffoldWithNavigatorRail(context);
-              }
-              return _buildScaffoldWithNavigatorBar(context);
-            },
-          ),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            if (isWideLayout) {
+              return _buildScaffoldWithNavigatorRail(context);
+            }
+            return _buildScaffoldWithNavigatorBar(context);
+          },
         ),
       ),
     );

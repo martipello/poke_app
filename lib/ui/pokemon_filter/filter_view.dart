@@ -244,20 +244,4 @@ class _FilterViewState extends State<FilterView> {
       onPressed: widget.onClose,
     );
   }
-
-  CardTheme _buildCardTheme() {
-    return CardTheme(
-      clipBehavior: Clip.hardEdge,
-      color: context.colors.surface,
-      surfaceTintColor: Colors.transparent,
-      elevation: 4,
-      margin: EdgeInsets.zero,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(24),
-          topRight: Radius.circular(24),
-        ),
-      ),
-    );
-  }
 }

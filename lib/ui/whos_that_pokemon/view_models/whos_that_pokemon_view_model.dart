@@ -1,9 +1,8 @@
 import 'dart:math' as math;
 
-import 'package:flutter/services.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:rive/rive.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:soundpool/soundpool.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../../api/error_handler.dart';
@@ -46,10 +45,8 @@ class WhosThatPokemonViewModel {
   final isAudioMuted = BehaviorSubject<bool>();
 
   SimpleAnimation? _controller;
-  Soundpool? _soundpool;
-  int? _openingSoundId;
-  int? _closingSoundId;
-  final double _rate = 1.0;
+  final _openingAudioPlayer = AudioPlayer();
+  final _closingAudioPlayer = AudioPlayer();
 
   Future<void> generateRandomPokemon() async {
     pokemonOptionsStream.add(ApiResponse.loading(null));
@@ -70,9 +67,8 @@ class WhosThatPokemonViewModel {
       );
       final pokemonResponse = PokemonResponse.fromJson(response.data!);
       final pokemon = pokemonResponse.pokemon_v2_pokemon.randomNonRepeating(3);
-      if (_openingSoundId != null) {
-        _playSound(_openingSoundId!);
-      }
+      await _openingAudioPlayer.setAsset('assets/audio/whos_that_pokemon.mp3');
+      _openingAudioPlayer.play();
       pokemonOptionsStream.add(
         ApiResponse.completed(
           (
@@ -101,52 +97,21 @@ class WhosThatPokemonViewModel {
       } else {
         revealResultStream.add(const Tuple2(RevealResult.incorrect, true));
       }
-      if (_closingSoundId != null) {
-        _playSound(_closingSoundId!);
-      }
+      await _closingAudioPlayer.setAsset('assets/audio/whos_that_pokemon_closing.mp3');
+      _closingAudioPlayer.play();
       await Future.delayed(const Duration(milliseconds: 2700));
       generateRandomPokemon();
     }
   }
 
-  Future<void> initSoundpool() async {
+  Future<void> initAudio() async {
     final isAudioMuted = await sharedPreferencesService.isAudioMuted();
     this.isAudioMuted.add(isAudioMuted);
-    _soundpool?.dispose();
-    _soundpool = Soundpool.fromOptions(
-      options: const SoundpoolOptions(),
-    );
-    _loadSounds(_soundpool!);
-  }
-
-  Future<void> _loadSounds(Soundpool soundpool) async {
-    _openingSoundId = await _loadOpeningSound(soundpool);
-    _closingSoundId = await _loadClosingSound(soundpool);
-  }
-
-  Future<int> _loadOpeningSound(Soundpool soundpool) async {
-    var asset = await rootBundle.load('assets/audio/whos_that_pokemon.mp3');
-    return await soundpool.load(asset);
-  }
-
-  Future<int> _loadClosingSound(Soundpool soundpool) async {
-    var asset = await rootBundle.load('assets/audio/whos_that_pokemon_closing.mp3');
-    return await soundpool.load(asset);
-  }
-
-  Future<void> _playSound(int soundId) async {
-    final soundpool = _soundpool;
-    if (soundpool != null && isAudioMuted.value != true) {
-      soundpool.play(
-        soundId,
-        rate: _rate,
-      );
-    }
   }
 
   void setAudioMuted({required bool isAudioMuted}) {
-    _soundpool?.stop(_openingSoundId ?? 0);
-    _soundpool?.stop(_closingSoundId ?? 0);
+    _openingAudioPlayer.stop();
+    _closingAudioPlayer.stop();
     sharedPreferencesService.setAudioMuted(isAudioMuted: isAudioMuted);
     this.isAudioMuted.add(isAudioMuted);
   }
@@ -155,7 +120,8 @@ class WhosThatPokemonViewModel {
     _controller?.dispose();
     isAudioMuted.close();
     pokemonOptionsStream.close();
-    _soundpool?.dispose();
+    _openingAudioPlayer.dispose();
+    _closingAudioPlayer.dispose();
   }
 
   String get animationDirectory => 'assets/animations/whos_that_pokemon.riv';

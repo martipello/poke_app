@@ -85,9 +85,11 @@ class _LocationMapPageState extends State<LocationMapPage> {
               child: _buildMap(),
             ),
             _buildAppBar(context),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: _buildMapControls(),
+            SafeArea(
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: _buildMapControls(),
+              ),
             ),
           ],
         ),
