@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'api/models/pokemon/pokemon_type.dart';
 import 'dependency_injection_container.dart';
+import 'extensions/build_context_extension.dart';
 import 'in_app_purchases/view_models/in_app_purchase_view_model.dart';
+import 'l10n/app_localizations.dart';
 import 'navigation_config.dart';
 import 'services/language_service.dart';
-import 'services/theme_service.dart';
 import 'theme/theme.g.dart';
+import 'theme/theme_mode_provider_widget.dart';
+import 'theme/theme_view_model.dart';
 
 class PokeApp extends StatefulWidget {
   const PokeApp({
@@ -22,7 +24,7 @@ class PokeApp extends StatefulWidget {
 class _PokeAppState extends State<PokeApp> {
   final languageService = getIt.get<LanguageService>();
   final _inAppPurchaseViewModel = getIt.get<InAppPurchaseViewModel>();
-  final themeService = getIt.get<ThemeService>();
+  final themeService = getIt.get<ThemeViewModel>();
 
   @override
   void didChangeDependencies() {
@@ -59,37 +61,33 @@ class _PokeAppState extends State<PokeApp> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<bool?>(
-      stream: themeService.isDarkModeStream,
-      builder: (context, snapshot) {
-        final isDarkMode = snapshot.data == true;
-        return StreamBuilder<SupportedLanguage>(
-          stream: languageService.languageStream,
-          builder: (context, snapshot) {
-            //TODO handle changing localization
-            return AdditionalColorsWidget(
-              additionalColors: const AdditionalColors(),
-              child: MaterialApp.router(
-                routerConfig: router,
-                title: 'PokéApp',
-                localizationsDelegates: [
-                  AppLocalizations.delegate,
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                ],
-                supportedLocales: [
-                  const Locale('en', ''),
-                  const Locale('es', ''),
-                ],
-                themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
-                theme: kLightTheme,
-                darkTheme: kDarkTheme,
-              ),
-            );
-          },
-        );
-      },
+    return ThemeModeProviderWidget(
+      child: StreamBuilder<SupportedLanguage>(
+        stream: languageService.languageStream,
+        builder: (context, snapshot) {
+          //TODO handle changing localization
+          return AdditionalColorsWidget(
+            additionalColors: const AdditionalColors(),
+            child: MaterialApp.router(
+              routerConfig: router,
+              title: 'PokéApp',
+              localizationsDelegates: [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: [
+                const Locale('en', ''),
+                const Locale('es', ''),
+              ],
+              themeMode: context.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+              theme: AppTheme.light,
+              darkTheme: AppTheme.dark,
+            ),
+          );
+        },
+      ),
     );
   }
 }

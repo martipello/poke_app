@@ -23,12 +23,11 @@ class _AboutState extends State<About> {
 
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion(
-      value: const SystemUiOverlayStyle(
-        statusBarColor: Colors.red,
-      ),
-      child: Scaffold(
-        body: FlexibleScrollbar(
+    return Scaffold(
+      backgroundColor: Colors.red,
+      body: SafeArea(
+        bottom: false,
+        child: FlexibleScrollbar(
           controller: controller,
           alwaysVisible: true,
           scrollThumbBuilder: (
@@ -47,22 +46,22 @@ class _AboutState extends State<About> {
   }
 
   Widget _buildScrollWidget(BuildContext context) {
-    return SingleChildScrollView(
-      controller: controller,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SizedBox(
-            height: context.statusBarHeight,
-          ),
-          _buildClippedAppBar(context),
-          Padding(
-            padding: const EdgeInsets.all(
-              16,
-            ),
-            child: _buildScrollBody(context),
-          )
-        ],
+    return ColoredBox(
+      color: context.colors.surface,
+      child: SingleChildScrollView(
+        controller: controller,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _buildClippedAppBar(context),
+            Padding(
+              padding: const EdgeInsets.all(
+                16,
+              ),
+              child: _buildScrollBody(context),
+            )
+          ],
+        ),
       ),
     );
   }

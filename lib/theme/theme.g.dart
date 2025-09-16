@@ -14,62 +14,70 @@ import 'color_schemes.g.dart';
 // same or higher package version, but still same major version. If you
 // use a lower package version, some properties may not be supported.
 // In that case remove them after copying this theme to your app.
-final kLightTheme = FlexThemeData.light(
-  colors: const FlexSchemeColor(
-    primary: Color(0xffb71c1c),
-    primaryContainer: Color(0xffd0e4ff),
-    secondary: Color(0xffac3306),
-    secondaryContainer: Color(0xffffdbcf),
-    tertiary: Color(0xff006875),
-    tertiaryContainer: Color(0xff95f0ff),
-    appBarColor: Color(0xffffdbcf),
-    error: Color(0xffb00020),
-  ),
-  surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
-  blendLevel: 7,
-  subThemesData: const FlexSubThemesData(
-    blendOnLevel: 10,
-    blendOnColors: false,
-    useTextTheme: true,
-    useM2StyleDividerInM3: true,
-    alignedDropdown: true,
-    useInputDecoratorThemeInDialogs: true,
-  ),
-  keyColors: const FlexKeyColors(),
-  visualDensity: FlexColorScheme.comfortablePlatformDensity,
-  useMaterial3: true,
-  swapLegacyOnMaterial3: true,
-// To use the Playground font, add GoogleFonts package and uncomment
-// fontFamily: GoogleFonts.notoSans().fontFamily,
-);
+import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+/// The [AppTheme] defines light and dark themes for the app.
+///
+/// Theme setup for FlexColorScheme package v8.
+/// Use same major flex_color_scheme package version. If you use a
+/// lower minor version, some properties may not be supported.
+/// In that case, remove them after copying this theme to your
+/// app or upgrade the package to version 8.3.0.
+///
+/// Use it in a [MaterialApp] like this:
+///
+/// MaterialApp(
+///   theme: AppTheme.light,
+///   darkTheme: AppTheme.dark,
+/// );
+import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+abstract final class AppTheme {
+  // The FlexColorScheme defined light mode ThemeData.
+  static ThemeData light = FlexThemeData.light(
+    // Using FlexColorScheme built-in FlexScheme enum based colors
+    scheme: FlexScheme.shadRed,
+    // Component theme configurations for light mode.
+    subThemesData: const FlexSubThemesData(
+      interactionEffects: true,
+      tintedDisabledControls: true,
+      useM2StyleDividerInM3: true,
+      splashType: FlexSplashType.inkSparkle,
+      inputDecoratorIsFilled: true,
+      inputDecoratorBorderType: FlexInputBorderType.outline,
+      alignedDropdown: true,
+      navigationRailUseIndicator: true,
+    ),
+    // Direct ThemeData properties.
+    visualDensity: FlexColorScheme.comfortablePlatformDensity,
+    cupertinoOverrideTheme: const CupertinoThemeData(applyThemeToAll: true),
+  );
 
-final kDarkTheme = FlexThemeData.dark(
-  colors: const FlexSchemeColor(
-    primary: Color(0xffb71c1c),
-    primaryContainer: Color(0xff00325b),
-    secondary: Color(0xffffb59d),
-    secondaryContainer: Color(0xff872100),
-    tertiary: Color(0xff86d2e1),
-    tertiaryContainer: Color(0xff004e59),
-    appBarColor: Color(0xff872100),
-    error: Color(0xffcf6679),
-  ),
-  surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
-  blendLevel: 13,
-  subThemesData: const FlexSubThemesData(
-    blendOnLevel: 20,
-    useTextTheme: true,
-    useM2StyleDividerInM3: true,
-    alignedDropdown: true,
-    useInputDecoratorThemeInDialogs: true,
-  ),
-  keyColors: const FlexKeyColors(),
-  visualDensity: FlexColorScheme.comfortablePlatformDensity,
-  useMaterial3: true,
-  swapLegacyOnMaterial3: true,
-// To use the Playground font, add GoogleFonts package and uncomment
-// fontFamily: GoogleFonts.notoSans().fontFamily,
-);
+  // The FlexColorScheme defined dark mode ThemeData.
+  static ThemeData dark = FlexThemeData.dark(
+    // Using FlexColorScheme built-in FlexScheme enum based colors.
+    scheme: FlexScheme.shadRed,
+    // Component theme configurations for dark mode.
+    subThemesData: const FlexSubThemesData(
+      interactionEffects: true,
+      tintedDisabledControls: true,
+      blendOnColors: true,
+      useM2StyleDividerInM3: true,
+      splashType: FlexSplashType.inkSparkle,
+      inputDecoratorIsFilled: true,
+      inputDecoratorBorderType: FlexInputBorderType.outline,
+      alignedDropdown: true,
+      navigationRailUseIndicator: true,
+    ),
+    // Direct ThemeData properties.
+    visualDensity: FlexColorScheme.comfortablePlatformDensity,
+    cupertinoOverrideTheme: const CupertinoThemeData(applyThemeToAll: true),
+  );
+}
+
+
 // If you do not have a themeMode switch, uncomment this line
 // to let the device system mode control the theme mode:
 // themeMode: ThemeMode.system,

@@ -14,8 +14,8 @@ import '../../extensions/string_extension.dart';
 import '../../in_app_purchases/view_models/in_app_purchase_view_model.dart';
 import '../../services/language_service.dart';
 import '../../services/launch_service.dart';
-import '../../services/theme_service.dart';
 import '../../theme/poke_app_text.dart';
+import '../../theme/theme_view_model.dart';
 import '../../utils/constants.dart';
 import '../shared_widgets/poke_dialog.dart';
 import 'about.dart';
@@ -26,7 +26,7 @@ class Settings extends StatelessWidget {
   static const String routeName = '/settings';
 
   final _languageService = getIt.get<LanguageService>();
-  final _themeService = getIt.get<ThemeService>();
+  final _themeService = getIt.get<ThemeViewModel>();
   final _launchService = getIt.get<LaunchService>();
 
   final _inAppPurchaseViewModel = getIt.get<InAppPurchaseViewModel>();
@@ -64,14 +64,14 @@ class Settings extends StatelessWidget {
     );
   }
 
-  StreamBuilder<bool?> _buildThemeState(
+  Widget _buildThemeState(
     SupportedLanguage? _language,
     ProductDetailsResponse? products,
   ) {
-    return StreamBuilder<bool?>(
-      stream: _themeService.isDarkModeStream,
+    return StreamBuilder<ThemeMode?>(
+      stream: _themeService.themeMode,
       builder: (context, isDarkModeSnapshot) {
-        final _isDarkMode = isDarkModeSnapshot.data == true;
+        final _isDarkMode = isDarkModeSnapshot.data == ThemeMode.dark;
         return _buildSettingsScaffold(
           context,
           _language,
@@ -286,7 +286,7 @@ class Settings extends StatelessWidget {
       initialValue: _isDarkMode,
       onToggle: (toggle) {
         _themeService.setDarkMode(
-          isDarkMode: toggle,
+          toggle ? ThemeMode.dark : ThemeMode.light,
         );
       },
       title: Text(

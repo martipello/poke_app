@@ -120,6 +120,7 @@ class _PokemonInfoViewState extends State<PokemonInfoView> with AutomaticKeepAli
         _buildPokemonSpecies(_pokemonInfo),
         _buildPokemonAbilities(_pokemonInfo),
         _buildPokemonEncounter(_pokemonInfo),
+        const SliverPadding(padding: EdgeInsets.only(top: 32))
       ],
     );
   }

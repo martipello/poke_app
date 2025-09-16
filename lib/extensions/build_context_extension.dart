@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../l10n/app_localizations.dart';
 import '../poke_app.dart';
 import '../theme/theme.g.dart';
+import '../theme/theme_mode_provider_widget.dart';
 import 'media_query_context_extension.dart';
 
 extension BuildContextExt on BuildContext {
@@ -13,8 +14,6 @@ extension BuildContextExt on BuildContext {
   double get screenWidth => MediaQuery.of(this).size.width;
 
   double get screenHeight => MediaQuery.of(this).size.height;
-
-  double get scaleFactor => MediaQuery.of(this).textScaleFactor;
 
   double get fullSizeImageScreenWidth => MediaQuery.of(this).fullSizeImageScreenWidth;
 
@@ -31,6 +30,9 @@ extension BuildContextExt on BuildContext {
   AdditionalColors get additionalColors => AdditionalColorsWidget.of(this).additionalColors;
 
   TextTheme get text => Theme.of(this).textTheme;
+
+
+  bool get isDarkMode => ThemeModeProvider.of(this).currentThemeMode == ThemeMode.dark;
 
   void openKeyBoard(FocusNode focusNode) {
     FocusScope.of(this).requestFocus(focusNode);

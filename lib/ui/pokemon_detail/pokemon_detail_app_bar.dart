@@ -30,7 +30,7 @@ class PokemonDetailAppBar extends StatefulWidget {
 
 class _PokemonDetailAppBarState extends State<PokemonDetailAppBar> with TickerProviderStateMixin {
   final _duration = const Duration(milliseconds: 300);
-  static const kDetailAppBarCardBackgroundHeight = 300.0;
+  static const kDetailAppBarCardBackgroundHeight = 320.0;
   static const kExpandedHeight = 132.0 + kDetailAppBarCardBackgroundHeight + kChipHeight;
 
   late final _circleRevealAnimationController = AnimationController(

@@ -80,10 +80,6 @@ class PokemonStatsWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildSmallMargin() => const SizedBox(
-        height: 8,
-      );
-
   Widget _buildMediumMargin() => const SizedBox(
         height: 16,
       );

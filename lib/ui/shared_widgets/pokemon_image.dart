@@ -216,19 +216,19 @@ class _PokemonImageState extends State<PokemonImage> {
           height: widget.size?.height ?? kDefaultImageHeight,
           width: widget.size?.width ?? kDefaultImageHeight,
           child: Center(
-            child: isLoading ? _buildLoadingImage(context) : _buildEmptyImage(),
+            child: isLoading ? _buildLoadingImage(context) : _buildEmptyImage(context),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildEmptyImage() {
-    return _buildPlaceHolder();
+  Widget _buildEmptyImage(BuildContext context) {
+    return _buildPlaceHolder(context);
   }
 
   Widget _buildLoadingImage(BuildContext context) {
-    return _buildPlaceHolder()
+    return _buildPlaceHolder(context)
         .animate(
           onPlay: (controller) => controller.repeat(),
         )
@@ -238,12 +238,18 @@ class _PokemonImageState extends State<PokemonImage> {
         );
   }
 
-  Widget _buildPlaceHolder() {
-    return Image.asset(
-      'assets/images/pokeball_outline.png',
-      gaplessPlayback: true,
-      height: widget.size?.height ?? kDefaultImageHeight,
-      width: widget.size?.width ?? kDefaultImageHeight,
+  Widget _buildPlaceHolder(BuildContext context) {
+    return ColorFiltered(
+      colorFilter: ColorFilter.mode(
+        context.colors.onSurface,
+        BlendMode.srcATop,
+      ),
+      child: Image.asset(
+        'assets/images/pokeball_outline.png',
+        gaplessPlayback: true,
+        height: widget.size?.height ?? kDefaultImageHeight,
+        width: widget.size?.width ?? kDefaultImageHeight,
+      ),
     );
   }
 
